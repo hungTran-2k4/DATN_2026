@@ -1,0 +1,249 @@
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MyProject.Application.Features.Auth.Commands;
+using MyProject.Application.Models.Auth;
+using MyProject.Application.Interfaces.Services;
+
+namespace MyProject.api.Controllers;
+
+/// <summary>
+/// Controller xử lý Authentication
+/// </summary>
+[Route("api/[controller]")]
+[ApiController]
+public class AuthController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    private readonly ILogger<AuthController> _logger;
+    private readonly ICurrentUserService _currentUserService;
+
+    public AuthController(IMediator mediator, ILogger<AuthController> logger, ICurrentUserService currentUserService)
+    {
+        _mediator = mediator;
+        _logger = logger;
+        _currentUserService = currentUserService;
+    }
+
+    /// <summary>
+    /// Đăng nhập
+    /// </summary>
+    /// <param name="request">Email và Password</param>
+    /// <returns>JWT token nếu thành công</returns>
+    [HttpPost("login")]
+    [AllowAnonymous]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new AuthResponse
+            {
+                Success = false,
+                Message = "Dữ liệu không hợp lệ"
+            });
+        }
+
+        var command = new LoginCommand(request.Email, request.Password);
+        var result = await _mediator.Send(command);
+
+        if (!result.Success)
+        {
+            return Unauthorized(result);
+        }
+
+        SetTokenCookies(result.AccessToken, result.RefreshToken);
+        
+        // Return tokens in body as well for non-browser clients (Mobile/Postman)
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Đăng nhập bằng Firebase ID Token
+    /// </summary>
+    /// <param name="request">Firebase ID Token</param>
+    /// <returns>JWT access token và refresh token</returns>
+    [HttpPost("login-firebase")]
+    [AllowAnonymous]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<AuthResponse>> LoginWithFirebase([FromBody] LoginWithFirebaseRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new AuthResponse
+            {
+                Success = false,
+                Message = "Dữ liệu không hợp lệ"
+            });
+        }
+
+        var command = new LoginWithFirebaseCommand(request.Email, request.Password);
+        var result = await _mediator.Send(command);
+
+        if (!result.Success)
+        {
+            return Unauthorized(result);
+        }
+
+        SetTokenCookies(result.AccessToken, result.RefreshToken);
+        
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Đăng ký tài khoản mới qua Firebase
+    /// </summary>
+    /// <param name="request">Thông tin đăng ký</param>
+    /// <returns>Kết quả đăng ký</returns>
+    [HttpPost("register-firebase")]
+    [AllowAnonymous]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AuthResponse>> RegisterWithFirebase([FromBody] RegisterWithFirebaseRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new AuthResponse
+            {
+                Success = false,
+                Message = "Dữ liệu không hợp lệ"
+            });
+        }
+
+        var command = new RegisterWithFirebaseCommand(request.Email, request.Password, request.FullName);
+        var result = await _mediator.Send(command);
+
+        if (!result.Success)
+        {
+            return BadRequest(result);
+        }
+
+        // Return 201 Created but without tokens (client needs to login)
+         return CreatedAtAction(nameof(LoginWithFirebase), result);
+    }
+
+    /// <summary>
+    /// Đăng ký tài khoản mới (Local)
+    /// </summary>
+    /// <param name="request">Thông tin đăng ký</param>
+    /// <returns>User info nếu thành công</returns>
+    [HttpPost("register")]
+    [AllowAnonymous]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new AuthResponse
+            {
+                Success = false,
+                Message = "Dữ liệu không hợp lệ"
+            });
+        }
+
+        var command = new RegisterCommand(request.Email, request.Password, request.FullName);
+        var result = await _mediator.Send(command);
+
+        if (!result.Success)
+        {
+            return BadRequest(result);
+        }
+
+        SetTokenCookies(result.AccessToken, result.RefreshToken);
+        
+        return CreatedAtAction(nameof(Login), result);
+    }
+
+    /// <summary>
+    /// Refresh Access Token tự động bằng Cookie
+    /// </summary>
+    [HttpPost("refresh-token")]
+    [AllowAnonymous]
+    public async Task<ActionResult<AuthResponse>> RefreshToken([FromBody] RefreshTokenRequest? request)
+    {
+        var refreshToken = Request.Cookies["refresh_token"];
+        
+        // If cookie is missing, check the body
+        if (string.IsNullOrEmpty(refreshToken) && request != null)
+        {
+            refreshToken = request.RefreshToken;
+        }
+
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return Unauthorized(new AuthResponse { Success = false, Message = "Refresh Token is missing" });
+        }
+
+        var command = new RefreshTokenCommand(refreshToken);
+        var result = await _mediator.Send(command);
+
+        if (!result.Success)
+        {
+            return Unauthorized(result);
+        }
+
+        SetTokenCookies(result.AccessToken, result.RefreshToken);
+        
+        return Ok(result);
+    }
+
+    private void SetTokenCookies(string accessToken, string refreshToken)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true, // Set to true in Production
+            SameSite = SameSiteMode.None, // Required for cross-site cookie usage
+            Expires = DateTime.UtcNow.AddMinutes(30)
+        };
+
+        Response.Cookies.Append("access_token", accessToken, cookieOptions);
+
+        var refreshCookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Expires = DateTime.UtcNow.AddDays(7)
+        };
+
+        Response.Cookies.Append("refresh_token", refreshToken, refreshCookieOptions);
+    }
+
+    /// <summary>
+    /// Lấy thông tin user hiện tại (yêu cầu đăng nhập)
+    /// </summary>
+    [HttpGet("current-user")]
+    [Authorize]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<UserDto> GetCurrentUser()
+    {
+        if (!_currentUserService.IsAuthenticated || _currentUserService.UserId == null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(new UserDto
+        {
+            Id = _currentUserService.UserId.Value,
+            Email = _currentUserService.Email ?? "",
+            // FullName is not yet in ICurrentUserService (only Email/Id/Roles based on interface), 
+            // but we can parse it from claims if needed or add to Interface.
+            // For now let's stick to what we have or pull generic claim if needed.
+            // Wait, ICurrentUserService usually should expose common claims. 
+            // Let's rely on manual claim for name if missing in service, OR update service.
+            // For now, I'll use the service for what it provides.
+            FullName = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value, 
+            Roles = _currentUserService.Roles.ToList()
+        });
+    }
+}

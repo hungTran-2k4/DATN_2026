@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DatabaseGeneric\DATN.csproj" />
+    <ProjectReference Include="..\DAL\DatabaseSpecific\DATNDBSpecific.csproj" />
+    <ProjectReference Include="..\DATN.Application\DATN.Application.csproj" />
+    <ProjectReference Include="..\DATN.Domain\DATN.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.0" />
+    <PackageReference Include="Npgsql" Version="8.0.3" />
+    <PackageReference Include="SD.LLBLGen.Pro.DQE.PostgreSql" Version="5.12.2-hotfix-20251212" />
+    <PackageReference Include="SD.LLBLGen.Pro.ORMSupportClasses" Version="5.12.2-hotfix-20251212" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>MyProject.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Reference DAL projects -->
+
+</Project>
