@@ -71,15 +71,18 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         
         if (entity != null)
         {
-            // Use AutoMapper to copy all properties from Domain to Entity
-            _mapper.Map(refreshToken, entity);
-            
-            // Ensure IsNew is false for update
+            // Gán trực tiếp thay vì dùng AutoMapper để đảm bảo LLBLGen đánh dấu dirty đúng
+            entity.Revoked = refreshToken.Revoked;
+            entity.RevokedAt = refreshToken.RevokedAt;
+            entity.ReplacedByTokenId = refreshToken.ReplaceByTokenId;
             entity.IsNew = false;
 
-            _logger.LogInformation("Updating RefreshToken {Id}. Revoked: {Revoked}, RevokedAt: {RevokedAt}", entity.Id, entity.Revoked, entity.RevokedAt);
+            _logger.LogInformation(
+                "Updating RefreshToken {Id}. Revoked: {Revoked}, RevokedAt: {RevokedAt}, ReplacedBy: {ReplacedBy}, IsDirty: {IsDirty}", 
+                entity.Id, entity.Revoked, entity.RevokedAt, entity.ReplacedByTokenId, entity.IsDirty);
 
-            await _adapter.SaveEntityAsync(entity, cancellationToken);
+            var saved = await _adapter.SaveEntityAsync(entity, cancellationToken);
+            _logger.LogInformation("SaveEntityAsync result for token {Id}: {Result}", entity.Id, saved);
         }
         else
         {

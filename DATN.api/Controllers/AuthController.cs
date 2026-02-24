@@ -166,15 +166,9 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost("refresh-token")]
     [AllowAnonymous]
-    public async Task<ActionResult<AuthResponse>> RefreshToken([FromBody] RefreshTokenRequest? request)
+    public async Task<ActionResult<AuthResponse>> RefreshToken()
     {
         var refreshToken = Request.Cookies["refresh_token"];
-        
-        // If cookie is missing, check the body
-        if (string.IsNullOrEmpty(refreshToken) && request != null)
-        {
-            refreshToken = request.RefreshToken;
-        }
 
         if (string.IsNullOrEmpty(refreshToken))
         {

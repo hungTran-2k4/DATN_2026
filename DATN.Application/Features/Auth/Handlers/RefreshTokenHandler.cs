@@ -45,15 +45,26 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthResp
             var existingToken = await _refreshTokenRepository.GetByTokenHashAsync(tokenHash, cancellationToken);
 
             // 3. Validate token
-            if (existingToken == null || existingToken.Revoked)
+            _logger.LogInformation(
+                "Token validation - Id: {Id}, Revoked: {Revoked}, RevokedAt: {RevokedAt}, ReplaceByTokenId: {ReplaceBy}, ExpiresAt: {ExpiresAt}",
+                existingToken?.Id, existingToken?.Revoked, existingToken?.RevokedAt, existingToken?.ReplaceByTokenId, existingToken?.ExpiresAt);
+            
+            if (existingToken == null || existingToken.Revoked || existingToken.ExpiresAt < DateTime.UtcNow)
             {
+                _logger.LogWarning("Token rejected! Null: {IsNull}, Revoked: {Revoked}, Expired: {Expired}", 
+                    existingToken == null, existingToken?.Revoked, existingToken?.ExpiresAt < DateTime.UtcNow);
                 return new AuthResponse { Success = false, Message = "Invalid or expired refresh token" };
             }
 
-            // 4. Revoke used token (Rotation)
-            existingToken.RevokedAt = DateTime.UtcNow;
-            existingToken.Revoked = true;
-            await _refreshTokenRepository.UpdateAsync(existingToken, cancellationToken);
+            // 4. Phát hiện token đã bị rotate trước đó (reuse detection)
+            if (existingToken.ReplaceByTokenId != null)
+            {
+                // Token này đã được dùng rồi → có thể bị đánh cắp
+                // Revoke TẤT CẢ token của user để bảo mật
+                _logger.LogWarning("Refresh token reuse detected for user {UserId}! Revoking all tokens.", existingToken.UserId);
+                await _refreshTokenRepository.RevokeAllByUserIdAsync(existingToken.UserId, cancellationToken);
+                return new AuthResponse { Success = false, Message = "Token đã được sử dụng. Vui lòng đăng nhập lại." };
+            }
 
             // 5. Get User
             var user = await _userRepository.GetByIdAsync(existingToken.UserId, cancellationToken);
@@ -67,16 +78,24 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthResp
             var newAccessToken = _jwtService.GenerateAccessToken(user, roles);
             var newRefreshToken = _jwtService.GenerateRefreshToken();
             
-            // 7. Save NEW Refresh Token
+            // 7. Tạo token mới
             var newTokenEntity = new RefreshToken
             {
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
                 TokenHash = ComputeHash(newRefreshToken),
                 CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddDays(7) // 7 days expiry
+                ExpiresAt = DateTime.UtcNow.AddDays(7)
             };
+
+            // 8. Tạo token mới TRƯỚC (vì ReplaceByTokenId là FK trỏ đến token mới, token mới phải tồn tại trước)
             await _refreshTokenRepository.CreateAsync(newTokenEntity, cancellationToken);
+
+            // 9. Sau khi token mới đã tồn tại, revoke token cũ và trỏ đến token mới
+            existingToken.RevokedAt = DateTime.UtcNow;
+            existingToken.Revoked = true;
+            existingToken.ReplaceByTokenId = newTokenEntity.Id;
+            await _refreshTokenRepository.UpdateAsync(existingToken, cancellationToken);
 
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Roles = roles.ToList();

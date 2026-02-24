@@ -83,7 +83,7 @@ public class UserRepository : IUserRepository
         {
             Id = user.Id,
             Email = user.Email,
-            Username = user.FullName,
+            Username = user.Email,
             PasswordHash = user.PasswordHash,
             Status = user.IsActive ? "active" : "inactive",
             CreatedAt = user.CreatedAt
