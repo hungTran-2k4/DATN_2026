@@ -57,6 +57,9 @@ public static class DependencyInjection
         // Background Service
         services.AddHostedService<TokenCleanupService>();
 
+        // Email Service
+        services.AddScoped<IEmailService, SmtpEmailService>();
+
         return services;
     }
 }

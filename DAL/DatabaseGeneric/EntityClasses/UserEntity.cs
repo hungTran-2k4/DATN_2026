@@ -263,12 +263,28 @@ namespace DATN.EntityClasses
 			set { SetValue((int)UserFieldIndex.Email, value); }
 		}
 
+		/// <summary>The FailedLoginCount property of the Entity User<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "users"."failed_login_count".<br/>Table field type characteristics (type, precision, scale, length): Integer, 10, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
+		public virtual System.Int32 FailedLoginCount
+		{
+			get { return (System.Int32)GetValue((int)UserFieldIndex.FailedLoginCount, true); }
+			set { SetValue((int)UserFieldIndex.FailedLoginCount, value); }
+		}
+
 		/// <summary>The Id property of the Entity User<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "users"."id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
 		public virtual System.Guid Id
 		{
 			get { return (System.Guid)GetValue((int)UserFieldIndex.Id, true); }
 			set { SetValue((int)UserFieldIndex.Id, value); }
+		}
+
+		/// <summary>The LockoutEnd property of the Entity User<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "users"."lockout_end".<br/>Table field type characteristics (type, precision, scale, length): Timestamp, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.DateTime> LockoutEnd
+		{
+			get { return (Nullable<System.DateTime>)GetValue((int)UserFieldIndex.LockoutEnd, false); }
+			set { SetValue((int)UserFieldIndex.LockoutEnd, value); }
 		}
 
 		/// <summary>The PasswordHash property of the Entity User<br/><br/></summary>
@@ -351,8 +367,12 @@ namespace DATN
 		CreatedAt,
 		///<summary>Email. </summary>
 		Email,
+		///<summary>FailedLoginCount. </summary>
+		FailedLoginCount,
 		///<summary>Id. </summary>
 		Id,
+		///<summary>LockoutEnd. </summary>
+		LockoutEnd,
 		///<summary>PasswordHash. </summary>
 		PasswordHash,
 		///<summary>Status. </summary>

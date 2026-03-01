@@ -153,4 +153,37 @@ public class UserRepository : IUserRepository
         bucket.PredicateExpression.Add(UserRoleFields.UserId == userId);
         await _adapter.DeleteEntitiesDirectlyAsync(typeof(UserRoleEntity), bucket, cancellationToken);
     }
+
+    public async Task IncrementFailedLoginAsync(Guid userId, int maxAttempts = 3, int lockoutMinutes = 5, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User.Where(UserFields.Id == userId);
+
+        var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        if (userEntity == null) return;
+
+        userEntity.FailedLoginCount += 1;
+
+        if (userEntity.FailedLoginCount >= maxAttempts)
+        {
+            userEntity.LockoutEnd = DateTime.UtcNow.AddMinutes(lockoutMinutes);
+        }
+
+        userEntity.IsNew = false;
+        await _adapter.SaveEntityAsync(userEntity, cancellationToken);
+    }
+
+    public async Task ResetFailedLoginAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User.Where(UserFields.Id == userId);
+
+        var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        if (userEntity == null) return;
+
+        userEntity.FailedLoginCount = 0;
+        userEntity.LockoutEnd = null;
+        userEntity.IsNew = false;
+        await _adapter.SaveEntityAsync(userEntity, cancellationToken);
+    }
 }

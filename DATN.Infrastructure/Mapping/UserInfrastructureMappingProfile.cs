@@ -20,6 +20,8 @@ public class UserInfrastructureMappingProfile : Profile
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.Status == "active"))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+            .ForMember(dest => dest.FailedLoginCount, opt => opt.MapFrom(src => src.FailedLoginCount))
+            .ForMember(dest => dest.LockoutEnd, opt => opt.MapFrom(src => src.LockoutEnd))
             .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src => src.UserRoles)); // Map navigation properties
 
         // UserRoleEntity -> UserRole (Domain)
@@ -37,11 +39,18 @@ public class UserInfrastructureMappingProfile : Profile
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.IsActive ? "active" : "inactive"))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+            .ForMember(dest => dest.FailedLoginCount, opt => opt.MapFrom(src => src.FailedLoginCount))
+            .ForMember(dest => dest.LockoutEnd, opt => opt.MapFrom(src => src.LockoutEnd))
             // Ignore navigation properties
             .ForMember(dest => dest.RefreshTokens, opt => opt.Ignore())
             .ForMember(dest => dest.UserRoles, opt => opt.Ignore())
             .ForMember(dest => dest.UserSessions, opt => opt.Ignore())
-            .ForMember(dest => dest.AvatarUrl, opt => opt.Ignore());
+            .ForMember(dest => dest.AvatarUrl, opt => opt.Ignore())
+            .ForMember(dest => dest.Products, opt => opt.Ignore())
+            .ForMember(dest => dest.engagementReviews, opt => opt.Ignore())
+            .ForMember(dest => dest.Notifications, opt => opt.Ignore())
+            .ForMember(dest => dest.salesCarts, opt => opt.Ignore())
+            .ForMember(dest => dest.salesOrders, opt => opt.Ignore());
 
         // RoleEntity -> Role (Domain)
         CreateMap<RoleEntity, Role>()

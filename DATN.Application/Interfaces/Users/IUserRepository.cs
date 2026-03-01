@@ -50,4 +50,14 @@ public interface IUserRepository
     /// Xóa tất cả roles của user
     /// </summary>
     Task ClearUserRolesAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Tăng số lần đăng nhập sai. Nếu >= maxAttempts, set LockoutEnd.
+    /// </summary>
+    Task IncrementFailedLoginAsync(Guid userId, int maxAttempts = 3, int lockoutMinutes = 5, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Reset số lần đăng nhập sai về 0 và xóa LockoutEnd
+    /// </summary>
+    Task ResetFailedLoginAsync(Guid userId, CancellationToken cancellationToken = default);
 }

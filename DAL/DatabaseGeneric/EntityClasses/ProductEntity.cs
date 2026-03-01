@@ -20,22 +20,20 @@ namespace DATN.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
-
 	/// <summary>Entity class which represents the entity 'Product'.<br/><br/></summary>
 	[Serializable]
 	public partial class ProductEntity : CommonEntityBase
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
-		// __LLBLGENPRO_USER_CODE_REGION_END
-	
+		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
 		private EntityCollection<ProductImageEntity> _productImages;
 		private EntityCollection<ProductVariantEntity> _productVariants;
 		private UserEntity _user;
 		private BrandEntity _brand;
 		private CategoryEntity _category;
+
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
-
 		private static ProductEntityStaticMetaData _staticMetaData = new ProductEntityStaticMetaData();
 		private static ProductRelations _relationsFactory = new ProductRelations();
 
@@ -155,7 +153,6 @@ namespace DATN.EntityClasses
 			PerformDependencyInjection();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassMembers
 			// __LLBLGENPRO_USER_CODE_REGION_END
-
 			OnInitClassMembersComplete();
 		}
 
@@ -170,7 +167,6 @@ namespace DATN.EntityClasses
 			InitClassMembers();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassEmpty
 			// __LLBLGENPRO_USER_CODE_REGION_END
-
 
 			OnInitialized();
 		}
@@ -341,9 +337,9 @@ namespace DATN.EntityClasses
 			get { return _category; }
 			set { SetSingleRelatedEntityNavigator(value, "Category"); }
 		}
+
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
-
 
 	}
 }

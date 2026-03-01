@@ -20,20 +20,18 @@ namespace DATN.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
-
 	/// <summary>Entity class which represents the entity 'engagementReview'.<br/><br/></summary>
 	[Serializable]
 	public partial class engagementReviewEntity : CommonEntityBase
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
-		// __LLBLGENPRO_USER_CODE_REGION_END
-	
+		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
 		private UserEntity _user;
 		private ProductVariantEntity _productVariant;
 		private salesOrderEntity _salesOrder;
+
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
-
 		private static engagementReviewEntityStaticMetaData _staticMetaData = new engagementReviewEntityStaticMetaData();
 		private static engagementReviewRelations _relationsFactory = new engagementReviewRelations();
 
@@ -130,7 +128,6 @@ namespace DATN.EntityClasses
 			PerformDependencyInjection();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassMembers
 			// __LLBLGENPRO_USER_CODE_REGION_END
-
 			OnInitClassMembersComplete();
 		}
 
@@ -145,7 +142,6 @@ namespace DATN.EntityClasses
 			InitClassMembers();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassEmpty
 			// __LLBLGENPRO_USER_CODE_REGION_END
-
 
 			OnInitialized();
 		}
@@ -252,9 +248,9 @@ namespace DATN.EntityClasses
 			get { return _salesOrder; }
 			set { SetSingleRelatedEntityNavigator(value, "salesOrder"); }
 		}
+
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
-
 
 	}
 }

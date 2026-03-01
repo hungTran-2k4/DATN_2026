@@ -128,6 +128,10 @@ namespace DATN
 		CreatedAt,
 		///<summary>UpdatedAt</summary>
 		UpdatedAt,
+		///<summary>FailedLoginCount</summary>
+		FailedLoginCount,
+		///<summary>LockoutEnd</summary>
+		LockoutEnd,
 		/// <summary></summary>
 		AmountOfFields
 	}

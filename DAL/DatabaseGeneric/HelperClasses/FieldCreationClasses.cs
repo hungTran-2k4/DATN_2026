@@ -115,8 +115,12 @@ namespace DATN.HelperClasses
 		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserFieldIndex.CreatedAt); }}
 		/// <summary>Creates a new UserEntity.Email field instance</summary>
 		public static EntityField2 Email { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserFieldIndex.Email); }}
+		/// <summary>Creates a new UserEntity.FailedLoginCount field instance</summary>
+		public static EntityField2 FailedLoginCount { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserFieldIndex.FailedLoginCount); }}
 		/// <summary>Creates a new UserEntity.Id field instance</summary>
 		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserFieldIndex.Id); }}
+		/// <summary>Creates a new UserEntity.LockoutEnd field instance</summary>
+		public static EntityField2 LockoutEnd { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserFieldIndex.LockoutEnd); }}
 		/// <summary>Creates a new UserEntity.PasswordHash field instance</summary>
 		public static EntityField2 PasswordHash { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserFieldIndex.PasswordHash); }}
 		/// <summary>Creates a new UserEntity.Status field instance</summary>
@@ -651,6 +655,10 @@ namespace DATN.HelperClasses
 		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserFieldIndex.CreatedAt); } }
 		/// <summary>Creates a new auth2UserTypedView.UpdatedAt field instance</summary>
 		public static EntityField2 UpdatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserFieldIndex.UpdatedAt); } }
+		/// <summary>Creates a new auth2UserTypedView.FailedLoginCount field instance</summary>
+		public static EntityField2 FailedLoginCount	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserFieldIndex.FailedLoginCount); } }
+		/// <summary>Creates a new auth2UserTypedView.LockoutEnd field instance</summary>
+		public static EntityField2 LockoutEnd	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserFieldIndex.LockoutEnd); } }
 	}
 
 	/// <summary>Field Creation Class for typedview auth2UserRoleTypedView</summary>

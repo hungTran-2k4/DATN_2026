@@ -11,6 +11,16 @@ public class AuthResponse
     public string? RefreshToken { get; set; }
     public DateTime? ExpiresAt { get; set; }
     public UserDto? User { get; set; }
+
+    /// <summary>
+    /// Số lần đăng nhập còn lại trước khi bị khóa (null nếu không áp dụng)
+    /// </summary>
+    public int? RemainingAttempts { get; set; }
+
+    /// <summary>
+    /// Thời điểm hết khóa tài khoản (null nếu không bị khóa)
+    /// </summary>
+    public DateTime? LockoutEnd { get; set; }
 }
 
 /// <summary>

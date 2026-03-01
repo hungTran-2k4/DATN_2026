@@ -29,8 +29,12 @@ namespace DATN.TypedViewClasses
 		public System.DateTime CreatedAt { get; set; }
 		/// <summary>Gets or sets the Email field.</summary>
 		public System.String Email { get; set; }
+		/// <summary>Gets or sets the FailedLoginCount field.</summary>
+		public System.Int32 FailedLoginCount { get; set; }
 		/// <summary>Gets or sets the Id field.</summary>
 		public System.Guid Id { get; set; }
+		/// <summary>Gets or sets the LockoutEnd field.</summary>
+		public Nullable<System.DateTime> LockoutEnd { get; set; }
 		/// <summary>Gets or sets the PasswordHash field.</summary>
 		public System.String PasswordHash { get; set; }
 		/// <summary>Gets or sets the Status field.</summary>

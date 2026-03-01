@@ -36,6 +36,10 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, AuthResponse>
         _mapper = mapper;
     }
 
+    // Hằng số cấu hình lockout
+    private const int MAX_ATTEMPTS = 3;
+    private const int LOCKOUT_MINUTES = 5;
+
     public async Task<AuthResponse> Handle(Commands.LoginCommand request, CancellationToken cancellationToken)
     {
         try
@@ -52,17 +56,55 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, AuthResponse>
                 };
             }
 
-            // 2. Kiểm tra password
-            if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+            // 2. Kiểm tra tài khoản có đang bị khóa không
+            if (user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow)
             {
+                var remainingTime = user.LockoutEnd.Value - DateTime.UtcNow;
                 return new AuthResponse
                 {
                     Success = false,
-                    Message = "Email hoặc mật khẩu không chính xác"
+                    Message = $"Tài khoản tạm thời bị khóa. Vui lòng thử lại sau {Math.Ceiling(remainingTime.TotalMinutes)} phút.",
+                    LockoutEnd = user.LockoutEnd.Value,
+                    RemainingAttempts = 0
                 };
             }
 
-            // 3. Kiểm tra user có active không
+            // 3. Nếu lockout đã hết hạn, reset bộ đếm
+            if (user.LockoutEnd.HasValue && user.LockoutEnd.Value <= DateTime.UtcNow)
+            {
+                await _userRepository.ResetFailedLoginAsync(user.Id, cancellationToken);
+                user.FailedLoginCount = 0;
+                user.LockoutEnd = null;
+            }
+
+            // 4. Kiểm tra password
+            if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+            {
+                // Tăng số lần đăng nhập sai
+                await _userRepository.IncrementFailedLoginAsync(user.Id, MAX_ATTEMPTS, LOCKOUT_MINUTES, cancellationToken);
+                var newFailedCount = user.FailedLoginCount + 1;
+                var remaining = MAX_ATTEMPTS - newFailedCount;
+
+                if (remaining <= 0)
+                {
+                    return new AuthResponse
+                    {
+                        Success = false,
+                        Message = $"Đăng nhập sai quá {MAX_ATTEMPTS} lần. Tài khoản bị khóa tạm thời {LOCKOUT_MINUTES} phút.",
+                        RemainingAttempts = 0,
+                        LockoutEnd = DateTime.UtcNow.AddMinutes(LOCKOUT_MINUTES)
+                    };
+                }
+
+                return new AuthResponse
+                {
+                    Success = false,
+                    Message = $"Email hoặc mật khẩu không chính xác. Còn {remaining} lần thử.",
+                    RemainingAttempts = remaining
+                };
+            }
+
+            // 5. Kiểm tra user có active không
             if (!user.IsActive)
             {
                 return new AuthResponse
@@ -72,10 +114,16 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, AuthResponse>
                 };
             }
 
-            // 4. Lấy roles của user
+            // 6. Đăng nhập thành công → Reset bộ đếm sai
+            if (user.FailedLoginCount > 0)
+            {
+                await _userRepository.ResetFailedLoginAsync(user.Id, cancellationToken);
+            }
+
+            // 7. Lấy roles của user
             var roles = await _userRepository.GetUserRolesAsync(user.Id, cancellationToken);
 
-            // 5. Tạo access token
+            // 8. Tạo access token
             var accessToken = _jwtService.GenerateAccessToken(user, roles);
             var refreshToken = _jwtService.GenerateRefreshToken();
             var expiresAt = DateTime.UtcNow.AddMinutes(_jwtService.GetTokenExpirationMinutes());

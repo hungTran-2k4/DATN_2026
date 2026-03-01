@@ -41,6 +41,10 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
         _httpClient = new HttpClient(); // In real app, inject via IHttpClientFactory
     }
 
+    // Hằng số cấu hình lockout
+    private const int MAX_ATTEMPTS = 3;
+    private const int LOCKOUT_MINUTES = 5;
+
     public async Task<AuthResponse> Handle(LoginWithFirebaseCommand request, CancellationToken cancellationToken)
     {
         try
@@ -67,6 +71,54 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
             {
                 var errorContent = await response.Content.ReadAsStringAsync(cancellationToken);
                 _logger.LogWarning("Firebase Login Failed: {Error}", errorContent);
+
+                // Kiểm tra user trong DB để tăng đếm lần sai
+                var existingUser = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
+                if (existingUser != null)
+                {
+                    // Kiểm tra lockout trước
+                    if (existingUser.LockoutEnd.HasValue && existingUser.LockoutEnd.Value > DateTime.UtcNow)
+                    {
+                        var remainingTime = existingUser.LockoutEnd.Value - DateTime.UtcNow;
+                        return new AuthResponse
+                        {
+                            Success = false,
+                            Message = $"Tài khoản tạm thời bị khóa. Vui lòng thử lại sau {Math.Ceiling(remainingTime.TotalMinutes)} phút.",
+                            LockoutEnd = existingUser.LockoutEnd.Value,
+                            RemainingAttempts = 0
+                        };
+                    }
+
+                    // Reset nếu lockout đã hết hạn
+                    if (existingUser.LockoutEnd.HasValue && existingUser.LockoutEnd.Value <= DateTime.UtcNow)
+                    {
+                        await _userRepository.ResetFailedLoginAsync(existingUser.Id, cancellationToken);
+                        existingUser.FailedLoginCount = 0;
+                    }
+
+                    await _userRepository.IncrementFailedLoginAsync(existingUser.Id, MAX_ATTEMPTS, LOCKOUT_MINUTES, cancellationToken);
+                    var newFailedCount = existingUser.FailedLoginCount + 1;
+                    var remaining = MAX_ATTEMPTS - newFailedCount;
+
+                    if (remaining <= 0)
+                    {
+                        return new AuthResponse
+                        {
+                            Success = false,
+                            Message = $"Đăng nhập sai quá {MAX_ATTEMPTS} lần. Tài khoản bị khóa tạm thời {LOCKOUT_MINUTES} phút.",
+                            RemainingAttempts = 0,
+                            LockoutEnd = DateTime.UtcNow.AddMinutes(LOCKOUT_MINUTES)
+                        };
+                    }
+
+                    return new AuthResponse
+                    {
+                        Success = false,
+                        Message = $"Email hoặc mật khẩu không chính xác. Còn {remaining} lần thử.",
+                        RemainingAttempts = remaining
+                    };
+                }
+
                 return new AuthResponse
                 {
                     Success = false,
@@ -76,7 +128,7 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
 
             var paramsResult = await response.Content.ReadFromJsonAsync<FirebaseSignInResponse>(cancellationToken: cancellationToken);
             
-            if (paramsResult == null) // checks paramsResult (using variable name since I can't use 'result' if it conflicts, but here it is uniquely named or I can rely on var name)
+            if (paramsResult == null)
             {
                  return new AuthResponse { Success = false, Message = "Lỗi xác thực từ Firebase" };
             }
@@ -116,6 +168,22 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                 }
             }
 
+            // Kiểm tra lockout cho user đã tồn tại
+            if (!isNewUser)
+            {
+                if (user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow)
+                {
+                    var remainingTime = user.LockoutEnd.Value - DateTime.UtcNow;
+                    return new AuthResponse
+                    {
+                        Success = false,
+                        Message = $"Tài khoản tạm thời bị khóa. Vui lòng thử lại sau {Math.Ceiling(remainingTime.TotalMinutes)} phút.",
+                        LockoutEnd = user.LockoutEnd.Value,
+                        RemainingAttempts = 0
+                    };
+                }
+            }
+
              if (!user.IsActive)
             {
                 return new AuthResponse
@@ -123,6 +191,12 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                     Success = false,
                     Message = "Tài khoản đã bị vô hiệu hóa"
                 };
+            }
+
+            // Đăng nhập thành công → Reset bộ đếm sai
+            if (user.FailedLoginCount > 0)
+            {
+                await _userRepository.ResetFailedLoginAsync(user.Id, cancellationToken);
             }
 
             // 4. Get Roles

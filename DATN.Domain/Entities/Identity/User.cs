@@ -10,6 +10,10 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 
+    // Lockout properties
+    public int FailedLoginCount { get; set; } = 0;
+    public DateTime? LockoutEnd { get; set; }
+
     // Navigation properties
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

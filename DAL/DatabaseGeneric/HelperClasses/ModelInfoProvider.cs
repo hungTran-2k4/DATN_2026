@@ -182,7 +182,9 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("UserEntity", "AvatarUrl", typeof(System.String), false, false, false, true,  (int)UserFieldIndex.AvatarUrl, 1073741824, 0, 0);
 			this.AddElementFieldInfo("UserEntity", "CreatedAt", typeof(System.DateTime), false, false, false, false,  (int)UserFieldIndex.CreatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("UserEntity", "Email", typeof(System.String), false, false, false, false,  (int)UserFieldIndex.Email, 255, 0, 0);
+			this.AddElementFieldInfo("UserEntity", "FailedLoginCount", typeof(System.Int32), false, false, false, false,  (int)UserFieldIndex.FailedLoginCount, 0, 0, 10);
 			this.AddElementFieldInfo("UserEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)UserFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("UserEntity", "LockoutEnd", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)UserFieldIndex.LockoutEnd, 0, 0, 0);
 			this.AddElementFieldInfo("UserEntity", "PasswordHash", typeof(System.String), false, false, false, false,  (int)UserFieldIndex.PasswordHash, 1073741824, 0, 0);
 			this.AddElementFieldInfo("UserEntity", "Status", typeof(System.String), false, false, false, false,  (int)UserFieldIndex.Status, 20, 0, 0);
 			this.AddElementFieldInfo("UserEntity", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)UserFieldIndex.UpdatedAt, 0, 0, 0);
@@ -558,6 +560,8 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("auth2UserTypedView", "Status", typeof(System.String), false, false, true, false, (int)auth2UserFieldIndex.Status, 20, 0, 0);
 			this.AddElementFieldInfo("auth2UserTypedView", "CreatedAt", typeof(System.DateTime), false, false, true, false, (int)auth2UserFieldIndex.CreatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("auth2UserTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)auth2UserFieldIndex.UpdatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("auth2UserTypedView", "FailedLoginCount", typeof(System.Int32), false, false, true, false, (int)auth2UserFieldIndex.FailedLoginCount, 0, 0, 10);
+			this.AddElementFieldInfo("auth2UserTypedView", "LockoutEnd", typeof(Nullable<System.DateTime>), false, false, true, false, (int)auth2UserFieldIndex.LockoutEnd, 0, 0, 0);
 		}
 
 		/// <summary>Inits auth2UserRoleView's info objects</summary>

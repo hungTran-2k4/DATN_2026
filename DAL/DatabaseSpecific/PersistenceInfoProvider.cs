@@ -172,15 +172,17 @@ namespace DATN.DatabaseSpecific
 		/// <summary>Inits UserEntity's mappings</summary>
 		private void InitUserEntityMappings()
 		{
-			this.AddElementMapping("UserEntity", @"postgres", @"auth2", "users", 8, 0);
+			this.AddElementMapping("UserEntity", @"postgres", @"auth2", "users", 10, 0);
 			this.AddElementFieldMapping("UserEntity", "AvatarUrl", "avatar_url", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 0);
 			this.AddElementFieldMapping("UserEntity", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
 			this.AddElementFieldMapping("UserEntity", "Email", "email", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 2);
-			this.AddElementFieldMapping("UserEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
-			this.AddElementFieldMapping("UserEntity", "PasswordHash", "password_hash", false, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 4);
-			this.AddElementFieldMapping("UserEntity", "Status", "status", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 5);
-			this.AddElementFieldMapping("UserEntity", "UpdatedAt", "updated_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 6);
-			this.AddElementFieldMapping("UserEntity", "Username", "username", false, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 7);
+			this.AddElementFieldMapping("UserEntity", "FailedLoginCount", "failed_login_count", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 3);
+			this.AddElementFieldMapping("UserEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+			this.AddElementFieldMapping("UserEntity", "LockoutEnd", "lockout_end", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 5);
+			this.AddElementFieldMapping("UserEntity", "PasswordHash", "password_hash", false, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 6);
+			this.AddElementFieldMapping("UserEntity", "Status", "status", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 7);
+			this.AddElementFieldMapping("UserEntity", "UpdatedAt", "updated_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 8);
+			this.AddElementFieldMapping("UserEntity", "Username", "username", false, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 9);
 		}
 
 		/// <summary>Inits UserRoleEntity's mappings</summary>
@@ -544,7 +546,7 @@ namespace DATN.DatabaseSpecific
 		/// <summary>Inits auth2UserView's mappings</summary>
 		private void Initauth2UserTypedViewMappings()
 		{
-			this.AddElementMapping("auth2UserTypedView", @"postgres", @"auth2", "users", 8);
+			this.AddElementMapping("auth2UserTypedView", @"postgres", @"auth2", "users", 10);
 			this.AddElementFieldMapping("auth2UserTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
 			this.AddElementFieldMapping("auth2UserTypedView", "Username", "username", false, "Varchar", 50, 0, 0, false, string.Empty, null, typeof(System.String), 1);
 			this.AddElementFieldMapping("auth2UserTypedView", "Email", "email", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 2);
@@ -553,6 +555,8 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("auth2UserTypedView", "Status", "status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 5);
 			this.AddElementFieldMapping("auth2UserTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 6);
 			this.AddElementFieldMapping("auth2UserTypedView", "UpdatedAt", "updated_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 7);
+			this.AddElementFieldMapping("auth2UserTypedView", "FailedLoginCount", "failed_login_count", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 8);
+			this.AddElementFieldMapping("auth2UserTypedView", "LockoutEnd", "lockout_end", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 9);
 		}
 
 		/// <summary>Inits auth2UserRoleView's mappings</summary>
