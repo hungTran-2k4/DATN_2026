@@ -1,6 +1,6 @@
-using MediatR;
+﻿using MediatR;
 
-namespace MyProject.Application.Features.Users.Commands;
+namespace DATN.Application.Features.Users.Commands;
 
 public class UpdateUserRolesCommand : IRequest<bool>
 {

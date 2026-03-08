@@ -1,37 +1,57 @@
-﻿
+﻿using System.Data.Common;
+using System.Diagnostics;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyProject.Application.Interfaces.Games;
-using MyProject.Application.Interfaces.Publishers;
-using MyProject.Application.Interfaces.Auth;
-using MyProject.Application.Interfaces.Users;
-using MyProject.Application.Interfaces.Roles;
-using MyProject.Infrastructure.Persistence.Repositories.Publishers;
-using MyProject.Infrastructure.Persistence.Repositories.Games;
-using MyProject.Infrastructure.Persistence.Repositories.Users;
-using MyProject.Infrastructure.Persistence.Repositories.Roles;
-using MyProject.Infrastructure.Persistence.Repositories.Auth;
-using MyProject.Infrastructure.Services;
-using AutoMapper;
-using DATN.DatabaseSpecific;
 using Microsoft.Extensions.Logging;
-using MyProject.Application.Interfaces.Services;
-using SD.LLBLGen.Pro.ORMSupportClasses;
+using Npgsql;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using DATN.Domain.Interfaces;
+using DATN.Application.Interfaces.Auth;
+using DATN.Application.Interfaces.Services;
 
-namespace MyProject.Infrastructure;
+using DATN.Infrastructure.Persistence.Repositories.Users;
+using DATN.Infrastructure.Persistence.Repositories.Roles;
+using DATN.Infrastructure.Persistence.Repositories.Auth;
+using DATN.Infrastructure.Services;
+using DATN.DatabaseSpecific;
+using SD.LLBLGen.Pro.ORMSupportClasses;
+using SD.LLBLGen.Pro.DQE.PostgreSql;
+
+namespace DATN.Infrastructure;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        // LLBLGen Config
+        DbProviderFactories.RegisterFactory("Npgsql", Npgsql.NpgsqlFactory.Instance);
+        RuntimeConfiguration.ConfigureDQE<PostgreSqlDQEConfiguration>(c =>
+        {
+            c.AddDbProviderFactory(typeof(NpgsqlFactory));
+            c.SetTraceLevel(TraceLevel.Verbose);
+        });
+
+        // Firebase Config
+        // Make sure it's only initialized once
+        if (FirebaseApp.DefaultInstance == null)
+        {
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile("firebase-adminsdk.json")
+            });
+        }
+
         services.AddScoped<IDataAccessAdapterFactory, DataAccessAdapterFactory>();
+        
         // Register IDataAccessAdapter using factory
         services.AddScoped<IDataAccessAdapter>(provider =>
         {
             var factory = provider.GetRequiredService<IDataAccessAdapterFactory>();
             return (IDataAccessAdapter)factory.CreateAdapter();
         });
+        
         services.AddScoped<DataAccessAdapter>(provider =>
         {
             var factory = provider.GetRequiredService<IDataAccessAdapterFactory>();
@@ -39,8 +59,10 @@ public static class DependencyInjection
         });
 
         // Register repositories
-        services.AddScoped<IGameRepository, GameRepository>();
-        services.AddScoped<IPublisherRepository, PublisherRepository>();
+
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         
         // Register Auth services
         services.AddScoped<IJwtService, JwtService>();
@@ -49,11 +71,6 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IRoleRepository, RoleRepository>();
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        
         // Background Service
         services.AddHostedService<TokenCleanupService>();
 

@@ -1,7 +1,7 @@
-using MediatR;
-using MyProject.Application.Models.Auth;
+﻿using MediatR;
+using DATN.Application.DTOs.Auth;
 
-namespace MyProject.Application.Features.Auth.Commands;
+namespace DATN.Application.Features.Auth.Commands;
 
 /// <summary>
 /// MediatR Command cho đăng ký tài khoản

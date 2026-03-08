@@ -1,6 +1,6 @@
-using MediatR;
-using MyProject.Application.Models.Auth;
+﻿using MediatR;
+using DATN.Application.DTOs.Auth;
 
-namespace MyProject.Application.Features.Auth.Commands;
+namespace DATN.Application.Features.Auth.Commands;
 
 public record RegisterWithFirebaseCommand(string Email, string Password, string FullName) : IRequest<AuthResponse>;

@@ -1,18 +1,12 @@
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Diagnostics;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Npgsql;
-using SD.LLBLGen.Pro.DQE.PostgreSql;
-using SD.LLBLGen.Pro.ORMSupportClasses;
-using MyProject.Infrastructure;
-using MyProject.Application.Mapping;
-using MyProject.Infrastructure.Mapping;
-using Microsoft.OpenApi;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
+using DATN.Infrastructure;
+using DATN.Application;
+
 
 // Enable Legacy Timestamp Behavior for Npgsql to handle UTC/Unspecified DateTime mismatch
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -95,42 +89,11 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// Add MediatR - Register Application assembly where handlers are located
-builder.Services.AddMediatR(cfg =>
-{
-    // Register Application assembly (contains handlers)
-    cfg.RegisterServicesFromAssembly(typeof(MyProject.Application.Features.Game.Handler.GetGamesPagingHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(MyProject.Application.Features.Game.Handler.CreateGameCommandHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(MyProject.Application.Features.Game.Handler.GetGameByIdHandle).Assembly);
-    cfg.RegisterServicesFromAssemblies(typeof(MyProject.Application.Features.Auth.Handlers.RegisterHandler).Assembly);
-    cfg.RegisterServicesFromAssemblies(typeof(MyProject.Application.Features.Auth.Handlers.LoginHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(MyProject.Application.Features.Users.Handlers.GetUsersQueryHandler).Assembly);
-    cfg.RegisterServicesFromAssemblies(typeof(MyProject.Application.Features.Users.Handlers.UpdateUserRolesHandler).Assembly);
-});
+// Add Application Layer Services
+builder.Services.AddApplication();
 
-// Add AutoMapper
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AddProfile(typeof(GameMappingProfile));
-    cfg.AddProfile(typeof(GameInfrastructureMappingProfile));
-    cfg.AddProfile<MyProject.Infrastructure.Mapping.PublisherInfrastructureMappingProfile>();
-    cfg.AddProfile<MyProject.Application.Mapping.PublisherProfile>();
-    cfg.AddProfile<MyProject.Infrastructure.Mapping.UserInfrastructureMappingProfile>();
-    cfg.AddProfile<MyProject.Application.Mapping.UserMappingProfile>();
-    cfg.AddProfile<MyProject.Infrastructure.Mapping.RefreshTokenInfrastructureMappingProfile>();
-});
-
+// Add Infrastructure Layer Services
 builder.Services.AddInfrastructure(builder.Configuration);
-
-// Register DbProviderFactories
-DbProviderFactories.RegisterFactory("Npgsql", Npgsql.NpgsqlFactory.Instance);
-
-// Configure LLBLGen Pro runtime configuration
-RuntimeConfiguration.ConfigureDQE<PostgreSqlDQEConfiguration>(c =>
-{
-    c.AddDbProviderFactory(typeof(NpgsqlFactory));
-    c.SetTraceLevel(TraceLevel.Verbose); // Optional for debugging
-});
 
 builder.Services.AddCors(options =>
         {
@@ -143,11 +106,6 @@ builder.Services.AddCors(options =>
                     .AllowCredentials();
             });
         });
-
-FirebaseApp.Create(new AppOptions
-{
-    Credential = GoogleCredential.FromFile("firebase-adminsdk.json")
-});
 
 var app = builder.Build();
 

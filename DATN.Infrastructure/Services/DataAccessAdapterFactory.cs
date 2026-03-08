@@ -1,9 +1,9 @@
 ﻿using System.Configuration;
 using DATN.DatabaseSpecific;
 using Microsoft.Extensions.Configuration;
-using MyProject.Application.Interfaces.Services;
+using DATN.Application.Interfaces.Services;
 
-namespace MyProject.Infrastructure.Services
+namespace DATN.Infrastructure.Services
 {
     public class DataAccessAdapterFactory(IConfiguration configuration) : IDataAccessAdapterFactory
     {

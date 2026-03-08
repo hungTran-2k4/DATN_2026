@@ -1,13 +1,12 @@
-using FirebaseAdmin.Auth;
+﻿using FirebaseAdmin.Auth;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MyProject.Application.Features.Auth.Commands;
-using MyProject.Application.Interfaces.Roles;
-using MyProject.Application.Interfaces.Users;
-using MyProject.Application.Models.Auth;
-using MyProject.Domain.Entities.Identity;
+using DATN.Application.Features.Auth.Commands;
+using DATN.Domain.Interfaces;
+using DATN.Application.DTOs.Auth;
+using DATN.Domain.Entities.Identity;
 
-namespace MyProject.Application.Features.Auth.Handlers;
+namespace DATN.Application.Features.Auth.Handlers;
 
 public class RegisterWithFirebaseHandler : IRequestHandler<RegisterWithFirebaseCommand, AuthResponse>
 {

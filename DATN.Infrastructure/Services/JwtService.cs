@@ -1,13 +1,14 @@
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using MyProject.Application.Interfaces.Auth;
-using MyProject.Domain.Entities.Identity;
+using DATN.Application.Interfaces.Auth;
+using DATN.Domain.Interfaces;
+using DATN.Domain.Entities.Identity;
 
-namespace MyProject.Infrastructure.Services;
+namespace DATN.Infrastructure.Services;
 
 /// <summary>
 /// Implementation của IJwtService cho JWT token operations

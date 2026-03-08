@@ -1,6 +1,6 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
-namespace MyProject.Application.Interfaces.Services;
+namespace DATN.Application.Interfaces.Services;
 
 public interface ICurrentUserService
 {

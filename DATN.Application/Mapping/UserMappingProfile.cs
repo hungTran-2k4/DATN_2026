@@ -1,8 +1,8 @@
-using AutoMapper;
-using MyProject.Application.Models.Auth;
-using MyProject.Domain.Entities.Identity;
+﻿using AutoMapper;
+using DATN.Application.DTOs.Auth;
+using DATN.Domain.Entities.Identity;
 
-namespace MyProject.Application.Mapping
+namespace DATN.Application.Mapping
 {
     public class UserMappingProfile : Profile
     {

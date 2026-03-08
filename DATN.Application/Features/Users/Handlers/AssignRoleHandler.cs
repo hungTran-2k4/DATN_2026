@@ -1,9 +1,8 @@
-using MediatR;
-using MyProject.Application.Features.Users.Commands;
-using MyProject.Application.Interfaces.Users;
-using MyProject.Application.Interfaces.Roles;
+﻿using MediatR;
+using DATN.Application.Features.Users.Commands;
+using DATN.Domain.Interfaces;
 
-namespace MyProject.Application.Features.Users.Handlers;
+namespace DATN.Application.Features.Users.Handlers;
 
 public class AssignRoleHandler : IRequestHandler<AssignRoleCommand, bool>
 {

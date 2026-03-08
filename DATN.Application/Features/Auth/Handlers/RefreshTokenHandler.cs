@@ -1,15 +1,15 @@
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MyProject.Application.Features.Auth.Commands;
-using MyProject.Application.Interfaces.Auth;
-using MyProject.Application.Interfaces.Users;
-using MyProject.Application.Models.Auth;
-using MyProject.Domain.Entities.Identity;
+using DATN.Application.Features.Auth.Commands;
+using DATN.Application.Interfaces.Auth;
+using DATN.Domain.Interfaces;
+using DATN.Application.DTOs.Auth;
+using DATN.Domain.Entities.Identity;
 using AutoMapper;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace MyProject.Application.Features.Auth.Handlers;
+namespace DATN.Application.Features.Auth.Handlers;
 
 public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthResponse>
 {

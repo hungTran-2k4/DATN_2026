@@ -1,8 +1,8 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using MyProject.Application.Interfaces.Services;
-using MyProject.Application.Interfaces.Users;
-using MyProject.Domain.Entities.Identity;
+using DATN.Application.Interfaces.Services;
+using DATN.Domain.Interfaces;
+using DATN.Domain.Entities.Identity;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
@@ -12,7 +12,7 @@ using DATN.EntityClasses;
 using DATN.FactoryClasses;
 using DATN.HelperClasses;
 
-namespace MyProject.Infrastructure.Persistence.Repositories.Users;
+namespace DATN.Infrastructure.Persistence.Repositories.Users;
 
 /// <summary>
 /// Implementation của IUserRepository sử dụng LLBLGen

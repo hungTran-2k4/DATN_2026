@@ -1,9 +1,10 @@
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using MyProject.Application.Interfaces.Auth;
+using DATN.Application.Interfaces.Auth;
+using DATN.Domain.Interfaces;
 
-namespace MyProject.Infrastructure.Services;
+namespace DATN.Infrastructure.Services;
 
 public class TokenCleanupService : BackgroundService
 {

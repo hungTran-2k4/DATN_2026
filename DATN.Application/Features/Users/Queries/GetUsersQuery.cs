@@ -1,7 +1,7 @@
-using MediatR;
-using MyProject.Application.Models.Auth;
+﻿using MediatR;
+using DATN.Application.DTOs.Auth;
 
-namespace MyProject.Application.Features.Users.Queries;
+namespace DATN.Application.Features.Users.Queries;
 
 public class GetUsersQuery : IRequest<IEnumerable<UserDto>>
 {

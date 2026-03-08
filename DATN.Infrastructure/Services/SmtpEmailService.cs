@@ -1,11 +1,11 @@
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using MyProject.Application.Interfaces.Services;
+using DATN.Application.Interfaces.Services;
 
-namespace MyProject.Infrastructure.Services;
+namespace DATN.Infrastructure.Services;
 
 /// <summary>
 /// Email Service sử dụng SMTP (Gmail) qua MailKit

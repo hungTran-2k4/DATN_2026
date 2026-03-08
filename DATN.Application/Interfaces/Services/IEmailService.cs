@@ -1,4 +1,4 @@
-namespace MyProject.Application.Interfaces.Services;
+﻿namespace DATN.Application.Interfaces.Services;
 
 /// <summary>
 /// Interface cho Email Service

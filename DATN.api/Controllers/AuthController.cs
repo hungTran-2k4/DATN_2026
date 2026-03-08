@@ -1,11 +1,11 @@
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyProject.Application.Features.Auth.Commands;
-using MyProject.Application.Models.Auth;
-using MyProject.Application.Interfaces.Services;
+using DATN.Application.Features.Auth.Commands;
+using DATN.Application.DTOs.Auth;
+using DATN.Application.Interfaces.Services;
 
-namespace MyProject.api.Controllers;
+namespace DATN.api.Controllers;
 
 /// <summary>
 /// Controller xử lý Authentication

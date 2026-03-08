@@ -1,4 +1,4 @@
-namespace MyProject.Application.Interfaces.Auth;
+﻿namespace DATN.Application.Interfaces.Auth;
 
 /// <summary>
 /// Interface cho Password Hashing Service

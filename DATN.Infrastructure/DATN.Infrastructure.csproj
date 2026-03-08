@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\DAL\DatabaseGeneric\DATN.csproj" />
-    <ProjectReference Include="..\DAL\DatabaseSpecific\DATNDBSpecific.csproj" />
     <ProjectReference Include="..\DATN.Application\DATN.Application.csproj" />
     <ProjectReference Include="..\DATN.Domain\DATN.Domain.csproj" />
+    <ProjectReference Include="..\DAL\DatabaseGeneric\DATN.csproj" />
+    <ProjectReference Include="..\DAL\DatabaseSpecific\DATNDBSpecific.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +25,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>MyProject.Infrastructure</RootNamespace>
+    <RootNamespace>DATN.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <!-- Reference DAL projects -->

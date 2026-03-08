@@ -1,8 +1,8 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using MyProject.Application.Interfaces.Services;
+using DATN.Application.Interfaces.Services;
 
-namespace MyProject.Infrastructure.Services;
+namespace DATN.Infrastructure.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

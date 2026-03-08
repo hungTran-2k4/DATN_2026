@@ -1,8 +1,8 @@
-using AutoMapper;
+﻿using AutoMapper;
 using DATN.EntityClasses;
-using MyProject.Domain.Entities.Identity;
+using DATN.Domain.Entities.Identity;
 
-namespace MyProject.Infrastructure.Mapping;
+namespace DATN.Infrastructure.Mapping;
 
 /// <summary>
 /// AutoMapper profile cho User và Role mappings

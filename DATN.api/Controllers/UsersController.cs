@@ -1,11 +1,11 @@
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyProject.Application.Features.Users.Commands;
-using MyProject.Application.Features.Users.Queries;
-using MyProject.Application.Models.Auth;
+using DATN.Application.Features.Users.Commands;
+using DATN.Application.Features.Users.Queries;
+using DATN.Application.DTOs.Auth;
 
-namespace MyProject.api.Controllers;
+namespace DATN.api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

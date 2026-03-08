@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyProject.Application.Interfaces.Services
+namespace DATN.Application.Interfaces.Services
 {
     public interface IDataAccessAdapterFactory
     {

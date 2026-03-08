@@ -1,4 +1,4 @@
-namespace MyProject.Domain.Entities.Identity;
+﻿namespace DATN.Domain.Entities.Identity;
 
 public class RefreshToken
 {

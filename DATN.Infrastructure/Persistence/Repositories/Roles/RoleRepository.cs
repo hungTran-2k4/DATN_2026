@@ -1,17 +1,17 @@
-using AutoMapper;
+﻿using AutoMapper;
 using DATN.DatabaseSpecific;
 using DATN.EntityClasses;
 using DATN.FactoryClasses;
 using DATN.HelperClasses;
 using Microsoft.Extensions.Configuration;
-using MyProject.Application.Interfaces.Services;
-using MyProject.Application.Interfaces.Roles;
-using MyProject.Domain.Entities.Identity;
+using DATN.Application.Interfaces.Services;
+using DATN.Domain.Interfaces;
+using DATN.Domain.Entities.Identity;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
 
-namespace MyProject.Infrastructure.Persistence.Repositories.Roles;
+namespace DATN.Infrastructure.Persistence.Repositories.Roles;
 
 /// <summary>
 /// Implementation của IRoleRepository sử dụng LLBLGen và AutoMapper

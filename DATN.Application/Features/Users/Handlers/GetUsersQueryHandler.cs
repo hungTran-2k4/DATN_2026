@@ -1,10 +1,10 @@
-using MediatR;
+﻿using MediatR;
 using AutoMapper;
-using MyProject.Application.Features.Users.Queries;
-using MyProject.Application.Interfaces.Users;
-using MyProject.Application.Models.Auth;
+using DATN.Application.Features.Users.Queries;
+using DATN.Domain.Interfaces;
+using DATN.Application.DTOs.Auth;
 
-namespace MyProject.Application.Features.Users.Handlers;
+namespace DATN.Application.Features.Users.Handlers;
 
 public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, IEnumerable<UserDto>>
 {

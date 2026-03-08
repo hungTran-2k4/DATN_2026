@@ -1,6 +1,7 @@
-using AutoMapper;
-using MyProject.Application.Interfaces.Auth;
-using MyProject.Domain.Entities.Identity;
+﻿using AutoMapper;
+using DATN.Application.Interfaces.Auth;
+using DATN.Domain.Interfaces;
+using DATN.Domain.Entities.Identity;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
@@ -11,7 +12,7 @@ using DATN.FactoryClasses;
 using DATN.HelperClasses;
 using Microsoft.Extensions.Logging;
 
-namespace MyProject.Infrastructure.Persistence.Repositories.Auth;
+namespace DATN.Infrastructure.Persistence.Repositories.Auth;
 
 public class RefreshTokenRepository : IRefreshTokenRepository
 {

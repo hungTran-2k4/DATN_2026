@@ -1,7 +1,7 @@
-using System.Security.Claims;
-using MyProject.Domain.Entities.Identity;
+﻿using System.Security.Claims;
+using DATN.Domain.Entities.Identity;
 
-namespace MyProject.Application.Interfaces.Auth;
+namespace DATN.Application.Interfaces.Auth;
 
 /// <summary>
 /// Interface cho JWT Token Service
