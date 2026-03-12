@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using DATN.Application.Features.Auth.Commands;
 using DATN.Application.DTOs.Auth;
 using DATN.Application.Interfaces.Services;
+using DATN.Application.Common.Models;
 
 namespace DATN.api.Controllers;
 
@@ -33,17 +34,13 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     [AllowAnonymous]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<ApiResponse<AuthResponse>>> Login([FromBody] LoginRequest request)
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(new AuthResponse
-            {
-                Success = false,
-                Message = "Dữ liệu không hợp lệ"
-            });
+            return BadRequest(ApiResponse<AuthResponse>.Fail("Dữ liệu không hợp lệ", 400, "INVALID_DATA"));
         }
 
         var command = new LoginCommand(request.Email, request.Password);
@@ -54,7 +51,7 @@ public class AuthController : ControllerBase
             return Unauthorized(result);
         }
 
-        SetTokenCookies(result.AccessToken, result.RefreshToken);
+        SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
         // Return tokens in body as well for non-browser clients (Mobile/Postman)
         return Ok(result);
@@ -68,17 +65,13 @@ public class AuthController : ControllerBase
     [HttpPost("login-firebase")]
     [AllowAnonymous]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<AuthResponse>> LoginWithFirebase([FromBody] LoginWithFirebaseRequest request)
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<ApiResponse<AuthResponse>>> LoginWithFirebase([FromBody] LoginWithFirebaseRequest request)
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(new AuthResponse
-            {
-                Success = false,
-                Message = "Dữ liệu không hợp lệ"
-            });
+            return BadRequest(ApiResponse<AuthResponse>.Fail("Dữ liệu không hợp lệ", 400, "INVALID_DATA"));
         }
 
         var command = new LoginWithFirebaseCommand(request.Email, request.Password);
@@ -89,7 +82,7 @@ public class AuthController : ControllerBase
             return Unauthorized(result);
         }
 
-        SetTokenCookies(result.AccessToken, result.RefreshToken);
+        SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
         return Ok(result);
     }
@@ -102,17 +95,13 @@ public class AuthController : ControllerBase
     [HttpPost("register-firebase")]
     [AllowAnonymous]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AuthResponse>> RegisterWithFirebase([FromBody] RegisterWithFirebaseRequest request)
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ApiResponse<AuthResponse>>> RegisterWithFirebase([FromBody] RegisterWithFirebaseRequest request)
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(new AuthResponse
-            {
-                Success = false,
-                Message = "Dữ liệu không hợp lệ"
-            });
+            return BadRequest(ApiResponse<AuthResponse>.Fail("Dữ liệu không hợp lệ", 400, "INVALID_DATA"));
         }
 
         var command = new RegisterWithFirebaseCommand(request.Email, request.Password, request.FullName);
@@ -135,17 +124,13 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     [AllowAnonymous]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request)
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ApiResponse<AuthResponse>>> Register([FromBody] RegisterRequest request)
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(new AuthResponse
-            {
-                Success = false,
-                Message = "Dữ liệu không hợp lệ"
-            });
+            return BadRequest(ApiResponse<AuthResponse>.Fail("Dữ liệu không hợp lệ", 400, "INVALID_DATA"));
         }
 
         var command = new RegisterCommand(request.Email, request.Password, request.FullName);
@@ -156,7 +141,7 @@ public class AuthController : ControllerBase
             return BadRequest(result);
         }
 
-        SetTokenCookies(result.AccessToken, result.RefreshToken);
+        SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
         return CreatedAtAction(nameof(Login), result);
     }
@@ -166,13 +151,13 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost("refresh-token")]
     [AllowAnonymous]
-    public async Task<ActionResult<AuthResponse>> RefreshToken()
+    public async Task<ActionResult<ApiResponse<AuthResponse>>> RefreshToken()
     {
         var refreshToken = Request.Cookies["refresh_token"];
 
         if (string.IsNullOrEmpty(refreshToken))
         {
-            return Unauthorized(new AuthResponse { Success = false, Message = "Refresh Token is missing" });
+            return Unauthorized(ApiResponse<AuthResponse>.Fail("Refresh Token is missing", 401, "MISSING_TOKEN"));
         }
 
         var command = new RefreshTokenCommand(refreshToken);
@@ -183,7 +168,7 @@ public class AuthController : ControllerBase
             return Unauthorized(result);
         }
 
-        SetTokenCookies(result.AccessToken, result.RefreshToken);
+        SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
         return Ok(result);
     }
@@ -217,16 +202,16 @@ public class AuthController : ControllerBase
     [HttpGet("current-user")]
     [Authorize]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<UserDto> GetCurrentUser()
+    public ActionResult<ApiResponse<UserDto>> GetCurrentUser()
     {
         if (!_currentUserService.IsAuthenticated || _currentUserService.UserId == null)
         {
-            return Unauthorized();
+            return Unauthorized(ApiResponse<UserDto>.Fail("Không có quyền truy cập", 401, "UNAUTHORIZED"));
         }
 
-        return Ok(new UserDto
+        return Ok(ApiResponse<UserDto>.Succeed(new UserDto
         {
             Id = _currentUserService.UserId.Value,
             Email = _currentUserService.Email ?? "",
@@ -238,6 +223,6 @@ public class AuthController : ControllerBase
             // For now, I'll use the service for what it provides.
             FullName = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value, 
             Roles = _currentUserService.Roles.ToList()
-        });
+        }, "Lấy thông tin người dùng thành công"));
     }
 }

@@ -8,25 +8,25 @@
 using System;
 using System.ComponentModel;
 
-namespace DATN.TypedViewClasses
+namespace DATN_2026.TypedViewClasses
 {
-	/// <summary>Class which represents a row in the typed view 'Store.storeWishlist'.</summary>
-	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN.FactoryClasses.QueryFactory.storeWishlist"/>. </remarks>
+	/// <summary>Class which represents a row in the typed view 'Engagement.engagementWishlist'.</summary>
+	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN_2026.FactoryClasses.QueryFactory.engagementWishlist"/>. </remarks>
 	[Serializable]
-	public partial class storeWishlistRow 
+	public partial class engagementWishlistRow 
 	{
 		partial void OnCreated();
 		
-		/// <summary>Initializes a new instance of the <see cref="storeWishlistRow"/> class.</summary>
-		public storeWishlistRow()
+		/// <summary>Initializes a new instance of the <see cref="engagementWishlistRow"/> class.</summary>
+		public engagementWishlistRow()
 		{
 			OnCreated();
 		}
 
 		/// <summary>Gets or sets the CreatedAt field.</summary>
 		public Nullable<System.DateTime> CreatedAt { get; set; }
-		/// <summary>Gets or sets the GameId field.</summary>
-		public System.Guid GameId { get; set; }
+		/// <summary>Gets or sets the ProductId field.</summary>
+		public System.Guid ProductId { get; set; }
 		/// <summary>Gets or sets the UserId field.</summary>
 		public System.Guid UserId { get; set; }
 	}

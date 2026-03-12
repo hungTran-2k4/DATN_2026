@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -26,7 +26,7 @@ namespace DATN.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
-		private salesOrderEntity _salesOrder;
+		private OrderEntity _order;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -36,8 +36,8 @@ namespace DATN.EntityClasses
 		/// <summary>All names of fields mapped onto a relation. Usable for in-memory filtering</summary>
 		public static partial class MemberNames
 		{
-			/// <summary>Member name salesOrder</summary>
-			public static readonly string salesOrder = "salesOrder";
+			/// <summary>Member name Order</summary>
+			public static readonly string Order = "Order";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -45,8 +45,8 @@ namespace DATN.EntityClasses
 		{
 			public TransactionEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("TransactionEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.TransactionEntity, typeof(TransactionEntity), typeof(TransactionEntityFactory), false);
-				AddNavigatorMetaData<TransactionEntity, salesOrderEntity>("salesOrder", "Transactions", (a, b) => a._salesOrder = b, a => a._salesOrder, (a, b) => a.salesOrder = b, DATN.RelationClasses.StaticTransactionRelations.salesOrderEntityUsingOrderIdStatic, ()=>new TransactionRelations().salesOrderEntityUsingOrderId, null, new int[] { (int)TransactionFieldIndex.OrderId }, null, true, (int)DATN.EntityType.salesOrderEntity);
+				SetEntityCoreInfo("TransactionEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.TransactionEntity, typeof(TransactionEntity), typeof(TransactionEntityFactory), false);
+				AddNavigatorMetaData<TransactionEntity, OrderEntity>("Order", "Transactions", (a, b) => a._order = b, a => a._order, (a, b) => a.Order = b, DATN_2026.RelationClasses.StaticTransactionRelations.OrderEntityUsingOrderIdStatic, ()=>new TransactionRelations().OrderEntityUsingOrderId, null, new int[] { (int)TransactionFieldIndex.OrderId }, null, true, (int)DATN_2026.EntityType.OrderEntity);
 			}
 		}
 
@@ -99,9 +99,9 @@ namespace DATN.EntityClasses
 			// __LLBLGENPRO_USER_CODE_REGION_END
 		}
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'salesOrder' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Order' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfosalesOrder() { return CreateRelationInfoForNavigator("salesOrder"); }
+		public virtual IRelationPredicateBucket GetRelationInfoOrder() { return CreateRelationInfoForNavigator("Order"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -133,9 +133,9 @@ namespace DATN.EntityClasses
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static TransactionRelations Relations { get { return _relationsFactory; } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'salesOrder' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Order' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathsalesOrder { get { return _staticMetaData.GetPrefetchPathElement("salesOrder", CommonEntityBase.CreateEntityCollection<salesOrderEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathOrder { get { return _staticMetaData.GetPrefetchPathElement("Order", CommonEntityBase.CreateEntityCollection<OrderEntity>()); } }
 
 		/// <summary>The Amount property of the Entity Transaction<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "transactions"."amount".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
@@ -201,12 +201,12 @@ namespace DATN.EntityClasses
 			set { SetValue((int)TransactionFieldIndex.Status, value); }
 		}
 
-		/// <summary>Gets / sets related entity of type 'salesOrderEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		/// <summary>Gets / sets related entity of type 'OrderEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
 		[Browsable(false)]
-		public virtual salesOrderEntity salesOrder
+		public virtual OrderEntity Order
 		{
-			get { return _salesOrder; }
-			set { SetSingleRelatedEntityNavigator(value, "salesOrder"); }
+			get { return _order; }
+			set { SetSingleRelatedEntityNavigator(value, "Order"); }
 		}
 
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
@@ -215,7 +215,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum TransactionFieldIndex
 	{
@@ -240,16 +240,16 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Transaction. </summary>
 	public partial class TransactionRelations: RelationFactory
 	{
 
-		/// <summary>Returns a new IEntityRelation object, between TransactionEntity and salesOrderEntity over the m:1 relation they have, using the relation between the fields: Transaction.OrderId - salesOrder.Id</summary>
-		public virtual IEntityRelation salesOrderEntityUsingOrderId
+		/// <summary>Returns a new IEntityRelation object, between TransactionEntity and OrderEntity over the m:1 relation they have, using the relation between the fields: Transaction.OrderId - Order.Id</summary>
+		public virtual IEntityRelation OrderEntityUsingOrderId
 		{
-			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "salesOrder", false, new[] { salesOrderFields.Id, TransactionFields.OrderId }); }
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Order", false, new[] { OrderFields.Id, TransactionFields.OrderId }); }
 		}
 
 	}
@@ -257,7 +257,7 @@ namespace DATN.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticTransactionRelations
 	{
-		internal static readonly IEntityRelation salesOrderEntityUsingOrderIdStatic = new TransactionRelations().salesOrderEntityUsingOrderId;
+		internal static readonly IEntityRelation OrderEntityUsingOrderIdStatic = new TransactionRelations().OrderEntityUsingOrderId;
 
 		/// <summary>CTor</summary>
 		static StaticTransactionRelations() { }

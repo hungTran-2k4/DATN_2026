@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -45,8 +45,8 @@ namespace DATN.EntityClasses
 		{
 			public BrandEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("BrandEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.BrandEntity, typeof(BrandEntity), typeof(BrandEntityFactory), false);
-				AddNavigatorMetaData<BrandEntity, EntityCollection<ProductEntity>>("Products", a => a._products, (a, b) => a._products = b, a => a.Products, () => new BrandRelations().ProductEntityUsingBrandId, typeof(ProductEntity), (int)DATN.EntityType.ProductEntity);
+				SetEntityCoreInfo("BrandEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.BrandEntity, typeof(BrandEntity), typeof(BrandEntityFactory), false);
+				AddNavigatorMetaData<BrandEntity, EntityCollection<ProductEntity>>("Products", a => a._products, (a, b) => a._products = b, a => a.Products, () => new BrandRelations().ProductEntityUsingBrandId, typeof(ProductEntity), (int)DATN_2026.EntityType.ProductEntity);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace DATN.EntityClasses
 		public IPredicateExpression ConstructFilterForUCSlug()
 		{
 			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.BrandFields.Slug == this.Fields.GetCurrentValue((int)BrandFieldIndex.Slug));
+			filter.Add(DATN_2026.HelperClasses.BrandFields.Slug == this.Fields.GetCurrentValue((int)BrandFieldIndex.Slug));
  			return filter;
 		}
 
@@ -196,7 +196,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum BrandFieldIndex
 	{
@@ -215,7 +215,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Brand. </summary>
 	public partial class BrandRelations: RelationFactory

@@ -8,10 +8,10 @@
 using System;
 using System.ComponentModel;
 
-namespace DATN.TypedViewClasses
+namespace DATN_2026.TypedViewClasses
 {
 	/// <summary>Class which represents a row in the typed view 'Catalog.catalogProductVariant'.</summary>
-	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN.FactoryClasses.QueryFactory.catalogProductVariant"/>. </remarks>
+	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN_2026.FactoryClasses.QueryFactory.catalogProductVariant"/>. </remarks>
 	[Serializable]
 	public partial class catalogProductVariantRow 
 	{
@@ -35,8 +35,6 @@ namespace DATN.TypedViewClasses
 		public Nullable<System.Guid> ProductId { get; set; }
 		/// <summary>Gets or sets the Sku field.</summary>
 		public System.String Sku { get; set; }
-		/// <summary>Gets or sets the StockQuantity field.</summary>
-		public Nullable<System.Int32> StockQuantity { get; set; }
 		/// <summary>Gets or sets the VariantAttributes field.</summary>
 		public System.String VariantAttributes { get; set; }
 	}

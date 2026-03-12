@@ -8,10 +8,10 @@
 using System;
 using System.ComponentModel;
 
-namespace DATN.TypedViewClasses
+namespace DATN_2026.TypedViewClasses
 {
 	/// <summary>Class which represents a row in the typed view 'Catalog.catalogCategory'.</summary>
-	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN.FactoryClasses.QueryFactory.catalogCategory"/>. </remarks>
+	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN_2026.FactoryClasses.QueryFactory.catalogCategory"/>. </remarks>
 	[Serializable]
 	public partial class catalogCategoryRow 
 	{

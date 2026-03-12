@@ -8,10 +8,10 @@
 using System;
 using System.ComponentModel;
 
-namespace DATN.TypedViewClasses
+namespace DATN_2026.TypedViewClasses
 {
 	/// <summary>Class which represents a row in the typed view 'Audit.auditLoginAttempt'.</summary>
-	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN.FactoryClasses.QueryFactory.auditLoginAttempt"/>. </remarks>
+	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN_2026.FactoryClasses.QueryFactory.auditLoginAttempt"/>. </remarks>
 	[Serializable]
 	public partial class auditLoginAttemptRow 
 	{

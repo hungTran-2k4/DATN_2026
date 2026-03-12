@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -48,9 +48,9 @@ namespace DATN.EntityClasses
 		{
 			public RoleEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("RoleEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.RoleEntity, typeof(RoleEntity), typeof(RoleEntityFactory), false);
-				AddNavigatorMetaData<RoleEntity, EntityCollection<RolePermissionEntity>>("RolePermissions", a => a._rolePermissions, (a, b) => a._rolePermissions = b, a => a.RolePermissions, () => new RoleRelations().RolePermissionEntityUsingRoleId, typeof(RolePermissionEntity), (int)DATN.EntityType.RolePermissionEntity);
-				AddNavigatorMetaData<RoleEntity, EntityCollection<UserRoleEntity>>("UserRoles", a => a._userRoles, (a, b) => a._userRoles = b, a => a.UserRoles, () => new RoleRelations().UserRoleEntityUsingRoleId, typeof(UserRoleEntity), (int)DATN.EntityType.UserRoleEntity);
+				SetEntityCoreInfo("RoleEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.RoleEntity, typeof(RoleEntity), typeof(RoleEntityFactory), false);
+				AddNavigatorMetaData<RoleEntity, EntityCollection<RolePermissionEntity>>("RolePermissions", a => a._rolePermissions, (a, b) => a._rolePermissions = b, a => a.RolePermissions, () => new RoleRelations().RolePermissionEntityUsingRoleId, typeof(RolePermissionEntity), (int)DATN_2026.EntityType.RolePermissionEntity);
+				AddNavigatorMetaData<RoleEntity, EntityCollection<UserRoleEntity>>("UserRoles", a => a._userRoles, (a, b) => a._userRoles = b, a => a.UserRoles, () => new RoleRelations().UserRoleEntityUsingRoleId, typeof(UserRoleEntity), (int)DATN_2026.EntityType.UserRoleEntity);
 			}
 		}
 
@@ -108,7 +108,7 @@ namespace DATN.EntityClasses
 		public IPredicateExpression ConstructFilterForUCName()
 		{
 			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.RoleFields.Name == this.Fields.GetCurrentValue((int)RoleFieldIndex.Name));
+			filter.Add(DATN_2026.HelperClasses.RoleFields.Name == this.Fields.GetCurrentValue((int)RoleFieldIndex.Name));
  			return filter;
 		}
 
@@ -204,7 +204,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum RoleFieldIndex
 	{
@@ -221,7 +221,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Role. </summary>
 	public partial class RoleRelations: RelationFactory

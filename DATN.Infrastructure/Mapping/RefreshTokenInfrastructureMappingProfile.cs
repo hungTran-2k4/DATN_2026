@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DATN.EntityClasses;
+using DATN_2026.EntityClasses;
 using DATN.Domain.Entities.Identity;
 
 namespace DATN.Infrastructure.Mapping

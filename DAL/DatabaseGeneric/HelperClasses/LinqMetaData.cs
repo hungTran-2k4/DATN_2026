@@ -10,10 +10,10 @@ using System.Linq;
 using System.Collections.Generic;
 using SD.LLBLGen.Pro.LinqSupportClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
-using DATN.EntityClasses;
-using DATN.FactoryClasses;
+using DATN_2026.EntityClasses;
+using DATN_2026.FactoryClasses;
 
-namespace DATN.Linq
+namespace DATN_2026.Linq
 {
 	/// <summary>Meta-data class for the construction of Linq queries which are to be executed using LLBLGen Pro code.</summary>
 	public partial class LinqMetaData: ILinqMetaData
@@ -42,70 +42,68 @@ namespace DATN.Linq
 		/// <returns>the requested datasource</returns>
 		public IDataSource GetQueryableForEntity(int typeOfEntity)
 		{
-			switch((DATN.EntityType)typeOfEntity)
+			switch((DATN_2026.EntityType)typeOfEntity)
 			{
-				case DATN.EntityType.LoginAttemptEntity:
+				case DATN_2026.EntityType.LoginAttemptEntity:
 					return this.LoginAttempt;
-				case DATN.EntityType.UserAuditLogEntity:
+				case DATN_2026.EntityType.UserAuditLogEntity:
 					return this.UserAuditLog;
-				case DATN.EntityType.PermissionEntity:
+				case DATN_2026.EntityType.PermissionEntity:
 					return this.Permission;
-				case DATN.EntityType.RefreshTokenEntity:
+				case DATN_2026.EntityType.RefreshTokenEntity:
 					return this.RefreshToken;
-				case DATN.EntityType.RoleEntity:
+				case DATN_2026.EntityType.RoleEntity:
 					return this.Role;
-				case DATN.EntityType.RolePermissionEntity:
+				case DATN_2026.EntityType.RolePermissionEntity:
 					return this.RolePermission;
-				case DATN.EntityType.UserEntity:
+				case DATN_2026.EntityType.UserEntity:
 					return this.User;
-				case DATN.EntityType.UserRoleEntity:
+				case DATN_2026.EntityType.UserAddressEntity:
+					return this.UserAddress;
+				case DATN_2026.EntityType.UserRoleEntity:
 					return this.UserRole;
-				case DATN.EntityType.UserSessionEntity:
+				case DATN_2026.EntityType.UserSessionEntity:
 					return this.UserSession;
-				case DATN.EntityType.BrandEntity:
+				case DATN_2026.EntityType.BrandEntity:
 					return this.Brand;
-				case DATN.EntityType.CategoryEntity:
+				case DATN_2026.EntityType.CategoryEntity:
 					return this.Category;
-				case DATN.EntityType.ProductEntity:
+				case DATN_2026.EntityType.ProductEntity:
 					return this.Product;
-				case DATN.EntityType.ProductImageEntity:
+				case DATN_2026.EntityType.ProductImageEntity:
 					return this.ProductImage;
-				case DATN.EntityType.ProductVariantEntity:
+				case DATN_2026.EntityType.ProductVariantEntity:
 					return this.ProductVariant;
-				case DATN.EntityType.engagementReviewEntity:
-					return this.engagementReview;
-				case DATN.EntityType.NotificationEntity:
+				case DATN_2026.EntityType.ShopEntity:
+					return this.Shop;
+				case DATN_2026.EntityType.ChatBoxEntity:
+					return this.ChatBox;
+				case DATN_2026.EntityType.ChatMessageEntity:
+					return this.ChatMessage;
+				case DATN_2026.EntityType.NotificationEntity:
 					return this.Notification;
-				case DATN.EntityType.salesCartEntity:
-					return this.salesCart;
-				case DATN.EntityType.salesOrderEntity:
-					return this.salesOrder;
-				case DATN.EntityType.salesOrderItemEntity:
-					return this.salesOrderItem;
-				case DATN.EntityType.TransactionEntity:
-					return this.Transaction;
-				case DATN.EntityType.CartEntity:
-					return this.Cart;
-				case DATN.EntityType.DiscountEntity:
-					return this.Discount;
-				case DATN.EntityType.GameEntity:
-					return this.Game;
-				case DATN.EntityType.GameTagEntity:
-					return this.GameTag;
-				case DATN.EntityType.OrderEntity:
-					return this.Order;
-				case DATN.EntityType.OrderItemEntity:
-					return this.OrderItem;
-				case DATN.EntityType.PublisherEntity:
-					return this.Publisher;
-				case DATN.EntityType.ReviewEntity:
+				case DATN_2026.EntityType.ReviewEntity:
 					return this.Review;
-				case DATN.EntityType.TagEntity:
-					return this.Tag;
-				case DATN.EntityType.UserGameEntity:
-					return this.UserGame;
-				case DATN.EntityType.WishlistEntity:
+				case DATN_2026.EntityType.WishlistEntity:
 					return this.Wishlist;
+				case DATN_2026.EntityType.StockEntity:
+					return this.Stock;
+				case DATN_2026.EntityType.StockTransactionEntity:
+					return this.StockTransaction;
+				case DATN_2026.EntityType.UserVoucherEntity:
+					return this.UserVoucher;
+				case DATN_2026.EntityType.VoucherEntity:
+					return this.Voucher;
+				case DATN_2026.EntityType.CartEntity:
+					return this.Cart;
+				case DATN_2026.EntityType.OrderEntity:
+					return this.Order;
+				case DATN_2026.EntityType.OrderItemEntity:
+					return this.OrderItem;
+				case DATN_2026.EntityType.ShippingTrackingEntity:
+					return this.ShippingTracking;
+				case DATN_2026.EntityType.TransactionEntity:
+					return this.Transaction;
 				default:
 					return null;
 			}
@@ -153,6 +151,9 @@ namespace DATN.Linq
 		/// <summary>returns the datasource to use in a Linq query when targeting UserEntity instances in the database.</summary>
 		public DataSource2<UserEntity> User {	get { return new DataSource2<UserEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
+		/// <summary>returns the datasource to use in a Linq query when targeting UserAddressEntity instances in the database.</summary>
+		public DataSource2<UserAddressEntity> UserAddress {	get { return new DataSource2<UserAddressEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
 		/// <summary>returns the datasource to use in a Linq query when targeting UserRoleEntity instances in the database.</summary>
 		public DataSource2<UserRoleEntity> UserRole {	get { return new DataSource2<UserRoleEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
@@ -174,35 +175,38 @@ namespace DATN.Linq
 		/// <summary>returns the datasource to use in a Linq query when targeting ProductVariantEntity instances in the database.</summary>
 		public DataSource2<ProductVariantEntity> ProductVariant {	get { return new DataSource2<ProductVariantEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
-		/// <summary>returns the datasource to use in a Linq query when targeting engagementReviewEntity instances in the database.</summary>
-		public DataSource2<engagementReviewEntity> engagementReview {	get { return new DataSource2<engagementReviewEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		/// <summary>returns the datasource to use in a Linq query when targeting ShopEntity instances in the database.</summary>
+		public DataSource2<ShopEntity> Shop {	get { return new DataSource2<ShopEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
+		/// <summary>returns the datasource to use in a Linq query when targeting ChatBoxEntity instances in the database.</summary>
+		public DataSource2<ChatBoxEntity> ChatBox {	get { return new DataSource2<ChatBoxEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
+		/// <summary>returns the datasource to use in a Linq query when targeting ChatMessageEntity instances in the database.</summary>
+		public DataSource2<ChatMessageEntity> ChatMessage {	get { return new DataSource2<ChatMessageEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
 		/// <summary>returns the datasource to use in a Linq query when targeting NotificationEntity instances in the database.</summary>
 		public DataSource2<NotificationEntity> Notification {	get { return new DataSource2<NotificationEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
-		/// <summary>returns the datasource to use in a Linq query when targeting salesCartEntity instances in the database.</summary>
-		public DataSource2<salesCartEntity> salesCart {	get { return new DataSource2<salesCartEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		/// <summary>returns the datasource to use in a Linq query when targeting ReviewEntity instances in the database.</summary>
+		public DataSource2<ReviewEntity> Review {	get { return new DataSource2<ReviewEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
-		/// <summary>returns the datasource to use in a Linq query when targeting salesOrderEntity instances in the database.</summary>
-		public DataSource2<salesOrderEntity> salesOrder {	get { return new DataSource2<salesOrderEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		/// <summary>returns the datasource to use in a Linq query when targeting WishlistEntity instances in the database.</summary>
+		public DataSource2<WishlistEntity> Wishlist {	get { return new DataSource2<WishlistEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
-		/// <summary>returns the datasource to use in a Linq query when targeting salesOrderItemEntity instances in the database.</summary>
-		public DataSource2<salesOrderItemEntity> salesOrderItem {	get { return new DataSource2<salesOrderItemEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		/// <summary>returns the datasource to use in a Linq query when targeting StockEntity instances in the database.</summary>
+		public DataSource2<StockEntity> Stock {	get { return new DataSource2<StockEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
-		/// <summary>returns the datasource to use in a Linq query when targeting TransactionEntity instances in the database.</summary>
-		public DataSource2<TransactionEntity> Transaction {	get { return new DataSource2<TransactionEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		/// <summary>returns the datasource to use in a Linq query when targeting StockTransactionEntity instances in the database.</summary>
+		public DataSource2<StockTransactionEntity> StockTransaction {	get { return new DataSource2<StockTransactionEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
+		/// <summary>returns the datasource to use in a Linq query when targeting UserVoucherEntity instances in the database.</summary>
+		public DataSource2<UserVoucherEntity> UserVoucher {	get { return new DataSource2<UserVoucherEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
+		/// <summary>returns the datasource to use in a Linq query when targeting VoucherEntity instances in the database.</summary>
+		public DataSource2<VoucherEntity> Voucher {	get { return new DataSource2<VoucherEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
 		/// <summary>returns the datasource to use in a Linq query when targeting CartEntity instances in the database.</summary>
 		public DataSource2<CartEntity> Cart {	get { return new DataSource2<CartEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
-		
-		/// <summary>returns the datasource to use in a Linq query when targeting DiscountEntity instances in the database.</summary>
-		public DataSource2<DiscountEntity> Discount {	get { return new DataSource2<DiscountEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
-		
-		/// <summary>returns the datasource to use in a Linq query when targeting GameEntity instances in the database.</summary>
-		public DataSource2<GameEntity> Game {	get { return new DataSource2<GameEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
-		
-		/// <summary>returns the datasource to use in a Linq query when targeting GameTagEntity instances in the database.</summary>
-		public DataSource2<GameTagEntity> GameTag {	get { return new DataSource2<GameTagEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
 		/// <summary>returns the datasource to use in a Linq query when targeting OrderEntity instances in the database.</summary>
 		public DataSource2<OrderEntity> Order {	get { return new DataSource2<OrderEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
@@ -210,20 +214,11 @@ namespace DATN.Linq
 		/// <summary>returns the datasource to use in a Linq query when targeting OrderItemEntity instances in the database.</summary>
 		public DataSource2<OrderItemEntity> OrderItem {	get { return new DataSource2<OrderItemEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
-		/// <summary>returns the datasource to use in a Linq query when targeting PublisherEntity instances in the database.</summary>
-		public DataSource2<PublisherEntity> Publisher {	get { return new DataSource2<PublisherEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		/// <summary>returns the datasource to use in a Linq query when targeting ShippingTrackingEntity instances in the database.</summary>
+		public DataSource2<ShippingTrackingEntity> ShippingTracking {	get { return new DataSource2<ShippingTrackingEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
-		/// <summary>returns the datasource to use in a Linq query when targeting ReviewEntity instances in the database.</summary>
-		public DataSource2<ReviewEntity> Review {	get { return new DataSource2<ReviewEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
-		
-		/// <summary>returns the datasource to use in a Linq query when targeting TagEntity instances in the database.</summary>
-		public DataSource2<TagEntity> Tag {	get { return new DataSource2<TagEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
-		
-		/// <summary>returns the datasource to use in a Linq query when targeting UserGameEntity instances in the database.</summary>
-		public DataSource2<UserGameEntity> UserGame {	get { return new DataSource2<UserGameEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
-		
-		/// <summary>returns the datasource to use in a Linq query when targeting WishlistEntity instances in the database.</summary>
-		public DataSource2<WishlistEntity> Wishlist {	get { return new DataSource2<WishlistEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		/// <summary>returns the datasource to use in a Linq query when targeting TransactionEntity instances in the database.</summary>
+		public DataSource2<TransactionEntity> Transaction {	get { return new DataSource2<TransactionEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
 
 

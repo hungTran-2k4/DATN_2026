@@ -1,0 +1,22 @@
+﻿  Determining projects to restore...
+  Restored d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj (in 309 ms).
+  2 of 3 projects are up-to-date for restore.
+  DATN_2026DBSpecific -> d:\DATN\DoAn\DAL\DatabaseSpecific\bin\Debug\DATN_2026DBSpecific.dll
+  DATN_2026 -> d:\DATN\DoAn\DAL\DatabaseGeneric\bin\Debug\DATN_2026.dll
+  DATN.Domain -> d:\DATN\DoAn\DATN.Domain\bin\Debug\net9.0\DATN.Domain.dll
+  DATN.Application -> d:\DATN\DoAn\DATN.Application\bin\Debug\net9.0\DATN.Application.dll
+d:\DATN\DoAn\DATN.Infrastructure\Persistence\Repositories\Auth\RefreshTokenRepository.cs(100,31): warning CS8602: Dereference of a possibly null reference. [d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj]
+d:\DATN\DoAn\DATN.Infrastructure\Mapping\UserInfrastructureMappingProfile.cs(50,37): error CS1061: 'UserEntity' does not contain a definition for 'engagementReviews' and no accessible extension method 'engagementReviews' accepting a first argument of type 'UserEntity' could be found (are you missing a using directive or an assembly reference?) [d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj]
+d:\DATN\DoAn\DATN.Infrastructure\Mapping\UserInfrastructureMappingProfile.cs(52,37): error CS1061: 'UserEntity' does not contain a definition for 'salesCarts' and no accessible extension method 'salesCarts' accepting a first argument of type 'UserEntity' could be found (are you missing a using directive or an assembly reference?) [d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj]
+d:\DATN\DoAn\DATN.Infrastructure\Mapping\UserInfrastructureMappingProfile.cs(53,37): error CS1061: 'UserEntity' does not contain a definition for 'salesOrders' and no accessible extension method 'salesOrders' accepting a first argument of type 'UserEntity' could be found (are you missing a using directive or an assembly reference?) [d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj]
+
+Build FAILED.
+
+d:\DATN\DoAn\DATN.Infrastructure\Persistence\Repositories\Auth\RefreshTokenRepository.cs(100,31): warning CS8602: Dereference of a possibly null reference. [d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj]
+d:\DATN\DoAn\DATN.Infrastructure\Mapping\UserInfrastructureMappingProfile.cs(50,37): error CS1061: 'UserEntity' does not contain a definition for 'engagementReviews' and no accessible extension method 'engagementReviews' accepting a first argument of type 'UserEntity' could be found (are you missing a using directive or an assembly reference?) [d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj]
+d:\DATN\DoAn\DATN.Infrastructure\Mapping\UserInfrastructureMappingProfile.cs(52,37): error CS1061: 'UserEntity' does not contain a definition for 'salesCarts' and no accessible extension method 'salesCarts' accepting a first argument of type 'UserEntity' could be found (are you missing a using directive or an assembly reference?) [d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj]
+d:\DATN\DoAn\DATN.Infrastructure\Mapping\UserInfrastructureMappingProfile.cs(53,37): error CS1061: 'UserEntity' does not contain a definition for 'salesOrders' and no accessible extension method 'salesOrders' accepting a first argument of type 'UserEntity' could be found (are you missing a using directive or an assembly reference?) [d:\DATN\DoAn\DATN.Infrastructure\DATN.Infrastructure.csproj]
+    1 Warning(s)
+    3 Error(s)
+
+Time Elapsed 00:00:02.32

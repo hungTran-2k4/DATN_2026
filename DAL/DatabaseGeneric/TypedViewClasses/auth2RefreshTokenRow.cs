@@ -8,10 +8,10 @@
 using System;
 using System.ComponentModel;
 
-namespace DATN.TypedViewClasses
+namespace DATN_2026.TypedViewClasses
 {
 	/// <summary>Class which represents a row in the typed view 'Auth2.auth2RefreshToken'.</summary>
-	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN.FactoryClasses.QueryFactory.auth2RefreshToken"/>. </remarks>
+	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN_2026.FactoryClasses.QueryFactory.auth2RefreshToken"/>. </remarks>
 	[Serializable]
 	public partial class auth2RefreshTokenRow 
 	{
@@ -29,6 +29,8 @@ namespace DATN.TypedViewClasses
 		public System.DateTime ExpiresAt { get; set; }
 		/// <summary>Gets or sets the Id field.</summary>
 		public System.Guid Id { get; set; }
+		/// <summary>Gets or sets the ReplacedByTokenId field.</summary>
+		public Nullable<System.Guid> ReplacedByTokenId { get; set; }
 		/// <summary>Gets or sets the Revoked field.</summary>
 		public System.Boolean Revoked { get; set; }
 		/// <summary>Gets or sets the RevokedAt field.</summary>

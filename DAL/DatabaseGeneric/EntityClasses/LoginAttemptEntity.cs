@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -42,7 +42,7 @@ namespace DATN.EntityClasses
 		{
 			public LoginAttemptEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("LoginAttemptEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.LoginAttemptEntity, typeof(LoginAttemptEntity), typeof(LoginAttemptEntityFactory), false);
+				SetEntityCoreInfo("LoginAttemptEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.LoginAttemptEntity, typeof(LoginAttemptEntity), typeof(LoginAttemptEntityFactory), false);
 			}
 		}
 
@@ -179,7 +179,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum LoginAttemptFieldIndex
 	{
@@ -200,7 +200,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: LoginAttempt. </summary>
 	public partial class LoginAttemptRelations: RelationFactory

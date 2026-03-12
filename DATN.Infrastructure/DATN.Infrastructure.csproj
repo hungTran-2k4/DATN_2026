@@ -1,13 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\DATN.Application\DATN.Application.csproj" />
-    <ProjectReference Include="..\DATN.Domain\DATN.Domain.csproj" />
-    <ProjectReference Include="..\DAL\DatabaseGeneric\DATN.csproj" />
-    <ProjectReference Include="..\DAL\DatabaseSpecific\DATNDBSpecific.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
@@ -19,6 +12,13 @@
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DatabaseSpecific\DATN_2026DBSpecific.csproj" />
+    <ProjectReference Include="..\DAL\DatabaseGeneric\DATN_2026.csproj" />
+    <ProjectReference Include="..\DATN.Application\DATN.Application.csproj" />
+    <ProjectReference Include="..\DATN.Domain\DATN.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

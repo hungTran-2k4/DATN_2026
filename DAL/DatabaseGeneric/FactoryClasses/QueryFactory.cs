@@ -7,13 +7,13 @@
 ////////////////////////////////////////////////////////////// 
 using System;
 using System.Linq;
-using DATN.EntityClasses;
-using DATN.HelperClasses;
+using DATN_2026.EntityClasses;
+using DATN_2026.HelperClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec.AdapterSpecific;
 using SD.LLBLGen.Pro.QuerySpec;
 
-namespace DATN.FactoryClasses
+namespace DATN_2026.FactoryClasses
 {
 	/// <summary>Factory class to produce DynamicQuery instances and EntityQuery instances</summary>
 	public partial class QueryFactory : QueryFactoryBase2
@@ -39,6 +39,9 @@ namespace DATN.FactoryClasses
 		/// <summary>Creates and returns a new EntityQuery for the User entity</summary>
 		public EntityQuery<UserEntity> User { get { return Create<UserEntity>(); } }
 
+		/// <summary>Creates and returns a new EntityQuery for the UserAddress entity</summary>
+		public EntityQuery<UserAddressEntity> UserAddress { get { return Create<UserAddressEntity>(); } }
+
 		/// <summary>Creates and returns a new EntityQuery for the UserRole entity</summary>
 		public EntityQuery<UserRoleEntity> UserRole { get { return Create<UserRoleEntity>(); } }
 
@@ -60,35 +63,38 @@ namespace DATN.FactoryClasses
 		/// <summary>Creates and returns a new EntityQuery for the ProductVariant entity</summary>
 		public EntityQuery<ProductVariantEntity> ProductVariant { get { return Create<ProductVariantEntity>(); } }
 
-		/// <summary>Creates and returns a new EntityQuery for the engagementReview entity</summary>
-		public EntityQuery<engagementReviewEntity> engagementReview { get { return Create<engagementReviewEntity>(); } }
+		/// <summary>Creates and returns a new EntityQuery for the Shop entity</summary>
+		public EntityQuery<ShopEntity> Shop { get { return Create<ShopEntity>(); } }
+
+		/// <summary>Creates and returns a new EntityQuery for the ChatBox entity</summary>
+		public EntityQuery<ChatBoxEntity> ChatBox { get { return Create<ChatBoxEntity>(); } }
+
+		/// <summary>Creates and returns a new EntityQuery for the ChatMessage entity</summary>
+		public EntityQuery<ChatMessageEntity> ChatMessage { get { return Create<ChatMessageEntity>(); } }
 
 		/// <summary>Creates and returns a new EntityQuery for the Notification entity</summary>
 		public EntityQuery<NotificationEntity> Notification { get { return Create<NotificationEntity>(); } }
 
-		/// <summary>Creates and returns a new EntityQuery for the salesCart entity</summary>
-		public EntityQuery<salesCartEntity> salesCart { get { return Create<salesCartEntity>(); } }
+		/// <summary>Creates and returns a new EntityQuery for the Review entity</summary>
+		public EntityQuery<ReviewEntity> Review { get { return Create<ReviewEntity>(); } }
 
-		/// <summary>Creates and returns a new EntityQuery for the salesOrder entity</summary>
-		public EntityQuery<salesOrderEntity> salesOrder { get { return Create<salesOrderEntity>(); } }
+		/// <summary>Creates and returns a new EntityQuery for the Wishlist entity</summary>
+		public EntityQuery<WishlistEntity> Wishlist { get { return Create<WishlistEntity>(); } }
 
-		/// <summary>Creates and returns a new EntityQuery for the salesOrderItem entity</summary>
-		public EntityQuery<salesOrderItemEntity> salesOrderItem { get { return Create<salesOrderItemEntity>(); } }
+		/// <summary>Creates and returns a new EntityQuery for the Stock entity</summary>
+		public EntityQuery<StockEntity> Stock { get { return Create<StockEntity>(); } }
 
-		/// <summary>Creates and returns a new EntityQuery for the Transaction entity</summary>
-		public EntityQuery<TransactionEntity> Transaction { get { return Create<TransactionEntity>(); } }
+		/// <summary>Creates and returns a new EntityQuery for the StockTransaction entity</summary>
+		public EntityQuery<StockTransactionEntity> StockTransaction { get { return Create<StockTransactionEntity>(); } }
+
+		/// <summary>Creates and returns a new EntityQuery for the UserVoucher entity</summary>
+		public EntityQuery<UserVoucherEntity> UserVoucher { get { return Create<UserVoucherEntity>(); } }
+
+		/// <summary>Creates and returns a new EntityQuery for the Voucher entity</summary>
+		public EntityQuery<VoucherEntity> Voucher { get { return Create<VoucherEntity>(); } }
 
 		/// <summary>Creates and returns a new EntityQuery for the Cart entity</summary>
 		public EntityQuery<CartEntity> Cart { get { return Create<CartEntity>(); } }
-
-		/// <summary>Creates and returns a new EntityQuery for the Discount entity</summary>
-		public EntityQuery<DiscountEntity> Discount { get { return Create<DiscountEntity>(); } }
-
-		/// <summary>Creates and returns a new EntityQuery for the Game entity</summary>
-		public EntityQuery<GameEntity> Game { get { return Create<GameEntity>(); } }
-
-		/// <summary>Creates and returns a new EntityQuery for the GameTag entity</summary>
-		public EntityQuery<GameTagEntity> GameTag { get { return Create<GameTagEntity>(); } }
 
 		/// <summary>Creates and returns a new EntityQuery for the Order entity</summary>
 		public EntityQuery<OrderEntity> Order { get { return Create<OrderEntity>(); } }
@@ -96,208 +102,193 @@ namespace DATN.FactoryClasses
 		/// <summary>Creates and returns a new EntityQuery for the OrderItem entity</summary>
 		public EntityQuery<OrderItemEntity> OrderItem { get { return Create<OrderItemEntity>(); } }
 
-		/// <summary>Creates and returns a new EntityQuery for the Publisher entity</summary>
-		public EntityQuery<PublisherEntity> Publisher { get { return Create<PublisherEntity>(); } }
+		/// <summary>Creates and returns a new EntityQuery for the ShippingTracking entity</summary>
+		public EntityQuery<ShippingTrackingEntity> ShippingTracking { get { return Create<ShippingTrackingEntity>(); } }
 
-		/// <summary>Creates and returns a new EntityQuery for the Review entity</summary>
-		public EntityQuery<ReviewEntity> Review { get { return Create<ReviewEntity>(); } }
-
-		/// <summary>Creates and returns a new EntityQuery for the Tag entity</summary>
-		public EntityQuery<TagEntity> Tag { get { return Create<TagEntity>(); } }
-
-		/// <summary>Creates and returns a new EntityQuery for the UserGame entity</summary>
-		public EntityQuery<UserGameEntity> UserGame { get { return Create<UserGameEntity>(); } }
-
-		/// <summary>Creates and returns a new EntityQuery for the Wishlist entity</summary>
-		public EntityQuery<WishlistEntity> Wishlist { get { return Create<WishlistEntity>(); } }
+		/// <summary>Creates and returns a new EntityQuery for the Transaction entity</summary>
+		public EntityQuery<TransactionEntity> Transaction { get { return Create<TransactionEntity>(); } }
 
 		/// <inheritdoc/>
 		protected override IElementCreatorCore CreateElementCreator() { return new ElementCreator(); }
  
 		/// <summary>Creates and returns the query to fetch the typed view Audit.auditLoginAttempt</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auditLoginAttemptRow> auditLoginAttempt
+		public DynamicQuery<DATN_2026.TypedViewClasses.auditLoginAttemptRow> auditLoginAttempt
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auditLoginAttemptRow, DATN.HelperClasses.auditLoginAttemptFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auditLoginAttemptRow, DATN_2026.HelperClasses.auditLoginAttemptFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Audit.auditUserAuditLog</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auditUserAuditLogRow> auditUserAuditLog
+		public DynamicQuery<DATN_2026.TypedViewClasses.auditUserAuditLogRow> auditUserAuditLog
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auditUserAuditLogRow, DATN.HelperClasses.auditUserAuditLogFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auditUserAuditLogRow, DATN_2026.HelperClasses.auditUserAuditLogFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2Permission</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auth2PermissionRow> auth2Permission
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2PermissionRow> auth2Permission
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auth2PermissionRow, DATN.HelperClasses.auth2PermissionFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2PermissionRow, DATN_2026.HelperClasses.auth2PermissionFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2RefreshToken</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auth2RefreshTokenRow> auth2RefreshToken
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2RefreshTokenRow> auth2RefreshToken
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auth2RefreshTokenRow, DATN.HelperClasses.auth2RefreshTokenFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2RefreshTokenRow, DATN_2026.HelperClasses.auth2RefreshTokenFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2Role</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auth2RoleRow> auth2Role
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2RoleRow> auth2Role
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auth2RoleRow, DATN.HelperClasses.auth2RoleFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2RoleRow, DATN_2026.HelperClasses.auth2RoleFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2RolePermission</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auth2RolePermissionRow> auth2RolePermission
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2RolePermissionRow> auth2RolePermission
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auth2RolePermissionRow, DATN.HelperClasses.auth2RolePermissionFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2RolePermissionRow, DATN_2026.HelperClasses.auth2RolePermissionFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2User</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auth2UserRow> auth2User
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2UserRow> auth2User
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auth2UserRow, DATN.HelperClasses.auth2UserFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2UserRow, DATN_2026.HelperClasses.auth2UserFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2UserAddress</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2UserAddressRow> auth2UserAddress
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2UserAddressRow, DATN_2026.HelperClasses.auth2UserAddressFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2UserRole</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auth2UserRoleRow> auth2UserRole
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2UserRoleRow> auth2UserRole
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auth2UserRoleRow, DATN.HelperClasses.auth2UserRoleFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2UserRoleRow, DATN_2026.HelperClasses.auth2UserRoleFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2UserSession</summary>
-		public DynamicQuery<DATN.TypedViewClasses.auth2UserSessionRow> auth2UserSession
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2UserSessionRow> auth2UserSession
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.auth2UserSessionRow, DATN.HelperClasses.auth2UserSessionFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2UserSessionRow, DATN_2026.HelperClasses.auth2UserSessionFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Catalog.catalogBrand</summary>
-		public DynamicQuery<DATN.TypedViewClasses.catalogBrandRow> catalogBrand
+		public DynamicQuery<DATN_2026.TypedViewClasses.catalogBrandRow> catalogBrand
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.catalogBrandRow, DATN.HelperClasses.catalogBrandFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.catalogBrandRow, DATN_2026.HelperClasses.catalogBrandFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Catalog.catalogCategory</summary>
-		public DynamicQuery<DATN.TypedViewClasses.catalogCategoryRow> catalogCategory
+		public DynamicQuery<DATN_2026.TypedViewClasses.catalogCategoryRow> catalogCategory
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.catalogCategoryRow, DATN.HelperClasses.catalogCategoryFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.catalogCategoryRow, DATN_2026.HelperClasses.catalogCategoryFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Catalog.catalogProduct</summary>
-		public DynamicQuery<DATN.TypedViewClasses.catalogProductRow> catalogProduct
+		public DynamicQuery<DATN_2026.TypedViewClasses.catalogProductRow> catalogProduct
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.catalogProductRow, DATN.HelperClasses.catalogProductFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.catalogProductRow, DATN_2026.HelperClasses.catalogProductFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Catalog.catalogProductImage</summary>
-		public DynamicQuery<DATN.TypedViewClasses.catalogProductImageRow> catalogProductImage
+		public DynamicQuery<DATN_2026.TypedViewClasses.catalogProductImageRow> catalogProductImage
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.catalogProductImageRow, DATN.HelperClasses.catalogProductImageFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.catalogProductImageRow, DATN_2026.HelperClasses.catalogProductImageFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Catalog.catalogProductVariant</summary>
-		public DynamicQuery<DATN.TypedViewClasses.catalogProductVariantRow> catalogProductVariant
+		public DynamicQuery<DATN_2026.TypedViewClasses.catalogProductVariantRow> catalogProductVariant
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.catalogProductVariantRow, DATN.HelperClasses.catalogProductVariantFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.catalogProductVariantRow, DATN_2026.HelperClasses.catalogProductVariantFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Catalog.catalogShop</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.catalogShopRow> catalogShop
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.catalogShopRow, DATN_2026.HelperClasses.catalogShopFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Engagement.engagementChatBox</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.engagementChatBoxRow> engagementChatBox
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.engagementChatBoxRow, DATN_2026.HelperClasses.engagementChatBoxFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Engagement.engagementChatMessage</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.engagementChatMessageRow> engagementChatMessage
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.engagementChatMessageRow, DATN_2026.HelperClasses.engagementChatMessageFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Engagement.engagementNotification</summary>
-		public DynamicQuery<DATN.TypedViewClasses.engagementNotificationRow> engagementNotification
+		public DynamicQuery<DATN_2026.TypedViewClasses.engagementNotificationRow> engagementNotification
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.engagementNotificationRow, DATN.HelperClasses.engagementNotificationFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.engagementNotificationRow, DATN_2026.HelperClasses.engagementNotificationFields>(); }
 		}
 
-		/// <summary>Creates and returns the query to fetch the typed view Engagement.engagementReview1</summary>
-		public DynamicQuery<DATN.TypedViewClasses.engagementReview1Row> engagementReview1
+		/// <summary>Creates and returns the query to fetch the typed view Engagement.engagementReview</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.engagementReviewRow> engagementReview
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.engagementReview1Row, DATN.HelperClasses.engagementReview1Fields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.engagementReviewRow, DATN_2026.HelperClasses.engagementReviewFields>(); }
 		}
 
-		/// <summary>Creates and returns the query to fetch the typed view Sales.salesCart1</summary>
-		public DynamicQuery<DATN.TypedViewClasses.salesCart1Row> salesCart1
+		/// <summary>Creates and returns the query to fetch the typed view Engagement.engagementWishlist</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.engagementWishlistRow> engagementWishlist
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.salesCart1Row, DATN.HelperClasses.salesCart1Fields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.engagementWishlistRow, DATN_2026.HelperClasses.engagementWishlistFields>(); }
 		}
 
-		/// <summary>Creates and returns the query to fetch the typed view Sales.salesOrder1</summary>
-		public DynamicQuery<DATN.TypedViewClasses.salesOrder1Row> salesOrder1
+		/// <summary>Creates and returns the query to fetch the typed view Inventory.inventoryStock</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.inventoryStockRow> inventoryStock
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.salesOrder1Row, DATN.HelperClasses.salesOrder1Fields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.inventoryStockRow, DATN_2026.HelperClasses.inventoryStockFields>(); }
 		}
 
-		/// <summary>Creates and returns the query to fetch the typed view Sales.salesOrderItem1</summary>
-		public DynamicQuery<DATN.TypedViewClasses.salesOrderItem1Row> salesOrderItem1
+		/// <summary>Creates and returns the query to fetch the typed view Inventory.inventoryStockTransaction</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.inventoryStockTransactionRow> inventoryStockTransaction
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.salesOrderItem1Row, DATN.HelperClasses.salesOrderItem1Fields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.inventoryStockTransactionRow, DATN_2026.HelperClasses.inventoryStockTransactionFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Marketing.marketingUserVoucher</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.marketingUserVoucherRow> marketingUserVoucher
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.marketingUserVoucherRow, DATN_2026.HelperClasses.marketingUserVoucherFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Marketing.marketingVoucher</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.marketingVoucherRow> marketingVoucher
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.marketingVoucherRow, DATN_2026.HelperClasses.marketingVoucherFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Sales.salesCart</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesCartRow> salesCart
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesCartRow, DATN_2026.HelperClasses.salesCartFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Sales.salesOrder</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesOrderRow> salesOrder
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesOrderRow, DATN_2026.HelperClasses.salesOrderFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Sales.salesOrderItem</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesOrderItemRow> salesOrderItem
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesOrderItemRow, DATN_2026.HelperClasses.salesOrderItemFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Sales.salesShippingTracking</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesShippingTrackingRow> salesShippingTracking
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesShippingTrackingRow, DATN_2026.HelperClasses.salesShippingTrackingFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Sales.salesTransaction</summary>
-		public DynamicQuery<DATN.TypedViewClasses.salesTransactionRow> salesTransaction
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesTransactionRow> salesTransaction
 		{
-			get { return this.Create().Select<DATN.TypedViewClasses.salesTransactionRow, DATN.HelperClasses.salesTransactionFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeCart</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeCartRow> storeCart
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeCartRow, DATN.HelperClasses.storeCartFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeDiscount</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeDiscountRow> storeDiscount
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeDiscountRow, DATN.HelperClasses.storeDiscountFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeGame</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeGameRow> storeGame
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeGameRow, DATN.HelperClasses.storeGameFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeGameTag</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeGameTagRow> storeGameTag
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeGameTagRow, DATN.HelperClasses.storeGameTagFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeOrder</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeOrderRow> storeOrder
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeOrderRow, DATN.HelperClasses.storeOrderFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeOrderItem</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeOrderItemRow> storeOrderItem
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeOrderItemRow, DATN.HelperClasses.storeOrderItemFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storePublisher</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storePublisherRow> storePublisher
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storePublisherRow, DATN.HelperClasses.storePublisherFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeReview</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeReviewRow> storeReview
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeReviewRow, DATN.HelperClasses.storeReviewFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeTag</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeTagRow> storeTag
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeTagRow, DATN.HelperClasses.storeTagFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeUserGame</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeUserGameRow> storeUserGame
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeUserGameRow, DATN.HelperClasses.storeUserGameFields>(); }
-		}
-
-		/// <summary>Creates and returns the query to fetch the typed view Store.storeWishlist</summary>
-		public DynamicQuery<DATN.TypedViewClasses.storeWishlistRow> storeWishlist
-		{
-			get { return this.Create().Select<DATN.TypedViewClasses.storeWishlistRow, DATN.HelperClasses.storeWishlistFields>(); }
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesTransactionRow, DATN_2026.HelperClasses.salesTransactionFields>(); }
 		}
 
 	}

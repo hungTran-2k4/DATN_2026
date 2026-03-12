@@ -2,13 +2,15 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using DATN.Application.Features.Auth.Commands;
+using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
+using DATN.Application.Common.Models;
 
 namespace DATN.Application.Features.Auth.Handlers;
 
-public class RegisterWithFirebaseHandler : IRequestHandler<RegisterWithFirebaseCommand, AuthResponse>
+public class RegisterWithFirebaseHandler : IRequestHandler<RegisterWithFirebaseCommand, ApiResponse<AuthResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
@@ -24,18 +26,14 @@ public class RegisterWithFirebaseHandler : IRequestHandler<RegisterWithFirebaseC
         _logger = logger;
     }
 
-    public async Task<AuthResponse> Handle(RegisterWithFirebaseCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthResponse>> Handle(RegisterWithFirebaseCommand request, CancellationToken cancellationToken)
     {
         try
         {
             // 1. Check if user exists locally
             if (await _userRepository.EmailExistsAsync(request.Email, cancellationToken))
             {
-                return new AuthResponse
-                {
-                    Success = false,
-                    Message = "Email đã tồn tại trong hệ thống"
-                };
+                return ApiResponse<AuthResponse>.Fail("Email đã tồn tại trong hệ thống", 400, "EMAIL_ALREADY_EXISTS");
             }
 
             // 2. Create User in Firebase
@@ -55,11 +53,7 @@ public class RegisterWithFirebaseHandler : IRequestHandler<RegisterWithFirebaseC
             catch (FirebaseAuthException ex)
             {
                 _logger.LogWarning(ex, "Firebase CreateUser failed");
-                return new AuthResponse
-                {
-                    Success = false,
-                    Message = $"Lỗi tạo tài khoản Firebase: {ex.Message}"
-                };
+                return ApiResponse<AuthResponse>.Fail($"Lỗi tạo tài khoản Firebase: {ex.Message}", 400, "FIREBASE_ERROR");
             }
 
             // 3. Create User in Local DB
@@ -88,24 +82,12 @@ public class RegisterWithFirebaseHandler : IRequestHandler<RegisterWithFirebaseC
 
             _logger.LogInformation("User {Email} registered successfully via Firebase", user.Email);
 
-            return new AuthResponse
-            {
-                Success = true,
-                Message = "Đăng ký thành công",
-                // We don't return tokens here because the client typically needs to login 
-                // to get the ID Token from Firebase Client SDK, then exchange it.
-                // Or we could login immediately if we had the ID Token, but we only have Uid/Email here from Admin SDK.
-                // So returning success is enough. The client can then call LoginWithFirebase using the credentials they just used.
-            };
+            return ApiResponse<AuthResponse>.Succeed(new AuthResponse(), "Đăng ký thành công", 201);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during Firebase registration");
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Đã xảy ra lỗi hệ thống"
-            };
+            return ApiResponse<AuthResponse>.Fail("Đã xảy ra lỗi hệ thống", 500, "INTERNAL_SERVER_ERROR");
         }
     }
 }

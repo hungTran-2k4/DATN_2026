@@ -7,10 +7,10 @@ using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
 using System.Data;
-using DATN.DatabaseSpecific;
-using DATN.EntityClasses;
-using DATN.FactoryClasses;
-using DATN.HelperClasses;
+using DATN_2026.DatabaseSpecific;
+using DATN_2026.EntityClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.HelperClasses;
 
 namespace DATN.Infrastructure.Persistence.Repositories.Users;
 

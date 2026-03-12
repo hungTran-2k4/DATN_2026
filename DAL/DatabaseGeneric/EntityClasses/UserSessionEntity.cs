@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -45,8 +45,8 @@ namespace DATN.EntityClasses
 		{
 			public UserSessionEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("UserSessionEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.UserSessionEntity, typeof(UserSessionEntity), typeof(UserSessionEntityFactory), false);
-				AddNavigatorMetaData<UserSessionEntity, UserEntity>("User", "UserSessions", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN.RelationClasses.StaticUserSessionRelations.UserEntityUsingUserIdStatic, ()=>new UserSessionRelations().UserEntityUsingUserId, null, new int[] { (int)UserSessionFieldIndex.UserId }, null, true, (int)DATN.EntityType.UserEntity);
+				SetEntityCoreInfo("UserSessionEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.UserSessionEntity, typeof(UserSessionEntity), typeof(UserSessionEntityFactory), false);
+				AddNavigatorMetaData<UserSessionEntity, UserEntity>("User", "UserSessions", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticUserSessionRelations.UserEntityUsingUserIdStatic, ()=>new UserSessionRelations().UserEntityUsingUserId, null, new int[] { (int)UserSessionFieldIndex.UserId }, null, true, (int)DATN_2026.EntityType.UserEntity);
 			}
 		}
 
@@ -207,7 +207,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum UserSessionFieldIndex
 	{
@@ -230,7 +230,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: UserSession. </summary>
 	public partial class UserSessionRelations: RelationFactory

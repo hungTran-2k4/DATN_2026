@@ -6,11 +6,11 @@
 // Templates vendor: Solutions Design.
 //////////////////////////////////////////////////////////////
 using System;
-using DATN.FactoryClasses;
-using DATN.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.HelperClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Class to define dynamic relations for queries.</summary>
 	[Serializable]
@@ -51,7 +51,7 @@ namespace DATN.RelationClasses
 		/// <param name="rightOperand">The right operand which is an entity type.</param>
 		/// <param name="aliasRightOperand">The alias of the right operand. If you don't want to / need to alias the right operand (only alias if you have to), specify string.Empty.</param>
 		/// <param name="onClause">The on clause for the join.</param>
-		public DynamicRelation(DerivedTableDefinition leftOperand, JoinHint joinType, DATN.EntityType rightOperand, string aliasRightOperand, IPredicate onClause)
+		public DynamicRelation(DerivedTableDefinition leftOperand, JoinHint joinType, DATN_2026.EntityType rightOperand, string aliasRightOperand, IPredicate onClause)
 		{
 			this.InitClass(joinType, string.Empty, aliasRightOperand, onClause, leftOperand, GeneralEntityFactory.Create(rightOperand));
 		}
@@ -63,7 +63,7 @@ namespace DATN.RelationClasses
 		/// <param name="aliasLeftOperand">The alias of the left operand. If you don't want to / need to alias the left operand (only alias if you have to), specify string.Empty.</param>
 		/// <param name="aliasRightOperand">The alias of the right operand. If you don't want to / need to alias the right operand (only alias if you have to), specify string.Empty.</param>
 		/// <param name="onClause">The on clause for the join.</param>
-		public DynamicRelation(DATN.EntityType leftOperand, JoinHint joinType, DATN.EntityType rightOperand, string aliasLeftOperand, string aliasRightOperand, IPredicate onClause)
+		public DynamicRelation(DATN_2026.EntityType leftOperand, JoinHint joinType, DATN_2026.EntityType rightOperand, string aliasLeftOperand, string aliasRightOperand, IPredicate onClause)
 		{
 			this.InitClass(joinType, aliasLeftOperand, aliasRightOperand, onClause, GeneralEntityFactory.Create(leftOperand), GeneralEntityFactory.Create(rightOperand));
 		}
@@ -75,7 +75,7 @@ namespace DATN.RelationClasses
 		/// <param name="aliasLeftOperand">The alias of the left operand. If you don't want to / need to alias the left operand (only alias if you have to), specify string.Empty.</param>
 		/// <param name="aliasRightOperand">The alias of the right operand. If you don't want to / need to alias the right operand (only alias if you have to), specify string.Empty.</param>
 		/// <param name="onClause">The on clause for the join.</param>
-		public DynamicRelation(IEntityFieldCore leftOperand, JoinHint joinType, DATN.EntityType rightOperand, string aliasLeftOperand, string aliasRightOperand, IPredicate onClause)
+		public DynamicRelation(IEntityFieldCore leftOperand, JoinHint joinType, DATN_2026.EntityType rightOperand, string aliasLeftOperand, string aliasRightOperand, IPredicate onClause)
 		{
 			this.InitClass(joinType, aliasLeftOperand, aliasRightOperand, onClause, leftOperand, GeneralEntityFactory.Create(rightOperand));
 		}

@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -26,7 +26,8 @@ namespace DATN.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
-		private GameEntity _game;
+		private UserEntity _user;
+		private ProductVariantEntity _productVariant;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -36,8 +37,10 @@ namespace DATN.EntityClasses
 		/// <summary>All names of fields mapped onto a relation. Usable for in-memory filtering</summary>
 		public static partial class MemberNames
 		{
-			/// <summary>Member name Game</summary>
-			public static readonly string Game = "Game";
+			/// <summary>Member name User</summary>
+			public static readonly string User = "User";
+			/// <summary>Member name ProductVariant</summary>
+			public static readonly string ProductVariant = "ProductVariant";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -45,8 +48,9 @@ namespace DATN.EntityClasses
 		{
 			public CartEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("CartEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.CartEntity, typeof(CartEntity), typeof(CartEntityFactory), false);
-				AddNavigatorMetaData<CartEntity, GameEntity>("Game", "Carts", (a, b) => a._game = b, a => a._game, (a, b) => a.Game = b, DATN.RelationClasses.StaticCartRelations.GameEntityUsingGameIdStatic, ()=>new CartRelations().GameEntityUsingGameId, null, new int[] { (int)CartFieldIndex.GameId }, null, true, (int)DATN.EntityType.GameEntity);
+				SetEntityCoreInfo("CartEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.CartEntity, typeof(CartEntity), typeof(CartEntityFactory), false);
+				AddNavigatorMetaData<CartEntity, UserEntity>("User", "Carts", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticCartRelations.UserEntityUsingUserIdStatic, ()=>new CartRelations().UserEntityUsingUserId, null, new int[] { (int)CartFieldIndex.UserId }, null, true, (int)DATN_2026.EntityType.UserEntity);
+				AddNavigatorMetaData<CartEntity, ProductVariantEntity>("ProductVariant", "Carts", (a, b) => a._productVariant = b, a => a._productVariant, (a, b) => a.ProductVariant = b, DATN_2026.RelationClasses.StaticCartRelations.ProductVariantEntityUsingVariantIdStatic, ()=>new CartRelations().ProductVariantEntityUsingVariantId, null, new int[] { (int)CartFieldIndex.VariantId }, null, true, (int)DATN_2026.EntityType.ProductVariantEntity);
 			}
 		}
 
@@ -76,21 +80,18 @@ namespace DATN.EntityClasses
 		}
 
 		/// <summary> CTor</summary>
-		/// <param name="gameId">PK value for Cart which data should be fetched into this Cart object</param>
-		/// <param name="userId">PK value for Cart which data should be fetched into this Cart object</param>
-		public CartEntity(System.Guid gameId, System.Guid userId) : this(gameId, userId, null)
+		/// <param name="id">PK value for Cart which data should be fetched into this Cart object</param>
+		public CartEntity(System.Guid id) : this(id, null)
 		{
 		}
 
 		/// <summary> CTor</summary>
-		/// <param name="gameId">PK value for Cart which data should be fetched into this Cart object</param>
-		/// <param name="userId">PK value for Cart which data should be fetched into this Cart object</param>
+		/// <param name="id">PK value for Cart which data should be fetched into this Cart object</param>
 		/// <param name="validator">The custom validator object for this CartEntity</param>
-		public CartEntity(System.Guid gameId, System.Guid userId, IValidator validator)
+		public CartEntity(System.Guid id, IValidator validator)
 		{
 			InitClassEmpty(validator, null);
-			this.GameId = gameId;
-			this.UserId = userId;
+			this.Id = id;
 		}
 
 		/// <summary>Private CTor for deserialization</summary>
@@ -102,9 +103,13 @@ namespace DATN.EntityClasses
 			// __LLBLGENPRO_USER_CODE_REGION_END
 		}
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Game' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'User' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfoGame() { return CreateRelationInfoForNavigator("Game"); }
+		public virtual IRelationPredicateBucket GetRelationInfoUser() { return CreateRelationInfoForNavigator("User"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'ProductVariant' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoProductVariant() { return CreateRelationInfoForNavigator("ProductVariant"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -136,40 +141,68 @@ namespace DATN.EntityClasses
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static CartRelations Relations { get { return _relationsFactory; } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Game' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'User' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathGame { get { return _staticMetaData.GetPrefetchPathElement("Game", CommonEntityBase.CreateEntityCollection<GameEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathUser { get { return _staticMetaData.GetPrefetchPathElement("User", CommonEntityBase.CreateEntityCollection<UserEntity>()); } }
 
-		/// <summary>The AddedAt property of the Entity Cart<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "carts"."added_at".<br/>Table field type characteristics (type, precision, scale, length): Timestamp, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
-		public virtual Nullable<System.DateTime> AddedAt
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'ProductVariant' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathProductVariant { get { return _staticMetaData.GetPrefetchPathElement("ProductVariant", CommonEntityBase.CreateEntityCollection<ProductVariantEntity>()); } }
+
+		/// <summary>The CreatedAt property of the Entity Cart<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "carts"."created_at".<br/>Table field type characteristics (type, precision, scale, length): TimestampTz, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.DateTime> CreatedAt
 		{
-			get { return (Nullable<System.DateTime>)GetValue((int)CartFieldIndex.AddedAt, false); }
-			set { SetValue((int)CartFieldIndex.AddedAt, value); }
+			get { return (Nullable<System.DateTime>)GetValue((int)CartFieldIndex.CreatedAt, false); }
+			set { SetValue((int)CartFieldIndex.CreatedAt, value); }
 		}
 
-		/// <summary>The GameId property of the Entity Cart<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "carts"."game_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
-		public virtual System.Guid GameId
+		/// <summary>The Id property of the Entity Cart<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "carts"."id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
+		public virtual System.Guid Id
 		{
-			get { return (System.Guid)GetValue((int)CartFieldIndex.GameId, true); }
-			set { SetValue((int)CartFieldIndex.GameId, value); }
+			get { return (System.Guid)GetValue((int)CartFieldIndex.Id, true); }
+			set { SetValue((int)CartFieldIndex.Id, value); }
+		}
+
+		/// <summary>The Quantity property of the Entity Cart<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "carts"."quantity".<br/>Table field type characteristics (type, precision, scale, length): Integer, 10, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
+		public virtual System.Int32 Quantity
+		{
+			get { return (System.Int32)GetValue((int)CartFieldIndex.Quantity, true); }
+			set { SetValue((int)CartFieldIndex.Quantity, value); }
 		}
 
 		/// <summary>The UserId property of the Entity Cart<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "carts"."user_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
-		public virtual System.Guid UserId
+		/// <remarks>Mapped on  table field: "carts"."user_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> UserId
 		{
-			get { return (System.Guid)GetValue((int)CartFieldIndex.UserId, true); }
+			get { return (Nullable<System.Guid>)GetValue((int)CartFieldIndex.UserId, false); }
 			set { SetValue((int)CartFieldIndex.UserId, value); }
 		}
 
-		/// <summary>Gets / sets related entity of type 'GameEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
-		[Browsable(false)]
-		public virtual GameEntity Game
+		/// <summary>The VariantId property of the Entity Cart<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "carts"."variant_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> VariantId
 		{
-			get { return _game; }
-			set { SetSingleRelatedEntityNavigator(value, "Game"); }
+			get { return (Nullable<System.Guid>)GetValue((int)CartFieldIndex.VariantId, false); }
+			set { SetValue((int)CartFieldIndex.VariantId, value); }
+		}
+
+		/// <summary>Gets / sets related entity of type 'UserEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual UserEntity User
+		{
+			get { return _user; }
+			set { SetSingleRelatedEntityNavigator(value, "User"); }
+		}
+
+		/// <summary>Gets / sets related entity of type 'ProductVariantEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual ProductVariantEntity ProductVariant
+		{
+			get { return _productVariant; }
+			set { SetSingleRelatedEntityNavigator(value, "ProductVariant"); }
 		}
 
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
@@ -178,31 +211,41 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum CartFieldIndex
 	{
-		///<summary>AddedAt. </summary>
-		AddedAt,
-		///<summary>GameId. </summary>
-		GameId,
+		///<summary>CreatedAt. </summary>
+		CreatedAt,
+		///<summary>Id. </summary>
+		Id,
+		///<summary>Quantity. </summary>
+		Quantity,
 		///<summary>UserId. </summary>
 		UserId,
+		///<summary>VariantId. </summary>
+		VariantId,
 		/// <summary></summary>
 		AmountOfFields
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Cart. </summary>
 	public partial class CartRelations: RelationFactory
 	{
 
-		/// <summary>Returns a new IEntityRelation object, between CartEntity and GameEntity over the m:1 relation they have, using the relation between the fields: Cart.GameId - Game.Id</summary>
-		public virtual IEntityRelation GameEntityUsingGameId
+		/// <summary>Returns a new IEntityRelation object, between CartEntity and UserEntity over the m:1 relation they have, using the relation between the fields: Cart.UserId - User.Id</summary>
+		public virtual IEntityRelation UserEntityUsingUserId
 		{
-			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Game", false, new[] { GameFields.Id, CartFields.GameId }); }
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "User", false, new[] { UserFields.Id, CartFields.UserId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between CartEntity and ProductVariantEntity over the m:1 relation they have, using the relation between the fields: Cart.VariantId - ProductVariant.Id</summary>
+		public virtual IEntityRelation ProductVariantEntityUsingVariantId
+		{
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "ProductVariant", false, new[] { ProductVariantFields.Id, CartFields.VariantId }); }
 		}
 
 	}
@@ -210,7 +253,8 @@ namespace DATN.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticCartRelations
 	{
-		internal static readonly IEntityRelation GameEntityUsingGameIdStatic = new CartRelations().GameEntityUsingGameId;
+		internal static readonly IEntityRelation UserEntityUsingUserIdStatic = new CartRelations().UserEntityUsingUserId;
+		internal static readonly IEntityRelation ProductVariantEntityUsingVariantIdStatic = new CartRelations().ProductVariantEntityUsingVariantId;
 
 		/// <summary>CTor</summary>
 		static StaticCartRelations() { }

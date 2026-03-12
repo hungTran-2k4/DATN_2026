@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <Compile Remove="Features\Publisher\**" />
+    <EmbeddedResource Remove="Features\Publisher\**" />
+    <None Remove="Features\Publisher\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DATN.Domain\DATN.Domain.csproj" />
   </ItemGroup>
 
@@ -13,10 +19,6 @@
     <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Publisher\Handle\" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -10,34 +10,39 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
+
 	/// <summary>Entity class which represents the entity 'Wishlist'.<br/><br/></summary>
 	[Serializable]
 	public partial class WishlistEntity : CommonEntityBase
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
-		// __LLBLGENPRO_USER_CODE_REGION_END	
+		// __LLBLGENPRO_USER_CODE_REGION_END
+	
 	{
-		private GameEntity _game;
-
+		private UserEntity _user;
+		private ProductEntity _product;
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
+
 		private static WishlistEntityStaticMetaData _staticMetaData = new WishlistEntityStaticMetaData();
 		private static WishlistRelations _relationsFactory = new WishlistRelations();
 
 		/// <summary>All names of fields mapped onto a relation. Usable for in-memory filtering</summary>
 		public static partial class MemberNames
 		{
-			/// <summary>Member name Game</summary>
-			public static readonly string Game = "Game";
+			/// <summary>Member name User</summary>
+			public static readonly string User = "User";
+			/// <summary>Member name Product</summary>
+			public static readonly string Product = "Product";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -45,8 +50,9 @@ namespace DATN.EntityClasses
 		{
 			public WishlistEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("WishlistEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.WishlistEntity, typeof(WishlistEntity), typeof(WishlistEntityFactory), false);
-				AddNavigatorMetaData<WishlistEntity, GameEntity>("Game", "Wishlists", (a, b) => a._game = b, a => a._game, (a, b) => a.Game = b, DATN.RelationClasses.StaticWishlistRelations.GameEntityUsingGameIdStatic, ()=>new WishlistRelations().GameEntityUsingGameId, null, new int[] { (int)WishlistFieldIndex.GameId }, null, true, (int)DATN.EntityType.GameEntity);
+				SetEntityCoreInfo("WishlistEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.WishlistEntity, typeof(WishlistEntity), typeof(WishlistEntityFactory), false);
+				AddNavigatorMetaData<WishlistEntity, UserEntity>("User", "Wishlists", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticWishlistRelations.UserEntityUsingUserIdStatic, ()=>new WishlistRelations().UserEntityUsingUserId, null, new int[] { (int)WishlistFieldIndex.UserId }, null, true, (int)DATN_2026.EntityType.UserEntity);
+				AddNavigatorMetaData<WishlistEntity, ProductEntity>("Product", "Wishlists", (a, b) => a._product = b, a => a._product, (a, b) => a.Product = b, DATN_2026.RelationClasses.StaticWishlistRelations.ProductEntityUsingProductIdStatic, ()=>new WishlistRelations().ProductEntityUsingProductId, null, new int[] { (int)WishlistFieldIndex.ProductId }, null, true, (int)DATN_2026.EntityType.ProductEntity);
 			}
 		}
 
@@ -76,20 +82,20 @@ namespace DATN.EntityClasses
 		}
 
 		/// <summary> CTor</summary>
-		/// <param name="gameId">PK value for Wishlist which data should be fetched into this Wishlist object</param>
+		/// <param name="productId">PK value for Wishlist which data should be fetched into this Wishlist object</param>
 		/// <param name="userId">PK value for Wishlist which data should be fetched into this Wishlist object</param>
-		public WishlistEntity(System.Guid gameId, System.Guid userId) : this(gameId, userId, null)
+		public WishlistEntity(System.Guid productId, System.Guid userId) : this(productId, userId, null)
 		{
 		}
 
 		/// <summary> CTor</summary>
-		/// <param name="gameId">PK value for Wishlist which data should be fetched into this Wishlist object</param>
+		/// <param name="productId">PK value for Wishlist which data should be fetched into this Wishlist object</param>
 		/// <param name="userId">PK value for Wishlist which data should be fetched into this Wishlist object</param>
 		/// <param name="validator">The custom validator object for this WishlistEntity</param>
-		public WishlistEntity(System.Guid gameId, System.Guid userId, IValidator validator)
+		public WishlistEntity(System.Guid productId, System.Guid userId, IValidator validator)
 		{
 			InitClassEmpty(validator, null);
-			this.GameId = gameId;
+			this.ProductId = productId;
 			this.UserId = userId;
 		}
 
@@ -102,9 +108,13 @@ namespace DATN.EntityClasses
 			// __LLBLGENPRO_USER_CODE_REGION_END
 		}
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Game' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'User' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfoGame() { return CreateRelationInfoForNavigator("Game"); }
+		public virtual IRelationPredicateBucket GetRelationInfoUser() { return CreateRelationInfoForNavigator("User"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Product' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoProduct() { return CreateRelationInfoForNavigator("Product"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -115,6 +125,7 @@ namespace DATN.EntityClasses
 			PerformDependencyInjection();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassMembers
 			// __LLBLGENPRO_USER_CODE_REGION_END
+
 			OnInitClassMembersComplete();
 		}
 
@@ -130,30 +141,35 @@ namespace DATN.EntityClasses
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassEmpty
 			// __LLBLGENPRO_USER_CODE_REGION_END
 
+
 			OnInitialized();
 		}
 
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static WishlistRelations Relations { get { return _relationsFactory; } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Game' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'User' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathGame { get { return _staticMetaData.GetPrefetchPathElement("Game", CommonEntityBase.CreateEntityCollection<GameEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathUser { get { return _staticMetaData.GetPrefetchPathElement("User", CommonEntityBase.CreateEntityCollection<UserEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Product' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathProduct { get { return _staticMetaData.GetPrefetchPathElement("Product", CommonEntityBase.CreateEntityCollection<ProductEntity>()); } }
 
 		/// <summary>The CreatedAt property of the Entity Wishlist<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "wishlists"."created_at".<br/>Table field type characteristics (type, precision, scale, length): Timestamp, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		/// <remarks>Mapped on  table field: "wishlists"."created_at".<br/>Table field type characteristics (type, precision, scale, length): TimestampTz, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
 		public virtual Nullable<System.DateTime> CreatedAt
 		{
 			get { return (Nullable<System.DateTime>)GetValue((int)WishlistFieldIndex.CreatedAt, false); }
 			set { SetValue((int)WishlistFieldIndex.CreatedAt, value); }
 		}
 
-		/// <summary>The GameId property of the Entity Wishlist<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "wishlists"."game_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
-		public virtual System.Guid GameId
+		/// <summary>The ProductId property of the Entity Wishlist<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "wishlists"."product_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
+		public virtual System.Guid ProductId
 		{
-			get { return (System.Guid)GetValue((int)WishlistFieldIndex.GameId, true); }
-			set { SetValue((int)WishlistFieldIndex.GameId, value); }
+			get { return (System.Guid)GetValue((int)WishlistFieldIndex.ProductId, true); }
+			set { SetValue((int)WishlistFieldIndex.ProductId, value); }
 		}
 
 		/// <summary>The UserId property of the Entity Wishlist<br/><br/></summary>
@@ -164,28 +180,36 @@ namespace DATN.EntityClasses
 			set { SetValue((int)WishlistFieldIndex.UserId, value); }
 		}
 
-		/// <summary>Gets / sets related entity of type 'GameEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		/// <summary>Gets / sets related entity of type 'UserEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
 		[Browsable(false)]
-		public virtual GameEntity Game
+		public virtual UserEntity User
 		{
-			get { return _game; }
-			set { SetSingleRelatedEntityNavigator(value, "Game"); }
+			get { return _user; }
+			set { SetSingleRelatedEntityNavigator(value, "User"); }
 		}
 
+		/// <summary>Gets / sets related entity of type 'ProductEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual ProductEntity Product
+		{
+			get { return _product; }
+			set { SetSingleRelatedEntityNavigator(value, "Product"); }
+		}
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
+
 
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum WishlistFieldIndex
 	{
 		///<summary>CreatedAt. </summary>
 		CreatedAt,
-		///<summary>GameId. </summary>
-		GameId,
+		///<summary>ProductId. </summary>
+		ProductId,
 		///<summary>UserId. </summary>
 		UserId,
 		/// <summary></summary>
@@ -193,16 +217,22 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Wishlist. </summary>
 	public partial class WishlistRelations: RelationFactory
 	{
 
-		/// <summary>Returns a new IEntityRelation object, between WishlistEntity and GameEntity over the m:1 relation they have, using the relation between the fields: Wishlist.GameId - Game.Id</summary>
-		public virtual IEntityRelation GameEntityUsingGameId
+		/// <summary>Returns a new IEntityRelation object, between WishlistEntity and UserEntity over the m:1 relation they have, using the relation between the fields: Wishlist.UserId - User.Id</summary>
+		public virtual IEntityRelation UserEntityUsingUserId
 		{
-			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Game", false, new[] { GameFields.Id, WishlistFields.GameId }); }
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "User", false, new[] { UserFields.Id, WishlistFields.UserId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between WishlistEntity and ProductEntity over the m:1 relation they have, using the relation between the fields: Wishlist.ProductId - Product.Id</summary>
+		public virtual IEntityRelation ProductEntityUsingProductId
+		{
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Product", false, new[] { ProductFields.Id, WishlistFields.ProductId }); }
 		}
 
 	}
@@ -210,7 +240,8 @@ namespace DATN.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticWishlistRelations
 	{
-		internal static readonly IEntityRelation GameEntityUsingGameIdStatic = new WishlistRelations().GameEntityUsingGameId;
+		internal static readonly IEntityRelation UserEntityUsingUserIdStatic = new WishlistRelations().UserEntityUsingUserId;
+		internal static readonly IEntityRelation ProductEntityUsingProductIdStatic = new WishlistRelations().ProductEntityUsingProductId;
 
 		/// <summary>CTor</summary>
 		static StaticWishlistRelations() { }

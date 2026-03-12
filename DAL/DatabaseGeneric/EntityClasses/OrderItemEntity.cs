@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -26,7 +26,7 @@ namespace DATN.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
-		private GameEntity _game;
+		private ProductVariantEntity _productVariant;
 		private OrderEntity _order;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
@@ -37,8 +37,8 @@ namespace DATN.EntityClasses
 		/// <summary>All names of fields mapped onto a relation. Usable for in-memory filtering</summary>
 		public static partial class MemberNames
 		{
-			/// <summary>Member name Game</summary>
-			public static readonly string Game = "Game";
+			/// <summary>Member name ProductVariant</summary>
+			public static readonly string ProductVariant = "ProductVariant";
 			/// <summary>Member name Order</summary>
 			public static readonly string Order = "Order";
 		}
@@ -48,9 +48,9 @@ namespace DATN.EntityClasses
 		{
 			public OrderItemEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("OrderItemEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.OrderItemEntity, typeof(OrderItemEntity), typeof(OrderItemEntityFactory), false);
-				AddNavigatorMetaData<OrderItemEntity, GameEntity>("Game", "OrderItems", (a, b) => a._game = b, a => a._game, (a, b) => a.Game = b, DATN.RelationClasses.StaticOrderItemRelations.GameEntityUsingGameIdStatic, ()=>new OrderItemRelations().GameEntityUsingGameId, null, new int[] { (int)OrderItemFieldIndex.GameId }, null, true, (int)DATN.EntityType.GameEntity);
-				AddNavigatorMetaData<OrderItemEntity, OrderEntity>("Order", "OrderItems", (a, b) => a._order = b, a => a._order, (a, b) => a.Order = b, DATN.RelationClasses.StaticOrderItemRelations.OrderEntityUsingOrderIdStatic, ()=>new OrderItemRelations().OrderEntityUsingOrderId, null, new int[] { (int)OrderItemFieldIndex.OrderId }, null, true, (int)DATN.EntityType.OrderEntity);
+				SetEntityCoreInfo("OrderItemEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.OrderItemEntity, typeof(OrderItemEntity), typeof(OrderItemEntityFactory), false);
+				AddNavigatorMetaData<OrderItemEntity, ProductVariantEntity>("ProductVariant", "OrderItems", (a, b) => a._productVariant = b, a => a._productVariant, (a, b) => a.ProductVariant = b, DATN_2026.RelationClasses.StaticOrderItemRelations.ProductVariantEntityUsingVariantIdStatic, ()=>new OrderItemRelations().ProductVariantEntityUsingVariantId, null, new int[] { (int)OrderItemFieldIndex.VariantId }, null, true, (int)DATN_2026.EntityType.ProductVariantEntity);
+				AddNavigatorMetaData<OrderItemEntity, OrderEntity>("Order", "OrderItems", (a, b) => a._order = b, a => a._order, (a, b) => a.Order = b, DATN_2026.RelationClasses.StaticOrderItemRelations.OrderEntityUsingOrderIdStatic, ()=>new OrderItemRelations().OrderEntityUsingOrderId, null, new int[] { (int)OrderItemFieldIndex.OrderId }, null, true, (int)DATN_2026.EntityType.OrderEntity);
 			}
 		}
 
@@ -80,21 +80,18 @@ namespace DATN.EntityClasses
 		}
 
 		/// <summary> CTor</summary>
-		/// <param name="gameId">PK value for OrderItem which data should be fetched into this OrderItem object</param>
-		/// <param name="orderId">PK value for OrderItem which data should be fetched into this OrderItem object</param>
-		public OrderItemEntity(System.Guid gameId, System.Guid orderId) : this(gameId, orderId, null)
+		/// <param name="id">PK value for OrderItem which data should be fetched into this OrderItem object</param>
+		public OrderItemEntity(System.Guid id) : this(id, null)
 		{
 		}
 
 		/// <summary> CTor</summary>
-		/// <param name="gameId">PK value for OrderItem which data should be fetched into this OrderItem object</param>
-		/// <param name="orderId">PK value for OrderItem which data should be fetched into this OrderItem object</param>
+		/// <param name="id">PK value for OrderItem which data should be fetched into this OrderItem object</param>
 		/// <param name="validator">The custom validator object for this OrderItemEntity</param>
-		public OrderItemEntity(System.Guid gameId, System.Guid orderId, IValidator validator)
+		public OrderItemEntity(System.Guid id, IValidator validator)
 		{
 			InitClassEmpty(validator, null);
-			this.GameId = gameId;
-			this.OrderId = orderId;
+			this.Id = id;
 		}
 
 		/// <summary>Private CTor for deserialization</summary>
@@ -106,9 +103,9 @@ namespace DATN.EntityClasses
 			// __LLBLGENPRO_USER_CODE_REGION_END
 		}
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Game' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'ProductVariant' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfoGame() { return CreateRelationInfoForNavigator("Game"); }
+		public virtual IRelationPredicateBucket GetRelationInfoProductVariant() { return CreateRelationInfoForNavigator("ProductVariant"); }
 
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Order' to this entity.</summary>
 		/// <returns></returns>
@@ -144,44 +141,68 @@ namespace DATN.EntityClasses
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static OrderItemRelations Relations { get { return _relationsFactory; } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Game' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'ProductVariant' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathGame { get { return _staticMetaData.GetPrefetchPathElement("Game", CommonEntityBase.CreateEntityCollection<GameEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathProductVariant { get { return _staticMetaData.GetPrefetchPathElement("ProductVariant", CommonEntityBase.CreateEntityCollection<ProductVariantEntity>()); } }
 
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Order' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathOrder { get { return _staticMetaData.GetPrefetchPathElement("Order", CommonEntityBase.CreateEntityCollection<OrderEntity>()); } }
 
-		/// <summary>The GameId property of the Entity OrderItem<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "order_items"."game_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
-		public virtual System.Guid GameId
+		/// <summary>The Id property of the Entity OrderItem<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "order_items"."id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
+		public virtual System.Guid Id
 		{
-			get { return (System.Guid)GetValue((int)OrderItemFieldIndex.GameId, true); }
-			set { SetValue((int)OrderItemFieldIndex.GameId, value); }
+			get { return (System.Guid)GetValue((int)OrderItemFieldIndex.Id, true); }
+			set { SetValue((int)OrderItemFieldIndex.Id, value); }
 		}
 
 		/// <summary>The OrderId property of the Entity OrderItem<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "order_items"."order_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
-		public virtual System.Guid OrderId
+		/// <remarks>Mapped on  table field: "order_items"."order_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> OrderId
 		{
-			get { return (System.Guid)GetValue((int)OrderItemFieldIndex.OrderId, true); }
+			get { return (Nullable<System.Guid>)GetValue((int)OrderItemFieldIndex.OrderId, false); }
 			set { SetValue((int)OrderItemFieldIndex.OrderId, value); }
 		}
 
-		/// <summary>The Price property of the Entity OrderItem<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "order_items"."price".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 10, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
-		public virtual System.Decimal Price
+		/// <summary>The ProductNameSnapshot property of the Entity OrderItem<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "order_items"."product_name_snapshot".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 255.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual System.String ProductNameSnapshot
 		{
-			get { return (System.Decimal)GetValue((int)OrderItemFieldIndex.Price, true); }
-			set { SetValue((int)OrderItemFieldIndex.Price, value); }
+			get { return (System.String)GetValue((int)OrderItemFieldIndex.ProductNameSnapshot, true); }
+			set { SetValue((int)OrderItemFieldIndex.ProductNameSnapshot, value); }
 		}
 
-		/// <summary>Gets / sets related entity of type 'GameEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
-		[Browsable(false)]
-		public virtual GameEntity Game
+		/// <summary>The Quantity property of the Entity OrderItem<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "order_items"."quantity".<br/>Table field type characteristics (type, precision, scale, length): Integer, 10, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
+		public virtual System.Int32 Quantity
 		{
-			get { return _game; }
-			set { SetSingleRelatedEntityNavigator(value, "Game"); }
+			get { return (System.Int32)GetValue((int)OrderItemFieldIndex.Quantity, true); }
+			set { SetValue((int)OrderItemFieldIndex.Quantity, value); }
+		}
+
+		/// <summary>The UnitPrice property of the Entity OrderItem<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "order_items"."unit_price".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
+		public virtual System.Decimal UnitPrice
+		{
+			get { return (System.Decimal)GetValue((int)OrderItemFieldIndex.UnitPrice, true); }
+			set { SetValue((int)OrderItemFieldIndex.UnitPrice, value); }
+		}
+
+		/// <summary>The VariantId property of the Entity OrderItem<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "order_items"."variant_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> VariantId
+		{
+			get { return (Nullable<System.Guid>)GetValue((int)OrderItemFieldIndex.VariantId, false); }
+			set { SetValue((int)OrderItemFieldIndex.VariantId, value); }
+		}
+
+		/// <summary>Gets / sets related entity of type 'ProductVariantEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual ProductVariantEntity ProductVariant
+		{
+			get { return _productVariant; }
+			set { SetSingleRelatedEntityNavigator(value, "ProductVariant"); }
 		}
 
 		/// <summary>Gets / sets related entity of type 'OrderEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
@@ -198,31 +219,37 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum OrderItemFieldIndex
 	{
-		///<summary>GameId. </summary>
-		GameId,
+		///<summary>Id. </summary>
+		Id,
 		///<summary>OrderId. </summary>
 		OrderId,
-		///<summary>Price. </summary>
-		Price,
+		///<summary>ProductNameSnapshot. </summary>
+		ProductNameSnapshot,
+		///<summary>Quantity. </summary>
+		Quantity,
+		///<summary>UnitPrice. </summary>
+		UnitPrice,
+		///<summary>VariantId. </summary>
+		VariantId,
 		/// <summary></summary>
 		AmountOfFields
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: OrderItem. </summary>
 	public partial class OrderItemRelations: RelationFactory
 	{
 
-		/// <summary>Returns a new IEntityRelation object, between OrderItemEntity and GameEntity over the m:1 relation they have, using the relation between the fields: OrderItem.GameId - Game.Id</summary>
-		public virtual IEntityRelation GameEntityUsingGameId
+		/// <summary>Returns a new IEntityRelation object, between OrderItemEntity and ProductVariantEntity over the m:1 relation they have, using the relation between the fields: OrderItem.VariantId - ProductVariant.Id</summary>
+		public virtual IEntityRelation ProductVariantEntityUsingVariantId
 		{
-			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Game", false, new[] { GameFields.Id, OrderItemFields.GameId }); }
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "ProductVariant", false, new[] { ProductVariantFields.Id, OrderItemFields.VariantId }); }
 		}
 
 		/// <summary>Returns a new IEntityRelation object, between OrderItemEntity and OrderEntity over the m:1 relation they have, using the relation between the fields: OrderItem.OrderId - Order.Id</summary>
@@ -236,7 +263,7 @@ namespace DATN.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticOrderItemRelations
 	{
-		internal static readonly IEntityRelation GameEntityUsingGameIdStatic = new OrderItemRelations().GameEntityUsingGameId;
+		internal static readonly IEntityRelation ProductVariantEntityUsingVariantIdStatic = new OrderItemRelations().ProductVariantEntityUsingVariantId;
 		internal static readonly IEntityRelation OrderEntityUsingOrderIdStatic = new OrderItemRelations().OrderEntityUsingOrderId;
 
 		/// <summary>CTor</summary>

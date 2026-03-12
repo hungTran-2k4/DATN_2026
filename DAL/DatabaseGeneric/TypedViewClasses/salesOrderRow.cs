@@ -8,17 +8,17 @@
 using System;
 using System.ComponentModel;
 
-namespace DATN.TypedViewClasses
+namespace DATN_2026.TypedViewClasses
 {
-	/// <summary>Class which represents a row in the typed view 'Sales.salesOrder1'.</summary>
-	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN.FactoryClasses.QueryFactory.salesOrder1"/>. </remarks>
+	/// <summary>Class which represents a row in the typed view 'Sales.salesOrder'.</summary>
+	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN_2026.FactoryClasses.QueryFactory.salesOrder"/>. </remarks>
 	[Serializable]
-	public partial class salesOrder1Row 
+	public partial class salesOrderRow 
 	{
 		partial void OnCreated();
 		
-		/// <summary>Initializes a new instance of the <see cref="salesOrder1Row"/> class.</summary>
-		public salesOrder1Row()
+		/// <summary>Initializes a new instance of the <see cref="salesOrderRow"/> class.</summary>
+		public salesOrderRow()
 		{
 			OnCreated();
 		}

@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -51,10 +51,10 @@ namespace DATN.EntityClasses
 		{
 			public CategoryEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("CategoryEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.CategoryEntity, typeof(CategoryEntity), typeof(CategoryEntityFactory), false);
-				AddNavigatorMetaData<CategoryEntity, EntityCollection<CategoryEntity>>("Categories", a => a._categories, (a, b) => a._categories = b, a => a.Categories, () => new CategoryRelations().CategoryEntityUsingParentId, typeof(CategoryEntity), (int)DATN.EntityType.CategoryEntity);
-				AddNavigatorMetaData<CategoryEntity, EntityCollection<ProductEntity>>("Products", a => a._products, (a, b) => a._products = b, a => a.Products, () => new CategoryRelations().ProductEntityUsingCategoryId, typeof(ProductEntity), (int)DATN.EntityType.ProductEntity);
-				AddNavigatorMetaData<CategoryEntity, CategoryEntity>("Category", "Categories", (a, b) => a._category = b, a => a._category, (a, b) => a.Category = b, DATN.RelationClasses.StaticCategoryRelations.CategoryEntityUsingIdParentIdStatic, ()=>new CategoryRelations().CategoryEntityUsingIdParentId, null, new int[] { (int)CategoryFieldIndex.ParentId }, null, true, (int)DATN.EntityType.CategoryEntity);
+				SetEntityCoreInfo("CategoryEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.CategoryEntity, typeof(CategoryEntity), typeof(CategoryEntityFactory), false);
+				AddNavigatorMetaData<CategoryEntity, EntityCollection<CategoryEntity>>("Categories", a => a._categories, (a, b) => a._categories = b, a => a.Categories, () => new CategoryRelations().CategoryEntityUsingParentId, typeof(CategoryEntity), (int)DATN_2026.EntityType.CategoryEntity);
+				AddNavigatorMetaData<CategoryEntity, EntityCollection<ProductEntity>>("Products", a => a._products, (a, b) => a._products = b, a => a.Products, () => new CategoryRelations().ProductEntityUsingCategoryId, typeof(ProductEntity), (int)DATN_2026.EntityType.ProductEntity);
+				AddNavigatorMetaData<CategoryEntity, CategoryEntity>("Category", "Categories", (a, b) => a._category = b, a => a._category, (a, b) => a.Category = b, DATN_2026.RelationClasses.StaticCategoryRelations.CategoryEntityUsingIdParentIdStatic, ()=>new CategoryRelations().CategoryEntityUsingIdParentId, null, new int[] { (int)CategoryFieldIndex.ParentId }, null, true, (int)DATN_2026.EntityType.CategoryEntity);
 			}
 		}
 
@@ -112,7 +112,7 @@ namespace DATN.EntityClasses
 		public IPredicateExpression ConstructFilterForUCSlug()
 		{
 			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.CategoryFields.Slug == this.Fields.GetCurrentValue((int)CategoryFieldIndex.Slug));
+			filter.Add(DATN_2026.HelperClasses.CategoryFields.Slug == this.Fields.GetCurrentValue((int)CategoryFieldIndex.Slug));
  			return filter;
 		}
 
@@ -256,7 +256,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum CategoryFieldIndex
 	{
@@ -281,7 +281,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Category. </summary>
 	public partial class CategoryRelations: RelationFactory

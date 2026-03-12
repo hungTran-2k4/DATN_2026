@@ -7,10 +7,11 @@ using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
 using System.Net.Http.Json;
+using DATN.Application.Common.Models;
 
 namespace DATN.Application.Features.Auth.Handlers;
 
-public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand, AuthResponse>
+public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand, ApiResponse<AuthResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
@@ -44,7 +45,7 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
     private const int MAX_ATTEMPTS = 3;
     private const int LOCKOUT_MINUTES = 5;
 
-    public async Task<AuthResponse> Handle(LoginWithFirebaseCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthResponse>> Handle(LoginWithFirebaseCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -52,7 +53,7 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
             var apiKey = _configuration["Firebase:ApiKey"];
             if (string.IsNullOrEmpty(apiKey))
             {
-                return new AuthResponse { Success = false, Message = "Server configuration error: Firebase ApiKey missing" };
+                return ApiResponse<AuthResponse>.Fail("Server configuration error: Firebase ApiKey missing", 500, "CONFIG_ERROR");
             }
 
             var firebaseLoginUrl = $"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}";
@@ -79,12 +80,17 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                     if (existingUser.LockoutEnd.HasValue && existingUser.LockoutEnd.Value > DateTime.UtcNow)
                     {
                         var remainingTime = existingUser.LockoutEnd.Value - DateTime.UtcNow;
-                        return new AuthResponse
+                        return new ApiResponse<AuthResponse>
                         {
                             Success = false,
+                            StatusCode = 403,
+                            ErrorCode = "ACCOUNT_LOCKED",
                             Message = $"Tài khoản tạm thời bị khóa. Vui lòng thử lại sau {Math.Ceiling(remainingTime.TotalMinutes)} phút.",
-                            LockoutEnd = existingUser.LockoutEnd.Value,
-                            RemainingAttempts = 0
+                            Data = new AuthResponse
+                            {
+                                LockoutEnd = existingUser.LockoutEnd.Value,
+                                RemainingAttempts = 0
+                            }
                         };
                     }
 
@@ -101,35 +107,41 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
 
                     if (remaining <= 0)
                     {
-                        return new AuthResponse
+                        return new ApiResponse<AuthResponse>
                         {
                             Success = false,
+                            StatusCode = 403,
+                            ErrorCode = "ACCOUNT_LOCKED",
                             Message = $"Đăng nhập sai quá {MAX_ATTEMPTS} lần. Tài khoản bị khóa tạm thời {LOCKOUT_MINUTES} phút.",
-                            RemainingAttempts = 0,
-                            LockoutEnd = DateTime.UtcNow.AddMinutes(LOCKOUT_MINUTES)
+                            Data = new AuthResponse
+                            {
+                                RemainingAttempts = 0,
+                                LockoutEnd = DateTime.UtcNow.AddMinutes(LOCKOUT_MINUTES)
+                            }
                         };
                     }
 
-                    return new AuthResponse
+                    return new ApiResponse<AuthResponse>
                     {
                         Success = false,
+                        StatusCode = 401,
+                        ErrorCode = "INVALID_CREDENTIALS",
                         Message = $"Email hoặc mật khẩu không chính xác. Còn {remaining} lần thử.",
-                        RemainingAttempts = remaining
+                        Data = new AuthResponse
+                        {
+                            RemainingAttempts = remaining
+                        }
                     };
                 }
 
-                return new AuthResponse
-                {
-                    Success = false,
-                    Message = "Email hoặc mật khẩu không chính xác"
-                };
+                return ApiResponse<AuthResponse>.Fail("Email hoặc mật khẩu không chính xác", 401, "INVALID_CREDENTIALS");
             }
 
             var paramsResult = await response.Content.ReadFromJsonAsync<FirebaseSignInResponse>(cancellationToken: cancellationToken);
             
             if (paramsResult == null)
             {
-                 return new AuthResponse { Success = false, Message = "Lỗi xác thực từ Firebase" };
+                 return ApiResponse<AuthResponse>.Fail("Lỗi xác thực từ Firebase", 401, "FIREBASE_AUTH_FAILED");
             }
 
             string email = paramsResult.email;
@@ -173,23 +185,24 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                 if (user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow)
                 {
                     var remainingTime = user.LockoutEnd.Value - DateTime.UtcNow;
-                    return new AuthResponse
+                    return new ApiResponse<AuthResponse>
                     {
                         Success = false,
+                        StatusCode = 403,
+                        ErrorCode = "ACCOUNT_LOCKED",
                         Message = $"Tài khoản tạm thời bị khóa. Vui lòng thử lại sau {Math.Ceiling(remainingTime.TotalMinutes)} phút.",
-                        LockoutEnd = user.LockoutEnd.Value,
-                        RemainingAttempts = 0
+                        Data = new AuthResponse
+                        {
+                            LockoutEnd = user.LockoutEnd.Value,
+                            RemainingAttempts = 0
+                        }
                     };
                 }
             }
 
              if (!user.IsActive)
             {
-                return new AuthResponse
-                {
-                    Success = false,
-                    Message = "Tài khoản đã bị vô hiệu hóa"
-                };
+                return ApiResponse<AuthResponse>.Fail("Tài khoản đã bị vô hiệu hóa", 403, "ACCOUNT_DISABLED");
             }
 
             // Đăng nhập thành công → Reset bộ đếm sai
@@ -227,24 +240,18 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                 Roles = roles.ToList()
             };
 
-            return new AuthResponse
+            return ApiResponse<AuthResponse>.Succeed(new AuthResponse
             {
-                Success = true,
-                Message = isNewUser ? "Đăng ký và đăng nhập thành công" : "Đăng nhập thành công",
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 ExpiresAt = expiresAt,
                 User = userDto
-            };
+            }, isNewUser ? "Đăng ký và đăng nhập thành công" : "Đăng nhập thành công", 200);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during Firebase login");
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Đã xảy ra lỗi hệ thống"
-            };
+            return ApiResponse<AuthResponse>.Fail("Đã xảy ra lỗi hệ thống", 500, "INTERNAL_SERVER_ERROR");
         }
     }
 

@@ -6,12 +6,12 @@
 // Templates vendor: Solutions Design.
 //////////////////////////////////////////////////////////////
 using System;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using System.Runtime.Serialization;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -87,7 +87,7 @@ namespace DATN.EntityClasses
 		/// <inheritdoc/>
 		protected override Type LLBLGenProEntityTypeEnumType
 		{
-			get { return typeof(DATN.EntityType); }
+			get { return typeof(DATN_2026.EntityType); }
 		}
 
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode

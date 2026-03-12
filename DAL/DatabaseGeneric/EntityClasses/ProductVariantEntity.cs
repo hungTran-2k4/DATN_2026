@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -26,10 +26,12 @@ namespace DATN.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
-		private EntityCollection<engagementReviewEntity> _engagementReviews;
-		private EntityCollection<salesCartEntity> _salesCarts;
-		private EntityCollection<salesOrderItemEntity> _salesOrderItems;
+		private EntityCollection<ReviewEntity> _reviews;
+		private EntityCollection<StockTransactionEntity> _stockTransactions;
+		private EntityCollection<CartEntity> _carts;
+		private EntityCollection<OrderItemEntity> _orderItems;
 		private ProductEntity _product;
+		private StockEntity _stock;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -41,12 +43,16 @@ namespace DATN.EntityClasses
 		{
 			/// <summary>Member name Product</summary>
 			public static readonly string Product = "Product";
-			/// <summary>Member name engagementReviews</summary>
-			public static readonly string engagementReviews = "engagementReviews";
-			/// <summary>Member name salesCarts</summary>
-			public static readonly string salesCarts = "salesCarts";
-			/// <summary>Member name salesOrderItems</summary>
-			public static readonly string salesOrderItems = "salesOrderItems";
+			/// <summary>Member name Reviews</summary>
+			public static readonly string Reviews = "Reviews";
+			/// <summary>Member name StockTransactions</summary>
+			public static readonly string StockTransactions = "StockTransactions";
+			/// <summary>Member name Carts</summary>
+			public static readonly string Carts = "Carts";
+			/// <summary>Member name OrderItems</summary>
+			public static readonly string OrderItems = "OrderItems";
+			/// <summary>Member name Stock</summary>
+			public static readonly string Stock = "Stock";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -54,11 +60,13 @@ namespace DATN.EntityClasses
 		{
 			public ProductVariantEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("ProductVariantEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.ProductVariantEntity, typeof(ProductVariantEntity), typeof(ProductVariantEntityFactory), false);
-				AddNavigatorMetaData<ProductVariantEntity, EntityCollection<engagementReviewEntity>>("engagementReviews", a => a._engagementReviews, (a, b) => a._engagementReviews = b, a => a.engagementReviews, () => new ProductVariantRelations().engagementReviewEntityUsingVariantId, typeof(engagementReviewEntity), (int)DATN.EntityType.engagementReviewEntity);
-				AddNavigatorMetaData<ProductVariantEntity, EntityCollection<salesCartEntity>>("salesCarts", a => a._salesCarts, (a, b) => a._salesCarts = b, a => a.salesCarts, () => new ProductVariantRelations().salesCartEntityUsingVariantId, typeof(salesCartEntity), (int)DATN.EntityType.salesCartEntity);
-				AddNavigatorMetaData<ProductVariantEntity, EntityCollection<salesOrderItemEntity>>("salesOrderItems", a => a._salesOrderItems, (a, b) => a._salesOrderItems = b, a => a.salesOrderItems, () => new ProductVariantRelations().salesOrderItemEntityUsingVariantId, typeof(salesOrderItemEntity), (int)DATN.EntityType.salesOrderItemEntity);
-				AddNavigatorMetaData<ProductVariantEntity, ProductEntity>("Product", "ProductVariants", (a, b) => a._product = b, a => a._product, (a, b) => a.Product = b, DATN.RelationClasses.StaticProductVariantRelations.ProductEntityUsingProductIdStatic, ()=>new ProductVariantRelations().ProductEntityUsingProductId, null, new int[] { (int)ProductVariantFieldIndex.ProductId }, null, true, (int)DATN.EntityType.ProductEntity);
+				SetEntityCoreInfo("ProductVariantEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.ProductVariantEntity, typeof(ProductVariantEntity), typeof(ProductVariantEntityFactory), false);
+				AddNavigatorMetaData<ProductVariantEntity, EntityCollection<ReviewEntity>>("Reviews", a => a._reviews, (a, b) => a._reviews = b, a => a.Reviews, () => new ProductVariantRelations().ReviewEntityUsingVariantId, typeof(ReviewEntity), (int)DATN_2026.EntityType.ReviewEntity);
+				AddNavigatorMetaData<ProductVariantEntity, EntityCollection<StockTransactionEntity>>("StockTransactions", a => a._stockTransactions, (a, b) => a._stockTransactions = b, a => a.StockTransactions, () => new ProductVariantRelations().StockTransactionEntityUsingVariantId, typeof(StockTransactionEntity), (int)DATN_2026.EntityType.StockTransactionEntity);
+				AddNavigatorMetaData<ProductVariantEntity, EntityCollection<CartEntity>>("Carts", a => a._carts, (a, b) => a._carts = b, a => a.Carts, () => new ProductVariantRelations().CartEntityUsingVariantId, typeof(CartEntity), (int)DATN_2026.EntityType.CartEntity);
+				AddNavigatorMetaData<ProductVariantEntity, EntityCollection<OrderItemEntity>>("OrderItems", a => a._orderItems, (a, b) => a._orderItems = b, a => a.OrderItems, () => new ProductVariantRelations().OrderItemEntityUsingVariantId, typeof(OrderItemEntity), (int)DATN_2026.EntityType.OrderItemEntity);
+				AddNavigatorMetaData<ProductVariantEntity, ProductEntity>("Product", "ProductVariants", (a, b) => a._product = b, a => a._product, (a, b) => a.Product = b, DATN_2026.RelationClasses.StaticProductVariantRelations.ProductEntityUsingProductIdStatic, ()=>new ProductVariantRelations().ProductEntityUsingProductId, null, new int[] { (int)ProductVariantFieldIndex.ProductId }, null, true, (int)DATN_2026.EntityType.ProductEntity);
+				AddNavigatorMetaData<ProductVariantEntity, StockEntity>("Stock", "ProductVariant", (a, b) => a._stock = b, a => a._stock, (a, b) => a.Stock = b, DATN_2026.RelationClasses.StaticProductVariantRelations.StockEntityUsingVariantIdStatic, ()=>new ProductVariantRelations().StockEntityUsingVariantId, null, null, null, true, (int)DATN_2026.EntityType.StockEntity);
 			}
 		}
 
@@ -116,25 +124,33 @@ namespace DATN.EntityClasses
 		public IPredicateExpression ConstructFilterForUCSku()
 		{
 			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.ProductVariantFields.Sku == this.Fields.GetCurrentValue((int)ProductVariantFieldIndex.Sku));
+			filter.Add(DATN_2026.HelperClasses.ProductVariantFields.Sku == this.Fields.GetCurrentValue((int)ProductVariantFieldIndex.Sku));
  			return filter;
 		}
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'engagementReview' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Review' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfoengagementReviews() { return CreateRelationInfoForNavigator("engagementReviews"); }
+		public virtual IRelationPredicateBucket GetRelationInfoReviews() { return CreateRelationInfoForNavigator("Reviews"); }
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'salesCart' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'StockTransaction' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfosalesCarts() { return CreateRelationInfoForNavigator("salesCarts"); }
+		public virtual IRelationPredicateBucket GetRelationInfoStockTransactions() { return CreateRelationInfoForNavigator("StockTransactions"); }
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'salesOrderItem' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Cart' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfosalesOrderItems() { return CreateRelationInfoForNavigator("salesOrderItems"); }
+		public virtual IRelationPredicateBucket GetRelationInfoCarts() { return CreateRelationInfoForNavigator("Carts"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'OrderItem' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoOrderItems() { return CreateRelationInfoForNavigator("OrderItems"); }
 
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Product' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoProduct() { return CreateRelationInfoForNavigator("Product"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Stock' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoStock() { return CreateRelationInfoForNavigator("Stock"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -166,21 +182,29 @@ namespace DATN.EntityClasses
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static ProductVariantRelations Relations { get { return _relationsFactory; } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'engagementReview' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Review' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathengagementReviews { get { return _staticMetaData.GetPrefetchPathElement("engagementReviews", CommonEntityBase.CreateEntityCollection<engagementReviewEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathReviews { get { return _staticMetaData.GetPrefetchPathElement("Reviews", CommonEntityBase.CreateEntityCollection<ReviewEntity>()); } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'salesCart' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'StockTransaction' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathsalesCarts { get { return _staticMetaData.GetPrefetchPathElement("salesCarts", CommonEntityBase.CreateEntityCollection<salesCartEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathStockTransactions { get { return _staticMetaData.GetPrefetchPathElement("StockTransactions", CommonEntityBase.CreateEntityCollection<StockTransactionEntity>()); } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'salesOrderItem' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Cart' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathsalesOrderItems { get { return _staticMetaData.GetPrefetchPathElement("salesOrderItems", CommonEntityBase.CreateEntityCollection<salesOrderItemEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathCarts { get { return _staticMetaData.GetPrefetchPathElement("Carts", CommonEntityBase.CreateEntityCollection<CartEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'OrderItem' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathOrderItems { get { return _staticMetaData.GetPrefetchPathElement("OrderItems", CommonEntityBase.CreateEntityCollection<OrderItemEntity>()); } }
 
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Product' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathProduct { get { return _staticMetaData.GetPrefetchPathElement("Product", CommonEntityBase.CreateEntityCollection<ProductEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Stock' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathStock { get { return _staticMetaData.GetPrefetchPathElement("Stock", CommonEntityBase.CreateEntityCollection<StockEntity>()); } }
 
 		/// <summary>The Id property of the Entity ProductVariant<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "product_variants"."id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, true, false</remarks>
@@ -230,14 +254,6 @@ namespace DATN.EntityClasses
 			set { SetValue((int)ProductVariantFieldIndex.Sku, value); }
 		}
 
-		/// <summary>The StockQuantity property of the Entity ProductVariant<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "product_variants"."stock_quantity".<br/>Table field type characteristics (type, precision, scale, length): Integer, 10, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
-		public virtual Nullable<System.Int32> StockQuantity
-		{
-			get { return (Nullable<System.Int32>)GetValue((int)ProductVariantFieldIndex.StockQuantity, false); }
-			set { SetValue((int)ProductVariantFieldIndex.StockQuantity, value); }
-		}
-
 		/// <summary>The VariantAttributes property of the Entity ProductVariant<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "product_variants"."variant_attributes".<br/>Table field type characteristics (type, precision, scale, length): Jsonb, 0, 0, 2147483647.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
 		public virtual System.String VariantAttributes
@@ -246,17 +262,21 @@ namespace DATN.EntityClasses
 			set { SetValue((int)ProductVariantFieldIndex.VariantAttributes, value); }
 		}
 
-		/// <summary>Gets the EntityCollection with the related entities of type 'engagementReviewEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
-		[TypeContainedAttribute(typeof(engagementReviewEntity))]
-		public virtual EntityCollection<engagementReviewEntity> engagementReviews { get { return GetOrCreateEntityCollection<engagementReviewEntity, engagementReviewEntityFactory>("ProductVariant", true, false, ref _engagementReviews); } }
+		/// <summary>Gets the EntityCollection with the related entities of type 'ReviewEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(ReviewEntity))]
+		public virtual EntityCollection<ReviewEntity> Reviews { get { return GetOrCreateEntityCollection<ReviewEntity, ReviewEntityFactory>("ProductVariant", true, false, ref _reviews); } }
 
-		/// <summary>Gets the EntityCollection with the related entities of type 'salesCartEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
-		[TypeContainedAttribute(typeof(salesCartEntity))]
-		public virtual EntityCollection<salesCartEntity> salesCarts { get { return GetOrCreateEntityCollection<salesCartEntity, salesCartEntityFactory>("ProductVariant", true, false, ref _salesCarts); } }
+		/// <summary>Gets the EntityCollection with the related entities of type 'StockTransactionEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(StockTransactionEntity))]
+		public virtual EntityCollection<StockTransactionEntity> StockTransactions { get { return GetOrCreateEntityCollection<StockTransactionEntity, StockTransactionEntityFactory>("ProductVariant", true, false, ref _stockTransactions); } }
 
-		/// <summary>Gets the EntityCollection with the related entities of type 'salesOrderItemEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
-		[TypeContainedAttribute(typeof(salesOrderItemEntity))]
-		public virtual EntityCollection<salesOrderItemEntity> salesOrderItems { get { return GetOrCreateEntityCollection<salesOrderItemEntity, salesOrderItemEntityFactory>("ProductVariant", true, false, ref _salesOrderItems); } }
+		/// <summary>Gets the EntityCollection with the related entities of type 'CartEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(CartEntity))]
+		public virtual EntityCollection<CartEntity> Carts { get { return GetOrCreateEntityCollection<CartEntity, CartEntityFactory>("ProductVariant", true, false, ref _carts); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'OrderItemEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(OrderItemEntity))]
+		public virtual EntityCollection<OrderItemEntity> OrderItems { get { return GetOrCreateEntityCollection<OrderItemEntity, OrderItemEntityFactory>("ProductVariant", true, false, ref _orderItems); } }
 
 		/// <summary>Gets / sets related entity of type 'ProductEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
 		[Browsable(false)]
@@ -266,13 +286,21 @@ namespace DATN.EntityClasses
 			set { SetSingleRelatedEntityNavigator(value, "Product"); }
 		}
 
+		/// <summary>Gets / sets related entity of type 'StockEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned.<br/><br/></summary>
+		[Browsable(false)]
+		public virtual StockEntity Stock
+		{
+			get { return _stock; }
+			set { SetSingleRelatedEntityNavigator(value, "Stock"); }
+		}
+
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
 
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum ProductVariantFieldIndex
 	{
@@ -288,8 +316,6 @@ namespace DATN
 		ProductId,
 		///<summary>Sku. </summary>
 		Sku,
-		///<summary>StockQuantity. </summary>
-		StockQuantity,
 		///<summary>VariantAttributes. </summary>
 		VariantAttributes,
 		/// <summary></summary>
@@ -297,27 +323,39 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: ProductVariant. </summary>
 	public partial class ProductVariantRelations: RelationFactory
 	{
-		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and engagementReviewEntity over the 1:n relation they have, using the relation between the fields: ProductVariant.Id - engagementReview.VariantId</summary>
-		public virtual IEntityRelation engagementReviewEntityUsingVariantId
+		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and ReviewEntity over the 1:n relation they have, using the relation between the fields: ProductVariant.Id - Review.VariantId</summary>
+		public virtual IEntityRelation ReviewEntityUsingVariantId
 		{
-			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "engagementReviews", true, new[] { ProductVariantFields.Id, engagementReviewFields.VariantId }); }
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Reviews", true, new[] { ProductVariantFields.Id, ReviewFields.VariantId }); }
 		}
 
-		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and salesCartEntity over the 1:n relation they have, using the relation between the fields: ProductVariant.Id - salesCart.VariantId</summary>
-		public virtual IEntityRelation salesCartEntityUsingVariantId
+		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and StockTransactionEntity over the 1:n relation they have, using the relation between the fields: ProductVariant.Id - StockTransaction.VariantId</summary>
+		public virtual IEntityRelation StockTransactionEntityUsingVariantId
 		{
-			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "salesCarts", true, new[] { ProductVariantFields.Id, salesCartFields.VariantId }); }
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "StockTransactions", true, new[] { ProductVariantFields.Id, StockTransactionFields.VariantId }); }
 		}
 
-		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and salesOrderItemEntity over the 1:n relation they have, using the relation between the fields: ProductVariant.Id - salesOrderItem.VariantId</summary>
-		public virtual IEntityRelation salesOrderItemEntityUsingVariantId
+		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and CartEntity over the 1:n relation they have, using the relation between the fields: ProductVariant.Id - Cart.VariantId</summary>
+		public virtual IEntityRelation CartEntityUsingVariantId
 		{
-			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "salesOrderItems", true, new[] { ProductVariantFields.Id, salesOrderItemFields.VariantId }); }
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Carts", true, new[] { ProductVariantFields.Id, CartFields.VariantId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and OrderItemEntity over the 1:n relation they have, using the relation between the fields: ProductVariant.Id - OrderItem.VariantId</summary>
+		public virtual IEntityRelation OrderItemEntityUsingVariantId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "OrderItems", true, new[] { ProductVariantFields.Id, OrderItemFields.VariantId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and StockEntity over the 1:1 relation they have, using the relation between the fields: ProductVariant.Id - Stock.VariantId</summary>
+		public virtual IEntityRelation StockEntityUsingVariantId
+		{
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToOne, "Stock", true, new[] { ProductVariantFields.Id, StockFields.VariantId }); }
 		}
 
 		/// <summary>Returns a new IEntityRelation object, between ProductVariantEntity and ProductEntity over the m:1 relation they have, using the relation between the fields: ProductVariant.ProductId - Product.Id</summary>
@@ -331,9 +369,11 @@ namespace DATN.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticProductVariantRelations
 	{
-		internal static readonly IEntityRelation engagementReviewEntityUsingVariantIdStatic = new ProductVariantRelations().engagementReviewEntityUsingVariantId;
-		internal static readonly IEntityRelation salesCartEntityUsingVariantIdStatic = new ProductVariantRelations().salesCartEntityUsingVariantId;
-		internal static readonly IEntityRelation salesOrderItemEntityUsingVariantIdStatic = new ProductVariantRelations().salesOrderItemEntityUsingVariantId;
+		internal static readonly IEntityRelation ReviewEntityUsingVariantIdStatic = new ProductVariantRelations().ReviewEntityUsingVariantId;
+		internal static readonly IEntityRelation StockTransactionEntityUsingVariantIdStatic = new ProductVariantRelations().StockTransactionEntityUsingVariantId;
+		internal static readonly IEntityRelation CartEntityUsingVariantIdStatic = new ProductVariantRelations().CartEntityUsingVariantId;
+		internal static readonly IEntityRelation OrderItemEntityUsingVariantIdStatic = new ProductVariantRelations().OrderItemEntityUsingVariantId;
+		internal static readonly IEntityRelation StockEntityUsingVariantIdStatic = new ProductVariantRelations().StockEntityUsingVariantId;
 		internal static readonly IEntityRelation ProductEntityUsingProductIdStatic = new ProductVariantRelations().ProductEntityUsingProductId;
 
 		/// <summary>CTor</summary>

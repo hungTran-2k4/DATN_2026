@@ -6,11 +6,11 @@
 // Templates vendor: Solutions Design.
 //////////////////////////////////////////////////////////////
 using System;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.HelperClasses
+namespace DATN_2026.HelperClasses
 {
 	/// <summary>Singleton implementation of the ModelInfoProvider. This class is the singleton wrapper through which the actual instance is retrieved.</summary>
 	public static class ModelInfoProviderSingleton
@@ -48,6 +48,7 @@ namespace DATN.HelperClasses
 			InitRoleEntityInfo();
 			InitRolePermissionEntityInfo();
 			InitUserEntityInfo();
+			InitUserAddressEntityInfo();
 			InitUserRoleEntityInfo();
 			InitUserSessionEntityInfo();
 			InitBrandEntityInfo();
@@ -55,23 +56,21 @@ namespace DATN.HelperClasses
 			InitProductEntityInfo();
 			InitProductImageEntityInfo();
 			InitProductVariantEntityInfo();
-			InitengagementReviewEntityInfo();
+			InitShopEntityInfo();
+			InitChatBoxEntityInfo();
+			InitChatMessageEntityInfo();
 			InitNotificationEntityInfo();
-			InitsalesCartEntityInfo();
-			InitsalesOrderEntityInfo();
-			InitsalesOrderItemEntityInfo();
-			InitTransactionEntityInfo();
+			InitReviewEntityInfo();
+			InitWishlistEntityInfo();
+			InitStockEntityInfo();
+			InitStockTransactionEntityInfo();
+			InitUserVoucherEntityInfo();
+			InitVoucherEntityInfo();
 			InitCartEntityInfo();
-			InitDiscountEntityInfo();
-			InitGameEntityInfo();
-			InitGameTagEntityInfo();
 			InitOrderEntityInfo();
 			InitOrderItemEntityInfo();
-			InitPublisherEntityInfo();
-			InitReviewEntityInfo();
-			InitTagEntityInfo();
-			InitUserGameEntityInfo();
-			InitWishlistEntityInfo();
+			InitShippingTrackingEntityInfo();
+			InitTransactionEntityInfo();
 			InitauditLoginAttemptTypedViewInfo();
 			InitauditUserAuditLogTypedViewInfo();
 			Initauth2PermissionTypedViewInfo();
@@ -79,6 +78,7 @@ namespace DATN.HelperClasses
 			Initauth2RoleTypedViewInfo();
 			Initauth2RolePermissionTypedViewInfo();
 			Initauth2UserTypedViewInfo();
+			Initauth2UserAddressTypedViewInfo();
 			Initauth2UserRoleTypedViewInfo();
 			Initauth2UserSessionTypedViewInfo();
 			InitcatalogBrandTypedViewInfo();
@@ -86,23 +86,21 @@ namespace DATN.HelperClasses
 			InitcatalogProductTypedViewInfo();
 			InitcatalogProductImageTypedViewInfo();
 			InitcatalogProductVariantTypedViewInfo();
+			InitcatalogShopTypedViewInfo();
+			InitengagementChatBoxTypedViewInfo();
+			InitengagementChatMessageTypedViewInfo();
 			InitengagementNotificationTypedViewInfo();
-			InitengagementReview1TypedViewInfo();
-			InitsalesCart1TypedViewInfo();
-			InitsalesOrder1TypedViewInfo();
-			InitsalesOrderItem1TypedViewInfo();
+			InitengagementReviewTypedViewInfo();
+			InitengagementWishlistTypedViewInfo();
+			InitinventoryStockTypedViewInfo();
+			InitinventoryStockTransactionTypedViewInfo();
+			InitmarketingUserVoucherTypedViewInfo();
+			InitmarketingVoucherTypedViewInfo();
+			InitsalesCartTypedViewInfo();
+			InitsalesOrderTypedViewInfo();
+			InitsalesOrderItemTypedViewInfo();
+			InitsalesShippingTrackingTypedViewInfo();
 			InitsalesTransactionTypedViewInfo();
-			InitstoreCartTypedViewInfo();
-			InitstoreDiscountTypedViewInfo();
-			InitstoreGameTypedViewInfo();
-			InitstoreGameTagTypedViewInfo();
-			InitstoreOrderTypedViewInfo();
-			InitstoreOrderItemTypedViewInfo();
-			InitstorePublisherTypedViewInfo();
-			InitstoreReviewTypedViewInfo();
-			InitstoreTagTypedViewInfo();
-			InitstoreUserGameTypedViewInfo();
-			InitstoreWishlistTypedViewInfo();
 			this.BuildInternalStructures();
 		}
 
@@ -191,6 +189,22 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("UserEntity", "Username", typeof(System.String), false, false, false, false,  (int)UserFieldIndex.Username, 50, 0, 0);
 		}
 
+		/// <summary>Inits UserAddressEntity's info objects</summary>
+		private void InitUserAddressEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(UserAddressFieldIndex), "UserAddressEntity");
+			this.AddElementFieldInfo("UserAddressEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)UserAddressFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("UserAddressEntity", "DetailedAddress", typeof(System.String), false, false, false, false,  (int)UserAddressFieldIndex.DetailedAddress, 1073741824, 0, 0);
+			this.AddElementFieldInfo("UserAddressEntity", "DistrictId", typeof(Nullable<System.Int32>), false, false, false, true,  (int)UserAddressFieldIndex.DistrictId, 0, 0, 10);
+			this.AddElementFieldInfo("UserAddressEntity", "FullName", typeof(System.String), false, false, false, false,  (int)UserAddressFieldIndex.FullName, 255, 0, 0);
+			this.AddElementFieldInfo("UserAddressEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)UserAddressFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("UserAddressEntity", "IsDefault", typeof(Nullable<System.Boolean>), false, false, false, true,  (int)UserAddressFieldIndex.IsDefault, 0, 0, 0);
+			this.AddElementFieldInfo("UserAddressEntity", "PhoneNumber", typeof(System.String), false, false, false, false,  (int)UserAddressFieldIndex.PhoneNumber, 20, 0, 0);
+			this.AddElementFieldInfo("UserAddressEntity", "ProvinceId", typeof(Nullable<System.Int32>), false, false, false, true,  (int)UserAddressFieldIndex.ProvinceId, 0, 0, 10);
+			this.AddElementFieldInfo("UserAddressEntity", "UserId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)UserAddressFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("UserAddressEntity", "WardId", typeof(Nullable<System.Int32>), false, false, false, true,  (int)UserAddressFieldIndex.WardId, 0, 0, 10);
+		}
+
 		/// <summary>Inits UserRoleEntity's info objects</summary>
 		private void InitUserRoleEntityInfo()
 		{
@@ -249,7 +263,7 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("ProductEntity", "Description", typeof(System.String), false, false, false, true,  (int)ProductFieldIndex.Description, 1073741824, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ProductFieldIndex.Id, 0, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Name", typeof(System.String), false, false, false, false,  (int)ProductFieldIndex.Name, 255, 0, 0);
-			this.AddElementFieldInfo("ProductEntity", "SellerId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ProductFieldIndex.SellerId, 0, 0, 0);
+			this.AddElementFieldInfo("ProductEntity", "ShopId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ProductFieldIndex.ShopId, 0, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Sku", typeof(System.String), false, false, false, false,  (int)ProductFieldIndex.Sku, 100, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Slug", typeof(System.String), false, false, false, false,  (int)ProductFieldIndex.Slug, 255, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Status", typeof(System.String), false, false, false, true,  (int)ProductFieldIndex.Status, 20, 0, 0);
@@ -279,22 +293,51 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("ProductVariantEntity", "Price", typeof(System.Decimal), false, false, false, false,  (int)ProductVariantFieldIndex.Price, 0, 2, 18);
 			this.AddElementFieldInfo("ProductVariantEntity", "ProductId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ProductVariantFieldIndex.ProductId, 0, 0, 0);
 			this.AddElementFieldInfo("ProductVariantEntity", "Sku", typeof(System.String), false, false, false, true,  (int)ProductVariantFieldIndex.Sku, 50, 0, 0);
-			this.AddElementFieldInfo("ProductVariantEntity", "StockQuantity", typeof(Nullable<System.Int32>), false, false, false, true,  (int)ProductVariantFieldIndex.StockQuantity, 0, 0, 10);
 			this.AddElementFieldInfo("ProductVariantEntity", "VariantAttributes", typeof(System.String), false, false, false, true,  (int)ProductVariantFieldIndex.VariantAttributes, 2147483647, 0, 0);
 		}
 
-		/// <summary>Inits engagementReviewEntity's info objects</summary>
-		private void InitengagementReviewEntityInfo()
+		/// <summary>Inits ShopEntity's info objects</summary>
+		private void InitShopEntityInfo()
 		{
-			this.AddFieldIndexEnumForElementName(typeof(engagementReviewFieldIndex), "engagementReviewEntity");
-			this.AddElementFieldInfo("engagementReviewEntity", "Comment", typeof(System.String), false, false, false, true,  (int)engagementReviewFieldIndex.Comment, 1073741824, 0, 0);
-			this.AddElementFieldInfo("engagementReviewEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)engagementReviewFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("engagementReviewEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)engagementReviewFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("engagementReviewEntity", "Images", typeof(System.String), false, false, false, true,  (int)engagementReviewFieldIndex.Images, 2147483647, 0, 0);
-			this.AddElementFieldInfo("engagementReviewEntity", "OrderId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)engagementReviewFieldIndex.OrderId, 0, 0, 0);
-			this.AddElementFieldInfo("engagementReviewEntity", "Rating", typeof(Nullable<System.Int32>), false, false, false, true,  (int)engagementReviewFieldIndex.Rating, 0, 0, 10);
-			this.AddElementFieldInfo("engagementReviewEntity", "UserId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)engagementReviewFieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("engagementReviewEntity", "VariantId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)engagementReviewFieldIndex.VariantId, 0, 0, 0);
+			this.AddFieldIndexEnumForElementName(typeof(ShopFieldIndex), "ShopEntity");
+			this.AddElementFieldInfo("ShopEntity", "CoverUrl", typeof(System.String), false, false, false, true,  (int)ShopFieldIndex.CoverUrl, 1073741824, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ShopFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "Description", typeof(System.String), false, false, false, true,  (int)ShopFieldIndex.Description, 1073741824, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "DistrictId", typeof(Nullable<System.Int32>), false, false, false, true,  (int)ShopFieldIndex.DistrictId, 0, 0, 10);
+			this.AddElementFieldInfo("ShopEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ShopFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "IsActive", typeof(Nullable<System.Boolean>), false, false, false, true,  (int)ShopFieldIndex.IsActive, 0, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "LogoUrl", typeof(System.String), false, false, false, true,  (int)ShopFieldIndex.LogoUrl, 1073741824, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "Name", typeof(System.String), false, false, false, false,  (int)ShopFieldIndex.Name, 255, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "OwnerId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ShopFieldIndex.OwnerId, 0, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "PickupAddress", typeof(System.String), false, false, false, true,  (int)ShopFieldIndex.PickupAddress, 1073741824, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "ProvinceId", typeof(Nullable<System.Int32>), false, false, false, true,  (int)ShopFieldIndex.ProvinceId, 0, 0, 10);
+			this.AddElementFieldInfo("ShopEntity", "Rating", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)ShopFieldIndex.Rating, 0, 2, 3);
+			this.AddElementFieldInfo("ShopEntity", "Slug", typeof(System.String), false, false, false, false,  (int)ShopFieldIndex.Slug, 255, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "WardId", typeof(Nullable<System.Int32>), false, false, false, true,  (int)ShopFieldIndex.WardId, 0, 0, 10);
+		}
+
+		/// <summary>Inits ChatBoxEntity's info objects</summary>
+		private void InitChatBoxEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(ChatBoxFieldIndex), "ChatBoxEntity");
+			this.AddElementFieldInfo("ChatBoxEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ChatBoxFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("ChatBoxEntity", "LastActivity", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ChatBoxFieldIndex.LastActivity, 0, 0, 0);
+			this.AddElementFieldInfo("ChatBoxEntity", "LastMessage", typeof(System.String), false, false, false, true,  (int)ChatBoxFieldIndex.LastMessage, 1073741824, 0, 0);
+			this.AddElementFieldInfo("ChatBoxEntity", "ShopId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ChatBoxFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("ChatBoxEntity", "UserId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ChatBoxFieldIndex.UserId, 0, 0, 0);
+		}
+
+		/// <summary>Inits ChatMessageEntity's info objects</summary>
+		private void InitChatMessageEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(ChatMessageFieldIndex), "ChatMessageEntity");
+			this.AddElementFieldInfo("ChatMessageEntity", "Content", typeof(System.String), false, false, false, false,  (int)ChatMessageFieldIndex.Content, 1073741824, 0, 0);
+			this.AddElementFieldInfo("ChatMessageEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ChatMessageFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("ChatMessageEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ChatMessageFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("ChatMessageEntity", "IsRead", typeof(Nullable<System.Boolean>), false, false, false, true,  (int)ChatMessageFieldIndex.IsRead, 0, 0, 0);
+			this.AddElementFieldInfo("ChatMessageEntity", "MessageType", typeof(System.String), false, false, false, true,  (int)ChatMessageFieldIndex.MessageType, 20, 0, 0);
+			this.AddElementFieldInfo("ChatMessageEntity", "RoomId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ChatMessageFieldIndex.RoomId, 0, 0, 0);
+			this.AddElementFieldInfo("ChatMessageEntity", "SenderId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ChatMessageFieldIndex.SenderId, 0, 0, 0);
 		}
 
 		/// <summary>Inits NotificationEntity's info objects</summary>
@@ -311,44 +354,133 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("NotificationEntity", "UserId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)NotificationFieldIndex.UserId, 0, 0, 0);
 		}
 
-		/// <summary>Inits salesCartEntity's info objects</summary>
-		private void InitsalesCartEntityInfo()
+		/// <summary>Inits ReviewEntity's info objects</summary>
+		private void InitReviewEntityInfo()
 		{
-			this.AddFieldIndexEnumForElementName(typeof(salesCartFieldIndex), "salesCartEntity");
-			this.AddElementFieldInfo("salesCartEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)salesCartFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("salesCartEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)salesCartFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("salesCartEntity", "Quantity", typeof(System.Int32), false, false, false, false,  (int)salesCartFieldIndex.Quantity, 0, 0, 10);
-			this.AddElementFieldInfo("salesCartEntity", "UserId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)salesCartFieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("salesCartEntity", "VariantId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)salesCartFieldIndex.VariantId, 0, 0, 0);
+			this.AddFieldIndexEnumForElementName(typeof(ReviewFieldIndex), "ReviewEntity");
+			this.AddElementFieldInfo("ReviewEntity", "Comment", typeof(System.String), false, false, false, true,  (int)ReviewFieldIndex.Comment, 1073741824, 0, 0);
+			this.AddElementFieldInfo("ReviewEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ReviewFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("ReviewEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ReviewFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("ReviewEntity", "Images", typeof(System.String), false, false, false, true,  (int)ReviewFieldIndex.Images, 2147483647, 0, 0);
+			this.AddElementFieldInfo("ReviewEntity", "OrderId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ReviewFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("ReviewEntity", "Rating", typeof(Nullable<System.Int32>), false, false, false, true,  (int)ReviewFieldIndex.Rating, 0, 0, 10);
+			this.AddElementFieldInfo("ReviewEntity", "UserId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ReviewFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("ReviewEntity", "VariantId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ReviewFieldIndex.VariantId, 0, 0, 0);
 		}
 
-		/// <summary>Inits salesOrderEntity's info objects</summary>
-		private void InitsalesOrderEntityInfo()
+		/// <summary>Inits WishlistEntity's info objects</summary>
+		private void InitWishlistEntityInfo()
 		{
-			this.AddFieldIndexEnumForElementName(typeof(salesOrderFieldIndex), "salesOrderEntity");
-			this.AddElementFieldInfo("salesOrderEntity", "BuyerId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)salesOrderFieldIndex.BuyerId, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)salesOrderFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "CustomerNote", typeof(System.String), false, false, false, true,  (int)salesOrderFieldIndex.CustomerNote, 1073741824, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)salesOrderFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "OrderCode", typeof(System.String), false, false, false, false,  (int)salesOrderFieldIndex.OrderCode, 20, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "OrderStatus", typeof(System.String), false, false, false, true,  (int)salesOrderFieldIndex.OrderStatus, 20, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "PaymentMethod", typeof(System.String), false, false, false, true,  (int)salesOrderFieldIndex.PaymentMethod, 20, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "PaymentStatus", typeof(System.String), false, false, false, true,  (int)salesOrderFieldIndex.PaymentStatus, 20, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "ShippingAddress", typeof(System.String), false, false, false, false,  (int)salesOrderFieldIndex.ShippingAddress, 1073741824, 0, 0);
-			this.AddElementFieldInfo("salesOrderEntity", "ShippingFee", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)salesOrderFieldIndex.ShippingFee, 0, 2, 18);
-			this.AddElementFieldInfo("salesOrderEntity", "TotalAmount", typeof(System.Decimal), false, false, false, false,  (int)salesOrderFieldIndex.TotalAmount, 0, 2, 18);
+			this.AddFieldIndexEnumForElementName(typeof(WishlistFieldIndex), "WishlistEntity");
+			this.AddElementFieldInfo("WishlistEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)WishlistFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("WishlistEntity", "ProductId", typeof(System.Guid), true, true, false, false,  (int)WishlistFieldIndex.ProductId, 0, 0, 0);
+			this.AddElementFieldInfo("WishlistEntity", "UserId", typeof(System.Guid), true, true, false, false,  (int)WishlistFieldIndex.UserId, 0, 0, 0);
 		}
 
-		/// <summary>Inits salesOrderItemEntity's info objects</summary>
-		private void InitsalesOrderItemEntityInfo()
+		/// <summary>Inits StockEntity's info objects</summary>
+		private void InitStockEntityInfo()
 		{
-			this.AddFieldIndexEnumForElementName(typeof(salesOrderItemFieldIndex), "salesOrderItemEntity");
-			this.AddElementFieldInfo("salesOrderItemEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)salesOrderItemFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrderItemEntity", "OrderId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)salesOrderItemFieldIndex.OrderId, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrderItemEntity", "ProductNameSnapshot", typeof(System.String), false, false, false, true,  (int)salesOrderItemFieldIndex.ProductNameSnapshot, 255, 0, 0);
-			this.AddElementFieldInfo("salesOrderItemEntity", "Quantity", typeof(System.Int32), false, false, false, false,  (int)salesOrderItemFieldIndex.Quantity, 0, 0, 10);
-			this.AddElementFieldInfo("salesOrderItemEntity", "UnitPrice", typeof(System.Decimal), false, false, false, false,  (int)salesOrderItemFieldIndex.UnitPrice, 0, 2, 18);
-			this.AddElementFieldInfo("salesOrderItemEntity", "VariantId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)salesOrderItemFieldIndex.VariantId, 0, 0, 0);
+			this.AddFieldIndexEnumForElementName(typeof(StockFieldIndex), "StockEntity");
+			this.AddElementFieldInfo("StockEntity", "AvailableQuantity", typeof(Nullable<System.Int32>), false, false, false, true,  (int)StockFieldIndex.AvailableQuantity, 0, 0, 10);
+			this.AddElementFieldInfo("StockEntity", "PhysicalQuantity", typeof(System.Int32), false, false, false, false,  (int)StockFieldIndex.PhysicalQuantity, 0, 0, 10);
+			this.AddElementFieldInfo("StockEntity", "ReservedQuantity", typeof(System.Int32), false, false, false, false,  (int)StockFieldIndex.ReservedQuantity, 0, 0, 10);
+			this.AddElementFieldInfo("StockEntity", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)StockFieldIndex.UpdatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("StockEntity", "VariantId", typeof(System.Guid), true, true, false, false,  (int)StockFieldIndex.VariantId, 0, 0, 0);
+		}
+
+		/// <summary>Inits StockTransactionEntity's info objects</summary>
+		private void InitStockTransactionEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(StockTransactionFieldIndex), "StockTransactionEntity");
+			this.AddElementFieldInfo("StockTransactionEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)StockTransactionFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("StockTransactionEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)StockTransactionFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("StockTransactionEntity", "Note", typeof(System.String), false, false, false, true,  (int)StockTransactionFieldIndex.Note, 1073741824, 0, 0);
+			this.AddElementFieldInfo("StockTransactionEntity", "Quantity", typeof(System.Int32), false, false, false, false,  (int)StockTransactionFieldIndex.Quantity, 0, 0, 10);
+			this.AddElementFieldInfo("StockTransactionEntity", "ReferenceId", typeof(Nullable<System.Guid>), false, false, false, true,  (int)StockTransactionFieldIndex.ReferenceId, 0, 0, 0);
+			this.AddElementFieldInfo("StockTransactionEntity", "ShopId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)StockTransactionFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("StockTransactionEntity", "TransactionType", typeof(System.String), false, false, false, false,  (int)StockTransactionFieldIndex.TransactionType, 20, 0, 0);
+			this.AddElementFieldInfo("StockTransactionEntity", "VariantId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)StockTransactionFieldIndex.VariantId, 0, 0, 0);
+		}
+
+		/// <summary>Inits UserVoucherEntity's info objects</summary>
+		private void InitUserVoucherEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(UserVoucherFieldIndex), "UserVoucherEntity");
+			this.AddElementFieldInfo("UserVoucherEntity", "IsUsed", typeof(Nullable<System.Boolean>), false, false, false, true,  (int)UserVoucherFieldIndex.IsUsed, 0, 0, 0);
+			this.AddElementFieldInfo("UserVoucherEntity", "SavedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)UserVoucherFieldIndex.SavedAt, 0, 0, 0);
+			this.AddElementFieldInfo("UserVoucherEntity", "UserId", typeof(System.Guid), true, true, false, false,  (int)UserVoucherFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("UserVoucherEntity", "VoucherId", typeof(System.Guid), true, true, false, false,  (int)UserVoucherFieldIndex.VoucherId, 0, 0, 0);
+		}
+
+		/// <summary>Inits VoucherEntity's info objects</summary>
+		private void InitVoucherEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(VoucherFieldIndex), "VoucherEntity");
+			this.AddElementFieldInfo("VoucherEntity", "Code", typeof(System.String), false, false, false, false,  (int)VoucherFieldIndex.Code, 50, 0, 0);
+			this.AddElementFieldInfo("VoucherEntity", "DiscountType", typeof(System.String), false, false, false, false,  (int)VoucherFieldIndex.DiscountType, 20, 0, 0);
+			this.AddElementFieldInfo("VoucherEntity", "DiscountValue", typeof(System.Decimal), false, false, false, false,  (int)VoucherFieldIndex.DiscountValue, 0, 2, 18);
+			this.AddElementFieldInfo("VoucherEntity", "EndDate", typeof(System.DateTime), false, false, false, false,  (int)VoucherFieldIndex.EndDate, 0, 0, 0);
+			this.AddElementFieldInfo("VoucherEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)VoucherFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("VoucherEntity", "IsActive", typeof(Nullable<System.Boolean>), false, false, false, true,  (int)VoucherFieldIndex.IsActive, 0, 0, 0);
+			this.AddElementFieldInfo("VoucherEntity", "MaxDiscountValue", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)VoucherFieldIndex.MaxDiscountValue, 0, 2, 18);
+			this.AddElementFieldInfo("VoucherEntity", "MinOrderValue", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)VoucherFieldIndex.MinOrderValue, 0, 2, 18);
+			this.AddElementFieldInfo("VoucherEntity", "Name", typeof(System.String), false, false, false, false,  (int)VoucherFieldIndex.Name, 255, 0, 0);
+			this.AddElementFieldInfo("VoucherEntity", "ShopId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)VoucherFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("VoucherEntity", "StartDate", typeof(System.DateTime), false, false, false, false,  (int)VoucherFieldIndex.StartDate, 0, 0, 0);
+			this.AddElementFieldInfo("VoucherEntity", "UsageLimit", typeof(System.Int32), false, false, false, false,  (int)VoucherFieldIndex.UsageLimit, 0, 0, 10);
+			this.AddElementFieldInfo("VoucherEntity", "UsedCount", typeof(Nullable<System.Int32>), false, false, false, true,  (int)VoucherFieldIndex.UsedCount, 0, 0, 10);
+		}
+
+		/// <summary>Inits CartEntity's info objects</summary>
+		private void InitCartEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(CartFieldIndex), "CartEntity");
+			this.AddElementFieldInfo("CartEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)CartFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("CartEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)CartFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("CartEntity", "Quantity", typeof(System.Int32), false, false, false, false,  (int)CartFieldIndex.Quantity, 0, 0, 10);
+			this.AddElementFieldInfo("CartEntity", "UserId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)CartFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("CartEntity", "VariantId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)CartFieldIndex.VariantId, 0, 0, 0);
+		}
+
+		/// <summary>Inits OrderEntity's info objects</summary>
+		private void InitOrderEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(OrderFieldIndex), "OrderEntity");
+			this.AddElementFieldInfo("OrderEntity", "BuyerId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)OrderFieldIndex.BuyerId, 0, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)OrderFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "CustomerNote", typeof(System.String), false, false, false, true,  (int)OrderFieldIndex.CustomerNote, 1073741824, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)OrderFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "OrderCode", typeof(System.String), false, false, false, false,  (int)OrderFieldIndex.OrderCode, 20, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "OrderStatus", typeof(System.String), false, false, false, true,  (int)OrderFieldIndex.OrderStatus, 20, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "PaymentMethod", typeof(System.String), false, false, false, true,  (int)OrderFieldIndex.PaymentMethod, 20, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "PaymentStatus", typeof(System.String), false, false, false, true,  (int)OrderFieldIndex.PaymentStatus, 20, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "ShippingAddress", typeof(System.String), false, false, false, false,  (int)OrderFieldIndex.ShippingAddress, 1073741824, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "ShippingFee", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)OrderFieldIndex.ShippingFee, 0, 2, 18);
+			this.AddElementFieldInfo("OrderEntity", "TotalAmount", typeof(System.Decimal), false, false, false, false,  (int)OrderFieldIndex.TotalAmount, 0, 2, 18);
+		}
+
+		/// <summary>Inits OrderItemEntity's info objects</summary>
+		private void InitOrderItemEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(OrderItemFieldIndex), "OrderItemEntity");
+			this.AddElementFieldInfo("OrderItemEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)OrderItemFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("OrderItemEntity", "OrderId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)OrderItemFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("OrderItemEntity", "ProductNameSnapshot", typeof(System.String), false, false, false, true,  (int)OrderItemFieldIndex.ProductNameSnapshot, 255, 0, 0);
+			this.AddElementFieldInfo("OrderItemEntity", "Quantity", typeof(System.Int32), false, false, false, false,  (int)OrderItemFieldIndex.Quantity, 0, 0, 10);
+			this.AddElementFieldInfo("OrderItemEntity", "UnitPrice", typeof(System.Decimal), false, false, false, false,  (int)OrderItemFieldIndex.UnitPrice, 0, 2, 18);
+			this.AddElementFieldInfo("OrderItemEntity", "VariantId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)OrderItemFieldIndex.VariantId, 0, 0, 0);
+		}
+
+		/// <summary>Inits ShippingTrackingEntity's info objects</summary>
+		private void InitShippingTrackingEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(ShippingTrackingFieldIndex), "ShippingTrackingEntity");
+			this.AddElementFieldInfo("ShippingTrackingEntity", "Description", typeof(System.String), false, false, false, true,  (int)ShippingTrackingFieldIndex.Description, 1073741824, 0, 0);
+			this.AddElementFieldInfo("ShippingTrackingEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ShippingTrackingFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("ShippingTrackingEntity", "Location", typeof(System.String), false, false, false, true,  (int)ShippingTrackingFieldIndex.Location, 255, 0, 0);
+			this.AddElementFieldInfo("ShippingTrackingEntity", "OrderId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ShippingTrackingFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("ShippingTrackingEntity", "Status", typeof(System.String), false, false, false, false,  (int)ShippingTrackingFieldIndex.Status, 50, 0, 0);
+			this.AddElementFieldInfo("ShippingTrackingEntity", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ShippingTrackingFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 
 		/// <summary>Inits TransactionEntity's info objects</summary>
@@ -363,121 +495,6 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("TransactionEntity", "Provider", typeof(System.String), false, false, false, true,  (int)TransactionFieldIndex.Provider, 20, 0, 0);
 			this.AddElementFieldInfo("TransactionEntity", "RawResponse", typeof(System.String), false, false, false, true,  (int)TransactionFieldIndex.RawResponse, 2147483647, 0, 0);
 			this.AddElementFieldInfo("TransactionEntity", "Status", typeof(System.String), false, false, false, true,  (int)TransactionFieldIndex.Status, 20, 0, 0);
-		}
-
-		/// <summary>Inits CartEntity's info objects</summary>
-		private void InitCartEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(CartFieldIndex), "CartEntity");
-			this.AddElementFieldInfo("CartEntity", "AddedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)CartFieldIndex.AddedAt, 0, 0, 0);
-			this.AddElementFieldInfo("CartEntity", "GameId", typeof(System.Guid), true, true, false, false,  (int)CartFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("CartEntity", "UserId", typeof(System.Guid), true, false, false, false,  (int)CartFieldIndex.UserId, 0, 0, 0);
-		}
-
-		/// <summary>Inits DiscountEntity's info objects</summary>
-		private void InitDiscountEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(DiscountFieldIndex), "DiscountEntity");
-			this.AddElementFieldInfo("DiscountEntity", "DiscountPercent", typeof(System.Int32), false, false, false, false,  (int)DiscountFieldIndex.DiscountPercent, 0, 0, 10);
-			this.AddElementFieldInfo("DiscountEntity", "EndDate", typeof(System.DateTime), false, false, false, false,  (int)DiscountFieldIndex.EndDate, 0, 0, 0);
-			this.AddElementFieldInfo("DiscountEntity", "GameId", typeof(System.Guid), false, true, false, false,  (int)DiscountFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("DiscountEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)DiscountFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("DiscountEntity", "StartDate", typeof(System.DateTime), false, false, false, false,  (int)DiscountFieldIndex.StartDate, 0, 0, 0);
-		}
-
-		/// <summary>Inits GameEntity's info objects</summary>
-		private void InitGameEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(GameFieldIndex), "GameEntity");
-			this.AddElementFieldInfo("GameEntity", "CoverImage", typeof(System.String), false, false, false, true,  (int)GameFieldIndex.CoverImage, 1073741824, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)GameFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "FullDescription", typeof(System.String), false, false, false, true,  (int)GameFieldIndex.FullDescription, 1073741824, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)GameFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "Price", typeof(System.Decimal), false, false, false, false,  (int)GameFieldIndex.Price, 0, 2, 10);
-			this.AddElementFieldInfo("GameEntity", "PublisherId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)GameFieldIndex.PublisherId, 0, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "ReleaseDate", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)GameFieldIndex.ReleaseDate, 0, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "ShortDescription", typeof(System.String), false, false, false, true,  (int)GameFieldIndex.ShortDescription, 500, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "Status", typeof(System.String), false, false, false, false,  (int)GameFieldIndex.Status, 20, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "Title", typeof(System.String), false, false, false, false,  (int)GameFieldIndex.Title, 150, 0, 0);
-			this.AddElementFieldInfo("GameEntity", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)GameFieldIndex.UpdatedAt, 0, 0, 0);
-		}
-
-		/// <summary>Inits GameTagEntity's info objects</summary>
-		private void InitGameTagEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(GameTagFieldIndex), "GameTagEntity");
-			this.AddElementFieldInfo("GameTagEntity", "GameId", typeof(System.Guid), true, true, false, false,  (int)GameTagFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("GameTagEntity", "TagId", typeof(System.Guid), true, true, false, false,  (int)GameTagFieldIndex.TagId, 0, 0, 0);
-		}
-
-		/// <summary>Inits OrderEntity's info objects</summary>
-		private void InitOrderEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(OrderFieldIndex), "OrderEntity");
-			this.AddElementFieldInfo("OrderEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)OrderFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("OrderEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)OrderFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("OrderEntity", "Status", typeof(System.String), false, false, false, false,  (int)OrderFieldIndex.Status, 20, 0, 0);
-			this.AddElementFieldInfo("OrderEntity", "TotalAmount", typeof(System.Decimal), false, false, false, false,  (int)OrderFieldIndex.TotalAmount, 0, 2, 10);
-			this.AddElementFieldInfo("OrderEntity", "UserId", typeof(System.Guid), false, false, false, false,  (int)OrderFieldIndex.UserId, 0, 0, 0);
-		}
-
-		/// <summary>Inits OrderItemEntity's info objects</summary>
-		private void InitOrderItemEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(OrderItemFieldIndex), "OrderItemEntity");
-			this.AddElementFieldInfo("OrderItemEntity", "GameId", typeof(System.Guid), true, true, false, false,  (int)OrderItemFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("OrderItemEntity", "OrderId", typeof(System.Guid), true, true, false, false,  (int)OrderItemFieldIndex.OrderId, 0, 0, 0);
-			this.AddElementFieldInfo("OrderItemEntity", "Price", typeof(System.Decimal), false, false, false, false,  (int)OrderItemFieldIndex.Price, 0, 2, 10);
-		}
-
-		/// <summary>Inits PublisherEntity's info objects</summary>
-		private void InitPublisherEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(PublisherFieldIndex), "PublisherEntity");
-			this.AddElementFieldInfo("PublisherEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)PublisherFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("PublisherEntity", "Description", typeof(System.String), false, false, false, true,  (int)PublisherFieldIndex.Description, 1073741824, 0, 0);
-			this.AddElementFieldInfo("PublisherEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)PublisherFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("PublisherEntity", "Name", typeof(System.String), false, false, false, false,  (int)PublisherFieldIndex.Name, 150, 0, 0);
-			this.AddElementFieldInfo("PublisherEntity", "Website", typeof(System.String), false, false, false, true,  (int)PublisherFieldIndex.Website, 1073741824, 0, 0);
-		}
-
-		/// <summary>Inits ReviewEntity's info objects</summary>
-		private void InitReviewEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(ReviewFieldIndex), "ReviewEntity");
-			this.AddElementFieldInfo("ReviewEntity", "Comment", typeof(System.String), false, false, false, true,  (int)ReviewFieldIndex.Comment, 1073741824, 0, 0);
-			this.AddElementFieldInfo("ReviewEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ReviewFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("ReviewEntity", "GameId", typeof(System.Guid), false, true, false, false,  (int)ReviewFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("ReviewEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ReviewFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("ReviewEntity", "Rating", typeof(System.Int32), false, false, false, false,  (int)ReviewFieldIndex.Rating, 0, 0, 10);
-			this.AddElementFieldInfo("ReviewEntity", "UserId", typeof(System.Guid), false, false, false, false,  (int)ReviewFieldIndex.UserId, 0, 0, 0);
-		}
-
-		/// <summary>Inits TagEntity's info objects</summary>
-		private void InitTagEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(TagFieldIndex), "TagEntity");
-			this.AddElementFieldInfo("TagEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)TagFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("TagEntity", "Name", typeof(System.String), false, false, false, false,  (int)TagFieldIndex.Name, 50, 0, 0);
-		}
-
-		/// <summary>Inits UserGameEntity's info objects</summary>
-		private void InitUserGameEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(UserGameFieldIndex), "UserGameEntity");
-			this.AddElementFieldInfo("UserGameEntity", "GameId", typeof(System.Guid), true, true, false, false,  (int)UserGameFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("UserGameEntity", "PlaytimeMinutes", typeof(Nullable<System.Int32>), false, false, false, true,  (int)UserGameFieldIndex.PlaytimeMinutes, 0, 0, 10);
-			this.AddElementFieldInfo("UserGameEntity", "PurchasedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)UserGameFieldIndex.PurchasedAt, 0, 0, 0);
-			this.AddElementFieldInfo("UserGameEntity", "UserId", typeof(System.Guid), true, false, false, false,  (int)UserGameFieldIndex.UserId, 0, 0, 0);
-		}
-
-		/// <summary>Inits WishlistEntity's info objects</summary>
-		private void InitWishlistEntityInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(WishlistFieldIndex), "WishlistEntity");
-			this.AddElementFieldInfo("WishlistEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)WishlistFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("WishlistEntity", "GameId", typeof(System.Guid), true, true, false, false,  (int)WishlistFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("WishlistEntity", "UserId", typeof(System.Guid), true, false, false, false,  (int)WishlistFieldIndex.UserId, 0, 0, 0);
 		}
 
 		/// <summary>Inits auditLoginAttemptView's info objects</summary>
@@ -528,6 +545,7 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("auth2RefreshTokenTypedView", "RevokedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)auth2RefreshTokenFieldIndex.RevokedAt, 0, 0, 0);
 			this.AddElementFieldInfo("auth2RefreshTokenTypedView", "CreatedAt", typeof(System.DateTime), false, false, true, false, (int)auth2RefreshTokenFieldIndex.CreatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("auth2RefreshTokenTypedView", "Revoked", typeof(System.Boolean), false, false, true, false, (int)auth2RefreshTokenFieldIndex.Revoked, 0, 0, 0);
+			this.AddElementFieldInfo("auth2RefreshTokenTypedView", "ReplacedByTokenId", typeof(Nullable<System.Guid>), false, false, true, false, (int)auth2RefreshTokenFieldIndex.ReplacedByTokenId, 0, 0, 0);
 		}
 
 		/// <summary>Inits auth2RoleView's info objects</summary>
@@ -562,6 +580,22 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("auth2UserTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)auth2UserFieldIndex.UpdatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("auth2UserTypedView", "FailedLoginCount", typeof(System.Int32), false, false, true, false, (int)auth2UserFieldIndex.FailedLoginCount, 0, 0, 10);
 			this.AddElementFieldInfo("auth2UserTypedView", "LockoutEnd", typeof(Nullable<System.DateTime>), false, false, true, false, (int)auth2UserFieldIndex.LockoutEnd, 0, 0, 0);
+		}
+
+		/// <summary>Inits auth2UserAddressView's info objects</summary>
+		private void Initauth2UserAddressTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(auth2UserAddressFieldIndex), "auth2UserAddressTypedView");
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)auth2UserAddressFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "UserId", typeof(Nullable<System.Guid>), false, false, true, false, (int)auth2UserAddressFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "FullName", typeof(System.String), false, false, true, false, (int)auth2UserAddressFieldIndex.FullName, 255, 0, 0);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "PhoneNumber", typeof(System.String), false, false, true, false, (int)auth2UserAddressFieldIndex.PhoneNumber, 20, 0, 0);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "ProvinceId", typeof(Nullable<System.Int32>), false, false, true, false, (int)auth2UserAddressFieldIndex.ProvinceId, 0, 0, 10);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "DistrictId", typeof(Nullable<System.Int32>), false, false, true, false, (int)auth2UserAddressFieldIndex.DistrictId, 0, 0, 10);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "WardId", typeof(Nullable<System.Int32>), false, false, true, false, (int)auth2UserAddressFieldIndex.WardId, 0, 0, 10);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "DetailedAddress", typeof(System.String), false, false, true, false, (int)auth2UserAddressFieldIndex.DetailedAddress, 1073741824, 0, 0);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "IsDefault", typeof(Nullable<System.Boolean>), false, false, true, false, (int)auth2UserAddressFieldIndex.IsDefault, 0, 0, 0);
+			this.AddElementFieldInfo("auth2UserAddressTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)auth2UserAddressFieldIndex.CreatedAt, 0, 0, 0);
 		}
 
 		/// <summary>Inits auth2UserRoleView's info objects</summary>
@@ -616,7 +650,6 @@ namespace DATN.HelperClasses
 		{
 			this.AddFieldIndexEnumForElementName(typeof(catalogProductFieldIndex), "catalogProductTypedView");
 			this.AddElementFieldInfo("catalogProductTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)catalogProductFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("catalogProductTypedView", "SellerId", typeof(Nullable<System.Guid>), false, false, true, false, (int)catalogProductFieldIndex.SellerId, 0, 0, 0);
 			this.AddElementFieldInfo("catalogProductTypedView", "CategoryId", typeof(Nullable<System.Guid>), false, false, true, false, (int)catalogProductFieldIndex.CategoryId, 0, 0, 0);
 			this.AddElementFieldInfo("catalogProductTypedView", "BrandId", typeof(Nullable<System.Guid>), false, false, true, false, (int)catalogProductFieldIndex.BrandId, 0, 0, 0);
 			this.AddElementFieldInfo("catalogProductTypedView", "Name", typeof(System.String), false, false, true, false, (int)catalogProductFieldIndex.Name, 255, 0, 0);
@@ -629,6 +662,7 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("catalogProductTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)catalogProductFieldIndex.CreatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("catalogProductTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)catalogProductFieldIndex.UpdatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("catalogProductTypedView", "Sku", typeof(System.String), false, false, true, false, (int)catalogProductFieldIndex.Sku, 100, 0, 0);
+			this.AddElementFieldInfo("catalogProductTypedView", "ShopId", typeof(Nullable<System.Guid>), false, false, true, false, (int)catalogProductFieldIndex.ShopId, 0, 0, 0);
 		}
 
 		/// <summary>Inits catalogProductImageView's info objects</summary>
@@ -651,9 +685,52 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "Sku", typeof(System.String), false, false, true, false, (int)catalogProductVariantFieldIndex.Sku, 50, 0, 0);
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "Name", typeof(System.String), false, false, true, false, (int)catalogProductVariantFieldIndex.Name, 255, 0, 0);
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "Price", typeof(System.Decimal), false, false, true, false, (int)catalogProductVariantFieldIndex.Price, 0, 2, 18);
-			this.AddElementFieldInfo("catalogProductVariantTypedView", "StockQuantity", typeof(Nullable<System.Int32>), false, false, true, false, (int)catalogProductVariantFieldIndex.StockQuantity, 0, 0, 10);
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "VariantAttributes", typeof(System.String), false, false, true, false, (int)catalogProductVariantFieldIndex.VariantAttributes, 2147483647, 0, 0);
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "ImageUrl", typeof(System.String), false, false, true, false, (int)catalogProductVariantFieldIndex.ImageUrl, 1073741824, 0, 0);
+		}
+
+		/// <summary>Inits catalogShopView's info objects</summary>
+		private void InitcatalogShopTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(catalogShopFieldIndex), "catalogShopTypedView");
+			this.AddElementFieldInfo("catalogShopTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)catalogShopFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "OwnerId", typeof(Nullable<System.Guid>), false, false, true, false, (int)catalogShopFieldIndex.OwnerId, 0, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "Name", typeof(System.String), false, false, true, false, (int)catalogShopFieldIndex.Name, 255, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "Slug", typeof(System.String), false, false, true, false, (int)catalogShopFieldIndex.Slug, 255, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "Description", typeof(System.String), false, false, true, false, (int)catalogShopFieldIndex.Description, 1073741824, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "LogoUrl", typeof(System.String), false, false, true, false, (int)catalogShopFieldIndex.LogoUrl, 1073741824, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "CoverUrl", typeof(System.String), false, false, true, false, (int)catalogShopFieldIndex.CoverUrl, 1073741824, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "Rating", typeof(Nullable<System.Decimal>), false, false, true, false, (int)catalogShopFieldIndex.Rating, 0, 2, 3);
+			this.AddElementFieldInfo("catalogShopTypedView", "IsActive", typeof(Nullable<System.Boolean>), false, false, true, false, (int)catalogShopFieldIndex.IsActive, 0, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)catalogShopFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "ProvinceId", typeof(Nullable<System.Int32>), false, false, true, false, (int)catalogShopFieldIndex.ProvinceId, 0, 0, 10);
+			this.AddElementFieldInfo("catalogShopTypedView", "DistrictId", typeof(Nullable<System.Int32>), false, false, true, false, (int)catalogShopFieldIndex.DistrictId, 0, 0, 10);
+			this.AddElementFieldInfo("catalogShopTypedView", "WardId", typeof(Nullable<System.Int32>), false, false, true, false, (int)catalogShopFieldIndex.WardId, 0, 0, 10);
+			this.AddElementFieldInfo("catalogShopTypedView", "PickupAddress", typeof(System.String), false, false, true, false, (int)catalogShopFieldIndex.PickupAddress, 1073741824, 0, 0);
+		}
+
+		/// <summary>Inits engagementChatBoxView's info objects</summary>
+		private void InitengagementChatBoxTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(engagementChatBoxFieldIndex), "engagementChatBoxTypedView");
+			this.AddElementFieldInfo("engagementChatBoxTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)engagementChatBoxFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("engagementChatBoxTypedView", "UserId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementChatBoxFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementChatBoxTypedView", "ShopId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementChatBoxFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementChatBoxTypedView", "LastMessage", typeof(System.String), false, false, true, false, (int)engagementChatBoxFieldIndex.LastMessage, 1073741824, 0, 0);
+			this.AddElementFieldInfo("engagementChatBoxTypedView", "LastActivity", typeof(Nullable<System.DateTime>), false, false, true, false, (int)engagementChatBoxFieldIndex.LastActivity, 0, 0, 0);
+		}
+
+		/// <summary>Inits engagementChatMessageView's info objects</summary>
+		private void InitengagementChatMessageTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(engagementChatMessageFieldIndex), "engagementChatMessageTypedView");
+			this.AddElementFieldInfo("engagementChatMessageTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)engagementChatMessageFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("engagementChatMessageTypedView", "RoomId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementChatMessageFieldIndex.RoomId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementChatMessageTypedView", "SenderId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementChatMessageFieldIndex.SenderId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementChatMessageTypedView", "Content", typeof(System.String), false, false, true, false, (int)engagementChatMessageFieldIndex.Content, 1073741824, 0, 0);
+			this.AddElementFieldInfo("engagementChatMessageTypedView", "MessageType", typeof(System.String), false, false, true, false, (int)engagementChatMessageFieldIndex.MessageType, 20, 0, 0);
+			this.AddElementFieldInfo("engagementChatMessageTypedView", "IsRead", typeof(Nullable<System.Boolean>), false, false, true, false, (int)engagementChatMessageFieldIndex.IsRead, 0, 0, 0);
+			this.AddElementFieldInfo("engagementChatMessageTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)engagementChatMessageFieldIndex.CreatedAt, 0, 0, 0);
 		}
 
 		/// <summary>Inits engagementNotificationView's info objects</summary>
@@ -670,58 +747,133 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("engagementNotificationTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)engagementNotificationFieldIndex.CreatedAt, 0, 0, 0);
 		}
 
-		/// <summary>Inits engagementReview1View's info objects</summary>
-		private void InitengagementReview1TypedViewInfo()
+		/// <summary>Inits engagementReviewView's info objects</summary>
+		private void InitengagementReviewTypedViewInfo()
 		{
-			this.AddFieldIndexEnumForElementName(typeof(engagementReview1FieldIndex), "engagementReview1TypedView");
-			this.AddElementFieldInfo("engagementReview1TypedView", "Id", typeof(System.Guid), false, false, true, false, (int)engagementReview1FieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("engagementReview1TypedView", "OrderId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementReview1FieldIndex.OrderId, 0, 0, 0);
-			this.AddElementFieldInfo("engagementReview1TypedView", "VariantId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementReview1FieldIndex.VariantId, 0, 0, 0);
-			this.AddElementFieldInfo("engagementReview1TypedView", "UserId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementReview1FieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("engagementReview1TypedView", "Rating", typeof(Nullable<System.Int32>), false, false, true, false, (int)engagementReview1FieldIndex.Rating, 0, 0, 10);
-			this.AddElementFieldInfo("engagementReview1TypedView", "Comment", typeof(System.String), false, false, true, false, (int)engagementReview1FieldIndex.Comment, 1073741824, 0, 0);
-			this.AddElementFieldInfo("engagementReview1TypedView", "Images", typeof(System.String), false, false, true, false, (int)engagementReview1FieldIndex.Images, 2147483647, 0, 0);
-			this.AddElementFieldInfo("engagementReview1TypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)engagementReview1FieldIndex.CreatedAt, 0, 0, 0);
+			this.AddFieldIndexEnumForElementName(typeof(engagementReviewFieldIndex), "engagementReviewTypedView");
+			this.AddElementFieldInfo("engagementReviewTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)engagementReviewFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("engagementReviewTypedView", "OrderId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementReviewFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementReviewTypedView", "VariantId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementReviewFieldIndex.VariantId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementReviewTypedView", "UserId", typeof(Nullable<System.Guid>), false, false, true, false, (int)engagementReviewFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementReviewTypedView", "Rating", typeof(Nullable<System.Int32>), false, false, true, false, (int)engagementReviewFieldIndex.Rating, 0, 0, 10);
+			this.AddElementFieldInfo("engagementReviewTypedView", "Comment", typeof(System.String), false, false, true, false, (int)engagementReviewFieldIndex.Comment, 1073741824, 0, 0);
+			this.AddElementFieldInfo("engagementReviewTypedView", "Images", typeof(System.String), false, false, true, false, (int)engagementReviewFieldIndex.Images, 2147483647, 0, 0);
+			this.AddElementFieldInfo("engagementReviewTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)engagementReviewFieldIndex.CreatedAt, 0, 0, 0);
 		}
 
-		/// <summary>Inits salesCart1View's info objects</summary>
-		private void InitsalesCart1TypedViewInfo()
+		/// <summary>Inits engagementWishlistView's info objects</summary>
+		private void InitengagementWishlistTypedViewInfo()
 		{
-			this.AddFieldIndexEnumForElementName(typeof(salesCart1FieldIndex), "salesCart1TypedView");
-			this.AddElementFieldInfo("salesCart1TypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesCart1FieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("salesCart1TypedView", "UserId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesCart1FieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("salesCart1TypedView", "VariantId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesCart1FieldIndex.VariantId, 0, 0, 0);
-			this.AddElementFieldInfo("salesCart1TypedView", "Quantity", typeof(System.Int32), false, false, true, false, (int)salesCart1FieldIndex.Quantity, 0, 0, 10);
-			this.AddElementFieldInfo("salesCart1TypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesCart1FieldIndex.CreatedAt, 0, 0, 0);
+			this.AddFieldIndexEnumForElementName(typeof(engagementWishlistFieldIndex), "engagementWishlistTypedView");
+			this.AddElementFieldInfo("engagementWishlistTypedView", "UserId", typeof(System.Guid), false, false, true, false, (int)engagementWishlistFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementWishlistTypedView", "ProductId", typeof(System.Guid), false, false, true, false, (int)engagementWishlistFieldIndex.ProductId, 0, 0, 0);
+			this.AddElementFieldInfo("engagementWishlistTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)engagementWishlistFieldIndex.CreatedAt, 0, 0, 0);
 		}
 
-		/// <summary>Inits salesOrder1View's info objects</summary>
-		private void InitsalesOrder1TypedViewInfo()
+		/// <summary>Inits inventoryStockView's info objects</summary>
+		private void InitinventoryStockTypedViewInfo()
 		{
-			this.AddFieldIndexEnumForElementName(typeof(salesOrder1FieldIndex), "salesOrder1TypedView");
-			this.AddElementFieldInfo("salesOrder1TypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesOrder1FieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrder1TypedView", "BuyerId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesOrder1FieldIndex.BuyerId, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrder1TypedView", "OrderCode", typeof(System.String), false, false, true, false, (int)salesOrder1FieldIndex.OrderCode, 20, 0, 0);
-			this.AddElementFieldInfo("salesOrder1TypedView", "TotalAmount", typeof(System.Decimal), false, false, true, false, (int)salesOrder1FieldIndex.TotalAmount, 0, 2, 18);
-			this.AddElementFieldInfo("salesOrder1TypedView", "ShippingFee", typeof(Nullable<System.Decimal>), false, false, true, false, (int)salesOrder1FieldIndex.ShippingFee, 0, 2, 18);
-			this.AddElementFieldInfo("salesOrder1TypedView", "PaymentMethod", typeof(System.String), false, false, true, false, (int)salesOrder1FieldIndex.PaymentMethod, 20, 0, 0);
-			this.AddElementFieldInfo("salesOrder1TypedView", "PaymentStatus", typeof(System.String), false, false, true, false, (int)salesOrder1FieldIndex.PaymentStatus, 20, 0, 0);
-			this.AddElementFieldInfo("salesOrder1TypedView", "OrderStatus", typeof(System.String), false, false, true, false, (int)salesOrder1FieldIndex.OrderStatus, 20, 0, 0);
-			this.AddElementFieldInfo("salesOrder1TypedView", "ShippingAddress", typeof(System.String), false, false, true, false, (int)salesOrder1FieldIndex.ShippingAddress, 1073741824, 0, 0);
-			this.AddElementFieldInfo("salesOrder1TypedView", "CustomerNote", typeof(System.String), false, false, true, false, (int)salesOrder1FieldIndex.CustomerNote, 1073741824, 0, 0);
-			this.AddElementFieldInfo("salesOrder1TypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesOrder1FieldIndex.CreatedAt, 0, 0, 0);
+			this.AddFieldIndexEnumForElementName(typeof(inventoryStockFieldIndex), "inventoryStockTypedView");
+			this.AddElementFieldInfo("inventoryStockTypedView", "VariantId", typeof(System.Guid), false, false, true, false, (int)inventoryStockFieldIndex.VariantId, 0, 0, 0);
+			this.AddElementFieldInfo("inventoryStockTypedView", "PhysicalQuantity", typeof(System.Int32), false, false, true, false, (int)inventoryStockFieldIndex.PhysicalQuantity, 0, 0, 10);
+			this.AddElementFieldInfo("inventoryStockTypedView", "ReservedQuantity", typeof(System.Int32), false, false, true, false, (int)inventoryStockFieldIndex.ReservedQuantity, 0, 0, 10);
+			this.AddElementFieldInfo("inventoryStockTypedView", "AvailableQuantity", typeof(Nullable<System.Int32>), false, false, true, false, (int)inventoryStockFieldIndex.AvailableQuantity, 0, 0, 10);
+			this.AddElementFieldInfo("inventoryStockTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)inventoryStockFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 
-		/// <summary>Inits salesOrderItem1View's info objects</summary>
-		private void InitsalesOrderItem1TypedViewInfo()
+		/// <summary>Inits inventoryStockTransactionView's info objects</summary>
+		private void InitinventoryStockTransactionTypedViewInfo()
 		{
-			this.AddFieldIndexEnumForElementName(typeof(salesOrderItem1FieldIndex), "salesOrderItem1TypedView");
-			this.AddElementFieldInfo("salesOrderItem1TypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesOrderItem1FieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrderItem1TypedView", "OrderId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesOrderItem1FieldIndex.OrderId, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrderItem1TypedView", "VariantId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesOrderItem1FieldIndex.VariantId, 0, 0, 0);
-			this.AddElementFieldInfo("salesOrderItem1TypedView", "Quantity", typeof(System.Int32), false, false, true, false, (int)salesOrderItem1FieldIndex.Quantity, 0, 0, 10);
-			this.AddElementFieldInfo("salesOrderItem1TypedView", "UnitPrice", typeof(System.Decimal), false, false, true, false, (int)salesOrderItem1FieldIndex.UnitPrice, 0, 2, 18);
-			this.AddElementFieldInfo("salesOrderItem1TypedView", "ProductNameSnapshot", typeof(System.String), false, false, true, false, (int)salesOrderItem1FieldIndex.ProductNameSnapshot, 255, 0, 0);
+			this.AddFieldIndexEnumForElementName(typeof(inventoryStockTransactionFieldIndex), "inventoryStockTransactionTypedView");
+			this.AddElementFieldInfo("inventoryStockTransactionTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)inventoryStockTransactionFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("inventoryStockTransactionTypedView", "VariantId", typeof(Nullable<System.Guid>), false, false, true, false, (int)inventoryStockTransactionFieldIndex.VariantId, 0, 0, 0);
+			this.AddElementFieldInfo("inventoryStockTransactionTypedView", "ShopId", typeof(Nullable<System.Guid>), false, false, true, false, (int)inventoryStockTransactionFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("inventoryStockTransactionTypedView", "TransactionType", typeof(System.String), false, false, true, false, (int)inventoryStockTransactionFieldIndex.TransactionType, 20, 0, 0);
+			this.AddElementFieldInfo("inventoryStockTransactionTypedView", "Quantity", typeof(System.Int32), false, false, true, false, (int)inventoryStockTransactionFieldIndex.Quantity, 0, 0, 10);
+			this.AddElementFieldInfo("inventoryStockTransactionTypedView", "ReferenceId", typeof(Nullable<System.Guid>), false, false, true, false, (int)inventoryStockTransactionFieldIndex.ReferenceId, 0, 0, 0);
+			this.AddElementFieldInfo("inventoryStockTransactionTypedView", "Note", typeof(System.String), false, false, true, false, (int)inventoryStockTransactionFieldIndex.Note, 1073741824, 0, 0);
+			this.AddElementFieldInfo("inventoryStockTransactionTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)inventoryStockTransactionFieldIndex.CreatedAt, 0, 0, 0);
+		}
+
+		/// <summary>Inits marketingUserVoucherView's info objects</summary>
+		private void InitmarketingUserVoucherTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(marketingUserVoucherFieldIndex), "marketingUserVoucherTypedView");
+			this.AddElementFieldInfo("marketingUserVoucherTypedView", "UserId", typeof(System.Guid), false, false, true, false, (int)marketingUserVoucherFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("marketingUserVoucherTypedView", "VoucherId", typeof(System.Guid), false, false, true, false, (int)marketingUserVoucherFieldIndex.VoucherId, 0, 0, 0);
+			this.AddElementFieldInfo("marketingUserVoucherTypedView", "IsUsed", typeof(Nullable<System.Boolean>), false, false, true, false, (int)marketingUserVoucherFieldIndex.IsUsed, 0, 0, 0);
+			this.AddElementFieldInfo("marketingUserVoucherTypedView", "SavedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)marketingUserVoucherFieldIndex.SavedAt, 0, 0, 0);
+		}
+
+		/// <summary>Inits marketingVoucherView's info objects</summary>
+		private void InitmarketingVoucherTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(marketingVoucherFieldIndex), "marketingVoucherTypedView");
+			this.AddElementFieldInfo("marketingVoucherTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)marketingVoucherFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "ShopId", typeof(Nullable<System.Guid>), false, false, true, false, (int)marketingVoucherFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "Code", typeof(System.String), false, false, true, false, (int)marketingVoucherFieldIndex.Code, 50, 0, 0);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "Name", typeof(System.String), false, false, true, false, (int)marketingVoucherFieldIndex.Name, 255, 0, 0);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "DiscountType", typeof(System.String), false, false, true, false, (int)marketingVoucherFieldIndex.DiscountType, 20, 0, 0);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "DiscountValue", typeof(System.Decimal), false, false, true, false, (int)marketingVoucherFieldIndex.DiscountValue, 0, 2, 18);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "MinOrderValue", typeof(Nullable<System.Decimal>), false, false, true, false, (int)marketingVoucherFieldIndex.MinOrderValue, 0, 2, 18);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "MaxDiscountValue", typeof(Nullable<System.Decimal>), false, false, true, false, (int)marketingVoucherFieldIndex.MaxDiscountValue, 0, 2, 18);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "UsageLimit", typeof(System.Int32), false, false, true, false, (int)marketingVoucherFieldIndex.UsageLimit, 0, 0, 10);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "UsedCount", typeof(Nullable<System.Int32>), false, false, true, false, (int)marketingVoucherFieldIndex.UsedCount, 0, 0, 10);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "StartDate", typeof(System.DateTime), false, false, true, false, (int)marketingVoucherFieldIndex.StartDate, 0, 0, 0);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "EndDate", typeof(System.DateTime), false, false, true, false, (int)marketingVoucherFieldIndex.EndDate, 0, 0, 0);
+			this.AddElementFieldInfo("marketingVoucherTypedView", "IsActive", typeof(Nullable<System.Boolean>), false, false, true, false, (int)marketingVoucherFieldIndex.IsActive, 0, 0, 0);
+		}
+
+		/// <summary>Inits salesCartView's info objects</summary>
+		private void InitsalesCartTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(salesCartFieldIndex), "salesCartTypedView");
+			this.AddElementFieldInfo("salesCartTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesCartFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("salesCartTypedView", "UserId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesCartFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("salesCartTypedView", "VariantId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesCartFieldIndex.VariantId, 0, 0, 0);
+			this.AddElementFieldInfo("salesCartTypedView", "Quantity", typeof(System.Int32), false, false, true, false, (int)salesCartFieldIndex.Quantity, 0, 0, 10);
+			this.AddElementFieldInfo("salesCartTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesCartFieldIndex.CreatedAt, 0, 0, 0);
+		}
+
+		/// <summary>Inits salesOrderView's info objects</summary>
+		private void InitsalesOrderTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(salesOrderFieldIndex), "salesOrderTypedView");
+			this.AddElementFieldInfo("salesOrderTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesOrderFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "BuyerId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesOrderFieldIndex.BuyerId, 0, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "OrderCode", typeof(System.String), false, false, true, false, (int)salesOrderFieldIndex.OrderCode, 20, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "TotalAmount", typeof(System.Decimal), false, false, true, false, (int)salesOrderFieldIndex.TotalAmount, 0, 2, 18);
+			this.AddElementFieldInfo("salesOrderTypedView", "ShippingFee", typeof(Nullable<System.Decimal>), false, false, true, false, (int)salesOrderFieldIndex.ShippingFee, 0, 2, 18);
+			this.AddElementFieldInfo("salesOrderTypedView", "PaymentMethod", typeof(System.String), false, false, true, false, (int)salesOrderFieldIndex.PaymentMethod, 20, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "PaymentStatus", typeof(System.String), false, false, true, false, (int)salesOrderFieldIndex.PaymentStatus, 20, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "OrderStatus", typeof(System.String), false, false, true, false, (int)salesOrderFieldIndex.OrderStatus, 20, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "ShippingAddress", typeof(System.String), false, false, true, false, (int)salesOrderFieldIndex.ShippingAddress, 1073741824, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "CustomerNote", typeof(System.String), false, false, true, false, (int)salesOrderFieldIndex.CustomerNote, 1073741824, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesOrderFieldIndex.CreatedAt, 0, 0, 0);
+		}
+
+		/// <summary>Inits salesOrderItemView's info objects</summary>
+		private void InitsalesOrderItemTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(salesOrderItemFieldIndex), "salesOrderItemTypedView");
+			this.AddElementFieldInfo("salesOrderItemTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesOrderItemFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("salesOrderItemTypedView", "OrderId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesOrderItemFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("salesOrderItemTypedView", "VariantId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesOrderItemFieldIndex.VariantId, 0, 0, 0);
+			this.AddElementFieldInfo("salesOrderItemTypedView", "Quantity", typeof(System.Int32), false, false, true, false, (int)salesOrderItemFieldIndex.Quantity, 0, 0, 10);
+			this.AddElementFieldInfo("salesOrderItemTypedView", "UnitPrice", typeof(System.Decimal), false, false, true, false, (int)salesOrderItemFieldIndex.UnitPrice, 0, 2, 18);
+			this.AddElementFieldInfo("salesOrderItemTypedView", "ProductNameSnapshot", typeof(System.String), false, false, true, false, (int)salesOrderItemFieldIndex.ProductNameSnapshot, 255, 0, 0);
+		}
+
+		/// <summary>Inits salesShippingTrackingView's info objects</summary>
+		private void InitsalesShippingTrackingTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(salesShippingTrackingFieldIndex), "salesShippingTrackingTypedView");
+			this.AddElementFieldInfo("salesShippingTrackingTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesShippingTrackingFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("salesShippingTrackingTypedView", "OrderId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesShippingTrackingFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("salesShippingTrackingTypedView", "Status", typeof(System.String), false, false, true, false, (int)salesShippingTrackingFieldIndex.Status, 50, 0, 0);
+			this.AddElementFieldInfo("salesShippingTrackingTypedView", "Location", typeof(System.String), false, false, true, false, (int)salesShippingTrackingFieldIndex.Location, 255, 0, 0);
+			this.AddElementFieldInfo("salesShippingTrackingTypedView", "Description", typeof(System.String), false, false, true, false, (int)salesShippingTrackingFieldIndex.Description, 1073741824, 0, 0);
+			this.AddElementFieldInfo("salesShippingTrackingTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesShippingTrackingFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 
 		/// <summary>Inits salesTransactionView's info objects</summary>
@@ -736,121 +888,6 @@ namespace DATN.HelperClasses
 			this.AddElementFieldInfo("salesTransactionTypedView", "Status", typeof(System.String), false, false, true, false, (int)salesTransactionFieldIndex.Status, 20, 0, 0);
 			this.AddElementFieldInfo("salesTransactionTypedView", "RawResponse", typeof(System.String), false, false, true, false, (int)salesTransactionFieldIndex.RawResponse, 2147483647, 0, 0);
 			this.AddElementFieldInfo("salesTransactionTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesTransactionFieldIndex.CreatedAt, 0, 0, 0);
-		}
-
-		/// <summary>Inits storeCartView's info objects</summary>
-		private void InitstoreCartTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeCartFieldIndex), "storeCartTypedView");
-			this.AddElementFieldInfo("storeCartTypedView", "UserId", typeof(System.Guid), false, false, true, false, (int)storeCartFieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("storeCartTypedView", "GameId", typeof(System.Guid), false, false, true, false, (int)storeCartFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("storeCartTypedView", "AddedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storeCartFieldIndex.AddedAt, 0, 0, 0);
-		}
-
-		/// <summary>Inits storeDiscountView's info objects</summary>
-		private void InitstoreDiscountTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeDiscountFieldIndex), "storeDiscountTypedView");
-			this.AddElementFieldInfo("storeDiscountTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)storeDiscountFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("storeDiscountTypedView", "GameId", typeof(System.Guid), false, false, true, false, (int)storeDiscountFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("storeDiscountTypedView", "DiscountPercent", typeof(System.Int32), false, false, true, false, (int)storeDiscountFieldIndex.DiscountPercent, 0, 0, 10);
-			this.AddElementFieldInfo("storeDiscountTypedView", "StartDate", typeof(System.DateTime), false, false, true, false, (int)storeDiscountFieldIndex.StartDate, 0, 0, 0);
-			this.AddElementFieldInfo("storeDiscountTypedView", "EndDate", typeof(System.DateTime), false, false, true, false, (int)storeDiscountFieldIndex.EndDate, 0, 0, 0);
-		}
-
-		/// <summary>Inits storeGameView's info objects</summary>
-		private void InitstoreGameTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeGameFieldIndex), "storeGameTypedView");
-			this.AddElementFieldInfo("storeGameTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)storeGameFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "Title", typeof(System.String), false, false, true, false, (int)storeGameFieldIndex.Title, 150, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "ShortDescription", typeof(System.String), false, false, true, false, (int)storeGameFieldIndex.ShortDescription, 500, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "FullDescription", typeof(System.String), false, false, true, false, (int)storeGameFieldIndex.FullDescription, 1073741824, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "Price", typeof(System.Decimal), false, false, true, false, (int)storeGameFieldIndex.Price, 0, 2, 10);
-			this.AddElementFieldInfo("storeGameTypedView", "ReleaseDate", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storeGameFieldIndex.ReleaseDate, 0, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "PublisherId", typeof(Nullable<System.Guid>), false, false, true, false, (int)storeGameFieldIndex.PublisherId, 0, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "CoverImage", typeof(System.String), false, false, true, false, (int)storeGameFieldIndex.CoverImage, 1073741824, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "Status", typeof(System.String), false, false, true, false, (int)storeGameFieldIndex.Status, 20, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storeGameFieldIndex.CreatedAt, 0, 0, 0);
-			this.AddElementFieldInfo("storeGameTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storeGameFieldIndex.UpdatedAt, 0, 0, 0);
-		}
-
-		/// <summary>Inits storeGameTagView's info objects</summary>
-		private void InitstoreGameTagTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeGameTagFieldIndex), "storeGameTagTypedView");
-			this.AddElementFieldInfo("storeGameTagTypedView", "GameId", typeof(System.Guid), false, false, true, false, (int)storeGameTagFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("storeGameTagTypedView", "TagId", typeof(System.Guid), false, false, true, false, (int)storeGameTagFieldIndex.TagId, 0, 0, 0);
-		}
-
-		/// <summary>Inits storeOrderView's info objects</summary>
-		private void InitstoreOrderTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeOrderFieldIndex), "storeOrderTypedView");
-			this.AddElementFieldInfo("storeOrderTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)storeOrderFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("storeOrderTypedView", "UserId", typeof(System.Guid), false, false, true, false, (int)storeOrderFieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("storeOrderTypedView", "TotalAmount", typeof(System.Decimal), false, false, true, false, (int)storeOrderFieldIndex.TotalAmount, 0, 2, 10);
-			this.AddElementFieldInfo("storeOrderTypedView", "Status", typeof(System.String), false, false, true, false, (int)storeOrderFieldIndex.Status, 20, 0, 0);
-			this.AddElementFieldInfo("storeOrderTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storeOrderFieldIndex.CreatedAt, 0, 0, 0);
-		}
-
-		/// <summary>Inits storeOrderItemView's info objects</summary>
-		private void InitstoreOrderItemTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeOrderItemFieldIndex), "storeOrderItemTypedView");
-			this.AddElementFieldInfo("storeOrderItemTypedView", "OrderId", typeof(System.Guid), false, false, true, false, (int)storeOrderItemFieldIndex.OrderId, 0, 0, 0);
-			this.AddElementFieldInfo("storeOrderItemTypedView", "GameId", typeof(System.Guid), false, false, true, false, (int)storeOrderItemFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("storeOrderItemTypedView", "Price", typeof(System.Decimal), false, false, true, false, (int)storeOrderItemFieldIndex.Price, 0, 2, 10);
-		}
-
-		/// <summary>Inits storePublisherView's info objects</summary>
-		private void InitstorePublisherTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storePublisherFieldIndex), "storePublisherTypedView");
-			this.AddElementFieldInfo("storePublisherTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)storePublisherFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("storePublisherTypedView", "Name", typeof(System.String), false, false, true, false, (int)storePublisherFieldIndex.Name, 150, 0, 0);
-			this.AddElementFieldInfo("storePublisherTypedView", "Description", typeof(System.String), false, false, true, false, (int)storePublisherFieldIndex.Description, 1073741824, 0, 0);
-			this.AddElementFieldInfo("storePublisherTypedView", "Website", typeof(System.String), false, false, true, false, (int)storePublisherFieldIndex.Website, 1073741824, 0, 0);
-			this.AddElementFieldInfo("storePublisherTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storePublisherFieldIndex.CreatedAt, 0, 0, 0);
-		}
-
-		/// <summary>Inits storeReviewView's info objects</summary>
-		private void InitstoreReviewTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeReviewFieldIndex), "storeReviewTypedView");
-			this.AddElementFieldInfo("storeReviewTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)storeReviewFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("storeReviewTypedView", "UserId", typeof(System.Guid), false, false, true, false, (int)storeReviewFieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("storeReviewTypedView", "GameId", typeof(System.Guid), false, false, true, false, (int)storeReviewFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("storeReviewTypedView", "Rating", typeof(System.Int32), false, false, true, false, (int)storeReviewFieldIndex.Rating, 0, 0, 10);
-			this.AddElementFieldInfo("storeReviewTypedView", "Comment", typeof(System.String), false, false, true, false, (int)storeReviewFieldIndex.Comment, 1073741824, 0, 0);
-			this.AddElementFieldInfo("storeReviewTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storeReviewFieldIndex.CreatedAt, 0, 0, 0);
-		}
-
-		/// <summary>Inits storeTagView's info objects</summary>
-		private void InitstoreTagTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeTagFieldIndex), "storeTagTypedView");
-			this.AddElementFieldInfo("storeTagTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)storeTagFieldIndex.Id, 0, 0, 0);
-			this.AddElementFieldInfo("storeTagTypedView", "Name", typeof(System.String), false, false, true, false, (int)storeTagFieldIndex.Name, 50, 0, 0);
-		}
-
-		/// <summary>Inits storeUserGameView's info objects</summary>
-		private void InitstoreUserGameTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeUserGameFieldIndex), "storeUserGameTypedView");
-			this.AddElementFieldInfo("storeUserGameTypedView", "UserId", typeof(System.Guid), false, false, true, false, (int)storeUserGameFieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("storeUserGameTypedView", "GameId", typeof(System.Guid), false, false, true, false, (int)storeUserGameFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("storeUserGameTypedView", "PurchasedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storeUserGameFieldIndex.PurchasedAt, 0, 0, 0);
-			this.AddElementFieldInfo("storeUserGameTypedView", "PlaytimeMinutes", typeof(Nullable<System.Int32>), false, false, true, false, (int)storeUserGameFieldIndex.PlaytimeMinutes, 0, 0, 10);
-		}
-
-		/// <summary>Inits storeWishlistView's info objects</summary>
-		private void InitstoreWishlistTypedViewInfo()
-		{
-			this.AddFieldIndexEnumForElementName(typeof(storeWishlistFieldIndex), "storeWishlistTypedView");
-			this.AddElementFieldInfo("storeWishlistTypedView", "UserId", typeof(System.Guid), false, false, true, false, (int)storeWishlistFieldIndex.UserId, 0, 0, 0);
-			this.AddElementFieldInfo("storeWishlistTypedView", "GameId", typeof(System.Guid), false, false, true, false, (int)storeWishlistFieldIndex.GameId, 0, 0, 0);
-			this.AddElementFieldInfo("storeWishlistTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)storeWishlistFieldIndex.CreatedAt, 0, 0, 0);
 		}
 	}
 }

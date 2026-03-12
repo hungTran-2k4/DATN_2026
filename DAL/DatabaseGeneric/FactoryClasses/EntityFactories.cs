@@ -7,12 +7,12 @@
 //////////////////////////////////////////////////////////////
 using System;
 using System.Collections.Generic;
-using DATN.EntityClasses;
-using DATN.HelperClasses;
-using DATN.RelationClasses;
+using DATN_2026.EntityClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.RelationClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.FactoryClasses
+namespace DATN_2026.FactoryClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -28,7 +28,7 @@ namespace DATN.FactoryClasses
 		/// <param name="entityName">Name of the entity.</param>
 		/// <param name="typeOfEntity">The type of entity.</param>
 		/// <param name="isInHierarchy">If true, the entity of this factory is in an inheritance hierarchy, false otherwise</param>
-		public EntityFactoryBase2(string entityName, DATN.EntityType typeOfEntity, bool isInHierarchy) : base(entityName, (int)typeOfEntity)
+		public EntityFactoryBase2(string entityName, DATN_2026.EntityType typeOfEntity, bool isInHierarchy) : base(entityName, (int)typeOfEntity)
 		{
 			_isInHierarchy = isInHierarchy;
 		}
@@ -37,7 +37,7 @@ namespace DATN.FactoryClasses
 		public override IEntityFields2 CreateFields() { return ModelInfoProviderSingleton.GetInstance().GetEntityFields(this.ForEntityName); }
 		
 		/// <inheritdoc/>
-		public override IEntity2 CreateEntityFromEntityTypeValue(int entityTypeValue) {	return GeneralEntityFactory.Create((DATN.EntityType)entityTypeValue); }
+		public override IEntity2 CreateEntityFromEntityTypeValue(int entityTypeValue) {	return GeneralEntityFactory.Create((DATN_2026.EntityType)entityTypeValue); }
 
 		/// <inheritdoc/>
 		public override IRelationCollection CreateHierarchyRelations(string objectAlias) { return ModelInfoProviderSingleton.GetInstance().GetHierarchyRelations(this.ForEntityName, objectAlias); }
@@ -69,7 +69,7 @@ namespace DATN.FactoryClasses
 	public partial class LoginAttemptEntityFactory : EntityFactoryBase2<LoginAttemptEntity> 
 	{
 		/// <summary>CTor</summary>
-		public LoginAttemptEntityFactory() : base("LoginAttemptEntity", DATN.EntityType.LoginAttemptEntity, false) { }
+		public LoginAttemptEntityFactory() : base("LoginAttemptEntity", DATN_2026.EntityType.LoginAttemptEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new LoginAttemptEntity(fields); }
 	}
@@ -79,7 +79,7 @@ namespace DATN.FactoryClasses
 	public partial class UserAuditLogEntityFactory : EntityFactoryBase2<UserAuditLogEntity> 
 	{
 		/// <summary>CTor</summary>
-		public UserAuditLogEntityFactory() : base("UserAuditLogEntity", DATN.EntityType.UserAuditLogEntity, false) { }
+		public UserAuditLogEntityFactory() : base("UserAuditLogEntity", DATN_2026.EntityType.UserAuditLogEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new UserAuditLogEntity(fields); }
 	}
@@ -89,7 +89,7 @@ namespace DATN.FactoryClasses
 	public partial class PermissionEntityFactory : EntityFactoryBase2<PermissionEntity> 
 	{
 		/// <summary>CTor</summary>
-		public PermissionEntityFactory() : base("PermissionEntity", DATN.EntityType.PermissionEntity, false) { }
+		public PermissionEntityFactory() : base("PermissionEntity", DATN_2026.EntityType.PermissionEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new PermissionEntity(fields); }
 	}
@@ -99,7 +99,7 @@ namespace DATN.FactoryClasses
 	public partial class RefreshTokenEntityFactory : EntityFactoryBase2<RefreshTokenEntity> 
 	{
 		/// <summary>CTor</summary>
-		public RefreshTokenEntityFactory() : base("RefreshTokenEntity", DATN.EntityType.RefreshTokenEntity, false) { }
+		public RefreshTokenEntityFactory() : base("RefreshTokenEntity", DATN_2026.EntityType.RefreshTokenEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new RefreshTokenEntity(fields); }
 	}
@@ -109,7 +109,7 @@ namespace DATN.FactoryClasses
 	public partial class RoleEntityFactory : EntityFactoryBase2<RoleEntity> 
 	{
 		/// <summary>CTor</summary>
-		public RoleEntityFactory() : base("RoleEntity", DATN.EntityType.RoleEntity, false) { }
+		public RoleEntityFactory() : base("RoleEntity", DATN_2026.EntityType.RoleEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new RoleEntity(fields); }
 	}
@@ -119,7 +119,7 @@ namespace DATN.FactoryClasses
 	public partial class RolePermissionEntityFactory : EntityFactoryBase2<RolePermissionEntity> 
 	{
 		/// <summary>CTor</summary>
-		public RolePermissionEntityFactory() : base("RolePermissionEntity", DATN.EntityType.RolePermissionEntity, false) { }
+		public RolePermissionEntityFactory() : base("RolePermissionEntity", DATN_2026.EntityType.RolePermissionEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new RolePermissionEntity(fields); }
 	}
@@ -129,9 +129,19 @@ namespace DATN.FactoryClasses
 	public partial class UserEntityFactory : EntityFactoryBase2<UserEntity> 
 	{
 		/// <summary>CTor</summary>
-		public UserEntityFactory() : base("UserEntity", DATN.EntityType.UserEntity, false) { }
+		public UserEntityFactory() : base("UserEntity", DATN_2026.EntityType.UserEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new UserEntity(fields); }
+	}
+
+	/// <summary>Factory to create new, empty UserAddressEntity objects.</summary>
+	[Serializable]
+	public partial class UserAddressEntityFactory : EntityFactoryBase2<UserAddressEntity> 
+	{
+		/// <summary>CTor</summary>
+		public UserAddressEntityFactory() : base("UserAddressEntity", DATN_2026.EntityType.UserAddressEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new UserAddressEntity(fields); }
 	}
 
 	/// <summary>Factory to create new, empty UserRoleEntity objects.</summary>
@@ -139,7 +149,7 @@ namespace DATN.FactoryClasses
 	public partial class UserRoleEntityFactory : EntityFactoryBase2<UserRoleEntity> 
 	{
 		/// <summary>CTor</summary>
-		public UserRoleEntityFactory() : base("UserRoleEntity", DATN.EntityType.UserRoleEntity, false) { }
+		public UserRoleEntityFactory() : base("UserRoleEntity", DATN_2026.EntityType.UserRoleEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new UserRoleEntity(fields); }
 	}
@@ -149,7 +159,7 @@ namespace DATN.FactoryClasses
 	public partial class UserSessionEntityFactory : EntityFactoryBase2<UserSessionEntity> 
 	{
 		/// <summary>CTor</summary>
-		public UserSessionEntityFactory() : base("UserSessionEntity", DATN.EntityType.UserSessionEntity, false) { }
+		public UserSessionEntityFactory() : base("UserSessionEntity", DATN_2026.EntityType.UserSessionEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new UserSessionEntity(fields); }
 	}
@@ -159,7 +169,7 @@ namespace DATN.FactoryClasses
 	public partial class BrandEntityFactory : EntityFactoryBase2<BrandEntity> 
 	{
 		/// <summary>CTor</summary>
-		public BrandEntityFactory() : base("BrandEntity", DATN.EntityType.BrandEntity, false) { }
+		public BrandEntityFactory() : base("BrandEntity", DATN_2026.EntityType.BrandEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new BrandEntity(fields); }
 	}
@@ -169,7 +179,7 @@ namespace DATN.FactoryClasses
 	public partial class CategoryEntityFactory : EntityFactoryBase2<CategoryEntity> 
 	{
 		/// <summary>CTor</summary>
-		public CategoryEntityFactory() : base("CategoryEntity", DATN.EntityType.CategoryEntity, false) { }
+		public CategoryEntityFactory() : base("CategoryEntity", DATN_2026.EntityType.CategoryEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new CategoryEntity(fields); }
 	}
@@ -179,7 +189,7 @@ namespace DATN.FactoryClasses
 	public partial class ProductEntityFactory : EntityFactoryBase2<ProductEntity> 
 	{
 		/// <summary>CTor</summary>
-		public ProductEntityFactory() : base("ProductEntity", DATN.EntityType.ProductEntity, false) { }
+		public ProductEntityFactory() : base("ProductEntity", DATN_2026.EntityType.ProductEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ProductEntity(fields); }
 	}
@@ -189,7 +199,7 @@ namespace DATN.FactoryClasses
 	public partial class ProductImageEntityFactory : EntityFactoryBase2<ProductImageEntity> 
 	{
 		/// <summary>CTor</summary>
-		public ProductImageEntityFactory() : base("ProductImageEntity", DATN.EntityType.ProductImageEntity, false) { }
+		public ProductImageEntityFactory() : base("ProductImageEntity", DATN_2026.EntityType.ProductImageEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ProductImageEntity(fields); }
 	}
@@ -199,19 +209,39 @@ namespace DATN.FactoryClasses
 	public partial class ProductVariantEntityFactory : EntityFactoryBase2<ProductVariantEntity> 
 	{
 		/// <summary>CTor</summary>
-		public ProductVariantEntityFactory() : base("ProductVariantEntity", DATN.EntityType.ProductVariantEntity, false) { }
+		public ProductVariantEntityFactory() : base("ProductVariantEntity", DATN_2026.EntityType.ProductVariantEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ProductVariantEntity(fields); }
 	}
 
-	/// <summary>Factory to create new, empty engagementReviewEntity objects.</summary>
+	/// <summary>Factory to create new, empty ShopEntity objects.</summary>
 	[Serializable]
-	public partial class engagementReviewEntityFactory : EntityFactoryBase2<engagementReviewEntity> 
+	public partial class ShopEntityFactory : EntityFactoryBase2<ShopEntity> 
 	{
 		/// <summary>CTor</summary>
-		public engagementReviewEntityFactory() : base("engagementReviewEntity", DATN.EntityType.engagementReviewEntity, false) { }
+		public ShopEntityFactory() : base("ShopEntity", DATN_2026.EntityType.ShopEntity, false) { }
 		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new engagementReviewEntity(fields); }
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ShopEntity(fields); }
+	}
+
+	/// <summary>Factory to create new, empty ChatBoxEntity objects.</summary>
+	[Serializable]
+	public partial class ChatBoxEntityFactory : EntityFactoryBase2<ChatBoxEntity> 
+	{
+		/// <summary>CTor</summary>
+		public ChatBoxEntityFactory() : base("ChatBoxEntity", DATN_2026.EntityType.ChatBoxEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ChatBoxEntity(fields); }
+	}
+
+	/// <summary>Factory to create new, empty ChatMessageEntity objects.</summary>
+	[Serializable]
+	public partial class ChatMessageEntityFactory : EntityFactoryBase2<ChatMessageEntity> 
+	{
+		/// <summary>CTor</summary>
+		public ChatMessageEntityFactory() : base("ChatMessageEntity", DATN_2026.EntityType.ChatMessageEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ChatMessageEntity(fields); }
 	}
 
 	/// <summary>Factory to create new, empty NotificationEntity objects.</summary>
@@ -219,49 +249,69 @@ namespace DATN.FactoryClasses
 	public partial class NotificationEntityFactory : EntityFactoryBase2<NotificationEntity> 
 	{
 		/// <summary>CTor</summary>
-		public NotificationEntityFactory() : base("NotificationEntity", DATN.EntityType.NotificationEntity, false) { }
+		public NotificationEntityFactory() : base("NotificationEntity", DATN_2026.EntityType.NotificationEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new NotificationEntity(fields); }
 	}
 
-	/// <summary>Factory to create new, empty salesCartEntity objects.</summary>
+	/// <summary>Factory to create new, empty ReviewEntity objects.</summary>
 	[Serializable]
-	public partial class salesCartEntityFactory : EntityFactoryBase2<salesCartEntity> 
+	public partial class ReviewEntityFactory : EntityFactoryBase2<ReviewEntity> 
 	{
 		/// <summary>CTor</summary>
-		public salesCartEntityFactory() : base("salesCartEntity", DATN.EntityType.salesCartEntity, false) { }
+		public ReviewEntityFactory() : base("ReviewEntity", DATN_2026.EntityType.ReviewEntity, false) { }
 		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new salesCartEntity(fields); }
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ReviewEntity(fields); }
 	}
 
-	/// <summary>Factory to create new, empty salesOrderEntity objects.</summary>
+	/// <summary>Factory to create new, empty WishlistEntity objects.</summary>
 	[Serializable]
-	public partial class salesOrderEntityFactory : EntityFactoryBase2<salesOrderEntity> 
+	public partial class WishlistEntityFactory : EntityFactoryBase2<WishlistEntity> 
 	{
 		/// <summary>CTor</summary>
-		public salesOrderEntityFactory() : base("salesOrderEntity", DATN.EntityType.salesOrderEntity, false) { }
+		public WishlistEntityFactory() : base("WishlistEntity", DATN_2026.EntityType.WishlistEntity, false) { }
 		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new salesOrderEntity(fields); }
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new WishlistEntity(fields); }
 	}
 
-	/// <summary>Factory to create new, empty salesOrderItemEntity objects.</summary>
+	/// <summary>Factory to create new, empty StockEntity objects.</summary>
 	[Serializable]
-	public partial class salesOrderItemEntityFactory : EntityFactoryBase2<salesOrderItemEntity> 
+	public partial class StockEntityFactory : EntityFactoryBase2<StockEntity> 
 	{
 		/// <summary>CTor</summary>
-		public salesOrderItemEntityFactory() : base("salesOrderItemEntity", DATN.EntityType.salesOrderItemEntity, false) { }
+		public StockEntityFactory() : base("StockEntity", DATN_2026.EntityType.StockEntity, false) { }
 		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new salesOrderItemEntity(fields); }
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new StockEntity(fields); }
 	}
 
-	/// <summary>Factory to create new, empty TransactionEntity objects.</summary>
+	/// <summary>Factory to create new, empty StockTransactionEntity objects.</summary>
 	[Serializable]
-	public partial class TransactionEntityFactory : EntityFactoryBase2<TransactionEntity> 
+	public partial class StockTransactionEntityFactory : EntityFactoryBase2<StockTransactionEntity> 
 	{
 		/// <summary>CTor</summary>
-		public TransactionEntityFactory() : base("TransactionEntity", DATN.EntityType.TransactionEntity, false) { }
+		public StockTransactionEntityFactory() : base("StockTransactionEntity", DATN_2026.EntityType.StockTransactionEntity, false) { }
 		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new TransactionEntity(fields); }
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new StockTransactionEntity(fields); }
+	}
+
+	/// <summary>Factory to create new, empty UserVoucherEntity objects.</summary>
+	[Serializable]
+	public partial class UserVoucherEntityFactory : EntityFactoryBase2<UserVoucherEntity> 
+	{
+		/// <summary>CTor</summary>
+		public UserVoucherEntityFactory() : base("UserVoucherEntity", DATN_2026.EntityType.UserVoucherEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new UserVoucherEntity(fields); }
+	}
+
+	/// <summary>Factory to create new, empty VoucherEntity objects.</summary>
+	[Serializable]
+	public partial class VoucherEntityFactory : EntityFactoryBase2<VoucherEntity> 
+	{
+		/// <summary>CTor</summary>
+		public VoucherEntityFactory() : base("VoucherEntity", DATN_2026.EntityType.VoucherEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new VoucherEntity(fields); }
 	}
 
 	/// <summary>Factory to create new, empty CartEntity objects.</summary>
@@ -269,39 +319,9 @@ namespace DATN.FactoryClasses
 	public partial class CartEntityFactory : EntityFactoryBase2<CartEntity> 
 	{
 		/// <summary>CTor</summary>
-		public CartEntityFactory() : base("CartEntity", DATN.EntityType.CartEntity, false) { }
+		public CartEntityFactory() : base("CartEntity", DATN_2026.EntityType.CartEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new CartEntity(fields); }
-	}
-
-	/// <summary>Factory to create new, empty DiscountEntity objects.</summary>
-	[Serializable]
-	public partial class DiscountEntityFactory : EntityFactoryBase2<DiscountEntity> 
-	{
-		/// <summary>CTor</summary>
-		public DiscountEntityFactory() : base("DiscountEntity", DATN.EntityType.DiscountEntity, false) { }
-		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new DiscountEntity(fields); }
-	}
-
-	/// <summary>Factory to create new, empty GameEntity objects.</summary>
-	[Serializable]
-	public partial class GameEntityFactory : EntityFactoryBase2<GameEntity> 
-	{
-		/// <summary>CTor</summary>
-		public GameEntityFactory() : base("GameEntity", DATN.EntityType.GameEntity, false) { }
-		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new GameEntity(fields); }
-	}
-
-	/// <summary>Factory to create new, empty GameTagEntity objects.</summary>
-	[Serializable]
-	public partial class GameTagEntityFactory : EntityFactoryBase2<GameTagEntity> 
-	{
-		/// <summary>CTor</summary>
-		public GameTagEntityFactory() : base("GameTagEntity", DATN.EntityType.GameTagEntity, false) { }
-		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new GameTagEntity(fields); }
 	}
 
 	/// <summary>Factory to create new, empty OrderEntity objects.</summary>
@@ -309,7 +329,7 @@ namespace DATN.FactoryClasses
 	public partial class OrderEntityFactory : EntityFactoryBase2<OrderEntity> 
 	{
 		/// <summary>CTor</summary>
-		public OrderEntityFactory() : base("OrderEntity", DATN.EntityType.OrderEntity, false) { }
+		public OrderEntityFactory() : base("OrderEntity", DATN_2026.EntityType.OrderEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new OrderEntity(fields); }
 	}
@@ -319,59 +339,29 @@ namespace DATN.FactoryClasses
 	public partial class OrderItemEntityFactory : EntityFactoryBase2<OrderItemEntity> 
 	{
 		/// <summary>CTor</summary>
-		public OrderItemEntityFactory() : base("OrderItemEntity", DATN.EntityType.OrderItemEntity, false) { }
+		public OrderItemEntityFactory() : base("OrderItemEntity", DATN_2026.EntityType.OrderItemEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new OrderItemEntity(fields); }
 	}
 
-	/// <summary>Factory to create new, empty PublisherEntity objects.</summary>
+	/// <summary>Factory to create new, empty ShippingTrackingEntity objects.</summary>
 	[Serializable]
-	public partial class PublisherEntityFactory : EntityFactoryBase2<PublisherEntity> 
+	public partial class ShippingTrackingEntityFactory : EntityFactoryBase2<ShippingTrackingEntity> 
 	{
 		/// <summary>CTor</summary>
-		public PublisherEntityFactory() : base("PublisherEntity", DATN.EntityType.PublisherEntity, false) { }
+		public ShippingTrackingEntityFactory() : base("ShippingTrackingEntity", DATN_2026.EntityType.ShippingTrackingEntity, false) { }
 		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new PublisherEntity(fields); }
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ShippingTrackingEntity(fields); }
 	}
 
-	/// <summary>Factory to create new, empty ReviewEntity objects.</summary>
+	/// <summary>Factory to create new, empty TransactionEntity objects.</summary>
 	[Serializable]
-	public partial class ReviewEntityFactory : EntityFactoryBase2<ReviewEntity> 
+	public partial class TransactionEntityFactory : EntityFactoryBase2<TransactionEntity> 
 	{
 		/// <summary>CTor</summary>
-		public ReviewEntityFactory() : base("ReviewEntity", DATN.EntityType.ReviewEntity, false) { }
+		public TransactionEntityFactory() : base("TransactionEntity", DATN_2026.EntityType.TransactionEntity, false) { }
 		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ReviewEntity(fields); }
-	}
-
-	/// <summary>Factory to create new, empty TagEntity objects.</summary>
-	[Serializable]
-	public partial class TagEntityFactory : EntityFactoryBase2<TagEntity> 
-	{
-		/// <summary>CTor</summary>
-		public TagEntityFactory() : base("TagEntity", DATN.EntityType.TagEntity, false) { }
-		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new TagEntity(fields); }
-	}
-
-	/// <summary>Factory to create new, empty UserGameEntity objects.</summary>
-	[Serializable]
-	public partial class UserGameEntityFactory : EntityFactoryBase2<UserGameEntity> 
-	{
-		/// <summary>CTor</summary>
-		public UserGameEntityFactory() : base("UserGameEntity", DATN.EntityType.UserGameEntity, false) { }
-		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new UserGameEntity(fields); }
-	}
-
-	/// <summary>Factory to create new, empty WishlistEntity objects.</summary>
-	[Serializable]
-	public partial class WishlistEntityFactory : EntityFactoryBase2<WishlistEntity> 
-	{
-		/// <summary>CTor</summary>
-		public WishlistEntityFactory() : base("WishlistEntity", DATN.EntityType.WishlistEntity, false) { }
-		/// <inheritdoc/>
-		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new WishlistEntity(fields); }
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new TransactionEntity(fields); }
 	}
 
 	/// <summary>Factory to create new, empty Entity objects based on the entity type specified. Uses  entity specific factory objects</summary>
@@ -381,7 +371,7 @@ namespace DATN.FactoryClasses
 		/// <summary>Creates a new, empty Entity object of the type specified</summary>
 		/// <param name="entityTypeToCreate">The entity type to create.</param>
 		/// <returns>A new, empty Entity object.</returns>
-		public static IEntity2 Create(DATN.EntityType entityTypeToCreate)
+		public static IEntity2 Create(DATN_2026.EntityType entityTypeToCreate)
 		{
 			var factoryToUse = EntityFactoryFactory.GetFactory(entityTypeToCreate);
 			IEntity2 toReturn = null;
@@ -402,9 +392,9 @@ namespace DATN.FactoryClasses
 		/// <summary>Initializes the <see cref="EntityFactoryFactory"/> class.</summary>
 		static EntityFactoryFactory()
 		{
-			foreach(int entityTypeValue in Enum.GetValues(typeof(DATN.EntityType)))
+			foreach(int entityTypeValue in Enum.GetValues(typeof(DATN_2026.EntityType)))
 			{
-				var factory = GetFactory((DATN.EntityType)entityTypeValue);
+				var factory = GetFactory((DATN_2026.EntityType)entityTypeValue);
 				_factoryPerType.Add(factory.ForEntityType ?? factory.Create().GetType(), factory);
 			}
 		}
@@ -414,75 +404,73 @@ namespace DATN.FactoryClasses
 		/// <returns>factory to use or null if not found</returns>
 		public static IEntityFactory2 GetFactory(Type typeOfEntity) { return _factoryPerType.GetValue(typeOfEntity); }
 
-		/// <summary>Gets the factory of the entity with the DATN.EntityType specified</summary>
+		/// <summary>Gets the factory of the entity with the DATN_2026.EntityType specified</summary>
 		/// <param name="typeOfEntity">The type of entity.</param>
 		/// <returns>factory to use or null if not found</returns>
-		public static IEntityFactory2 GetFactory(DATN.EntityType typeOfEntity)
+		public static IEntityFactory2 GetFactory(DATN_2026.EntityType typeOfEntity)
 		{
 			switch(typeOfEntity)
 			{
-				case DATN.EntityType.LoginAttemptEntity:
+				case DATN_2026.EntityType.LoginAttemptEntity:
 					return new LoginAttemptEntityFactory();
-				case DATN.EntityType.UserAuditLogEntity:
+				case DATN_2026.EntityType.UserAuditLogEntity:
 					return new UserAuditLogEntityFactory();
-				case DATN.EntityType.PermissionEntity:
+				case DATN_2026.EntityType.PermissionEntity:
 					return new PermissionEntityFactory();
-				case DATN.EntityType.RefreshTokenEntity:
+				case DATN_2026.EntityType.RefreshTokenEntity:
 					return new RefreshTokenEntityFactory();
-				case DATN.EntityType.RoleEntity:
+				case DATN_2026.EntityType.RoleEntity:
 					return new RoleEntityFactory();
-				case DATN.EntityType.RolePermissionEntity:
+				case DATN_2026.EntityType.RolePermissionEntity:
 					return new RolePermissionEntityFactory();
-				case DATN.EntityType.UserEntity:
+				case DATN_2026.EntityType.UserEntity:
 					return new UserEntityFactory();
-				case DATN.EntityType.UserRoleEntity:
+				case DATN_2026.EntityType.UserAddressEntity:
+					return new UserAddressEntityFactory();
+				case DATN_2026.EntityType.UserRoleEntity:
 					return new UserRoleEntityFactory();
-				case DATN.EntityType.UserSessionEntity:
+				case DATN_2026.EntityType.UserSessionEntity:
 					return new UserSessionEntityFactory();
-				case DATN.EntityType.BrandEntity:
+				case DATN_2026.EntityType.BrandEntity:
 					return new BrandEntityFactory();
-				case DATN.EntityType.CategoryEntity:
+				case DATN_2026.EntityType.CategoryEntity:
 					return new CategoryEntityFactory();
-				case DATN.EntityType.ProductEntity:
+				case DATN_2026.EntityType.ProductEntity:
 					return new ProductEntityFactory();
-				case DATN.EntityType.ProductImageEntity:
+				case DATN_2026.EntityType.ProductImageEntity:
 					return new ProductImageEntityFactory();
-				case DATN.EntityType.ProductVariantEntity:
+				case DATN_2026.EntityType.ProductVariantEntity:
 					return new ProductVariantEntityFactory();
-				case DATN.EntityType.engagementReviewEntity:
-					return new engagementReviewEntityFactory();
-				case DATN.EntityType.NotificationEntity:
+				case DATN_2026.EntityType.ShopEntity:
+					return new ShopEntityFactory();
+				case DATN_2026.EntityType.ChatBoxEntity:
+					return new ChatBoxEntityFactory();
+				case DATN_2026.EntityType.ChatMessageEntity:
+					return new ChatMessageEntityFactory();
+				case DATN_2026.EntityType.NotificationEntity:
 					return new NotificationEntityFactory();
-				case DATN.EntityType.salesCartEntity:
-					return new salesCartEntityFactory();
-				case DATN.EntityType.salesOrderEntity:
-					return new salesOrderEntityFactory();
-				case DATN.EntityType.salesOrderItemEntity:
-					return new salesOrderItemEntityFactory();
-				case DATN.EntityType.TransactionEntity:
-					return new TransactionEntityFactory();
-				case DATN.EntityType.CartEntity:
-					return new CartEntityFactory();
-				case DATN.EntityType.DiscountEntity:
-					return new DiscountEntityFactory();
-				case DATN.EntityType.GameEntity:
-					return new GameEntityFactory();
-				case DATN.EntityType.GameTagEntity:
-					return new GameTagEntityFactory();
-				case DATN.EntityType.OrderEntity:
-					return new OrderEntityFactory();
-				case DATN.EntityType.OrderItemEntity:
-					return new OrderItemEntityFactory();
-				case DATN.EntityType.PublisherEntity:
-					return new PublisherEntityFactory();
-				case DATN.EntityType.ReviewEntity:
+				case DATN_2026.EntityType.ReviewEntity:
 					return new ReviewEntityFactory();
-				case DATN.EntityType.TagEntity:
-					return new TagEntityFactory();
-				case DATN.EntityType.UserGameEntity:
-					return new UserGameEntityFactory();
-				case DATN.EntityType.WishlistEntity:
+				case DATN_2026.EntityType.WishlistEntity:
 					return new WishlistEntityFactory();
+				case DATN_2026.EntityType.StockEntity:
+					return new StockEntityFactory();
+				case DATN_2026.EntityType.StockTransactionEntity:
+					return new StockTransactionEntityFactory();
+				case DATN_2026.EntityType.UserVoucherEntity:
+					return new UserVoucherEntityFactory();
+				case DATN_2026.EntityType.VoucherEntity:
+					return new VoucherEntityFactory();
+				case DATN_2026.EntityType.CartEntity:
+					return new CartEntityFactory();
+				case DATN_2026.EntityType.OrderEntity:
+					return new OrderEntityFactory();
+				case DATN_2026.EntityType.OrderItemEntity:
+					return new OrderItemEntityFactory();
+				case DATN_2026.EntityType.ShippingTrackingEntity:
+					return new ShippingTrackingEntityFactory();
+				case DATN_2026.EntityType.TransactionEntity:
+					return new TransactionEntityFactory();
 				default:
 					return null;
 			}
@@ -492,7 +480,7 @@ namespace DATN.FactoryClasses
 	/// <summary>Element creator for creating project elements from somewhere else, like inside Linq providers.</summary>
 	public class ElementCreator : ElementCreatorBase, IElementCreator2
 	{
-		/// <summary>Gets the factory of the Entity type with the DATN.EntityType value passed in</summary>
+		/// <summary>Gets the factory of the Entity type with the DATN_2026.EntityType value passed in</summary>
 		/// <param name="entityTypeValue">The entity type value.</param>
 		/// <returns>the entity factory of the entity type or null if not found</returns>
 		public IEntityFactory2 GetFactory(int entityTypeValue) { return (IEntityFactory2)this.GetFactoryImpl(entityTypeValue); }
@@ -531,23 +519,23 @@ namespace DATN.FactoryClasses
 		/// <inheritdoc/>
 		public override IDynamicRelation CreateDynamicRelation(DerivedTableDefinition leftOperand, JoinHint joinType, string rightOperandEntityName, string aliasRightOperand, IPredicate onClause)
 		{
-			return new DynamicRelation(leftOperand, joinType, (DATN.EntityType)Enum.Parse(typeof(DATN.EntityType), rightOperandEntityName, false), aliasRightOperand, onClause);
+			return new DynamicRelation(leftOperand, joinType, (DATN_2026.EntityType)Enum.Parse(typeof(DATN_2026.EntityType), rightOperandEntityName, false), aliasRightOperand, onClause);
 		}
 
 		/// <inheritdoc/>
 		public override IDynamicRelation CreateDynamicRelation(string leftOperandEntityName, JoinHint joinType, string rightOperandEntityName, string aliasLeftOperand, string aliasRightOperand, IPredicate onClause)
 		{
-			return new DynamicRelation((DATN.EntityType)Enum.Parse(typeof(DATN.EntityType), leftOperandEntityName, false), joinType, (DATN.EntityType)Enum.Parse(typeof(DATN.EntityType), rightOperandEntityName, false), aliasLeftOperand, aliasRightOperand, onClause);
+			return new DynamicRelation((DATN_2026.EntityType)Enum.Parse(typeof(DATN_2026.EntityType), leftOperandEntityName, false), joinType, (DATN_2026.EntityType)Enum.Parse(typeof(DATN_2026.EntityType), rightOperandEntityName, false), aliasLeftOperand, aliasRightOperand, onClause);
 		}
 		
 		/// <inheritdoc/>
 		public override IDynamicRelation CreateDynamicRelation(IEntityFieldCore leftOperand, JoinHint joinType, string rightOperandEntityName, string aliasLeftOperand, string aliasRightOperand, IPredicate onClause)
 		{
-			return new DynamicRelation(leftOperand, joinType, (DATN.EntityType)Enum.Parse(typeof(DATN.EntityType), rightOperandEntityName, false), aliasLeftOperand, aliasRightOperand, onClause);
+			return new DynamicRelation(leftOperand, joinType, (DATN_2026.EntityType)Enum.Parse(typeof(DATN_2026.EntityType), rightOperandEntityName, false), aliasLeftOperand, aliasRightOperand, onClause);
 		}
 		
 		/// <inheritdoc/>
-		protected override IEntityFactoryCore GetFactoryImpl(int entityTypeValue) { return EntityFactoryFactory.GetFactory((DATN.EntityType)entityTypeValue); }
+		protected override IEntityFactoryCore GetFactoryImpl(int entityTypeValue) { return EntityFactoryFactory.GetFactory((DATN_2026.EntityType)entityTypeValue); }
 
 		/// <inheritdoc/>
 		protected override IEntityFactoryCore GetFactoryImpl(Type typeOfEntity) { return EntityFactoryFactory.GetFactory(typeOfEntity);	}

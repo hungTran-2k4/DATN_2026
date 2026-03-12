@@ -8,33 +8,31 @@
 using System;
 using System.ComponentModel;
 
-namespace DATN.TypedViewClasses
+namespace DATN_2026.TypedViewClasses
 {
-	/// <summary>Class which represents a row in the typed view 'Store.storeReview'.</summary>
-	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN.FactoryClasses.QueryFactory.storeReview"/>. </remarks>
+	/// <summary>Class which represents a row in the typed view 'Sales.salesCart'.</summary>
+	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN_2026.FactoryClasses.QueryFactory.salesCart"/>. </remarks>
 	[Serializable]
-	public partial class storeReviewRow 
+	public partial class salesCartRow 
 	{
 		partial void OnCreated();
 		
-		/// <summary>Initializes a new instance of the <see cref="storeReviewRow"/> class.</summary>
-		public storeReviewRow()
+		/// <summary>Initializes a new instance of the <see cref="salesCartRow"/> class.</summary>
+		public salesCartRow()
 		{
 			OnCreated();
 		}
 
-		/// <summary>Gets or sets the Comment field.</summary>
-		public System.String Comment { get; set; }
 		/// <summary>Gets or sets the CreatedAt field.</summary>
 		public Nullable<System.DateTime> CreatedAt { get; set; }
-		/// <summary>Gets or sets the GameId field.</summary>
-		public System.Guid GameId { get; set; }
 		/// <summary>Gets or sets the Id field.</summary>
 		public System.Guid Id { get; set; }
-		/// <summary>Gets or sets the Rating field.</summary>
-		public System.Int32 Rating { get; set; }
+		/// <summary>Gets or sets the Quantity field.</summary>
+		public System.Int32 Quantity { get; set; }
 		/// <summary>Gets or sets the UserId field.</summary>
-		public System.Guid UserId { get; set; }
+		public Nullable<System.Guid> UserId { get; set; }
+		/// <summary>Gets or sets the VariantId field.</summary>
+		public Nullable<System.Guid> VariantId { get; set; }
 	}
 }
 

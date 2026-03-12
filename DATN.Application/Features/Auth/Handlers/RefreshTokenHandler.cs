@@ -8,10 +8,11 @@ using DATN.Domain.Entities.Identity;
 using AutoMapper;
 using System.Security.Cryptography;
 using System.Text;
+using DATN.Application.Common.Models;
 
 namespace DATN.Application.Features.Auth.Handlers;
 
-public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthResponse>
+public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, ApiResponse<AuthResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
@@ -33,7 +34,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthResp
         _mapper = mapper;
     }
 
-    public async Task<AuthResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -53,7 +54,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthResp
             {
                 _logger.LogWarning("Token rejected! Null: {IsNull}, Revoked: {Revoked}, Expired: {Expired}", 
                     existingToken == null, existingToken?.Revoked, existingToken?.ExpiresAt < DateTime.UtcNow);
-                return new AuthResponse { Success = false, Message = "Invalid or expired refresh token" };
+                return ApiResponse<AuthResponse>.Fail("Invalid or expired refresh token", 401, "INVALID_TOKEN");
             }
 
             // 4. Phát hiện token đã bị rotate trước đó (reuse detection)
@@ -63,14 +64,14 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthResp
                 // Revoke TẤT CẢ token của user để bảo mật
                 _logger.LogWarning("Refresh token reuse detected for user {UserId}! Revoking all tokens.", existingToken.UserId);
                 await _refreshTokenRepository.RevokeAllByUserIdAsync(existingToken.UserId, cancellationToken);
-                return new AuthResponse { Success = false, Message = "Token đã được sử dụng. Vui lòng đăng nhập lại." };
+                return ApiResponse<AuthResponse>.Fail("Token đã được sử dụng. Vui lòng đăng nhập lại.", 401, "TOKEN_REUSED");
             }
 
             // 5. Get User
             var user = await _userRepository.GetByIdAsync(existingToken.UserId, cancellationToken);
             if (user == null || !user.IsActive)
             {
-                return new AuthResponse { Success = false, Message = "User not found or inactive" };
+                return ApiResponse<AuthResponse>.Fail("User not found or inactive", 401, "USER_INACTIVE");
             }
 
             // 6. Generate NEW tokens
@@ -100,19 +101,18 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthResp
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Roles = roles.ToList();
 
-            return new AuthResponse
+            return ApiResponse<AuthResponse>.Succeed(new AuthResponse
             {
-                Success = true,
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken, // Plain token to send back to user
                 ExpiresAt = DateTime.UtcNow.AddMinutes(_jwtService.GetTokenExpirationMinutes()),
                 User = userDto
-            };
+            }, "Refresh token thành công", 200);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error refreshing token");
-            return new AuthResponse { Success = false, Message = "Error refreshing token" };
+            return ApiResponse<AuthResponse>.Fail("Error refreshing token", 500, "INTERNAL_SERVER_ERROR");
         }
     }
 

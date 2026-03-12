@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////////////////
 using System;
 
-namespace DATN
+namespace DATN_2026
 {
 	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : auditLoginAttempt.</summary>
 	public enum auditLoginAttemptFieldIndex
@@ -82,6 +82,8 @@ namespace DATN
 		CreatedAt,
 		///<summary>Revoked</summary>
 		Revoked,
+		///<summary>ReplacedByTokenId</summary>
+		ReplacedByTokenId,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -132,6 +134,32 @@ namespace DATN
 		FailedLoginCount,
 		///<summary>LockoutEnd</summary>
 		LockoutEnd,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : auth2UserAddress.</summary>
+	public enum auth2UserAddressFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>UserId</summary>
+		UserId,
+		///<summary>FullName</summary>
+		FullName,
+		///<summary>PhoneNumber</summary>
+		PhoneNumber,
+		///<summary>ProvinceId</summary>
+		ProvinceId,
+		///<summary>DistrictId</summary>
+		DistrictId,
+		///<summary>WardId</summary>
+		WardId,
+		///<summary>DetailedAddress</summary>
+		DetailedAddress,
+		///<summary>IsDefault</summary>
+		IsDefault,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -210,8 +238,6 @@ namespace DATN
 	{
 		///<summary>Id</summary>
 		Id,
-		///<summary>SellerId</summary>
-		SellerId,
 		///<summary>CategoryId</summary>
 		CategoryId,
 		///<summary>BrandId</summary>
@@ -236,6 +262,8 @@ namespace DATN
 		UpdatedAt,
 		///<summary>Sku</summary>
 		Sku,
+		///<summary>ShopId</summary>
+		ShopId,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -268,12 +296,80 @@ namespace DATN
 		Name,
 		///<summary>Price</summary>
 		Price,
-		///<summary>StockQuantity</summary>
-		StockQuantity,
 		///<summary>VariantAttributes</summary>
 		VariantAttributes,
 		///<summary>ImageUrl</summary>
 		ImageUrl,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : catalogShop.</summary>
+	public enum catalogShopFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>OwnerId</summary>
+		OwnerId,
+		///<summary>Name</summary>
+		Name,
+		///<summary>Slug</summary>
+		Slug,
+		///<summary>Description</summary>
+		Description,
+		///<summary>LogoUrl</summary>
+		LogoUrl,
+		///<summary>CoverUrl</summary>
+		CoverUrl,
+		///<summary>Rating</summary>
+		Rating,
+		///<summary>IsActive</summary>
+		IsActive,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
+		///<summary>ProvinceId</summary>
+		ProvinceId,
+		///<summary>DistrictId</summary>
+		DistrictId,
+		///<summary>WardId</summary>
+		WardId,
+		///<summary>PickupAddress</summary>
+		PickupAddress,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : engagementChatBox.</summary>
+	public enum engagementChatBoxFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>UserId</summary>
+		UserId,
+		///<summary>ShopId</summary>
+		ShopId,
+		///<summary>LastMessage</summary>
+		LastMessage,
+		///<summary>LastActivity</summary>
+		LastActivity,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : engagementChatMessage.</summary>
+	public enum engagementChatMessageFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>RoomId</summary>
+		RoomId,
+		///<summary>SenderId</summary>
+		SenderId,
+		///<summary>Content</summary>
+		Content,
+		///<summary>MessageType</summary>
+		MessageType,
+		///<summary>IsRead</summary>
+		IsRead,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -299,8 +395,8 @@ namespace DATN
 		/// <summary></summary>
 		AmountOfFields
 	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : engagementReview1.</summary>
-	public enum engagementReview1FieldIndex
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : engagementReview.</summary>
+	public enum engagementReviewFieldIndex
 	{
 		///<summary>Id</summary>
 		Id,
@@ -321,8 +417,104 @@ namespace DATN
 		/// <summary></summary>
 		AmountOfFields
 	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesCart1.</summary>
-	public enum salesCart1FieldIndex
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : engagementWishlist.</summary>
+	public enum engagementWishlistFieldIndex
+	{
+		///<summary>UserId</summary>
+		UserId,
+		///<summary>ProductId</summary>
+		ProductId,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : inventoryStock.</summary>
+	public enum inventoryStockFieldIndex
+	{
+		///<summary>VariantId</summary>
+		VariantId,
+		///<summary>PhysicalQuantity</summary>
+		PhysicalQuantity,
+		///<summary>ReservedQuantity</summary>
+		ReservedQuantity,
+		///<summary>AvailableQuantity</summary>
+		AvailableQuantity,
+		///<summary>UpdatedAt</summary>
+		UpdatedAt,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : inventoryStockTransaction.</summary>
+	public enum inventoryStockTransactionFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>VariantId</summary>
+		VariantId,
+		///<summary>ShopId</summary>
+		ShopId,
+		///<summary>TransactionType</summary>
+		TransactionType,
+		///<summary>Quantity</summary>
+		Quantity,
+		///<summary>ReferenceId</summary>
+		ReferenceId,
+		///<summary>Note</summary>
+		Note,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : marketingUserVoucher.</summary>
+	public enum marketingUserVoucherFieldIndex
+	{
+		///<summary>UserId</summary>
+		UserId,
+		///<summary>VoucherId</summary>
+		VoucherId,
+		///<summary>IsUsed</summary>
+		IsUsed,
+		///<summary>SavedAt</summary>
+		SavedAt,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : marketingVoucher.</summary>
+	public enum marketingVoucherFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>ShopId</summary>
+		ShopId,
+		///<summary>Code</summary>
+		Code,
+		///<summary>Name</summary>
+		Name,
+		///<summary>DiscountType</summary>
+		DiscountType,
+		///<summary>DiscountValue</summary>
+		DiscountValue,
+		///<summary>MinOrderValue</summary>
+		MinOrderValue,
+		///<summary>MaxDiscountValue</summary>
+		MaxDiscountValue,
+		///<summary>UsageLimit</summary>
+		UsageLimit,
+		///<summary>UsedCount</summary>
+		UsedCount,
+		///<summary>StartDate</summary>
+		StartDate,
+		///<summary>EndDate</summary>
+		EndDate,
+		///<summary>IsActive</summary>
+		IsActive,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesCart.</summary>
+	public enum salesCartFieldIndex
 	{
 		///<summary>Id</summary>
 		Id,
@@ -337,8 +529,8 @@ namespace DATN
 		/// <summary></summary>
 		AmountOfFields
 	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesOrder1.</summary>
-	public enum salesOrder1FieldIndex
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesOrder.</summary>
+	public enum salesOrderFieldIndex
 	{
 		///<summary>Id</summary>
 		Id,
@@ -365,8 +557,8 @@ namespace DATN
 		/// <summary></summary>
 		AmountOfFields
 	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesOrderItem1.</summary>
-	public enum salesOrderItem1FieldIndex
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesOrderItem.</summary>
+	public enum salesOrderItemFieldIndex
 	{
 		///<summary>Id</summary>
 		Id,
@@ -380,6 +572,24 @@ namespace DATN
 		UnitPrice,
 		///<summary>ProductNameSnapshot</summary>
 		ProductNameSnapshot,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesShippingTracking.</summary>
+	public enum salesShippingTrackingFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>OrderId</summary>
+		OrderId,
+		///<summary>Status</summary>
+		Status,
+		///<summary>Location</summary>
+		Location,
+		///<summary>Description</summary>
+		Description,
+		///<summary>UpdatedAt</summary>
+		UpdatedAt,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -405,170 +615,6 @@ namespace DATN
 		/// <summary></summary>
 		AmountOfFields
 	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeCart.</summary>
-	public enum storeCartFieldIndex
-	{
-		///<summary>UserId</summary>
-		UserId,
-		///<summary>GameId</summary>
-		GameId,
-		///<summary>AddedAt</summary>
-		AddedAt,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeDiscount.</summary>
-	public enum storeDiscountFieldIndex
-	{
-		///<summary>Id</summary>
-		Id,
-		///<summary>GameId</summary>
-		GameId,
-		///<summary>DiscountPercent</summary>
-		DiscountPercent,
-		///<summary>StartDate</summary>
-		StartDate,
-		///<summary>EndDate</summary>
-		EndDate,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeGame.</summary>
-	public enum storeGameFieldIndex
-	{
-		///<summary>Id</summary>
-		Id,
-		///<summary>Title</summary>
-		Title,
-		///<summary>ShortDescription</summary>
-		ShortDescription,
-		///<summary>FullDescription</summary>
-		FullDescription,
-		///<summary>Price</summary>
-		Price,
-		///<summary>ReleaseDate</summary>
-		ReleaseDate,
-		///<summary>PublisherId</summary>
-		PublisherId,
-		///<summary>CoverImage</summary>
-		CoverImage,
-		///<summary>Status</summary>
-		Status,
-		///<summary>CreatedAt</summary>
-		CreatedAt,
-		///<summary>UpdatedAt</summary>
-		UpdatedAt,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeGameTag.</summary>
-	public enum storeGameTagFieldIndex
-	{
-		///<summary>GameId</summary>
-		GameId,
-		///<summary>TagId</summary>
-		TagId,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeOrder.</summary>
-	public enum storeOrderFieldIndex
-	{
-		///<summary>Id</summary>
-		Id,
-		///<summary>UserId</summary>
-		UserId,
-		///<summary>TotalAmount</summary>
-		TotalAmount,
-		///<summary>Status</summary>
-		Status,
-		///<summary>CreatedAt</summary>
-		CreatedAt,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeOrderItem.</summary>
-	public enum storeOrderItemFieldIndex
-	{
-		///<summary>OrderId</summary>
-		OrderId,
-		///<summary>GameId</summary>
-		GameId,
-		///<summary>Price</summary>
-		Price,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storePublisher.</summary>
-	public enum storePublisherFieldIndex
-	{
-		///<summary>Id</summary>
-		Id,
-		///<summary>Name</summary>
-		Name,
-		///<summary>Description</summary>
-		Description,
-		///<summary>Website</summary>
-		Website,
-		///<summary>CreatedAt</summary>
-		CreatedAt,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeReview.</summary>
-	public enum storeReviewFieldIndex
-	{
-		///<summary>Id</summary>
-		Id,
-		///<summary>UserId</summary>
-		UserId,
-		///<summary>GameId</summary>
-		GameId,
-		///<summary>Rating</summary>
-		Rating,
-		///<summary>Comment</summary>
-		Comment,
-		///<summary>CreatedAt</summary>
-		CreatedAt,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeTag.</summary>
-	public enum storeTagFieldIndex
-	{
-		///<summary>Id</summary>
-		Id,
-		///<summary>Name</summary>
-		Name,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeUserGame.</summary>
-	public enum storeUserGameFieldIndex
-	{
-		///<summary>UserId</summary>
-		UserId,
-		///<summary>GameId</summary>
-		GameId,
-		///<summary>PurchasedAt</summary>
-		PurchasedAt,
-		///<summary>PlaytimeMinutes</summary>
-		PlaytimeMinutes,
-		/// <summary></summary>
-		AmountOfFields
-	}
-	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : storeWishlist.</summary>
-	public enum storeWishlistFieldIndex
-	{
-		///<summary>UserId</summary>
-		UserId,
-		///<summary>GameId</summary>
-		GameId,
-		///<summary>CreatedAt</summary>
-		CreatedAt,
-		/// <summary></summary>
-		AmountOfFields
-	}
 
 
 	/// <summary>Enum definition for all the entity types defined in this namespace. Used by the entityfields factory.</summary>
@@ -588,6 +634,8 @@ namespace DATN
 		RolePermissionEntity,
 		///<summary>User</summary>
 		UserEntity,
+		///<summary>UserAddress</summary>
+		UserAddressEntity,
 		///<summary>UserRole</summary>
 		UserRoleEntity,
 		///<summary>UserSession</summary>
@@ -602,40 +650,36 @@ namespace DATN
 		ProductImageEntity,
 		///<summary>ProductVariant</summary>
 		ProductVariantEntity,
-		///<summary>engagementReview</summary>
-		engagementReviewEntity,
+		///<summary>Shop</summary>
+		ShopEntity,
+		///<summary>ChatBox</summary>
+		ChatBoxEntity,
+		///<summary>ChatMessage</summary>
+		ChatMessageEntity,
 		///<summary>Notification</summary>
 		NotificationEntity,
-		///<summary>salesCart</summary>
-		salesCartEntity,
-		///<summary>salesOrder</summary>
-		salesOrderEntity,
-		///<summary>salesOrderItem</summary>
-		salesOrderItemEntity,
-		///<summary>Transaction</summary>
-		TransactionEntity,
+		///<summary>Review</summary>
+		ReviewEntity,
+		///<summary>Wishlist</summary>
+		WishlistEntity,
+		///<summary>Stock</summary>
+		StockEntity,
+		///<summary>StockTransaction</summary>
+		StockTransactionEntity,
+		///<summary>UserVoucher</summary>
+		UserVoucherEntity,
+		///<summary>Voucher</summary>
+		VoucherEntity,
 		///<summary>Cart</summary>
 		CartEntity,
-		///<summary>Discount</summary>
-		DiscountEntity,
-		///<summary>Game</summary>
-		GameEntity,
-		///<summary>GameTag</summary>
-		GameTagEntity,
 		///<summary>Order</summary>
 		OrderEntity,
 		///<summary>OrderItem</summary>
 		OrderItemEntity,
-		///<summary>Publisher</summary>
-		PublisherEntity,
-		///<summary>Review</summary>
-		ReviewEntity,
-		///<summary>Tag</summary>
-		TagEntity,
-		///<summary>UserGame</summary>
-		UserGameEntity,
-		///<summary>Wishlist</summary>
-		WishlistEntity
+		///<summary>ShippingTracking</summary>
+		ShippingTrackingEntity,
+		///<summary>Transaction</summary>
+		TransactionEntity
 	}
 
 	/// <summary>Enum definition for all the typed view types defined in this namespace. Used by the entityfields factory.</summary>
@@ -655,6 +699,8 @@ namespace DATN
 		auth2RolePermissionTypedView,
 		///<summary>auth2User</summary>
 		auth2UserTypedView,
+		///<summary>auth2UserAddress</summary>
+		auth2UserAddressTypedView,
 		///<summary>auth2UserRole</summary>
 		auth2UserRoleTypedView,
 		///<summary>auth2UserSession</summary>
@@ -669,40 +715,36 @@ namespace DATN
 		catalogProductImageTypedView,
 		///<summary>catalogProductVariant</summary>
 		catalogProductVariantTypedView,
+		///<summary>catalogShop</summary>
+		catalogShopTypedView,
+		///<summary>engagementChatBox</summary>
+		engagementChatBoxTypedView,
+		///<summary>engagementChatMessage</summary>
+		engagementChatMessageTypedView,
 		///<summary>engagementNotification</summary>
 		engagementNotificationTypedView,
-		///<summary>engagementReview1</summary>
-		engagementReview1TypedView,
-		///<summary>salesCart1</summary>
-		salesCart1TypedView,
-		///<summary>salesOrder1</summary>
-		salesOrder1TypedView,
-		///<summary>salesOrderItem1</summary>
-		salesOrderItem1TypedView,
+		///<summary>engagementReview</summary>
+		engagementReviewTypedView,
+		///<summary>engagementWishlist</summary>
+		engagementWishlistTypedView,
+		///<summary>inventoryStock</summary>
+		inventoryStockTypedView,
+		///<summary>inventoryStockTransaction</summary>
+		inventoryStockTransactionTypedView,
+		///<summary>marketingUserVoucher</summary>
+		marketingUserVoucherTypedView,
+		///<summary>marketingVoucher</summary>
+		marketingVoucherTypedView,
+		///<summary>salesCart</summary>
+		salesCartTypedView,
+		///<summary>salesOrder</summary>
+		salesOrderTypedView,
+		///<summary>salesOrderItem</summary>
+		salesOrderItemTypedView,
+		///<summary>salesShippingTracking</summary>
+		salesShippingTrackingTypedView,
 		///<summary>salesTransaction</summary>
-		salesTransactionTypedView,
-		///<summary>storeCart</summary>
-		storeCartTypedView,
-		///<summary>storeDiscount</summary>
-		storeDiscountTypedView,
-		///<summary>storeGame</summary>
-		storeGameTypedView,
-		///<summary>storeGameTag</summary>
-		storeGameTagTypedView,
-		///<summary>storeOrder</summary>
-		storeOrderTypedView,
-		///<summary>storeOrderItem</summary>
-		storeOrderItemTypedView,
-		///<summary>storePublisher</summary>
-		storePublisherTypedView,
-		///<summary>storeReview</summary>
-		storeReviewTypedView,
-		///<summary>storeTag</summary>
-		storeTagTypedView,
-		///<summary>storeUserGame</summary>
-		storeUserGameTypedView,
-		///<summary>storeWishlist</summary>
-		storeWishlistTypedView
+		salesTransactionTypedView
 	}
 
 

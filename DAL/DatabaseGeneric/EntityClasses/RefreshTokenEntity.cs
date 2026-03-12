@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -51,10 +51,10 @@ namespace DATN.EntityClasses
 		{
 			public RefreshTokenEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("RefreshTokenEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.RefreshTokenEntity, typeof(RefreshTokenEntity), typeof(RefreshTokenEntityFactory), false);
-				AddNavigatorMetaData<RefreshTokenEntity, EntityCollection<RefreshTokenEntity>>("RefreshTokens", a => a._refreshTokens, (a, b) => a._refreshTokens = b, a => a.RefreshTokens, () => new RefreshTokenRelations().RefreshTokenEntityUsingReplacedByTokenId, typeof(RefreshTokenEntity), (int)DATN.EntityType.RefreshTokenEntity);
-				AddNavigatorMetaData<RefreshTokenEntity, RefreshTokenEntity>("RefreshToken", "RefreshTokens", (a, b) => a._refreshToken = b, a => a._refreshToken, (a, b) => a.RefreshToken = b, DATN.RelationClasses.StaticRefreshTokenRelations.RefreshTokenEntityUsingIdReplacedByTokenIdStatic, ()=>new RefreshTokenRelations().RefreshTokenEntityUsingIdReplacedByTokenId, null, new int[] { (int)RefreshTokenFieldIndex.ReplacedByTokenId }, null, true, (int)DATN.EntityType.RefreshTokenEntity);
-				AddNavigatorMetaData<RefreshTokenEntity, UserEntity>("User", "RefreshTokens", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN.RelationClasses.StaticRefreshTokenRelations.UserEntityUsingUserIdStatic, ()=>new RefreshTokenRelations().UserEntityUsingUserId, null, new int[] { (int)RefreshTokenFieldIndex.UserId }, null, true, (int)DATN.EntityType.UserEntity);
+				SetEntityCoreInfo("RefreshTokenEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.RefreshTokenEntity, typeof(RefreshTokenEntity), typeof(RefreshTokenEntityFactory), false);
+				AddNavigatorMetaData<RefreshTokenEntity, EntityCollection<RefreshTokenEntity>>("RefreshTokens", a => a._refreshTokens, (a, b) => a._refreshTokens = b, a => a.RefreshTokens, () => new RefreshTokenRelations().RefreshTokenEntityUsingReplacedByTokenId, typeof(RefreshTokenEntity), (int)DATN_2026.EntityType.RefreshTokenEntity);
+				AddNavigatorMetaData<RefreshTokenEntity, RefreshTokenEntity>("RefreshToken", "RefreshTokens", (a, b) => a._refreshToken = b, a => a._refreshToken, (a, b) => a.RefreshToken = b, DATN_2026.RelationClasses.StaticRefreshTokenRelations.RefreshTokenEntityUsingIdReplacedByTokenIdStatic, ()=>new RefreshTokenRelations().RefreshTokenEntityUsingIdReplacedByTokenId, null, new int[] { (int)RefreshTokenFieldIndex.ReplacedByTokenId }, null, true, (int)DATN_2026.EntityType.RefreshTokenEntity);
+				AddNavigatorMetaData<RefreshTokenEntity, UserEntity>("User", "RefreshTokens", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticRefreshTokenRelations.UserEntityUsingUserIdStatic, ()=>new RefreshTokenRelations().UserEntityUsingUserId, null, new int[] { (int)RefreshTokenFieldIndex.UserId }, null, true, (int)DATN_2026.EntityType.UserEntity);
 			}
 		}
 
@@ -251,7 +251,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum RefreshTokenFieldIndex
 	{
@@ -276,7 +276,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: RefreshToken. </summary>
 	public partial class RefreshTokenRelations: RelationFactory

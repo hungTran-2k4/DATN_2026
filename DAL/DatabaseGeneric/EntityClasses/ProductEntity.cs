@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -28,9 +28,10 @@ namespace DATN.EntityClasses
 	{
 		private EntityCollection<ProductImageEntity> _productImages;
 		private EntityCollection<ProductVariantEntity> _productVariants;
-		private UserEntity _user;
+		private EntityCollection<WishlistEntity> _wishlists;
 		private BrandEntity _brand;
 		private CategoryEntity _category;
+		private ShopEntity _shop;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -40,16 +41,18 @@ namespace DATN.EntityClasses
 		/// <summary>All names of fields mapped onto a relation. Usable for in-memory filtering</summary>
 		public static partial class MemberNames
 		{
-			/// <summary>Member name User</summary>
-			public static readonly string User = "User";
 			/// <summary>Member name Brand</summary>
 			public static readonly string Brand = "Brand";
 			/// <summary>Member name Category</summary>
 			public static readonly string Category = "Category";
+			/// <summary>Member name Shop</summary>
+			public static readonly string Shop = "Shop";
 			/// <summary>Member name ProductImages</summary>
 			public static readonly string ProductImages = "ProductImages";
 			/// <summary>Member name ProductVariants</summary>
 			public static readonly string ProductVariants = "ProductVariants";
+			/// <summary>Member name Wishlists</summary>
+			public static readonly string Wishlists = "Wishlists";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -57,12 +60,13 @@ namespace DATN.EntityClasses
 		{
 			public ProductEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("ProductEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.ProductEntity, typeof(ProductEntity), typeof(ProductEntityFactory), false);
-				AddNavigatorMetaData<ProductEntity, EntityCollection<ProductImageEntity>>("ProductImages", a => a._productImages, (a, b) => a._productImages = b, a => a.ProductImages, () => new ProductRelations().ProductImageEntityUsingProductId, typeof(ProductImageEntity), (int)DATN.EntityType.ProductImageEntity);
-				AddNavigatorMetaData<ProductEntity, EntityCollection<ProductVariantEntity>>("ProductVariants", a => a._productVariants, (a, b) => a._productVariants = b, a => a.ProductVariants, () => new ProductRelations().ProductVariantEntityUsingProductId, typeof(ProductVariantEntity), (int)DATN.EntityType.ProductVariantEntity);
-				AddNavigatorMetaData<ProductEntity, UserEntity>("User", "Products", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN.RelationClasses.StaticProductRelations.UserEntityUsingSellerIdStatic, ()=>new ProductRelations().UserEntityUsingSellerId, null, new int[] { (int)ProductFieldIndex.SellerId }, null, true, (int)DATN.EntityType.UserEntity);
-				AddNavigatorMetaData<ProductEntity, BrandEntity>("Brand", "Products", (a, b) => a._brand = b, a => a._brand, (a, b) => a.Brand = b, DATN.RelationClasses.StaticProductRelations.BrandEntityUsingBrandIdStatic, ()=>new ProductRelations().BrandEntityUsingBrandId, null, new int[] { (int)ProductFieldIndex.BrandId }, null, true, (int)DATN.EntityType.BrandEntity);
-				AddNavigatorMetaData<ProductEntity, CategoryEntity>("Category", "Products", (a, b) => a._category = b, a => a._category, (a, b) => a.Category = b, DATN.RelationClasses.StaticProductRelations.CategoryEntityUsingCategoryIdStatic, ()=>new ProductRelations().CategoryEntityUsingCategoryId, null, new int[] { (int)ProductFieldIndex.CategoryId }, null, true, (int)DATN.EntityType.CategoryEntity);
+				SetEntityCoreInfo("ProductEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.ProductEntity, typeof(ProductEntity), typeof(ProductEntityFactory), false);
+				AddNavigatorMetaData<ProductEntity, EntityCollection<ProductImageEntity>>("ProductImages", a => a._productImages, (a, b) => a._productImages = b, a => a.ProductImages, () => new ProductRelations().ProductImageEntityUsingProductId, typeof(ProductImageEntity), (int)DATN_2026.EntityType.ProductImageEntity);
+				AddNavigatorMetaData<ProductEntity, EntityCollection<ProductVariantEntity>>("ProductVariants", a => a._productVariants, (a, b) => a._productVariants = b, a => a.ProductVariants, () => new ProductRelations().ProductVariantEntityUsingProductId, typeof(ProductVariantEntity), (int)DATN_2026.EntityType.ProductVariantEntity);
+				AddNavigatorMetaData<ProductEntity, EntityCollection<WishlistEntity>>("Wishlists", a => a._wishlists, (a, b) => a._wishlists = b, a => a.Wishlists, () => new ProductRelations().WishlistEntityUsingProductId, typeof(WishlistEntity), (int)DATN_2026.EntityType.WishlistEntity);
+				AddNavigatorMetaData<ProductEntity, BrandEntity>("Brand", "Products", (a, b) => a._brand = b, a => a._brand, (a, b) => a.Brand = b, DATN_2026.RelationClasses.StaticProductRelations.BrandEntityUsingBrandIdStatic, ()=>new ProductRelations().BrandEntityUsingBrandId, null, new int[] { (int)ProductFieldIndex.BrandId }, null, true, (int)DATN_2026.EntityType.BrandEntity);
+				AddNavigatorMetaData<ProductEntity, CategoryEntity>("Category", "Products", (a, b) => a._category = b, a => a._category, (a, b) => a.Category = b, DATN_2026.RelationClasses.StaticProductRelations.CategoryEntityUsingCategoryIdStatic, ()=>new ProductRelations().CategoryEntityUsingCategoryId, null, new int[] { (int)ProductFieldIndex.CategoryId }, null, true, (int)DATN_2026.EntityType.CategoryEntity);
+				AddNavigatorMetaData<ProductEntity, ShopEntity>("Shop", "Products", (a, b) => a._shop = b, a => a._shop, (a, b) => a.Shop = b, DATN_2026.RelationClasses.StaticProductRelations.ShopEntityUsingShopIdStatic, ()=>new ProductRelations().ShopEntityUsingShopId, null, new int[] { (int)ProductFieldIndex.ShopId }, null, true, (int)DATN_2026.EntityType.ShopEntity);
 			}
 		}
 
@@ -120,7 +124,7 @@ namespace DATN.EntityClasses
 		public IPredicateExpression ConstructFilterForUCSlug()
 		{
 			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.ProductFields.Slug == this.Fields.GetCurrentValue((int)ProductFieldIndex.Slug));
+			filter.Add(DATN_2026.HelperClasses.ProductFields.Slug == this.Fields.GetCurrentValue((int)ProductFieldIndex.Slug));
  			return filter;
 		}
 
@@ -132,9 +136,9 @@ namespace DATN.EntityClasses
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoProductVariants() { return CreateRelationInfoForNavigator("ProductVariants"); }
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'User' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Wishlist' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfoUser() { return CreateRelationInfoForNavigator("User"); }
+		public virtual IRelationPredicateBucket GetRelationInfoWishlists() { return CreateRelationInfoForNavigator("Wishlists"); }
 
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Brand' to this entity.</summary>
 		/// <returns></returns>
@@ -143,6 +147,10 @@ namespace DATN.EntityClasses
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Category' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoCategory() { return CreateRelationInfoForNavigator("Category"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Shop' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoShop() { return CreateRelationInfoForNavigator("Shop"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -182,9 +190,9 @@ namespace DATN.EntityClasses
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathProductVariants { get { return _staticMetaData.GetPrefetchPathElement("ProductVariants", CommonEntityBase.CreateEntityCollection<ProductVariantEntity>()); } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'User' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Wishlist' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathUser { get { return _staticMetaData.GetPrefetchPathElement("User", CommonEntityBase.CreateEntityCollection<UserEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathWishlists { get { return _staticMetaData.GetPrefetchPathElement("Wishlists", CommonEntityBase.CreateEntityCollection<WishlistEntity>()); } }
 
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Brand' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
@@ -193,6 +201,10 @@ namespace DATN.EntityClasses
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Category' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathCategory { get { return _staticMetaData.GetPrefetchPathElement("Category", CommonEntityBase.CreateEntityCollection<CategoryEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Shop' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathShop { get { return _staticMetaData.GetPrefetchPathElement("Shop", CommonEntityBase.CreateEntityCollection<ShopEntity>()); } }
 
 		/// <summary>The BaseAttributes property of the Entity Product<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "products"."base_attributes".<br/>Table field type characteristics (type, precision, scale, length): Jsonb, 0, 0, 2147483647.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
@@ -250,12 +262,12 @@ namespace DATN.EntityClasses
 			set { SetValue((int)ProductFieldIndex.Name, value); }
 		}
 
-		/// <summary>The SellerId property of the Entity Product<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "products"."seller_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
-		public virtual Nullable<System.Guid> SellerId
+		/// <summary>The ShopId property of the Entity Product<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "products"."shop_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> ShopId
 		{
-			get { return (Nullable<System.Guid>)GetValue((int)ProductFieldIndex.SellerId, false); }
-			set { SetValue((int)ProductFieldIndex.SellerId, value); }
+			get { return (Nullable<System.Guid>)GetValue((int)ProductFieldIndex.ShopId, false); }
+			set { SetValue((int)ProductFieldIndex.ShopId, value); }
 		}
 
 		/// <summary>The Sku property of the Entity Product<br/><br/></summary>
@@ -314,13 +326,9 @@ namespace DATN.EntityClasses
 		[TypeContainedAttribute(typeof(ProductVariantEntity))]
 		public virtual EntityCollection<ProductVariantEntity> ProductVariants { get { return GetOrCreateEntityCollection<ProductVariantEntity, ProductVariantEntityFactory>("Product", true, false, ref _productVariants); } }
 
-		/// <summary>Gets / sets related entity of type 'UserEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
-		[Browsable(false)]
-		public virtual UserEntity User
-		{
-			get { return _user; }
-			set { SetSingleRelatedEntityNavigator(value, "User"); }
-		}
+		/// <summary>Gets the EntityCollection with the related entities of type 'WishlistEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(WishlistEntity))]
+		public virtual EntityCollection<WishlistEntity> Wishlists { get { return GetOrCreateEntityCollection<WishlistEntity, WishlistEntityFactory>("Product", true, false, ref _wishlists); } }
 
 		/// <summary>Gets / sets related entity of type 'BrandEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
 		[Browsable(false)]
@@ -338,13 +346,21 @@ namespace DATN.EntityClasses
 			set { SetSingleRelatedEntityNavigator(value, "Category"); }
 		}
 
+		/// <summary>Gets / sets related entity of type 'ShopEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual ShopEntity Shop
+		{
+			get { return _shop; }
+			set { SetSingleRelatedEntityNavigator(value, "Shop"); }
+		}
+
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
 
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum ProductFieldIndex
 	{
@@ -362,8 +378,8 @@ namespace DATN
 		Id,
 		///<summary>Name. </summary>
 		Name,
-		///<summary>SellerId. </summary>
-		SellerId,
+		///<summary>ShopId. </summary>
+		ShopId,
 		///<summary>Sku. </summary>
 		Sku,
 		///<summary>Slug. </summary>
@@ -381,7 +397,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Product. </summary>
 	public partial class ProductRelations: RelationFactory
@@ -398,10 +414,10 @@ namespace DATN.RelationClasses
 			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "ProductVariants", true, new[] { ProductFields.Id, ProductVariantFields.ProductId }); }
 		}
 
-		/// <summary>Returns a new IEntityRelation object, between ProductEntity and UserEntity over the m:1 relation they have, using the relation between the fields: Product.SellerId - User.Id</summary>
-		public virtual IEntityRelation UserEntityUsingSellerId
+		/// <summary>Returns a new IEntityRelation object, between ProductEntity and WishlistEntity over the 1:n relation they have, using the relation between the fields: Product.Id - Wishlist.ProductId</summary>
+		public virtual IEntityRelation WishlistEntityUsingProductId
 		{
-			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "User", false, new[] { UserFields.Id, ProductFields.SellerId }); }
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Wishlists", true, new[] { ProductFields.Id, WishlistFields.ProductId }); }
 		}
 
 		/// <summary>Returns a new IEntityRelation object, between ProductEntity and BrandEntity over the m:1 relation they have, using the relation between the fields: Product.BrandId - Brand.Id</summary>
@@ -416,6 +432,12 @@ namespace DATN.RelationClasses
 			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Category", false, new[] { CategoryFields.Id, ProductFields.CategoryId }); }
 		}
 
+		/// <summary>Returns a new IEntityRelation object, between ProductEntity and ShopEntity over the m:1 relation they have, using the relation between the fields: Product.ShopId - Shop.Id</summary>
+		public virtual IEntityRelation ShopEntityUsingShopId
+		{
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Shop", false, new[] { ShopFields.Id, ProductFields.ShopId }); }
+		}
+
 	}
 	
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
@@ -423,9 +445,10 @@ namespace DATN.RelationClasses
 	{
 		internal static readonly IEntityRelation ProductImageEntityUsingProductIdStatic = new ProductRelations().ProductImageEntityUsingProductId;
 		internal static readonly IEntityRelation ProductVariantEntityUsingProductIdStatic = new ProductRelations().ProductVariantEntityUsingProductId;
-		internal static readonly IEntityRelation UserEntityUsingSellerIdStatic = new ProductRelations().UserEntityUsingSellerId;
+		internal static readonly IEntityRelation WishlistEntityUsingProductIdStatic = new ProductRelations().WishlistEntityUsingProductId;
 		internal static readonly IEntityRelation BrandEntityUsingBrandIdStatic = new ProductRelations().BrandEntityUsingBrandId;
 		internal static readonly IEntityRelation CategoryEntityUsingCategoryIdStatic = new ProductRelations().CategoryEntityUsingCategoryId;
+		internal static readonly IEntityRelation ShopEntityUsingShopIdStatic = new ProductRelations().ShopEntityUsingShopId;
 
 		/// <summary>CTor</summary>
 		static StaticProductRelations() { }

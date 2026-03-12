@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DATN.EntityClasses;
+using DATN_2026.EntityClasses;
 using DATN.Domain.Entities.Identity;
 
 namespace DATN.Infrastructure.Mapping;
@@ -46,11 +46,11 @@ public class UserInfrastructureMappingProfile : Profile
             .ForMember(dest => dest.UserRoles, opt => opt.Ignore())
             .ForMember(dest => dest.UserSessions, opt => opt.Ignore())
             .ForMember(dest => dest.AvatarUrl, opt => opt.Ignore())
-            .ForMember(dest => dest.Products, opt => opt.Ignore())
-            .ForMember(dest => dest.engagementReviews, opt => opt.Ignore())
+            .ForMember(dest => dest.Shops, opt => opt.Ignore())
+            .ForMember(dest => dest.Reviews, opt => opt.Ignore())
             .ForMember(dest => dest.Notifications, opt => opt.Ignore())
-            .ForMember(dest => dest.salesCarts, opt => opt.Ignore())
-            .ForMember(dest => dest.salesOrders, opt => opt.Ignore());
+            .ForMember(dest => dest.Carts, opt => opt.Ignore())
+            .ForMember(dest => dest.Orders, opt => opt.Ignore());
 
         // RoleEntity -> Role (Domain)
         CreateMap<RoleEntity, Role>()

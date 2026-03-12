@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -45,8 +45,8 @@ namespace DATN.EntityClasses
 		{
 			public ProductImageEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("ProductImageEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.ProductImageEntity, typeof(ProductImageEntity), typeof(ProductImageEntityFactory), false);
-				AddNavigatorMetaData<ProductImageEntity, ProductEntity>("Product", "ProductImages", (a, b) => a._product = b, a => a._product, (a, b) => a.Product = b, DATN.RelationClasses.StaticProductImageRelations.ProductEntityUsingProductIdStatic, ()=>new ProductImageRelations().ProductEntityUsingProductId, null, new int[] { (int)ProductImageFieldIndex.ProductId }, null, true, (int)DATN.EntityType.ProductEntity);
+				SetEntityCoreInfo("ProductImageEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.ProductImageEntity, typeof(ProductImageEntity), typeof(ProductImageEntityFactory), false);
+				AddNavigatorMetaData<ProductImageEntity, ProductEntity>("Product", "ProductImages", (a, b) => a._product = b, a => a._product, (a, b) => a.Product = b, DATN_2026.RelationClasses.StaticProductImageRelations.ProductEntityUsingProductIdStatic, ()=>new ProductImageRelations().ProductEntityUsingProductId, null, new int[] { (int)ProductImageFieldIndex.ProductId }, null, true, (int)DATN_2026.EntityType.ProductEntity);
 			}
 		}
 
@@ -191,7 +191,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum ProductImageFieldIndex
 	{
@@ -210,7 +210,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: ProductImage. </summary>
 	public partial class ProductImageRelations: RelationFactory

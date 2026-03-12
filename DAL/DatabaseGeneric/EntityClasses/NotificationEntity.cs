@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -45,8 +45,8 @@ namespace DATN.EntityClasses
 		{
 			public NotificationEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("NotificationEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.NotificationEntity, typeof(NotificationEntity), typeof(NotificationEntityFactory), false);
-				AddNavigatorMetaData<NotificationEntity, UserEntity>("User", "Notifications", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN.RelationClasses.StaticNotificationRelations.UserEntityUsingUserIdStatic, ()=>new NotificationRelations().UserEntityUsingUserId, null, new int[] { (int)NotificationFieldIndex.UserId }, null, true, (int)DATN.EntityType.UserEntity);
+				SetEntityCoreInfo("NotificationEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.NotificationEntity, typeof(NotificationEntity), typeof(NotificationEntityFactory), false);
+				AddNavigatorMetaData<NotificationEntity, UserEntity>("User", "Notifications", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticNotificationRelations.UserEntityUsingUserIdStatic, ()=>new NotificationRelations().UserEntityUsingUserId, null, new int[] { (int)NotificationFieldIndex.UserId }, null, true, (int)DATN_2026.EntityType.UserEntity);
 			}
 		}
 
@@ -215,7 +215,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum NotificationFieldIndex
 	{
@@ -240,7 +240,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Notification. </summary>
 	public partial class NotificationRelations: RelationFactory

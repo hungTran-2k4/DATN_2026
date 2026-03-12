@@ -10,12 +10,11 @@ using Google.Apis.Auth.OAuth2;
 using DATN.Domain.Interfaces;
 using DATN.Application.Interfaces.Auth;
 using DATN.Application.Interfaces.Services;
-
 using DATN.Infrastructure.Persistence.Repositories.Users;
 using DATN.Infrastructure.Persistence.Repositories.Roles;
 using DATN.Infrastructure.Persistence.Repositories.Auth;
 using DATN.Infrastructure.Services;
-using DATN.DatabaseSpecific;
+using DATN_2026.DatabaseSpecific;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.DQE.PostgreSql;
 
@@ -57,6 +56,9 @@ public static class DependencyInjection
             var factory = provider.GetRequiredService<IDataAccessAdapterFactory>();
             return (DataAccessAdapter)factory.CreateAdapter();
         });
+
+        // Register AutoMapper profiles in Infrastructure
+        services.AddAutoMapper(System.Reflection.Assembly.GetExecutingAssembly());
 
         // Register repositories
 

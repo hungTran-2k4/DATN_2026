@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -26,7 +26,9 @@ namespace DATN.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
-		private GameEntity _game;
+		private UserEntity _user;
+		private ProductVariantEntity _productVariant;
+		private OrderEntity _order;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -36,8 +38,12 @@ namespace DATN.EntityClasses
 		/// <summary>All names of fields mapped onto a relation. Usable for in-memory filtering</summary>
 		public static partial class MemberNames
 		{
-			/// <summary>Member name Game</summary>
-			public static readonly string Game = "Game";
+			/// <summary>Member name User</summary>
+			public static readonly string User = "User";
+			/// <summary>Member name ProductVariant</summary>
+			public static readonly string ProductVariant = "ProductVariant";
+			/// <summary>Member name Order</summary>
+			public static readonly string Order = "Order";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -45,8 +51,10 @@ namespace DATN.EntityClasses
 		{
 			public ReviewEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("ReviewEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.ReviewEntity, typeof(ReviewEntity), typeof(ReviewEntityFactory), false);
-				AddNavigatorMetaData<ReviewEntity, GameEntity>("Game", "Reviews", (a, b) => a._game = b, a => a._game, (a, b) => a.Game = b, DATN.RelationClasses.StaticReviewRelations.GameEntityUsingGameIdStatic, ()=>new ReviewRelations().GameEntityUsingGameId, null, new int[] { (int)ReviewFieldIndex.GameId }, null, true, (int)DATN.EntityType.GameEntity);
+				SetEntityCoreInfo("ReviewEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.ReviewEntity, typeof(ReviewEntity), typeof(ReviewEntityFactory), false);
+				AddNavigatorMetaData<ReviewEntity, UserEntity>("User", "Reviews", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticReviewRelations.UserEntityUsingUserIdStatic, ()=>new ReviewRelations().UserEntityUsingUserId, null, new int[] { (int)ReviewFieldIndex.UserId }, null, true, (int)DATN_2026.EntityType.UserEntity);
+				AddNavigatorMetaData<ReviewEntity, ProductVariantEntity>("ProductVariant", "Reviews", (a, b) => a._productVariant = b, a => a._productVariant, (a, b) => a.ProductVariant = b, DATN_2026.RelationClasses.StaticReviewRelations.ProductVariantEntityUsingVariantIdStatic, ()=>new ReviewRelations().ProductVariantEntityUsingVariantId, null, new int[] { (int)ReviewFieldIndex.VariantId }, null, true, (int)DATN_2026.EntityType.ProductVariantEntity);
+				AddNavigatorMetaData<ReviewEntity, OrderEntity>("Order", "Reviews", (a, b) => a._order = b, a => a._order, (a, b) => a.Order = b, DATN_2026.RelationClasses.StaticReviewRelations.OrderEntityUsingOrderIdStatic, ()=>new ReviewRelations().OrderEntityUsingOrderId, null, new int[] { (int)ReviewFieldIndex.OrderId }, null, true, (int)DATN_2026.EntityType.OrderEntity);
 			}
 		}
 
@@ -99,19 +107,17 @@ namespace DATN.EntityClasses
 			// __LLBLGENPRO_USER_CODE_REGION_END
 		}
 
-		/// <summary>Method which will construct a filter (predicate expression) for the unique constraint defined on the fields: GameId , UserId .</summary>
-		/// <returns>true if succeeded and the contents is read, false otherwise</returns>
-		public IPredicateExpression ConstructFilterForUCGameIdUserId()
-		{
-			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.ReviewFields.GameId == this.Fields.GetCurrentValue((int)ReviewFieldIndex.GameId));
-			filter.Add(DATN.HelperClasses.ReviewFields.UserId == this.Fields.GetCurrentValue((int)ReviewFieldIndex.UserId));
- 			return filter;
-		}
-
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Game' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'User' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfoGame() { return CreateRelationInfoForNavigator("Game"); }
+		public virtual IRelationPredicateBucket GetRelationInfoUser() { return CreateRelationInfoForNavigator("User"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'ProductVariant' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoProductVariant() { return CreateRelationInfoForNavigator("ProductVariant"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Order' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoOrder() { return CreateRelationInfoForNavigator("Order"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -143,9 +149,17 @@ namespace DATN.EntityClasses
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static ReviewRelations Relations { get { return _relationsFactory; } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Game' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'User' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathGame { get { return _staticMetaData.GetPrefetchPathElement("Game", CommonEntityBase.CreateEntityCollection<GameEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathUser { get { return _staticMetaData.GetPrefetchPathElement("User", CommonEntityBase.CreateEntityCollection<UserEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'ProductVariant' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathProductVariant { get { return _staticMetaData.GetPrefetchPathElement("ProductVariant", CommonEntityBase.CreateEntityCollection<ProductVariantEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Order' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathOrder { get { return _staticMetaData.GetPrefetchPathElement("Order", CommonEntityBase.CreateEntityCollection<OrderEntity>()); } }
 
 		/// <summary>The Comment property of the Entity Review<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "reviews"."comment".<br/>Table field type characteristics (type, precision, scale, length): Text, 0, 0, 1073741824.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
@@ -156,19 +170,11 @@ namespace DATN.EntityClasses
 		}
 
 		/// <summary>The CreatedAt property of the Entity Review<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "reviews"."created_at".<br/>Table field type characteristics (type, precision, scale, length): Timestamp, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		/// <remarks>Mapped on  table field: "reviews"."created_at".<br/>Table field type characteristics (type, precision, scale, length): TimestampTz, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
 		public virtual Nullable<System.DateTime> CreatedAt
 		{
 			get { return (Nullable<System.DateTime>)GetValue((int)ReviewFieldIndex.CreatedAt, false); }
 			set { SetValue((int)ReviewFieldIndex.CreatedAt, value); }
-		}
-
-		/// <summary>The GameId property of the Entity Review<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "reviews"."game_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
-		public virtual System.Guid GameId
-		{
-			get { return (System.Guid)GetValue((int)ReviewFieldIndex.GameId, true); }
-			set { SetValue((int)ReviewFieldIndex.GameId, value); }
 		}
 
 		/// <summary>The Id property of the Entity Review<br/><br/></summary>
@@ -179,28 +185,68 @@ namespace DATN.EntityClasses
 			set { SetValue((int)ReviewFieldIndex.Id, value); }
 		}
 
-		/// <summary>The Rating property of the Entity Review<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "reviews"."rating".<br/>Table field type characteristics (type, precision, scale, length): Integer, 10, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
-		public virtual System.Int32 Rating
+		/// <summary>The Images property of the Entity Review<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "reviews"."images".<br/>Table field type characteristics (type, precision, scale, length): Jsonb, 0, 0, 2147483647.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual System.String Images
 		{
-			get { return (System.Int32)GetValue((int)ReviewFieldIndex.Rating, true); }
+			get { return (System.String)GetValue((int)ReviewFieldIndex.Images, true); }
+			set { SetValue((int)ReviewFieldIndex.Images, value); }
+		}
+
+		/// <summary>The OrderId property of the Entity Review<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "reviews"."order_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> OrderId
+		{
+			get { return (Nullable<System.Guid>)GetValue((int)ReviewFieldIndex.OrderId, false); }
+			set { SetValue((int)ReviewFieldIndex.OrderId, value); }
+		}
+
+		/// <summary>The Rating property of the Entity Review<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "reviews"."rating".<br/>Table field type characteristics (type, precision, scale, length): Integer, 10, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Int32> Rating
+		{
+			get { return (Nullable<System.Int32>)GetValue((int)ReviewFieldIndex.Rating, false); }
 			set { SetValue((int)ReviewFieldIndex.Rating, value); }
 		}
 
 		/// <summary>The UserId property of the Entity Review<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "reviews"."user_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
-		public virtual System.Guid UserId
+		/// <remarks>Mapped on  table field: "reviews"."user_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> UserId
 		{
-			get { return (System.Guid)GetValue((int)ReviewFieldIndex.UserId, true); }
+			get { return (Nullable<System.Guid>)GetValue((int)ReviewFieldIndex.UserId, false); }
 			set { SetValue((int)ReviewFieldIndex.UserId, value); }
 		}
 
-		/// <summary>Gets / sets related entity of type 'GameEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
-		[Browsable(false)]
-		public virtual GameEntity Game
+		/// <summary>The VariantId property of the Entity Review<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "reviews"."variant_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> VariantId
 		{
-			get { return _game; }
-			set { SetSingleRelatedEntityNavigator(value, "Game"); }
+			get { return (Nullable<System.Guid>)GetValue((int)ReviewFieldIndex.VariantId, false); }
+			set { SetValue((int)ReviewFieldIndex.VariantId, value); }
+		}
+
+		/// <summary>Gets / sets related entity of type 'UserEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual UserEntity User
+		{
+			get { return _user; }
+			set { SetSingleRelatedEntityNavigator(value, "User"); }
+		}
+
+		/// <summary>Gets / sets related entity of type 'ProductVariantEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual ProductVariantEntity ProductVariant
+		{
+			get { return _productVariant; }
+			set { SetSingleRelatedEntityNavigator(value, "ProductVariant"); }
+		}
+
+		/// <summary>Gets / sets related entity of type 'OrderEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual OrderEntity Order
+		{
+			get { return _order; }
+			set { SetSingleRelatedEntityNavigator(value, "Order"); }
 		}
 
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
@@ -209,7 +255,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum ReviewFieldIndex
 	{
@@ -217,29 +263,45 @@ namespace DATN
 		Comment,
 		///<summary>CreatedAt. </summary>
 		CreatedAt,
-		///<summary>GameId. </summary>
-		GameId,
 		///<summary>Id. </summary>
 		Id,
+		///<summary>Images. </summary>
+		Images,
+		///<summary>OrderId. </summary>
+		OrderId,
 		///<summary>Rating. </summary>
 		Rating,
 		///<summary>UserId. </summary>
 		UserId,
+		///<summary>VariantId. </summary>
+		VariantId,
 		/// <summary></summary>
 		AmountOfFields
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Review. </summary>
 	public partial class ReviewRelations: RelationFactory
 	{
 
-		/// <summary>Returns a new IEntityRelation object, between ReviewEntity and GameEntity over the m:1 relation they have, using the relation between the fields: Review.GameId - Game.Id</summary>
-		public virtual IEntityRelation GameEntityUsingGameId
+		/// <summary>Returns a new IEntityRelation object, between ReviewEntity and UserEntity over the m:1 relation they have, using the relation between the fields: Review.UserId - User.Id</summary>
+		public virtual IEntityRelation UserEntityUsingUserId
 		{
-			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Game", false, new[] { GameFields.Id, ReviewFields.GameId }); }
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "User", false, new[] { UserFields.Id, ReviewFields.UserId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between ReviewEntity and ProductVariantEntity over the m:1 relation they have, using the relation between the fields: Review.VariantId - ProductVariant.Id</summary>
+		public virtual IEntityRelation ProductVariantEntityUsingVariantId
+		{
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "ProductVariant", false, new[] { ProductVariantFields.Id, ReviewFields.VariantId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between ReviewEntity and OrderEntity over the m:1 relation they have, using the relation between the fields: Review.OrderId - Order.Id</summary>
+		public virtual IEntityRelation OrderEntityUsingOrderId
+		{
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Order", false, new[] { OrderFields.Id, ReviewFields.OrderId }); }
 		}
 
 	}
@@ -247,7 +309,9 @@ namespace DATN.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticReviewRelations
 	{
-		internal static readonly IEntityRelation GameEntityUsingGameIdStatic = new ReviewRelations().GameEntityUsingGameId;
+		internal static readonly IEntityRelation UserEntityUsingUserIdStatic = new ReviewRelations().UserEntityUsingUserId;
+		internal static readonly IEntityRelation ProductVariantEntityUsingVariantIdStatic = new ReviewRelations().ProductVariantEntityUsingVariantId;
+		internal static readonly IEntityRelation OrderEntityUsingOrderIdStatic = new ReviewRelations().OrderEntityUsingOrderId;
 
 		/// <summary>CTor</summary>
 		static StaticReviewRelations() { }

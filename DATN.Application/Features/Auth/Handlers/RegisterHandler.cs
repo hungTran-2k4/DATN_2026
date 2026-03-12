@@ -8,13 +8,14 @@ using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
 using AutoMapper;
+using DATN.Application.Common.Models;
 
 namespace DATN.Application.Features.Auth.Handlers;
 
 /// <summary>
 /// Handler cho RegisterCommand
 /// </summary>
-public class RegisterHandler : IRequestHandler<RegisterCommand, AuthResponse>
+public class RegisterHandler : IRequestHandler<RegisterCommand, ApiResponse<AuthResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
@@ -45,18 +46,14 @@ public class RegisterHandler : IRequestHandler<RegisterCommand, AuthResponse>
         _emailService = emailService;
     }
 
-    public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         try
         {
             // 1. Kiểm tra email đã tồn tại chưa
             if (await _userRepository.EmailExistsAsync(request.Email, cancellationToken))
             {
-                return new AuthResponse
-                {
-                    Success = false,
-                    Message = "Email đã được sử dụng"
-                };
+                return ApiResponse<AuthResponse>.Fail("Email đã được sử dụng", 400, "EMAIL_ALREADY_EXISTS");
             }
 
             // 2. Hash password
@@ -130,24 +127,18 @@ public class RegisterHandler : IRequestHandler<RegisterCommand, AuthResponse>
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Roles = roles.ToList();
 
-            return new AuthResponse
+            return ApiResponse<AuthResponse>.Succeed(new AuthResponse
             {
-                Success = true,
-                Message = "Đăng ký thành công",
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 ExpiresAt = expiresAt,
                 User = userDto
-            };
+            }, "Đăng ký thành công", 201);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during registration for {Email}", request.Email);
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Đã xảy ra lỗi trong quá trình đăng ký"
-            };
+            return ApiResponse<AuthResponse>.Fail("Đã xảy ra lỗi trong quá trình đăng ký", 500, "INTERNAL_SERVER_ERROR");
         }
     }
 

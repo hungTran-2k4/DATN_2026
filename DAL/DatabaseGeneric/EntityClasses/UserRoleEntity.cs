@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -48,9 +48,9 @@ namespace DATN.EntityClasses
 		{
 			public UserRoleEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("UserRoleEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.UserRoleEntity, typeof(UserRoleEntity), typeof(UserRoleEntityFactory), false);
-				AddNavigatorMetaData<UserRoleEntity, RoleEntity>("Role", "UserRoles", (a, b) => a._role = b, a => a._role, (a, b) => a.Role = b, DATN.RelationClasses.StaticUserRoleRelations.RoleEntityUsingRoleIdStatic, ()=>new UserRoleRelations().RoleEntityUsingRoleId, null, new int[] { (int)UserRoleFieldIndex.RoleId }, null, true, (int)DATN.EntityType.RoleEntity);
-				AddNavigatorMetaData<UserRoleEntity, UserEntity>("User", "UserRoles", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN.RelationClasses.StaticUserRoleRelations.UserEntityUsingUserIdStatic, ()=>new UserRoleRelations().UserEntityUsingUserId, null, new int[] { (int)UserRoleFieldIndex.UserId }, null, true, (int)DATN.EntityType.UserEntity);
+				SetEntityCoreInfo("UserRoleEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.UserRoleEntity, typeof(UserRoleEntity), typeof(UserRoleEntityFactory), false);
+				AddNavigatorMetaData<UserRoleEntity, RoleEntity>("Role", "UserRoles", (a, b) => a._role = b, a => a._role, (a, b) => a.Role = b, DATN_2026.RelationClasses.StaticUserRoleRelations.RoleEntityUsingRoleIdStatic, ()=>new UserRoleRelations().RoleEntityUsingRoleId, null, new int[] { (int)UserRoleFieldIndex.RoleId }, null, true, (int)DATN_2026.EntityType.RoleEntity);
+				AddNavigatorMetaData<UserRoleEntity, UserEntity>("User", "UserRoles", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticUserRoleRelations.UserEntityUsingUserIdStatic, ()=>new UserRoleRelations().UserEntityUsingUserId, null, new int[] { (int)UserRoleFieldIndex.UserId }, null, true, (int)DATN_2026.EntityType.UserEntity);
 			}
 		}
 
@@ -198,7 +198,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum UserRoleFieldIndex
 	{
@@ -213,7 +213,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: UserRole. </summary>
 	public partial class UserRoleRelations: RelationFactory

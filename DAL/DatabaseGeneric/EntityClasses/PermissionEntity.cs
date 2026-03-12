@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -45,8 +45,8 @@ namespace DATN.EntityClasses
 		{
 			public PermissionEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("PermissionEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.PermissionEntity, typeof(PermissionEntity), typeof(PermissionEntityFactory), false);
-				AddNavigatorMetaData<PermissionEntity, EntityCollection<RolePermissionEntity>>("RolePermissions", a => a._rolePermissions, (a, b) => a._rolePermissions = b, a => a.RolePermissions, () => new PermissionRelations().RolePermissionEntityUsingPermissionId, typeof(RolePermissionEntity), (int)DATN.EntityType.RolePermissionEntity);
+				SetEntityCoreInfo("PermissionEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.PermissionEntity, typeof(PermissionEntity), typeof(PermissionEntityFactory), false);
+				AddNavigatorMetaData<PermissionEntity, EntityCollection<RolePermissionEntity>>("RolePermissions", a => a._rolePermissions, (a, b) => a._rolePermissions = b, a => a.RolePermissions, () => new PermissionRelations().RolePermissionEntityUsingPermissionId, typeof(RolePermissionEntity), (int)DATN_2026.EntityType.RolePermissionEntity);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace DATN.EntityClasses
 		public IPredicateExpression ConstructFilterForUCCode()
 		{
 			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.PermissionFields.Code == this.Fields.GetCurrentValue((int)PermissionFieldIndex.Code));
+			filter.Add(DATN_2026.HelperClasses.PermissionFields.Code == this.Fields.GetCurrentValue((int)PermissionFieldIndex.Code));
  			return filter;
 		}
 
@@ -188,7 +188,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum PermissionFieldIndex
 	{
@@ -205,7 +205,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Permission. </summary>
 	public partial class PermissionRelations: RelationFactory

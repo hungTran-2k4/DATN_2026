@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -27,13 +27,18 @@ namespace DATN.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
 		private EntityCollection<RefreshTokenEntity> _refreshTokens;
+		private EntityCollection<UserAddressEntity> _userAddresses;
 		private EntityCollection<UserRoleEntity> _userRoles;
 		private EntityCollection<UserSessionEntity> _userSessions;
-		private EntityCollection<ProductEntity> _products;
-		private EntityCollection<engagementReviewEntity> _engagementReviews;
+		private EntityCollection<ShopEntity> _shops;
+		private EntityCollection<ChatBoxEntity> _chatBoxes;
+		private EntityCollection<ChatMessageEntity> _chatMessages;
 		private EntityCollection<NotificationEntity> _notifications;
-		private EntityCollection<salesCartEntity> _salesCarts;
-		private EntityCollection<salesOrderEntity> _salesOrders;
+		private EntityCollection<ReviewEntity> _reviews;
+		private EntityCollection<WishlistEntity> _wishlists;
+		private EntityCollection<UserVoucherEntity> _userVouchers;
+		private EntityCollection<CartEntity> _carts;
+		private EntityCollection<OrderEntity> _orders;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -45,20 +50,30 @@ namespace DATN.EntityClasses
 		{
 			/// <summary>Member name RefreshTokens</summary>
 			public static readonly string RefreshTokens = "RefreshTokens";
+			/// <summary>Member name UserAddresses</summary>
+			public static readonly string UserAddresses = "UserAddresses";
 			/// <summary>Member name UserRoles</summary>
 			public static readonly string UserRoles = "UserRoles";
 			/// <summary>Member name UserSessions</summary>
 			public static readonly string UserSessions = "UserSessions";
-			/// <summary>Member name Products</summary>
-			public static readonly string Products = "Products";
-			/// <summary>Member name engagementReviews</summary>
-			public static readonly string engagementReviews = "engagementReviews";
+			/// <summary>Member name Shops</summary>
+			public static readonly string Shops = "Shops";
+			/// <summary>Member name ChatBoxes</summary>
+			public static readonly string ChatBoxes = "ChatBoxes";
+			/// <summary>Member name ChatMessages</summary>
+			public static readonly string ChatMessages = "ChatMessages";
 			/// <summary>Member name Notifications</summary>
 			public static readonly string Notifications = "Notifications";
-			/// <summary>Member name salesCarts</summary>
-			public static readonly string salesCarts = "salesCarts";
-			/// <summary>Member name salesOrders</summary>
-			public static readonly string salesOrders = "salesOrders";
+			/// <summary>Member name Reviews</summary>
+			public static readonly string Reviews = "Reviews";
+			/// <summary>Member name Wishlists</summary>
+			public static readonly string Wishlists = "Wishlists";
+			/// <summary>Member name UserVouchers</summary>
+			public static readonly string UserVouchers = "UserVouchers";
+			/// <summary>Member name Carts</summary>
+			public static readonly string Carts = "Carts";
+			/// <summary>Member name Orders</summary>
+			public static readonly string Orders = "Orders";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -66,15 +81,20 @@ namespace DATN.EntityClasses
 		{
 			public UserEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("UserEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.UserEntity, typeof(UserEntity), typeof(UserEntityFactory), false);
-				AddNavigatorMetaData<UserEntity, EntityCollection<RefreshTokenEntity>>("RefreshTokens", a => a._refreshTokens, (a, b) => a._refreshTokens = b, a => a.RefreshTokens, () => new UserRelations().RefreshTokenEntityUsingUserId, typeof(RefreshTokenEntity), (int)DATN.EntityType.RefreshTokenEntity);
-				AddNavigatorMetaData<UserEntity, EntityCollection<UserRoleEntity>>("UserRoles", a => a._userRoles, (a, b) => a._userRoles = b, a => a.UserRoles, () => new UserRelations().UserRoleEntityUsingUserId, typeof(UserRoleEntity), (int)DATN.EntityType.UserRoleEntity);
-				AddNavigatorMetaData<UserEntity, EntityCollection<UserSessionEntity>>("UserSessions", a => a._userSessions, (a, b) => a._userSessions = b, a => a.UserSessions, () => new UserRelations().UserSessionEntityUsingUserId, typeof(UserSessionEntity), (int)DATN.EntityType.UserSessionEntity);
-				AddNavigatorMetaData<UserEntity, EntityCollection<ProductEntity>>("Products", a => a._products, (a, b) => a._products = b, a => a.Products, () => new UserRelations().ProductEntityUsingSellerId, typeof(ProductEntity), (int)DATN.EntityType.ProductEntity);
-				AddNavigatorMetaData<UserEntity, EntityCollection<engagementReviewEntity>>("engagementReviews", a => a._engagementReviews, (a, b) => a._engagementReviews = b, a => a.engagementReviews, () => new UserRelations().engagementReviewEntityUsingUserId, typeof(engagementReviewEntity), (int)DATN.EntityType.engagementReviewEntity);
-				AddNavigatorMetaData<UserEntity, EntityCollection<NotificationEntity>>("Notifications", a => a._notifications, (a, b) => a._notifications = b, a => a.Notifications, () => new UserRelations().NotificationEntityUsingUserId, typeof(NotificationEntity), (int)DATN.EntityType.NotificationEntity);
-				AddNavigatorMetaData<UserEntity, EntityCollection<salesCartEntity>>("salesCarts", a => a._salesCarts, (a, b) => a._salesCarts = b, a => a.salesCarts, () => new UserRelations().salesCartEntityUsingUserId, typeof(salesCartEntity), (int)DATN.EntityType.salesCartEntity);
-				AddNavigatorMetaData<UserEntity, EntityCollection<salesOrderEntity>>("salesOrders", a => a._salesOrders, (a, b) => a._salesOrders = b, a => a.salesOrders, () => new UserRelations().salesOrderEntityUsingBuyerId, typeof(salesOrderEntity), (int)DATN.EntityType.salesOrderEntity);
+				SetEntityCoreInfo("UserEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.UserEntity, typeof(UserEntity), typeof(UserEntityFactory), false);
+				AddNavigatorMetaData<UserEntity, EntityCollection<RefreshTokenEntity>>("RefreshTokens", a => a._refreshTokens, (a, b) => a._refreshTokens = b, a => a.RefreshTokens, () => new UserRelations().RefreshTokenEntityUsingUserId, typeof(RefreshTokenEntity), (int)DATN_2026.EntityType.RefreshTokenEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<UserAddressEntity>>("UserAddresses", a => a._userAddresses, (a, b) => a._userAddresses = b, a => a.UserAddresses, () => new UserRelations().UserAddressEntityUsingUserId, typeof(UserAddressEntity), (int)DATN_2026.EntityType.UserAddressEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<UserRoleEntity>>("UserRoles", a => a._userRoles, (a, b) => a._userRoles = b, a => a.UserRoles, () => new UserRelations().UserRoleEntityUsingUserId, typeof(UserRoleEntity), (int)DATN_2026.EntityType.UserRoleEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<UserSessionEntity>>("UserSessions", a => a._userSessions, (a, b) => a._userSessions = b, a => a.UserSessions, () => new UserRelations().UserSessionEntityUsingUserId, typeof(UserSessionEntity), (int)DATN_2026.EntityType.UserSessionEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<ShopEntity>>("Shops", a => a._shops, (a, b) => a._shops = b, a => a.Shops, () => new UserRelations().ShopEntityUsingOwnerId, typeof(ShopEntity), (int)DATN_2026.EntityType.ShopEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<ChatBoxEntity>>("ChatBoxes", a => a._chatBoxes, (a, b) => a._chatBoxes = b, a => a.ChatBoxes, () => new UserRelations().ChatBoxEntityUsingUserId, typeof(ChatBoxEntity), (int)DATN_2026.EntityType.ChatBoxEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<ChatMessageEntity>>("ChatMessages", a => a._chatMessages, (a, b) => a._chatMessages = b, a => a.ChatMessages, () => new UserRelations().ChatMessageEntityUsingSenderId, typeof(ChatMessageEntity), (int)DATN_2026.EntityType.ChatMessageEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<NotificationEntity>>("Notifications", a => a._notifications, (a, b) => a._notifications = b, a => a.Notifications, () => new UserRelations().NotificationEntityUsingUserId, typeof(NotificationEntity), (int)DATN_2026.EntityType.NotificationEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<ReviewEntity>>("Reviews", a => a._reviews, (a, b) => a._reviews = b, a => a.Reviews, () => new UserRelations().ReviewEntityUsingUserId, typeof(ReviewEntity), (int)DATN_2026.EntityType.ReviewEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<WishlistEntity>>("Wishlists", a => a._wishlists, (a, b) => a._wishlists = b, a => a.Wishlists, () => new UserRelations().WishlistEntityUsingUserId, typeof(WishlistEntity), (int)DATN_2026.EntityType.WishlistEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<UserVoucherEntity>>("UserVouchers", a => a._userVouchers, (a, b) => a._userVouchers = b, a => a.UserVouchers, () => new UserRelations().UserVoucherEntityUsingUserId, typeof(UserVoucherEntity), (int)DATN_2026.EntityType.UserVoucherEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<CartEntity>>("Carts", a => a._carts, (a, b) => a._carts = b, a => a.Carts, () => new UserRelations().CartEntityUsingUserId, typeof(CartEntity), (int)DATN_2026.EntityType.CartEntity);
+				AddNavigatorMetaData<UserEntity, EntityCollection<OrderEntity>>("Orders", a => a._orders, (a, b) => a._orders = b, a => a.Orders, () => new UserRelations().OrderEntityUsingBuyerId, typeof(OrderEntity), (int)DATN_2026.EntityType.OrderEntity);
 			}
 		}
 
@@ -132,7 +152,7 @@ namespace DATN.EntityClasses
 		public IPredicateExpression ConstructFilterForUCEmail()
 		{
 			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.UserFields.Email == this.Fields.GetCurrentValue((int)UserFieldIndex.Email));
+			filter.Add(DATN_2026.HelperClasses.UserFields.Email == this.Fields.GetCurrentValue((int)UserFieldIndex.Email));
  			return filter;
 		}
 
@@ -141,13 +161,17 @@ namespace DATN.EntityClasses
 		public IPredicateExpression ConstructFilterForUCUsername()
 		{
 			var filter = new PredicateExpression();
-			filter.Add(DATN.HelperClasses.UserFields.Username == this.Fields.GetCurrentValue((int)UserFieldIndex.Username));
+			filter.Add(DATN_2026.HelperClasses.UserFields.Username == this.Fields.GetCurrentValue((int)UserFieldIndex.Username));
  			return filter;
 		}
 
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'RefreshToken' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoRefreshTokens() { return CreateRelationInfoForNavigator("RefreshTokens"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'UserAddress' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoUserAddresses() { return CreateRelationInfoForNavigator("UserAddresses"); }
 
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'UserRole' to this entity.</summary>
 		/// <returns></returns>
@@ -157,25 +181,41 @@ namespace DATN.EntityClasses
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoUserSessions() { return CreateRelationInfoForNavigator("UserSessions"); }
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Product' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Shop' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfoProducts() { return CreateRelationInfoForNavigator("Products"); }
+		public virtual IRelationPredicateBucket GetRelationInfoShops() { return CreateRelationInfoForNavigator("Shops"); }
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'engagementReview' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'ChatBox' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfoengagementReviews() { return CreateRelationInfoForNavigator("engagementReviews"); }
+		public virtual IRelationPredicateBucket GetRelationInfoChatBoxes() { return CreateRelationInfoForNavigator("ChatBoxes"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'ChatMessage' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoChatMessages() { return CreateRelationInfoForNavigator("ChatMessages"); }
 
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Notification' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoNotifications() { return CreateRelationInfoForNavigator("Notifications"); }
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'salesCart' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Review' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfosalesCarts() { return CreateRelationInfoForNavigator("salesCarts"); }
+		public virtual IRelationPredicateBucket GetRelationInfoReviews() { return CreateRelationInfoForNavigator("Reviews"); }
 
-		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'salesOrder' to this entity.</summary>
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Wishlist' to this entity.</summary>
 		/// <returns></returns>
-		public virtual IRelationPredicateBucket GetRelationInfosalesOrders() { return CreateRelationInfoForNavigator("salesOrders"); }
+		public virtual IRelationPredicateBucket GetRelationInfoWishlists() { return CreateRelationInfoForNavigator("Wishlists"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'UserVoucher' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoUserVouchers() { return CreateRelationInfoForNavigator("UserVouchers"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Cart' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoCarts() { return CreateRelationInfoForNavigator("Carts"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Order' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoOrders() { return CreateRelationInfoForNavigator("Orders"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -211,6 +251,10 @@ namespace DATN.EntityClasses
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathRefreshTokens { get { return _staticMetaData.GetPrefetchPathElement("RefreshTokens", CommonEntityBase.CreateEntityCollection<RefreshTokenEntity>()); } }
 
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'UserAddress' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathUserAddresses { get { return _staticMetaData.GetPrefetchPathElement("UserAddresses", CommonEntityBase.CreateEntityCollection<UserAddressEntity>()); } }
+
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'UserRole' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathUserRoles { get { return _staticMetaData.GetPrefetchPathElement("UserRoles", CommonEntityBase.CreateEntityCollection<UserRoleEntity>()); } }
@@ -219,25 +263,41 @@ namespace DATN.EntityClasses
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathUserSessions { get { return _staticMetaData.GetPrefetchPathElement("UserSessions", CommonEntityBase.CreateEntityCollection<UserSessionEntity>()); } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Product' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Shop' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathProducts { get { return _staticMetaData.GetPrefetchPathElement("Products", CommonEntityBase.CreateEntityCollection<ProductEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathShops { get { return _staticMetaData.GetPrefetchPathElement("Shops", CommonEntityBase.CreateEntityCollection<ShopEntity>()); } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'engagementReview' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'ChatBox' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathengagementReviews { get { return _staticMetaData.GetPrefetchPathElement("engagementReviews", CommonEntityBase.CreateEntityCollection<engagementReviewEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathChatBoxes { get { return _staticMetaData.GetPrefetchPathElement("ChatBoxes", CommonEntityBase.CreateEntityCollection<ChatBoxEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'ChatMessage' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathChatMessages { get { return _staticMetaData.GetPrefetchPathElement("ChatMessages", CommonEntityBase.CreateEntityCollection<ChatMessageEntity>()); } }
 
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Notification' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathNotifications { get { return _staticMetaData.GetPrefetchPathElement("Notifications", CommonEntityBase.CreateEntityCollection<NotificationEntity>()); } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'salesCart' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Review' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathsalesCarts { get { return _staticMetaData.GetPrefetchPathElement("salesCarts", CommonEntityBase.CreateEntityCollection<salesCartEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathReviews { get { return _staticMetaData.GetPrefetchPathElement("Reviews", CommonEntityBase.CreateEntityCollection<ReviewEntity>()); } }
 
-		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'salesOrder' for this entity.</summary>
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Wishlist' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
-		public static IPrefetchPathElement2 PrefetchPathsalesOrders { get { return _staticMetaData.GetPrefetchPathElement("salesOrders", CommonEntityBase.CreateEntityCollection<salesOrderEntity>()); } }
+		public static IPrefetchPathElement2 PrefetchPathWishlists { get { return _staticMetaData.GetPrefetchPathElement("Wishlists", CommonEntityBase.CreateEntityCollection<WishlistEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'UserVoucher' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathUserVouchers { get { return _staticMetaData.GetPrefetchPathElement("UserVouchers", CommonEntityBase.CreateEntityCollection<UserVoucherEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Cart' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathCarts { get { return _staticMetaData.GetPrefetchPathElement("Carts", CommonEntityBase.CreateEntityCollection<CartEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Order' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathOrders { get { return _staticMetaData.GetPrefetchPathElement("Orders", CommonEntityBase.CreateEntityCollection<OrderEntity>()); } }
 
 		/// <summary>The AvatarUrl property of the Entity User<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "users"."avatar_url".<br/>Table field type characteristics (type, precision, scale, length): Text, 0, 0, 1073741824.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
@@ -323,6 +383,10 @@ namespace DATN.EntityClasses
 		[TypeContainedAttribute(typeof(RefreshTokenEntity))]
 		public virtual EntityCollection<RefreshTokenEntity> RefreshTokens { get { return GetOrCreateEntityCollection<RefreshTokenEntity, RefreshTokenEntityFactory>("User", true, false, ref _refreshTokens); } }
 
+		/// <summary>Gets the EntityCollection with the related entities of type 'UserAddressEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(UserAddressEntity))]
+		public virtual EntityCollection<UserAddressEntity> UserAddresses { get { return GetOrCreateEntityCollection<UserAddressEntity, UserAddressEntityFactory>("User", true, false, ref _userAddresses); } }
+
 		/// <summary>Gets the EntityCollection with the related entities of type 'UserRoleEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
 		[TypeContainedAttribute(typeof(UserRoleEntity))]
 		public virtual EntityCollection<UserRoleEntity> UserRoles { get { return GetOrCreateEntityCollection<UserRoleEntity, UserRoleEntityFactory>("User", true, false, ref _userRoles); } }
@@ -331,25 +395,41 @@ namespace DATN.EntityClasses
 		[TypeContainedAttribute(typeof(UserSessionEntity))]
 		public virtual EntityCollection<UserSessionEntity> UserSessions { get { return GetOrCreateEntityCollection<UserSessionEntity, UserSessionEntityFactory>("User", true, false, ref _userSessions); } }
 
-		/// <summary>Gets the EntityCollection with the related entities of type 'ProductEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
-		[TypeContainedAttribute(typeof(ProductEntity))]
-		public virtual EntityCollection<ProductEntity> Products { get { return GetOrCreateEntityCollection<ProductEntity, ProductEntityFactory>("User", true, false, ref _products); } }
+		/// <summary>Gets the EntityCollection with the related entities of type 'ShopEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(ShopEntity))]
+		public virtual EntityCollection<ShopEntity> Shops { get { return GetOrCreateEntityCollection<ShopEntity, ShopEntityFactory>("User", true, false, ref _shops); } }
 
-		/// <summary>Gets the EntityCollection with the related entities of type 'engagementReviewEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
-		[TypeContainedAttribute(typeof(engagementReviewEntity))]
-		public virtual EntityCollection<engagementReviewEntity> engagementReviews { get { return GetOrCreateEntityCollection<engagementReviewEntity, engagementReviewEntityFactory>("User", true, false, ref _engagementReviews); } }
+		/// <summary>Gets the EntityCollection with the related entities of type 'ChatBoxEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(ChatBoxEntity))]
+		public virtual EntityCollection<ChatBoxEntity> ChatBoxes { get { return GetOrCreateEntityCollection<ChatBoxEntity, ChatBoxEntityFactory>("User", true, false, ref _chatBoxes); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'ChatMessageEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(ChatMessageEntity))]
+		public virtual EntityCollection<ChatMessageEntity> ChatMessages { get { return GetOrCreateEntityCollection<ChatMessageEntity, ChatMessageEntityFactory>("User", true, false, ref _chatMessages); } }
 
 		/// <summary>Gets the EntityCollection with the related entities of type 'NotificationEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
 		[TypeContainedAttribute(typeof(NotificationEntity))]
 		public virtual EntityCollection<NotificationEntity> Notifications { get { return GetOrCreateEntityCollection<NotificationEntity, NotificationEntityFactory>("User", true, false, ref _notifications); } }
 
-		/// <summary>Gets the EntityCollection with the related entities of type 'salesCartEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
-		[TypeContainedAttribute(typeof(salesCartEntity))]
-		public virtual EntityCollection<salesCartEntity> salesCarts { get { return GetOrCreateEntityCollection<salesCartEntity, salesCartEntityFactory>("User", true, false, ref _salesCarts); } }
+		/// <summary>Gets the EntityCollection with the related entities of type 'ReviewEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(ReviewEntity))]
+		public virtual EntityCollection<ReviewEntity> Reviews { get { return GetOrCreateEntityCollection<ReviewEntity, ReviewEntityFactory>("User", true, false, ref _reviews); } }
 
-		/// <summary>Gets the EntityCollection with the related entities of type 'salesOrderEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
-		[TypeContainedAttribute(typeof(salesOrderEntity))]
-		public virtual EntityCollection<salesOrderEntity> salesOrders { get { return GetOrCreateEntityCollection<salesOrderEntity, salesOrderEntityFactory>("User", true, false, ref _salesOrders); } }
+		/// <summary>Gets the EntityCollection with the related entities of type 'WishlistEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(WishlistEntity))]
+		public virtual EntityCollection<WishlistEntity> Wishlists { get { return GetOrCreateEntityCollection<WishlistEntity, WishlistEntityFactory>("User", true, false, ref _wishlists); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'UserVoucherEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(UserVoucherEntity))]
+		public virtual EntityCollection<UserVoucherEntity> UserVouchers { get { return GetOrCreateEntityCollection<UserVoucherEntity, UserVoucherEntityFactory>("User", true, false, ref _userVouchers); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'CartEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(CartEntity))]
+		public virtual EntityCollection<CartEntity> Carts { get { return GetOrCreateEntityCollection<CartEntity, CartEntityFactory>("User", true, false, ref _carts); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'OrderEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(OrderEntity))]
+		public virtual EntityCollection<OrderEntity> Orders { get { return GetOrCreateEntityCollection<OrderEntity, OrderEntityFactory>("User", true, false, ref _orders); } }
 
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -357,7 +437,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum UserFieldIndex
 	{
@@ -386,7 +466,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: User. </summary>
 	public partial class UserRelations: RelationFactory
@@ -395,6 +475,12 @@ namespace DATN.RelationClasses
 		public virtual IEntityRelation RefreshTokenEntityUsingUserId
 		{
 			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "RefreshTokens", true, new[] { UserFields.Id, RefreshTokenFields.UserId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and UserAddressEntity over the 1:n relation they have, using the relation between the fields: User.Id - UserAddress.UserId</summary>
+		public virtual IEntityRelation UserAddressEntityUsingUserId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "UserAddresses", true, new[] { UserFields.Id, UserAddressFields.UserId }); }
 		}
 
 		/// <summary>Returns a new IEntityRelation object, between UserEntity and UserRoleEntity over the 1:n relation they have, using the relation between the fields: User.Id - UserRole.UserId</summary>
@@ -409,16 +495,22 @@ namespace DATN.RelationClasses
 			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "UserSessions", true, new[] { UserFields.Id, UserSessionFields.UserId }); }
 		}
 
-		/// <summary>Returns a new IEntityRelation object, between UserEntity and ProductEntity over the 1:n relation they have, using the relation between the fields: User.Id - Product.SellerId</summary>
-		public virtual IEntityRelation ProductEntityUsingSellerId
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and ShopEntity over the 1:n relation they have, using the relation between the fields: User.Id - Shop.OwnerId</summary>
+		public virtual IEntityRelation ShopEntityUsingOwnerId
 		{
-			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Products", true, new[] { UserFields.Id, ProductFields.SellerId }); }
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Shops", true, new[] { UserFields.Id, ShopFields.OwnerId }); }
 		}
 
-		/// <summary>Returns a new IEntityRelation object, between UserEntity and engagementReviewEntity over the 1:n relation they have, using the relation between the fields: User.Id - engagementReview.UserId</summary>
-		public virtual IEntityRelation engagementReviewEntityUsingUserId
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and ChatBoxEntity over the 1:n relation they have, using the relation between the fields: User.Id - ChatBox.UserId</summary>
+		public virtual IEntityRelation ChatBoxEntityUsingUserId
 		{
-			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "engagementReviews", true, new[] { UserFields.Id, engagementReviewFields.UserId }); }
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "ChatBoxes", true, new[] { UserFields.Id, ChatBoxFields.UserId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and ChatMessageEntity over the 1:n relation they have, using the relation between the fields: User.Id - ChatMessage.SenderId</summary>
+		public virtual IEntityRelation ChatMessageEntityUsingSenderId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "ChatMessages", true, new[] { UserFields.Id, ChatMessageFields.SenderId }); }
 		}
 
 		/// <summary>Returns a new IEntityRelation object, between UserEntity and NotificationEntity over the 1:n relation they have, using the relation between the fields: User.Id - Notification.UserId</summary>
@@ -427,16 +519,34 @@ namespace DATN.RelationClasses
 			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Notifications", true, new[] { UserFields.Id, NotificationFields.UserId }); }
 		}
 
-		/// <summary>Returns a new IEntityRelation object, between UserEntity and salesCartEntity over the 1:n relation they have, using the relation between the fields: User.Id - salesCart.UserId</summary>
-		public virtual IEntityRelation salesCartEntityUsingUserId
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and ReviewEntity over the 1:n relation they have, using the relation between the fields: User.Id - Review.UserId</summary>
+		public virtual IEntityRelation ReviewEntityUsingUserId
 		{
-			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "salesCarts", true, new[] { UserFields.Id, salesCartFields.UserId }); }
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Reviews", true, new[] { UserFields.Id, ReviewFields.UserId }); }
 		}
 
-		/// <summary>Returns a new IEntityRelation object, between UserEntity and salesOrderEntity over the 1:n relation they have, using the relation between the fields: User.Id - salesOrder.BuyerId</summary>
-		public virtual IEntityRelation salesOrderEntityUsingBuyerId
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and WishlistEntity over the 1:n relation they have, using the relation between the fields: User.Id - Wishlist.UserId</summary>
+		public virtual IEntityRelation WishlistEntityUsingUserId
 		{
-			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "salesOrders", true, new[] { UserFields.Id, salesOrderFields.BuyerId }); }
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Wishlists", true, new[] { UserFields.Id, WishlistFields.UserId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and UserVoucherEntity over the 1:n relation they have, using the relation between the fields: User.Id - UserVoucher.UserId</summary>
+		public virtual IEntityRelation UserVoucherEntityUsingUserId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "UserVouchers", true, new[] { UserFields.Id, UserVoucherFields.UserId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and CartEntity over the 1:n relation they have, using the relation between the fields: User.Id - Cart.UserId</summary>
+		public virtual IEntityRelation CartEntityUsingUserId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Carts", true, new[] { UserFields.Id, CartFields.UserId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and OrderEntity over the 1:n relation they have, using the relation between the fields: User.Id - Order.BuyerId</summary>
+		public virtual IEntityRelation OrderEntityUsingBuyerId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Orders", true, new[] { UserFields.Id, OrderFields.BuyerId }); }
 		}
 
 	}
@@ -445,13 +555,18 @@ namespace DATN.RelationClasses
 	internal static class StaticUserRelations
 	{
 		internal static readonly IEntityRelation RefreshTokenEntityUsingUserIdStatic = new UserRelations().RefreshTokenEntityUsingUserId;
+		internal static readonly IEntityRelation UserAddressEntityUsingUserIdStatic = new UserRelations().UserAddressEntityUsingUserId;
 		internal static readonly IEntityRelation UserRoleEntityUsingUserIdStatic = new UserRelations().UserRoleEntityUsingUserId;
 		internal static readonly IEntityRelation UserSessionEntityUsingUserIdStatic = new UserRelations().UserSessionEntityUsingUserId;
-		internal static readonly IEntityRelation ProductEntityUsingSellerIdStatic = new UserRelations().ProductEntityUsingSellerId;
-		internal static readonly IEntityRelation engagementReviewEntityUsingUserIdStatic = new UserRelations().engagementReviewEntityUsingUserId;
+		internal static readonly IEntityRelation ShopEntityUsingOwnerIdStatic = new UserRelations().ShopEntityUsingOwnerId;
+		internal static readonly IEntityRelation ChatBoxEntityUsingUserIdStatic = new UserRelations().ChatBoxEntityUsingUserId;
+		internal static readonly IEntityRelation ChatMessageEntityUsingSenderIdStatic = new UserRelations().ChatMessageEntityUsingSenderId;
 		internal static readonly IEntityRelation NotificationEntityUsingUserIdStatic = new UserRelations().NotificationEntityUsingUserId;
-		internal static readonly IEntityRelation salesCartEntityUsingUserIdStatic = new UserRelations().salesCartEntityUsingUserId;
-		internal static readonly IEntityRelation salesOrderEntityUsingBuyerIdStatic = new UserRelations().salesOrderEntityUsingBuyerId;
+		internal static readonly IEntityRelation ReviewEntityUsingUserIdStatic = new UserRelations().ReviewEntityUsingUserId;
+		internal static readonly IEntityRelation WishlistEntityUsingUserIdStatic = new UserRelations().WishlistEntityUsingUserId;
+		internal static readonly IEntityRelation UserVoucherEntityUsingUserIdStatic = new UserRelations().UserVoucherEntityUsingUserId;
+		internal static readonly IEntityRelation CartEntityUsingUserIdStatic = new UserRelations().CartEntityUsingUserId;
+		internal static readonly IEntityRelation OrderEntityUsingBuyerIdStatic = new UserRelations().OrderEntityUsingBuyerId;
 
 		/// <summary>CTor</summary>
 		static StaticUserRelations() { }

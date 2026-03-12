@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -26,7 +26,11 @@ namespace DATN.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
+		private EntityCollection<ReviewEntity> _reviews;
 		private EntityCollection<OrderItemEntity> _orderItems;
+		private EntityCollection<ShippingTrackingEntity> _shippingTrackings;
+		private EntityCollection<TransactionEntity> _transactions;
+		private UserEntity _user;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -36,8 +40,16 @@ namespace DATN.EntityClasses
 		/// <summary>All names of fields mapped onto a relation. Usable for in-memory filtering</summary>
 		public static partial class MemberNames
 		{
+			/// <summary>Member name User</summary>
+			public static readonly string User = "User";
+			/// <summary>Member name Reviews</summary>
+			public static readonly string Reviews = "Reviews";
 			/// <summary>Member name OrderItems</summary>
 			public static readonly string OrderItems = "OrderItems";
+			/// <summary>Member name ShippingTrackings</summary>
+			public static readonly string ShippingTrackings = "ShippingTrackings";
+			/// <summary>Member name Transactions</summary>
+			public static readonly string Transactions = "Transactions";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -45,8 +57,12 @@ namespace DATN.EntityClasses
 		{
 			public OrderEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("OrderEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.OrderEntity, typeof(OrderEntity), typeof(OrderEntityFactory), false);
-				AddNavigatorMetaData<OrderEntity, EntityCollection<OrderItemEntity>>("OrderItems", a => a._orderItems, (a, b) => a._orderItems = b, a => a.OrderItems, () => new OrderRelations().OrderItemEntityUsingOrderId, typeof(OrderItemEntity), (int)DATN.EntityType.OrderItemEntity);
+				SetEntityCoreInfo("OrderEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.OrderEntity, typeof(OrderEntity), typeof(OrderEntityFactory), false);
+				AddNavigatorMetaData<OrderEntity, EntityCollection<ReviewEntity>>("Reviews", a => a._reviews, (a, b) => a._reviews = b, a => a.Reviews, () => new OrderRelations().ReviewEntityUsingOrderId, typeof(ReviewEntity), (int)DATN_2026.EntityType.ReviewEntity);
+				AddNavigatorMetaData<OrderEntity, EntityCollection<OrderItemEntity>>("OrderItems", a => a._orderItems, (a, b) => a._orderItems = b, a => a.OrderItems, () => new OrderRelations().OrderItemEntityUsingOrderId, typeof(OrderItemEntity), (int)DATN_2026.EntityType.OrderItemEntity);
+				AddNavigatorMetaData<OrderEntity, EntityCollection<ShippingTrackingEntity>>("ShippingTrackings", a => a._shippingTrackings, (a, b) => a._shippingTrackings = b, a => a.ShippingTrackings, () => new OrderRelations().ShippingTrackingEntityUsingOrderId, typeof(ShippingTrackingEntity), (int)DATN_2026.EntityType.ShippingTrackingEntity);
+				AddNavigatorMetaData<OrderEntity, EntityCollection<TransactionEntity>>("Transactions", a => a._transactions, (a, b) => a._transactions = b, a => a.Transactions, () => new OrderRelations().TransactionEntityUsingOrderId, typeof(TransactionEntity), (int)DATN_2026.EntityType.TransactionEntity);
+				AddNavigatorMetaData<OrderEntity, UserEntity>("User", "Orders", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticOrderRelations.UserEntityUsingBuyerIdStatic, ()=>new OrderRelations().UserEntityUsingBuyerId, null, new int[] { (int)OrderFieldIndex.BuyerId }, null, true, (int)DATN_2026.EntityType.UserEntity);
 			}
 		}
 
@@ -99,9 +115,34 @@ namespace DATN.EntityClasses
 			// __LLBLGENPRO_USER_CODE_REGION_END
 		}
 
+		/// <summary>Method which will construct a filter (predicate expression) for the unique constraint defined on the fields: OrderCode .</summary>
+		/// <returns>true if succeeded and the contents is read, false otherwise</returns>
+		public IPredicateExpression ConstructFilterForUCOrderCode()
+		{
+			var filter = new PredicateExpression();
+			filter.Add(DATN_2026.HelperClasses.OrderFields.OrderCode == this.Fields.GetCurrentValue((int)OrderFieldIndex.OrderCode));
+ 			return filter;
+		}
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Review' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoReviews() { return CreateRelationInfoForNavigator("Reviews"); }
+
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'OrderItem' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoOrderItems() { return CreateRelationInfoForNavigator("OrderItems"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'ShippingTracking' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoShippingTrackings() { return CreateRelationInfoForNavigator("ShippingTrackings"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Transaction' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoTransactions() { return CreateRelationInfoForNavigator("Transactions"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'User' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoUser() { return CreateRelationInfoForNavigator("User"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -133,16 +174,48 @@ namespace DATN.EntityClasses
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static OrderRelations Relations { get { return _relationsFactory; } }
 
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Review' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathReviews { get { return _staticMetaData.GetPrefetchPathElement("Reviews", CommonEntityBase.CreateEntityCollection<ReviewEntity>()); } }
+
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'OrderItem' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathOrderItems { get { return _staticMetaData.GetPrefetchPathElement("OrderItems", CommonEntityBase.CreateEntityCollection<OrderItemEntity>()); } }
 
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'ShippingTracking' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathShippingTrackings { get { return _staticMetaData.GetPrefetchPathElement("ShippingTrackings", CommonEntityBase.CreateEntityCollection<ShippingTrackingEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Transaction' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathTransactions { get { return _staticMetaData.GetPrefetchPathElement("Transactions", CommonEntityBase.CreateEntityCollection<TransactionEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'User' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathUser { get { return _staticMetaData.GetPrefetchPathElement("User", CommonEntityBase.CreateEntityCollection<UserEntity>()); } }
+
+		/// <summary>The BuyerId property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."buyer_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> BuyerId
+		{
+			get { return (Nullable<System.Guid>)GetValue((int)OrderFieldIndex.BuyerId, false); }
+			set { SetValue((int)OrderFieldIndex.BuyerId, value); }
+		}
+
 		/// <summary>The CreatedAt property of the Entity Order<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "orders"."created_at".<br/>Table field type characteristics (type, precision, scale, length): Timestamp, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		/// <remarks>Mapped on  table field: "orders"."created_at".<br/>Table field type characteristics (type, precision, scale, length): TimestampTz, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
 		public virtual Nullable<System.DateTime> CreatedAt
 		{
 			get { return (Nullable<System.DateTime>)GetValue((int)OrderFieldIndex.CreatedAt, false); }
 			set { SetValue((int)OrderFieldIndex.CreatedAt, value); }
+		}
+
+		/// <summary>The CustomerNote property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."customer_note".<br/>Table field type characteristics (type, precision, scale, length): Text, 0, 0, 1073741824.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual System.String CustomerNote
+		{
+			get { return (System.String)GetValue((int)OrderFieldIndex.CustomerNote, true); }
+			set { SetValue((int)OrderFieldIndex.CustomerNote, value); }
 		}
 
 		/// <summary>The Id property of the Entity Order<br/><br/></summary>
@@ -153,33 +226,85 @@ namespace DATN.EntityClasses
 			set { SetValue((int)OrderFieldIndex.Id, value); }
 		}
 
-		/// <summary>The Status property of the Entity Order<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "orders"."status".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 20.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
-		public virtual System.String Status
+		/// <summary>The OrderCode property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."order_code".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 20.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
+		public virtual System.String OrderCode
 		{
-			get { return (System.String)GetValue((int)OrderFieldIndex.Status, true); }
-			set { SetValue((int)OrderFieldIndex.Status, value); }
+			get { return (System.String)GetValue((int)OrderFieldIndex.OrderCode, true); }
+			set { SetValue((int)OrderFieldIndex.OrderCode, value); }
+		}
+
+		/// <summary>The OrderStatus property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."order_status".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 20.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual System.String OrderStatus
+		{
+			get { return (System.String)GetValue((int)OrderFieldIndex.OrderStatus, true); }
+			set { SetValue((int)OrderFieldIndex.OrderStatus, value); }
+		}
+
+		/// <summary>The PaymentMethod property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."payment_method".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 20.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual System.String PaymentMethod
+		{
+			get { return (System.String)GetValue((int)OrderFieldIndex.PaymentMethod, true); }
+			set { SetValue((int)OrderFieldIndex.PaymentMethod, value); }
+		}
+
+		/// <summary>The PaymentStatus property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."payment_status".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 20.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual System.String PaymentStatus
+		{
+			get { return (System.String)GetValue((int)OrderFieldIndex.PaymentStatus, true); }
+			set { SetValue((int)OrderFieldIndex.PaymentStatus, value); }
+		}
+
+		/// <summary>The ShippingAddress property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."shipping_address".<br/>Table field type characteristics (type, precision, scale, length): Text, 0, 0, 1073741824.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
+		public virtual System.String ShippingAddress
+		{
+			get { return (System.String)GetValue((int)OrderFieldIndex.ShippingAddress, true); }
+			set { SetValue((int)OrderFieldIndex.ShippingAddress, value); }
+		}
+
+		/// <summary>The ShippingFee property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."shipping_fee".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Decimal> ShippingFee
+		{
+			get { return (Nullable<System.Decimal>)GetValue((int)OrderFieldIndex.ShippingFee, false); }
+			set { SetValue((int)OrderFieldIndex.ShippingFee, value); }
 		}
 
 		/// <summary>The TotalAmount property of the Entity Order<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "orders"."total_amount".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 10, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
+		/// <remarks>Mapped on  table field: "orders"."total_amount".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
 		public virtual System.Decimal TotalAmount
 		{
 			get { return (System.Decimal)GetValue((int)OrderFieldIndex.TotalAmount, true); }
 			set { SetValue((int)OrderFieldIndex.TotalAmount, value); }
 		}
 
-		/// <summary>The UserId property of the Entity Order<br/><br/></summary>
-		/// <remarks>Mapped on  table field: "orders"."user_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
-		public virtual System.Guid UserId
-		{
-			get { return (System.Guid)GetValue((int)OrderFieldIndex.UserId, true); }
-			set { SetValue((int)OrderFieldIndex.UserId, value); }
-		}
+		/// <summary>Gets the EntityCollection with the related entities of type 'ReviewEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(ReviewEntity))]
+		public virtual EntityCollection<ReviewEntity> Reviews { get { return GetOrCreateEntityCollection<ReviewEntity, ReviewEntityFactory>("Order", true, false, ref _reviews); } }
 
 		/// <summary>Gets the EntityCollection with the related entities of type 'OrderItemEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
 		[TypeContainedAttribute(typeof(OrderItemEntity))]
 		public virtual EntityCollection<OrderItemEntity> OrderItems { get { return GetOrCreateEntityCollection<OrderItemEntity, OrderItemEntityFactory>("Order", true, false, ref _orderItems); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'ShippingTrackingEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(ShippingTrackingEntity))]
+		public virtual EntityCollection<ShippingTrackingEntity> ShippingTrackings { get { return GetOrCreateEntityCollection<ShippingTrackingEntity, ShippingTrackingEntityFactory>("Order", true, false, ref _shippingTrackings); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'TransactionEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(TransactionEntity))]
+		public virtual EntityCollection<TransactionEntity> Transactions { get { return GetOrCreateEntityCollection<TransactionEntity, TransactionEntityFactory>("Order", true, false, ref _transactions); } }
+
+		/// <summary>Gets / sets related entity of type 'UserEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual UserEntity User
+		{
+			get { return _user; }
+			set { SetSingleRelatedEntityNavigator(value, "User"); }
+		}
 
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -187,34 +312,70 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum OrderFieldIndex
 	{
+		///<summary>BuyerId. </summary>
+		BuyerId,
 		///<summary>CreatedAt. </summary>
 		CreatedAt,
+		///<summary>CustomerNote. </summary>
+		CustomerNote,
 		///<summary>Id. </summary>
 		Id,
-		///<summary>Status. </summary>
-		Status,
+		///<summary>OrderCode. </summary>
+		OrderCode,
+		///<summary>OrderStatus. </summary>
+		OrderStatus,
+		///<summary>PaymentMethod. </summary>
+		PaymentMethod,
+		///<summary>PaymentStatus. </summary>
+		PaymentStatus,
+		///<summary>ShippingAddress. </summary>
+		ShippingAddress,
+		///<summary>ShippingFee. </summary>
+		ShippingFee,
 		///<summary>TotalAmount. </summary>
 		TotalAmount,
-		///<summary>UserId. </summary>
-		UserId,
 		/// <summary></summary>
 		AmountOfFields
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: Order. </summary>
 	public partial class OrderRelations: RelationFactory
 	{
+		/// <summary>Returns a new IEntityRelation object, between OrderEntity and ReviewEntity over the 1:n relation they have, using the relation between the fields: Order.Id - Review.OrderId</summary>
+		public virtual IEntityRelation ReviewEntityUsingOrderId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Reviews", true, new[] { OrderFields.Id, ReviewFields.OrderId }); }
+		}
+
 		/// <summary>Returns a new IEntityRelation object, between OrderEntity and OrderItemEntity over the 1:n relation they have, using the relation between the fields: Order.Id - OrderItem.OrderId</summary>
 		public virtual IEntityRelation OrderItemEntityUsingOrderId
 		{
 			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "OrderItems", true, new[] { OrderFields.Id, OrderItemFields.OrderId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between OrderEntity and ShippingTrackingEntity over the 1:n relation they have, using the relation between the fields: Order.Id - ShippingTracking.OrderId</summary>
+		public virtual IEntityRelation ShippingTrackingEntityUsingOrderId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "ShippingTrackings", true, new[] { OrderFields.Id, ShippingTrackingFields.OrderId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between OrderEntity and TransactionEntity over the 1:n relation they have, using the relation between the fields: Order.Id - Transaction.OrderId</summary>
+		public virtual IEntityRelation TransactionEntityUsingOrderId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Transactions", true, new[] { OrderFields.Id, TransactionFields.OrderId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between OrderEntity and UserEntity over the m:1 relation they have, using the relation between the fields: Order.BuyerId - User.Id</summary>
+		public virtual IEntityRelation UserEntityUsingBuyerId
+		{
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "User", false, new[] { UserFields.Id, OrderFields.BuyerId }); }
 		}
 
 	}
@@ -222,7 +383,11 @@ namespace DATN.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticOrderRelations
 	{
+		internal static readonly IEntityRelation ReviewEntityUsingOrderIdStatic = new OrderRelations().ReviewEntityUsingOrderId;
 		internal static readonly IEntityRelation OrderItemEntityUsingOrderIdStatic = new OrderRelations().OrderItemEntityUsingOrderId;
+		internal static readonly IEntityRelation ShippingTrackingEntityUsingOrderIdStatic = new OrderRelations().ShippingTrackingEntityUsingOrderId;
+		internal static readonly IEntityRelation TransactionEntityUsingOrderIdStatic = new OrderRelations().TransactionEntityUsingOrderId;
+		internal static readonly IEntityRelation UserEntityUsingBuyerIdStatic = new OrderRelations().UserEntityUsingBuyerId;
 
 		/// <summary>CTor</summary>
 		static StaticOrderRelations() { }

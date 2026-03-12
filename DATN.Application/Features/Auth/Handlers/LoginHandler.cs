@@ -5,13 +5,14 @@ using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
 using AutoMapper;
+using DATN.Application.Common.Models;
 
 namespace DATN.Application.Features.Auth.Handlers;
 
 /// <summary>
 /// Handler cho LoginCommand
 /// </summary>
-public class LoginHandler : IRequestHandler<Commands.LoginCommand, AuthResponse>
+public class LoginHandler : IRequestHandler<Commands.LoginCommand, ApiResponse<AuthResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
@@ -40,7 +41,7 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, AuthResponse>
     private const int MAX_ATTEMPTS = 3;
     private const int LOCKOUT_MINUTES = 5;
 
-    public async Task<AuthResponse> Handle(Commands.LoginCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthResponse>> Handle(Commands.LoginCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -49,23 +50,24 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, AuthResponse>
             
             if (user == null)
             {
-                return new AuthResponse
-                {
-                    Success = false,
-                    Message = "Email hoặc mật khẩu không chính xác"
-                };
+                return ApiResponse<AuthResponse>.Fail("Email hoặc mật khẩu không chính xác", 401, "INVALID_CREDENTIALS");
             }
 
             // 2. Kiểm tra tài khoản có đang bị khóa không
             if (user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow)
             {
                 var remainingTime = user.LockoutEnd.Value - DateTime.UtcNow;
-                return new AuthResponse
+                return new ApiResponse<AuthResponse>
                 {
                     Success = false,
+                    StatusCode = 403,
+                    ErrorCode = "ACCOUNT_LOCKED",
                     Message = $"Tài khoản tạm thời bị khóa. Vui lòng thử lại sau {Math.Ceiling(remainingTime.TotalMinutes)} phút.",
-                    LockoutEnd = user.LockoutEnd.Value,
-                    RemainingAttempts = 0
+                    Data = new AuthResponse
+                    {
+                        LockoutEnd = user.LockoutEnd.Value,
+                        RemainingAttempts = 0
+                    }
                 };
             }
 
@@ -87,31 +89,37 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, AuthResponse>
 
                 if (remaining <= 0)
                 {
-                    return new AuthResponse
+                    return new ApiResponse<AuthResponse>
                     {
                         Success = false,
+                        StatusCode = 403,
+                        ErrorCode = "ACCOUNT_LOCKED",
                         Message = $"Đăng nhập sai quá {MAX_ATTEMPTS} lần. Tài khoản bị khóa tạm thời {LOCKOUT_MINUTES} phút.",
-                        RemainingAttempts = 0,
-                        LockoutEnd = DateTime.UtcNow.AddMinutes(LOCKOUT_MINUTES)
+                        Data = new AuthResponse
+                        {
+                            RemainingAttempts = 0,
+                            LockoutEnd = DateTime.UtcNow.AddMinutes(LOCKOUT_MINUTES)
+                        }
                     };
                 }
 
-                return new AuthResponse
+                return new ApiResponse<AuthResponse>
                 {
                     Success = false,
+                    StatusCode = 401,
+                    ErrorCode = "INVALID_CREDENTIALS",
                     Message = $"Email hoặc mật khẩu không chính xác. Còn {remaining} lần thử.",
-                    RemainingAttempts = remaining
+                    Data = new AuthResponse
+                    {
+                        RemainingAttempts = remaining
+                    }
                 };
             }
 
             // 5. Kiểm tra user có active không
             if (!user.IsActive)
             {
-                return new AuthResponse
-                {
-                    Success = false,
-                    Message = "Tài khoản đã bị vô hiệu hóa"
-                };
+                return ApiResponse<AuthResponse>.Fail("Tài khoản đã bị vô hiệu hóa", 403, "ACCOUNT_DISABLED");
             }
 
             // 6. Đăng nhập thành công → Reset bộ đếm sai
@@ -144,24 +152,18 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, AuthResponse>
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Roles = roles.ToList();
 
-            return new AuthResponse
+            return ApiResponse<AuthResponse>.Succeed(new AuthResponse
             {
-                Success = true,
-                Message = "Đăng nhập thành công",
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 ExpiresAt = expiresAt,
                 User = userDto
-            };
+            }, "Đăng nhập thành công", 200);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during login for {Email}", request.Email);
-            return new AuthResponse
-            {
-                Success = false,
-                Message = "Đã xảy ra lỗi trong quá trình đăng nhập"
-            };
+            return ApiResponse<AuthResponse>.Fail("Đã xảy ra lỗi trong quá trình đăng nhập", 500, "INTERNAL_SERVER_ERROR");
         }
     }
 

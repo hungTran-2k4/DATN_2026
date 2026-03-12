@@ -8,7 +8,7 @@
 using System;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.HelperClasses
+namespace DATN_2026.HelperClasses
 {
 	/// <summary>Field Creation Class for entity LoginAttemptEntity</summary>
 	public partial class LoginAttemptFields
@@ -131,6 +131,31 @@ namespace DATN.HelperClasses
 		public static EntityField2 Username { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserFieldIndex.Username); }}
 	}
 
+	/// <summary>Field Creation Class for entity UserAddressEntity</summary>
+	public partial class UserAddressFields
+	{
+		/// <summary>Creates a new UserAddressEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new UserAddressEntity.DetailedAddress field instance</summary>
+		public static EntityField2 DetailedAddress { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.DetailedAddress); }}
+		/// <summary>Creates a new UserAddressEntity.DistrictId field instance</summary>
+		public static EntityField2 DistrictId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.DistrictId); }}
+		/// <summary>Creates a new UserAddressEntity.FullName field instance</summary>
+		public static EntityField2 FullName { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.FullName); }}
+		/// <summary>Creates a new UserAddressEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.Id); }}
+		/// <summary>Creates a new UserAddressEntity.IsDefault field instance</summary>
+		public static EntityField2 IsDefault { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.IsDefault); }}
+		/// <summary>Creates a new UserAddressEntity.PhoneNumber field instance</summary>
+		public static EntityField2 PhoneNumber { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.PhoneNumber); }}
+		/// <summary>Creates a new UserAddressEntity.ProvinceId field instance</summary>
+		public static EntityField2 ProvinceId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.ProvinceId); }}
+		/// <summary>Creates a new UserAddressEntity.UserId field instance</summary>
+		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.UserId); }}
+		/// <summary>Creates a new UserAddressEntity.WardId field instance</summary>
+		public static EntityField2 WardId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAddressFieldIndex.WardId); }}
+	}
+
 	/// <summary>Field Creation Class for entity UserRoleEntity</summary>
 	public partial class UserRoleFields
 	{
@@ -214,8 +239,8 @@ namespace DATN.HelperClasses
 		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.Id); }}
 		/// <summary>Creates a new ProductEntity.Name field instance</summary>
 		public static EntityField2 Name { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.Name); }}
-		/// <summary>Creates a new ProductEntity.SellerId field instance</summary>
-		public static EntityField2 SellerId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.SellerId); }}
+		/// <summary>Creates a new ProductEntity.ShopId field instance</summary>
+		public static EntityField2 ShopId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.ShopId); }}
 		/// <summary>Creates a new ProductEntity.Sku field instance</summary>
 		public static EntityField2 Sku { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.Sku); }}
 		/// <summary>Creates a new ProductEntity.Slug field instance</summary>
@@ -260,31 +285,75 @@ namespace DATN.HelperClasses
 		public static EntityField2 ProductId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductVariantFieldIndex.ProductId); }}
 		/// <summary>Creates a new ProductVariantEntity.Sku field instance</summary>
 		public static EntityField2 Sku { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductVariantFieldIndex.Sku); }}
-		/// <summary>Creates a new ProductVariantEntity.StockQuantity field instance</summary>
-		public static EntityField2 StockQuantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductVariantFieldIndex.StockQuantity); }}
 		/// <summary>Creates a new ProductVariantEntity.VariantAttributes field instance</summary>
 		public static EntityField2 VariantAttributes { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductVariantFieldIndex.VariantAttributes); }}
 	}
 
-	/// <summary>Field Creation Class for entity engagementReviewEntity</summary>
-	public partial class engagementReviewFields
+	/// <summary>Field Creation Class for entity ShopEntity</summary>
+	public partial class ShopFields
 	{
-		/// <summary>Creates a new engagementReviewEntity.Comment field instance</summary>
-		public static EntityField2 Comment { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.Comment); }}
-		/// <summary>Creates a new engagementReviewEntity.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.CreatedAt); }}
-		/// <summary>Creates a new engagementReviewEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.Id); }}
-		/// <summary>Creates a new engagementReviewEntity.Images field instance</summary>
-		public static EntityField2 Images { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.Images); }}
-		/// <summary>Creates a new engagementReviewEntity.OrderId field instance</summary>
-		public static EntityField2 OrderId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.OrderId); }}
-		/// <summary>Creates a new engagementReviewEntity.Rating field instance</summary>
-		public static EntityField2 Rating { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.Rating); }}
-		/// <summary>Creates a new engagementReviewEntity.UserId field instance</summary>
-		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.UserId); }}
-		/// <summary>Creates a new engagementReviewEntity.VariantId field instance</summary>
-		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.VariantId); }}
+		/// <summary>Creates a new ShopEntity.CoverUrl field instance</summary>
+		public static EntityField2 CoverUrl { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.CoverUrl); }}
+		/// <summary>Creates a new ShopEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new ShopEntity.Description field instance</summary>
+		public static EntityField2 Description { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.Description); }}
+		/// <summary>Creates a new ShopEntity.DistrictId field instance</summary>
+		public static EntityField2 DistrictId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.DistrictId); }}
+		/// <summary>Creates a new ShopEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.Id); }}
+		/// <summary>Creates a new ShopEntity.IsActive field instance</summary>
+		public static EntityField2 IsActive { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.IsActive); }}
+		/// <summary>Creates a new ShopEntity.LogoUrl field instance</summary>
+		public static EntityField2 LogoUrl { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.LogoUrl); }}
+		/// <summary>Creates a new ShopEntity.Name field instance</summary>
+		public static EntityField2 Name { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.Name); }}
+		/// <summary>Creates a new ShopEntity.OwnerId field instance</summary>
+		public static EntityField2 OwnerId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.OwnerId); }}
+		/// <summary>Creates a new ShopEntity.PickupAddress field instance</summary>
+		public static EntityField2 PickupAddress { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.PickupAddress); }}
+		/// <summary>Creates a new ShopEntity.ProvinceId field instance</summary>
+		public static EntityField2 ProvinceId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.ProvinceId); }}
+		/// <summary>Creates a new ShopEntity.Rating field instance</summary>
+		public static EntityField2 Rating { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.Rating); }}
+		/// <summary>Creates a new ShopEntity.Slug field instance</summary>
+		public static EntityField2 Slug { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.Slug); }}
+		/// <summary>Creates a new ShopEntity.WardId field instance</summary>
+		public static EntityField2 WardId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShopFieldIndex.WardId); }}
+	}
+
+	/// <summary>Field Creation Class for entity ChatBoxEntity</summary>
+	public partial class ChatBoxFields
+	{
+		/// <summary>Creates a new ChatBoxEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatBoxFieldIndex.Id); }}
+		/// <summary>Creates a new ChatBoxEntity.LastActivity field instance</summary>
+		public static EntityField2 LastActivity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatBoxFieldIndex.LastActivity); }}
+		/// <summary>Creates a new ChatBoxEntity.LastMessage field instance</summary>
+		public static EntityField2 LastMessage { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatBoxFieldIndex.LastMessage); }}
+		/// <summary>Creates a new ChatBoxEntity.ShopId field instance</summary>
+		public static EntityField2 ShopId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatBoxFieldIndex.ShopId); }}
+		/// <summary>Creates a new ChatBoxEntity.UserId field instance</summary>
+		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatBoxFieldIndex.UserId); }}
+	}
+
+	/// <summary>Field Creation Class for entity ChatMessageEntity</summary>
+	public partial class ChatMessageFields
+	{
+		/// <summary>Creates a new ChatMessageEntity.Content field instance</summary>
+		public static EntityField2 Content { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatMessageFieldIndex.Content); }}
+		/// <summary>Creates a new ChatMessageEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatMessageFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new ChatMessageEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatMessageFieldIndex.Id); }}
+		/// <summary>Creates a new ChatMessageEntity.IsRead field instance</summary>
+		public static EntityField2 IsRead { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatMessageFieldIndex.IsRead); }}
+		/// <summary>Creates a new ChatMessageEntity.MessageType field instance</summary>
+		public static EntityField2 MessageType { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatMessageFieldIndex.MessageType); }}
+		/// <summary>Creates a new ChatMessageEntity.RoomId field instance</summary>
+		public static EntityField2 RoomId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatMessageFieldIndex.RoomId); }}
+		/// <summary>Creates a new ChatMessageEntity.SenderId field instance</summary>
+		public static EntityField2 SenderId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ChatMessageFieldIndex.SenderId); }}
 	}
 
 	/// <summary>Field Creation Class for entity NotificationEntity</summary>
@@ -308,63 +377,192 @@ namespace DATN.HelperClasses
 		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(NotificationFieldIndex.UserId); }}
 	}
 
-	/// <summary>Field Creation Class for entity salesCartEntity</summary>
-	public partial class salesCartFields
+	/// <summary>Field Creation Class for entity ReviewEntity</summary>
+	public partial class ReviewFields
 	{
-		/// <summary>Creates a new salesCartEntity.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.CreatedAt); }}
-		/// <summary>Creates a new salesCartEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.Id); }}
-		/// <summary>Creates a new salesCartEntity.Quantity field instance</summary>
-		public static EntityField2 Quantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.Quantity); }}
-		/// <summary>Creates a new salesCartEntity.UserId field instance</summary>
-		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.UserId); }}
-		/// <summary>Creates a new salesCartEntity.VariantId field instance</summary>
-		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.VariantId); }}
+		/// <summary>Creates a new ReviewEntity.Comment field instance</summary>
+		public static EntityField2 Comment { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.Comment); }}
+		/// <summary>Creates a new ReviewEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new ReviewEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.Id); }}
+		/// <summary>Creates a new ReviewEntity.Images field instance</summary>
+		public static EntityField2 Images { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.Images); }}
+		/// <summary>Creates a new ReviewEntity.OrderId field instance</summary>
+		public static EntityField2 OrderId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.OrderId); }}
+		/// <summary>Creates a new ReviewEntity.Rating field instance</summary>
+		public static EntityField2 Rating { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.Rating); }}
+		/// <summary>Creates a new ReviewEntity.UserId field instance</summary>
+		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.UserId); }}
+		/// <summary>Creates a new ReviewEntity.VariantId field instance</summary>
+		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.VariantId); }}
 	}
 
-	/// <summary>Field Creation Class for entity salesOrderEntity</summary>
-	public partial class salesOrderFields
+	/// <summary>Field Creation Class for entity WishlistEntity</summary>
+	public partial class WishlistFields
 	{
-		/// <summary>Creates a new salesOrderEntity.BuyerId field instance</summary>
-		public static EntityField2 BuyerId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.BuyerId); }}
-		/// <summary>Creates a new salesOrderEntity.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.CreatedAt); }}
-		/// <summary>Creates a new salesOrderEntity.CustomerNote field instance</summary>
-		public static EntityField2 CustomerNote { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.CustomerNote); }}
-		/// <summary>Creates a new salesOrderEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.Id); }}
-		/// <summary>Creates a new salesOrderEntity.OrderCode field instance</summary>
-		public static EntityField2 OrderCode { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.OrderCode); }}
-		/// <summary>Creates a new salesOrderEntity.OrderStatus field instance</summary>
-		public static EntityField2 OrderStatus { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.OrderStatus); }}
-		/// <summary>Creates a new salesOrderEntity.PaymentMethod field instance</summary>
-		public static EntityField2 PaymentMethod { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.PaymentMethod); }}
-		/// <summary>Creates a new salesOrderEntity.PaymentStatus field instance</summary>
-		public static EntityField2 PaymentStatus { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.PaymentStatus); }}
-		/// <summary>Creates a new salesOrderEntity.ShippingAddress field instance</summary>
-		public static EntityField2 ShippingAddress { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.ShippingAddress); }}
-		/// <summary>Creates a new salesOrderEntity.ShippingFee field instance</summary>
-		public static EntityField2 ShippingFee { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.ShippingFee); }}
-		/// <summary>Creates a new salesOrderEntity.TotalAmount field instance</summary>
-		public static EntityField2 TotalAmount { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.TotalAmount); }}
+		/// <summary>Creates a new WishlistEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(WishlistFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new WishlistEntity.ProductId field instance</summary>
+		public static EntityField2 ProductId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(WishlistFieldIndex.ProductId); }}
+		/// <summary>Creates a new WishlistEntity.UserId field instance</summary>
+		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(WishlistFieldIndex.UserId); }}
 	}
 
-	/// <summary>Field Creation Class for entity salesOrderItemEntity</summary>
-	public partial class salesOrderItemFields
+	/// <summary>Field Creation Class for entity StockEntity</summary>
+	public partial class StockFields
 	{
-		/// <summary>Creates a new salesOrderItemEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.Id); }}
-		/// <summary>Creates a new salesOrderItemEntity.OrderId field instance</summary>
-		public static EntityField2 OrderId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.OrderId); }}
-		/// <summary>Creates a new salesOrderItemEntity.ProductNameSnapshot field instance</summary>
-		public static EntityField2 ProductNameSnapshot { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.ProductNameSnapshot); }}
-		/// <summary>Creates a new salesOrderItemEntity.Quantity field instance</summary>
-		public static EntityField2 Quantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.Quantity); }}
-		/// <summary>Creates a new salesOrderItemEntity.UnitPrice field instance</summary>
-		public static EntityField2 UnitPrice { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.UnitPrice); }}
-		/// <summary>Creates a new salesOrderItemEntity.VariantId field instance</summary>
-		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.VariantId); }}
+		/// <summary>Creates a new StockEntity.AvailableQuantity field instance</summary>
+		public static EntityField2 AvailableQuantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockFieldIndex.AvailableQuantity); }}
+		/// <summary>Creates a new StockEntity.PhysicalQuantity field instance</summary>
+		public static EntityField2 PhysicalQuantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockFieldIndex.PhysicalQuantity); }}
+		/// <summary>Creates a new StockEntity.ReservedQuantity field instance</summary>
+		public static EntityField2 ReservedQuantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockFieldIndex.ReservedQuantity); }}
+		/// <summary>Creates a new StockEntity.UpdatedAt field instance</summary>
+		public static EntityField2 UpdatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockFieldIndex.UpdatedAt); }}
+		/// <summary>Creates a new StockEntity.VariantId field instance</summary>
+		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockFieldIndex.VariantId); }}
+	}
+
+	/// <summary>Field Creation Class for entity StockTransactionEntity</summary>
+	public partial class StockTransactionFields
+	{
+		/// <summary>Creates a new StockTransactionEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockTransactionFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new StockTransactionEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockTransactionFieldIndex.Id); }}
+		/// <summary>Creates a new StockTransactionEntity.Note field instance</summary>
+		public static EntityField2 Note { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockTransactionFieldIndex.Note); }}
+		/// <summary>Creates a new StockTransactionEntity.Quantity field instance</summary>
+		public static EntityField2 Quantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockTransactionFieldIndex.Quantity); }}
+		/// <summary>Creates a new StockTransactionEntity.ReferenceId field instance</summary>
+		public static EntityField2 ReferenceId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockTransactionFieldIndex.ReferenceId); }}
+		/// <summary>Creates a new StockTransactionEntity.ShopId field instance</summary>
+		public static EntityField2 ShopId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockTransactionFieldIndex.ShopId); }}
+		/// <summary>Creates a new StockTransactionEntity.TransactionType field instance</summary>
+		public static EntityField2 TransactionType { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockTransactionFieldIndex.TransactionType); }}
+		/// <summary>Creates a new StockTransactionEntity.VariantId field instance</summary>
+		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(StockTransactionFieldIndex.VariantId); }}
+	}
+
+	/// <summary>Field Creation Class for entity UserVoucherEntity</summary>
+	public partial class UserVoucherFields
+	{
+		/// <summary>Creates a new UserVoucherEntity.IsUsed field instance</summary>
+		public static EntityField2 IsUsed { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserVoucherFieldIndex.IsUsed); }}
+		/// <summary>Creates a new UserVoucherEntity.SavedAt field instance</summary>
+		public static EntityField2 SavedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserVoucherFieldIndex.SavedAt); }}
+		/// <summary>Creates a new UserVoucherEntity.UserId field instance</summary>
+		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserVoucherFieldIndex.UserId); }}
+		/// <summary>Creates a new UserVoucherEntity.VoucherId field instance</summary>
+		public static EntityField2 VoucherId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserVoucherFieldIndex.VoucherId); }}
+	}
+
+	/// <summary>Field Creation Class for entity VoucherEntity</summary>
+	public partial class VoucherFields
+	{
+		/// <summary>Creates a new VoucherEntity.Code field instance</summary>
+		public static EntityField2 Code { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.Code); }}
+		/// <summary>Creates a new VoucherEntity.DiscountType field instance</summary>
+		public static EntityField2 DiscountType { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.DiscountType); }}
+		/// <summary>Creates a new VoucherEntity.DiscountValue field instance</summary>
+		public static EntityField2 DiscountValue { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.DiscountValue); }}
+		/// <summary>Creates a new VoucherEntity.EndDate field instance</summary>
+		public static EntityField2 EndDate { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.EndDate); }}
+		/// <summary>Creates a new VoucherEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.Id); }}
+		/// <summary>Creates a new VoucherEntity.IsActive field instance</summary>
+		public static EntityField2 IsActive { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.IsActive); }}
+		/// <summary>Creates a new VoucherEntity.MaxDiscountValue field instance</summary>
+		public static EntityField2 MaxDiscountValue { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.MaxDiscountValue); }}
+		/// <summary>Creates a new VoucherEntity.MinOrderValue field instance</summary>
+		public static EntityField2 MinOrderValue { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.MinOrderValue); }}
+		/// <summary>Creates a new VoucherEntity.Name field instance</summary>
+		public static EntityField2 Name { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.Name); }}
+		/// <summary>Creates a new VoucherEntity.ShopId field instance</summary>
+		public static EntityField2 ShopId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.ShopId); }}
+		/// <summary>Creates a new VoucherEntity.StartDate field instance</summary>
+		public static EntityField2 StartDate { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.StartDate); }}
+		/// <summary>Creates a new VoucherEntity.UsageLimit field instance</summary>
+		public static EntityField2 UsageLimit { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.UsageLimit); }}
+		/// <summary>Creates a new VoucherEntity.UsedCount field instance</summary>
+		public static EntityField2 UsedCount { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(VoucherFieldIndex.UsedCount); }}
+	}
+
+	/// <summary>Field Creation Class for entity CartEntity</summary>
+	public partial class CartFields
+	{
+		/// <summary>Creates a new CartEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CartFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new CartEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CartFieldIndex.Id); }}
+		/// <summary>Creates a new CartEntity.Quantity field instance</summary>
+		public static EntityField2 Quantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CartFieldIndex.Quantity); }}
+		/// <summary>Creates a new CartEntity.UserId field instance</summary>
+		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CartFieldIndex.UserId); }}
+		/// <summary>Creates a new CartEntity.VariantId field instance</summary>
+		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CartFieldIndex.VariantId); }}
+	}
+
+	/// <summary>Field Creation Class for entity OrderEntity</summary>
+	public partial class OrderFields
+	{
+		/// <summary>Creates a new OrderEntity.BuyerId field instance</summary>
+		public static EntityField2 BuyerId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.BuyerId); }}
+		/// <summary>Creates a new OrderEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new OrderEntity.CustomerNote field instance</summary>
+		public static EntityField2 CustomerNote { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.CustomerNote); }}
+		/// <summary>Creates a new OrderEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.Id); }}
+		/// <summary>Creates a new OrderEntity.OrderCode field instance</summary>
+		public static EntityField2 OrderCode { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.OrderCode); }}
+		/// <summary>Creates a new OrderEntity.OrderStatus field instance</summary>
+		public static EntityField2 OrderStatus { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.OrderStatus); }}
+		/// <summary>Creates a new OrderEntity.PaymentMethod field instance</summary>
+		public static EntityField2 PaymentMethod { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.PaymentMethod); }}
+		/// <summary>Creates a new OrderEntity.PaymentStatus field instance</summary>
+		public static EntityField2 PaymentStatus { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.PaymentStatus); }}
+		/// <summary>Creates a new OrderEntity.ShippingAddress field instance</summary>
+		public static EntityField2 ShippingAddress { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.ShippingAddress); }}
+		/// <summary>Creates a new OrderEntity.ShippingFee field instance</summary>
+		public static EntityField2 ShippingFee { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.ShippingFee); }}
+		/// <summary>Creates a new OrderEntity.TotalAmount field instance</summary>
+		public static EntityField2 TotalAmount { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.TotalAmount); }}
+	}
+
+	/// <summary>Field Creation Class for entity OrderItemEntity</summary>
+	public partial class OrderItemFields
+	{
+		/// <summary>Creates a new OrderItemEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.Id); }}
+		/// <summary>Creates a new OrderItemEntity.OrderId field instance</summary>
+		public static EntityField2 OrderId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.OrderId); }}
+		/// <summary>Creates a new OrderItemEntity.ProductNameSnapshot field instance</summary>
+		public static EntityField2 ProductNameSnapshot { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.ProductNameSnapshot); }}
+		/// <summary>Creates a new OrderItemEntity.Quantity field instance</summary>
+		public static EntityField2 Quantity { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.Quantity); }}
+		/// <summary>Creates a new OrderItemEntity.UnitPrice field instance</summary>
+		public static EntityField2 UnitPrice { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.UnitPrice); }}
+		/// <summary>Creates a new OrderItemEntity.VariantId field instance</summary>
+		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.VariantId); }}
+	}
+
+	/// <summary>Field Creation Class for entity ShippingTrackingEntity</summary>
+	public partial class ShippingTrackingFields
+	{
+		/// <summary>Creates a new ShippingTrackingEntity.Description field instance</summary>
+		public static EntityField2 Description { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShippingTrackingFieldIndex.Description); }}
+		/// <summary>Creates a new ShippingTrackingEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShippingTrackingFieldIndex.Id); }}
+		/// <summary>Creates a new ShippingTrackingEntity.Location field instance</summary>
+		public static EntityField2 Location { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShippingTrackingFieldIndex.Location); }}
+		/// <summary>Creates a new ShippingTrackingEntity.OrderId field instance</summary>
+		public static EntityField2 OrderId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShippingTrackingFieldIndex.OrderId); }}
+		/// <summary>Creates a new ShippingTrackingEntity.Status field instance</summary>
+		public static EntityField2 Status { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShippingTrackingFieldIndex.Status); }}
+		/// <summary>Creates a new ShippingTrackingEntity.UpdatedAt field instance</summary>
+		public static EntityField2 UpdatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ShippingTrackingFieldIndex.UpdatedAt); }}
 	}
 
 	/// <summary>Field Creation Class for entity TransactionEntity</summary>
@@ -386,159 +584,6 @@ namespace DATN.HelperClasses
 		public static EntityField2 RawResponse { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(TransactionFieldIndex.RawResponse); }}
 		/// <summary>Creates a new TransactionEntity.Status field instance</summary>
 		public static EntityField2 Status { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(TransactionFieldIndex.Status); }}
-	}
-
-	/// <summary>Field Creation Class for entity CartEntity</summary>
-	public partial class CartFields
-	{
-		/// <summary>Creates a new CartEntity.AddedAt field instance</summary>
-		public static EntityField2 AddedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CartFieldIndex.AddedAt); }}
-		/// <summary>Creates a new CartEntity.GameId field instance</summary>
-		public static EntityField2 GameId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CartFieldIndex.GameId); }}
-		/// <summary>Creates a new CartEntity.UserId field instance</summary>
-		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(CartFieldIndex.UserId); }}
-	}
-
-	/// <summary>Field Creation Class for entity DiscountEntity</summary>
-	public partial class DiscountFields
-	{
-		/// <summary>Creates a new DiscountEntity.DiscountPercent field instance</summary>
-		public static EntityField2 DiscountPercent { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(DiscountFieldIndex.DiscountPercent); }}
-		/// <summary>Creates a new DiscountEntity.EndDate field instance</summary>
-		public static EntityField2 EndDate { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(DiscountFieldIndex.EndDate); }}
-		/// <summary>Creates a new DiscountEntity.GameId field instance</summary>
-		public static EntityField2 GameId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(DiscountFieldIndex.GameId); }}
-		/// <summary>Creates a new DiscountEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(DiscountFieldIndex.Id); }}
-		/// <summary>Creates a new DiscountEntity.StartDate field instance</summary>
-		public static EntityField2 StartDate { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(DiscountFieldIndex.StartDate); }}
-	}
-
-	/// <summary>Field Creation Class for entity GameEntity</summary>
-	public partial class GameFields
-	{
-		/// <summary>Creates a new GameEntity.CoverImage field instance</summary>
-		public static EntityField2 CoverImage { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.CoverImage); }}
-		/// <summary>Creates a new GameEntity.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.CreatedAt); }}
-		/// <summary>Creates a new GameEntity.FullDescription field instance</summary>
-		public static EntityField2 FullDescription { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.FullDescription); }}
-		/// <summary>Creates a new GameEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.Id); }}
-		/// <summary>Creates a new GameEntity.Price field instance</summary>
-		public static EntityField2 Price { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.Price); }}
-		/// <summary>Creates a new GameEntity.PublisherId field instance</summary>
-		public static EntityField2 PublisherId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.PublisherId); }}
-		/// <summary>Creates a new GameEntity.ReleaseDate field instance</summary>
-		public static EntityField2 ReleaseDate { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.ReleaseDate); }}
-		/// <summary>Creates a new GameEntity.ShortDescription field instance</summary>
-		public static EntityField2 ShortDescription { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.ShortDescription); }}
-		/// <summary>Creates a new GameEntity.Status field instance</summary>
-		public static EntityField2 Status { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.Status); }}
-		/// <summary>Creates a new GameEntity.Title field instance</summary>
-		public static EntityField2 Title { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.Title); }}
-		/// <summary>Creates a new GameEntity.UpdatedAt field instance</summary>
-		public static EntityField2 UpdatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameFieldIndex.UpdatedAt); }}
-	}
-
-	/// <summary>Field Creation Class for entity GameTagEntity</summary>
-	public partial class GameTagFields
-	{
-		/// <summary>Creates a new GameTagEntity.GameId field instance</summary>
-		public static EntityField2 GameId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameTagFieldIndex.GameId); }}
-		/// <summary>Creates a new GameTagEntity.TagId field instance</summary>
-		public static EntityField2 TagId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(GameTagFieldIndex.TagId); }}
-	}
-
-	/// <summary>Field Creation Class for entity OrderEntity</summary>
-	public partial class OrderFields
-	{
-		/// <summary>Creates a new OrderEntity.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.CreatedAt); }}
-		/// <summary>Creates a new OrderEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.Id); }}
-		/// <summary>Creates a new OrderEntity.Status field instance</summary>
-		public static EntityField2 Status { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.Status); }}
-		/// <summary>Creates a new OrderEntity.TotalAmount field instance</summary>
-		public static EntityField2 TotalAmount { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.TotalAmount); }}
-		/// <summary>Creates a new OrderEntity.UserId field instance</summary>
-		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderFieldIndex.UserId); }}
-	}
-
-	/// <summary>Field Creation Class for entity OrderItemEntity</summary>
-	public partial class OrderItemFields
-	{
-		/// <summary>Creates a new OrderItemEntity.GameId field instance</summary>
-		public static EntityField2 GameId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.GameId); }}
-		/// <summary>Creates a new OrderItemEntity.OrderId field instance</summary>
-		public static EntityField2 OrderId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.OrderId); }}
-		/// <summary>Creates a new OrderItemEntity.Price field instance</summary>
-		public static EntityField2 Price { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.Price); }}
-	}
-
-	/// <summary>Field Creation Class for entity PublisherEntity</summary>
-	public partial class PublisherFields
-	{
-		/// <summary>Creates a new PublisherEntity.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PublisherFieldIndex.CreatedAt); }}
-		/// <summary>Creates a new PublisherEntity.Description field instance</summary>
-		public static EntityField2 Description { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PublisherFieldIndex.Description); }}
-		/// <summary>Creates a new PublisherEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PublisherFieldIndex.Id); }}
-		/// <summary>Creates a new PublisherEntity.Name field instance</summary>
-		public static EntityField2 Name { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PublisherFieldIndex.Name); }}
-		/// <summary>Creates a new PublisherEntity.Website field instance</summary>
-		public static EntityField2 Website { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PublisherFieldIndex.Website); }}
-	}
-
-	/// <summary>Field Creation Class for entity ReviewEntity</summary>
-	public partial class ReviewFields
-	{
-		/// <summary>Creates a new ReviewEntity.Comment field instance</summary>
-		public static EntityField2 Comment { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.Comment); }}
-		/// <summary>Creates a new ReviewEntity.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.CreatedAt); }}
-		/// <summary>Creates a new ReviewEntity.GameId field instance</summary>
-		public static EntityField2 GameId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.GameId); }}
-		/// <summary>Creates a new ReviewEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.Id); }}
-		/// <summary>Creates a new ReviewEntity.Rating field instance</summary>
-		public static EntityField2 Rating { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.Rating); }}
-		/// <summary>Creates a new ReviewEntity.UserId field instance</summary>
-		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ReviewFieldIndex.UserId); }}
-	}
-
-	/// <summary>Field Creation Class for entity TagEntity</summary>
-	public partial class TagFields
-	{
-		/// <summary>Creates a new TagEntity.Id field instance</summary>
-		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(TagFieldIndex.Id); }}
-		/// <summary>Creates a new TagEntity.Name field instance</summary>
-		public static EntityField2 Name { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(TagFieldIndex.Name); }}
-	}
-
-	/// <summary>Field Creation Class for entity UserGameEntity</summary>
-	public partial class UserGameFields
-	{
-		/// <summary>Creates a new UserGameEntity.GameId field instance</summary>
-		public static EntityField2 GameId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserGameFieldIndex.GameId); }}
-		/// <summary>Creates a new UserGameEntity.PlaytimeMinutes field instance</summary>
-		public static EntityField2 PlaytimeMinutes { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserGameFieldIndex.PlaytimeMinutes); }}
-		/// <summary>Creates a new UserGameEntity.PurchasedAt field instance</summary>
-		public static EntityField2 PurchasedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserGameFieldIndex.PurchasedAt); }}
-		/// <summary>Creates a new UserGameEntity.UserId field instance</summary>
-		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserGameFieldIndex.UserId); }}
-	}
-
-	/// <summary>Field Creation Class for entity WishlistEntity</summary>
-	public partial class WishlistFields
-	{
-		/// <summary>Creates a new WishlistEntity.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(WishlistFieldIndex.CreatedAt); }}
-		/// <summary>Creates a new WishlistEntity.GameId field instance</summary>
-		public static EntityField2 GameId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(WishlistFieldIndex.GameId); }}
-		/// <summary>Creates a new WishlistEntity.UserId field instance</summary>
-		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(WishlistFieldIndex.UserId); }}
 	}
 	
 
@@ -612,6 +657,8 @@ namespace DATN.HelperClasses
 		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2RefreshTokenFieldIndex.CreatedAt); } }
 		/// <summary>Creates a new auth2RefreshTokenTypedView.Revoked field instance</summary>
 		public static EntityField2 Revoked	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2RefreshTokenFieldIndex.Revoked); } }
+		/// <summary>Creates a new auth2RefreshTokenTypedView.ReplacedByTokenId field instance</summary>
+		public static EntityField2 ReplacedByTokenId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2RefreshTokenFieldIndex.ReplacedByTokenId); } }
 	}
 
 	/// <summary>Field Creation Class for typedview auth2RoleTypedView</summary>
@@ -659,6 +706,31 @@ namespace DATN.HelperClasses
 		public static EntityField2 FailedLoginCount	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserFieldIndex.FailedLoginCount); } }
 		/// <summary>Creates a new auth2UserTypedView.LockoutEnd field instance</summary>
 		public static EntityField2 LockoutEnd	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserFieldIndex.LockoutEnd); } }
+	}
+
+	/// <summary>Field Creation Class for typedview auth2UserAddressTypedView</summary>
+	public partial class auth2UserAddressFields
+	{
+		/// <summary>Creates a new auth2UserAddressTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.Id); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.UserId field instance</summary>
+		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.UserId); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.FullName field instance</summary>
+		public static EntityField2 FullName	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.FullName); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.PhoneNumber field instance</summary>
+		public static EntityField2 PhoneNumber	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.PhoneNumber); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.ProvinceId field instance</summary>
+		public static EntityField2 ProvinceId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.ProvinceId); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.DistrictId field instance</summary>
+		public static EntityField2 DistrictId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.DistrictId); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.WardId field instance</summary>
+		public static EntityField2 WardId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.WardId); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.DetailedAddress field instance</summary>
+		public static EntityField2 DetailedAddress	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.DetailedAddress); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.IsDefault field instance</summary>
+		public static EntityField2 IsDefault	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.IsDefault); } }
+		/// <summary>Creates a new auth2UserAddressTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2UserAddressFieldIndex.CreatedAt); } }
 	}
 
 	/// <summary>Field Creation Class for typedview auth2UserRoleTypedView</summary>
@@ -732,8 +804,6 @@ namespace DATN.HelperClasses
 	{
 		/// <summary>Creates a new catalogProductTypedView.Id field instance</summary>
 		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.Id); } }
-		/// <summary>Creates a new catalogProductTypedView.SellerId field instance</summary>
-		public static EntityField2 SellerId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.SellerId); } }
 		/// <summary>Creates a new catalogProductTypedView.CategoryId field instance</summary>
 		public static EntityField2 CategoryId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.CategoryId); } }
 		/// <summary>Creates a new catalogProductTypedView.BrandId field instance</summary>
@@ -758,6 +828,8 @@ namespace DATN.HelperClasses
 		public static EntityField2 UpdatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.UpdatedAt); } }
 		/// <summary>Creates a new catalogProductTypedView.Sku field instance</summary>
 		public static EntityField2 Sku	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.Sku); } }
+		/// <summary>Creates a new catalogProductTypedView.ShopId field instance</summary>
+		public static EntityField2 ShopId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.ShopId); } }
 	}
 
 	/// <summary>Field Creation Class for typedview catalogProductImageTypedView</summary>
@@ -788,12 +860,77 @@ namespace DATN.HelperClasses
 		public static EntityField2 Name	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductVariantFieldIndex.Name); } }
 		/// <summary>Creates a new catalogProductVariantTypedView.Price field instance</summary>
 		public static EntityField2 Price	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductVariantFieldIndex.Price); } }
-		/// <summary>Creates a new catalogProductVariantTypedView.StockQuantity field instance</summary>
-		public static EntityField2 StockQuantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductVariantFieldIndex.StockQuantity); } }
 		/// <summary>Creates a new catalogProductVariantTypedView.VariantAttributes field instance</summary>
 		public static EntityField2 VariantAttributes	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductVariantFieldIndex.VariantAttributes); } }
 		/// <summary>Creates a new catalogProductVariantTypedView.ImageUrl field instance</summary>
 		public static EntityField2 ImageUrl	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductVariantFieldIndex.ImageUrl); } }
+	}
+
+	/// <summary>Field Creation Class for typedview catalogShopTypedView</summary>
+	public partial class catalogShopFields
+	{
+		/// <summary>Creates a new catalogShopTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.Id); } }
+		/// <summary>Creates a new catalogShopTypedView.OwnerId field instance</summary>
+		public static EntityField2 OwnerId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.OwnerId); } }
+		/// <summary>Creates a new catalogShopTypedView.Name field instance</summary>
+		public static EntityField2 Name	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.Name); } }
+		/// <summary>Creates a new catalogShopTypedView.Slug field instance</summary>
+		public static EntityField2 Slug	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.Slug); } }
+		/// <summary>Creates a new catalogShopTypedView.Description field instance</summary>
+		public static EntityField2 Description	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.Description); } }
+		/// <summary>Creates a new catalogShopTypedView.LogoUrl field instance</summary>
+		public static EntityField2 LogoUrl	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.LogoUrl); } }
+		/// <summary>Creates a new catalogShopTypedView.CoverUrl field instance</summary>
+		public static EntityField2 CoverUrl	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.CoverUrl); } }
+		/// <summary>Creates a new catalogShopTypedView.Rating field instance</summary>
+		public static EntityField2 Rating	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.Rating); } }
+		/// <summary>Creates a new catalogShopTypedView.IsActive field instance</summary>
+		public static EntityField2 IsActive	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.IsActive); } }
+		/// <summary>Creates a new catalogShopTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.CreatedAt); } }
+		/// <summary>Creates a new catalogShopTypedView.ProvinceId field instance</summary>
+		public static EntityField2 ProvinceId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.ProvinceId); } }
+		/// <summary>Creates a new catalogShopTypedView.DistrictId field instance</summary>
+		public static EntityField2 DistrictId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.DistrictId); } }
+		/// <summary>Creates a new catalogShopTypedView.WardId field instance</summary>
+		public static EntityField2 WardId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.WardId); } }
+		/// <summary>Creates a new catalogShopTypedView.PickupAddress field instance</summary>
+		public static EntityField2 PickupAddress	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogShopFieldIndex.PickupAddress); } }
+	}
+
+	/// <summary>Field Creation Class for typedview engagementChatBoxTypedView</summary>
+	public partial class engagementChatBoxFields
+	{
+		/// <summary>Creates a new engagementChatBoxTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatBoxFieldIndex.Id); } }
+		/// <summary>Creates a new engagementChatBoxTypedView.UserId field instance</summary>
+		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatBoxFieldIndex.UserId); } }
+		/// <summary>Creates a new engagementChatBoxTypedView.ShopId field instance</summary>
+		public static EntityField2 ShopId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatBoxFieldIndex.ShopId); } }
+		/// <summary>Creates a new engagementChatBoxTypedView.LastMessage field instance</summary>
+		public static EntityField2 LastMessage	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatBoxFieldIndex.LastMessage); } }
+		/// <summary>Creates a new engagementChatBoxTypedView.LastActivity field instance</summary>
+		public static EntityField2 LastActivity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatBoxFieldIndex.LastActivity); } }
+	}
+
+	/// <summary>Field Creation Class for typedview engagementChatMessageTypedView</summary>
+	public partial class engagementChatMessageFields
+	{
+		/// <summary>Creates a new engagementChatMessageTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatMessageFieldIndex.Id); } }
+		/// <summary>Creates a new engagementChatMessageTypedView.RoomId field instance</summary>
+		public static EntityField2 RoomId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatMessageFieldIndex.RoomId); } }
+		/// <summary>Creates a new engagementChatMessageTypedView.SenderId field instance</summary>
+		public static EntityField2 SenderId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatMessageFieldIndex.SenderId); } }
+		/// <summary>Creates a new engagementChatMessageTypedView.Content field instance</summary>
+		public static EntityField2 Content	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatMessageFieldIndex.Content); } }
+		/// <summary>Creates a new engagementChatMessageTypedView.MessageType field instance</summary>
+		public static EntityField2 MessageType	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatMessageFieldIndex.MessageType); } }
+		/// <summary>Creates a new engagementChatMessageTypedView.IsRead field instance</summary>
+		public static EntityField2 IsRead	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatMessageFieldIndex.IsRead); } }
+		/// <summary>Creates a new engagementChatMessageTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementChatMessageFieldIndex.CreatedAt); } }
 	}
 
 	/// <summary>Field Creation Class for typedview engagementNotificationTypedView</summary>
@@ -817,84 +954,192 @@ namespace DATN.HelperClasses
 		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementNotificationFieldIndex.CreatedAt); } }
 	}
 
-	/// <summary>Field Creation Class for typedview engagementReview1TypedView</summary>
-	public partial class engagementReview1Fields
+	/// <summary>Field Creation Class for typedview engagementReviewTypedView</summary>
+	public partial class engagementReviewFields
 	{
-		/// <summary>Creates a new engagementReview1TypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReview1FieldIndex.Id); } }
-		/// <summary>Creates a new engagementReview1TypedView.OrderId field instance</summary>
-		public static EntityField2 OrderId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReview1FieldIndex.OrderId); } }
-		/// <summary>Creates a new engagementReview1TypedView.VariantId field instance</summary>
-		public static EntityField2 VariantId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReview1FieldIndex.VariantId); } }
-		/// <summary>Creates a new engagementReview1TypedView.UserId field instance</summary>
-		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReview1FieldIndex.UserId); } }
-		/// <summary>Creates a new engagementReview1TypedView.Rating field instance</summary>
-		public static EntityField2 Rating	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReview1FieldIndex.Rating); } }
-		/// <summary>Creates a new engagementReview1TypedView.Comment field instance</summary>
-		public static EntityField2 Comment	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReview1FieldIndex.Comment); } }
-		/// <summary>Creates a new engagementReview1TypedView.Images field instance</summary>
-		public static EntityField2 Images	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReview1FieldIndex.Images); } }
-		/// <summary>Creates a new engagementReview1TypedView.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReview1FieldIndex.CreatedAt); } }
+		/// <summary>Creates a new engagementReviewTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.Id); } }
+		/// <summary>Creates a new engagementReviewTypedView.OrderId field instance</summary>
+		public static EntityField2 OrderId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.OrderId); } }
+		/// <summary>Creates a new engagementReviewTypedView.VariantId field instance</summary>
+		public static EntityField2 VariantId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.VariantId); } }
+		/// <summary>Creates a new engagementReviewTypedView.UserId field instance</summary>
+		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.UserId); } }
+		/// <summary>Creates a new engagementReviewTypedView.Rating field instance</summary>
+		public static EntityField2 Rating	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.Rating); } }
+		/// <summary>Creates a new engagementReviewTypedView.Comment field instance</summary>
+		public static EntityField2 Comment	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.Comment); } }
+		/// <summary>Creates a new engagementReviewTypedView.Images field instance</summary>
+		public static EntityField2 Images	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.Images); } }
+		/// <summary>Creates a new engagementReviewTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementReviewFieldIndex.CreatedAt); } }
 	}
 
-	/// <summary>Field Creation Class for typedview salesCart1TypedView</summary>
-	public partial class salesCart1Fields
+	/// <summary>Field Creation Class for typedview engagementWishlistTypedView</summary>
+	public partial class engagementWishlistFields
 	{
-		/// <summary>Creates a new salesCart1TypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCart1FieldIndex.Id); } }
-		/// <summary>Creates a new salesCart1TypedView.UserId field instance</summary>
-		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCart1FieldIndex.UserId); } }
-		/// <summary>Creates a new salesCart1TypedView.VariantId field instance</summary>
-		public static EntityField2 VariantId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCart1FieldIndex.VariantId); } }
-		/// <summary>Creates a new salesCart1TypedView.Quantity field instance</summary>
-		public static EntityField2 Quantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCart1FieldIndex.Quantity); } }
-		/// <summary>Creates a new salesCart1TypedView.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCart1FieldIndex.CreatedAt); } }
+		/// <summary>Creates a new engagementWishlistTypedView.UserId field instance</summary>
+		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementWishlistFieldIndex.UserId); } }
+		/// <summary>Creates a new engagementWishlistTypedView.ProductId field instance</summary>
+		public static EntityField2 ProductId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementWishlistFieldIndex.ProductId); } }
+		/// <summary>Creates a new engagementWishlistTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(engagementWishlistFieldIndex.CreatedAt); } }
 	}
 
-	/// <summary>Field Creation Class for typedview salesOrder1TypedView</summary>
-	public partial class salesOrder1Fields
+	/// <summary>Field Creation Class for typedview inventoryStockTypedView</summary>
+	public partial class inventoryStockFields
 	{
-		/// <summary>Creates a new salesOrder1TypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.Id); } }
-		/// <summary>Creates a new salesOrder1TypedView.BuyerId field instance</summary>
-		public static EntityField2 BuyerId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.BuyerId); } }
-		/// <summary>Creates a new salesOrder1TypedView.OrderCode field instance</summary>
-		public static EntityField2 OrderCode	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.OrderCode); } }
-		/// <summary>Creates a new salesOrder1TypedView.TotalAmount field instance</summary>
-		public static EntityField2 TotalAmount	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.TotalAmount); } }
-		/// <summary>Creates a new salesOrder1TypedView.ShippingFee field instance</summary>
-		public static EntityField2 ShippingFee	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.ShippingFee); } }
-		/// <summary>Creates a new salesOrder1TypedView.PaymentMethod field instance</summary>
-		public static EntityField2 PaymentMethod	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.PaymentMethod); } }
-		/// <summary>Creates a new salesOrder1TypedView.PaymentStatus field instance</summary>
-		public static EntityField2 PaymentStatus	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.PaymentStatus); } }
-		/// <summary>Creates a new salesOrder1TypedView.OrderStatus field instance</summary>
-		public static EntityField2 OrderStatus	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.OrderStatus); } }
-		/// <summary>Creates a new salesOrder1TypedView.ShippingAddress field instance</summary>
-		public static EntityField2 ShippingAddress	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.ShippingAddress); } }
-		/// <summary>Creates a new salesOrder1TypedView.CustomerNote field instance</summary>
-		public static EntityField2 CustomerNote	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.CustomerNote); } }
-		/// <summary>Creates a new salesOrder1TypedView.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrder1FieldIndex.CreatedAt); } }
+		/// <summary>Creates a new inventoryStockTypedView.VariantId field instance</summary>
+		public static EntityField2 VariantId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockFieldIndex.VariantId); } }
+		/// <summary>Creates a new inventoryStockTypedView.PhysicalQuantity field instance</summary>
+		public static EntityField2 PhysicalQuantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockFieldIndex.PhysicalQuantity); } }
+		/// <summary>Creates a new inventoryStockTypedView.ReservedQuantity field instance</summary>
+		public static EntityField2 ReservedQuantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockFieldIndex.ReservedQuantity); } }
+		/// <summary>Creates a new inventoryStockTypedView.AvailableQuantity field instance</summary>
+		public static EntityField2 AvailableQuantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockFieldIndex.AvailableQuantity); } }
+		/// <summary>Creates a new inventoryStockTypedView.UpdatedAt field instance</summary>
+		public static EntityField2 UpdatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockFieldIndex.UpdatedAt); } }
 	}
 
-	/// <summary>Field Creation Class for typedview salesOrderItem1TypedView</summary>
-	public partial class salesOrderItem1Fields
+	/// <summary>Field Creation Class for typedview inventoryStockTransactionTypedView</summary>
+	public partial class inventoryStockTransactionFields
 	{
-		/// <summary>Creates a new salesOrderItem1TypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItem1FieldIndex.Id); } }
-		/// <summary>Creates a new salesOrderItem1TypedView.OrderId field instance</summary>
-		public static EntityField2 OrderId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItem1FieldIndex.OrderId); } }
-		/// <summary>Creates a new salesOrderItem1TypedView.VariantId field instance</summary>
-		public static EntityField2 VariantId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItem1FieldIndex.VariantId); } }
-		/// <summary>Creates a new salesOrderItem1TypedView.Quantity field instance</summary>
-		public static EntityField2 Quantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItem1FieldIndex.Quantity); } }
-		/// <summary>Creates a new salesOrderItem1TypedView.UnitPrice field instance</summary>
-		public static EntityField2 UnitPrice	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItem1FieldIndex.UnitPrice); } }
-		/// <summary>Creates a new salesOrderItem1TypedView.ProductNameSnapshot field instance</summary>
-		public static EntityField2 ProductNameSnapshot	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItem1FieldIndex.ProductNameSnapshot); } }
+		/// <summary>Creates a new inventoryStockTransactionTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockTransactionFieldIndex.Id); } }
+		/// <summary>Creates a new inventoryStockTransactionTypedView.VariantId field instance</summary>
+		public static EntityField2 VariantId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockTransactionFieldIndex.VariantId); } }
+		/// <summary>Creates a new inventoryStockTransactionTypedView.ShopId field instance</summary>
+		public static EntityField2 ShopId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockTransactionFieldIndex.ShopId); } }
+		/// <summary>Creates a new inventoryStockTransactionTypedView.TransactionType field instance</summary>
+		public static EntityField2 TransactionType	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockTransactionFieldIndex.TransactionType); } }
+		/// <summary>Creates a new inventoryStockTransactionTypedView.Quantity field instance</summary>
+		public static EntityField2 Quantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockTransactionFieldIndex.Quantity); } }
+		/// <summary>Creates a new inventoryStockTransactionTypedView.ReferenceId field instance</summary>
+		public static EntityField2 ReferenceId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockTransactionFieldIndex.ReferenceId); } }
+		/// <summary>Creates a new inventoryStockTransactionTypedView.Note field instance</summary>
+		public static EntityField2 Note	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockTransactionFieldIndex.Note); } }
+		/// <summary>Creates a new inventoryStockTransactionTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(inventoryStockTransactionFieldIndex.CreatedAt); } }
+	}
+
+	/// <summary>Field Creation Class for typedview marketingUserVoucherTypedView</summary>
+	public partial class marketingUserVoucherFields
+	{
+		/// <summary>Creates a new marketingUserVoucherTypedView.UserId field instance</summary>
+		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingUserVoucherFieldIndex.UserId); } }
+		/// <summary>Creates a new marketingUserVoucherTypedView.VoucherId field instance</summary>
+		public static EntityField2 VoucherId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingUserVoucherFieldIndex.VoucherId); } }
+		/// <summary>Creates a new marketingUserVoucherTypedView.IsUsed field instance</summary>
+		public static EntityField2 IsUsed	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingUserVoucherFieldIndex.IsUsed); } }
+		/// <summary>Creates a new marketingUserVoucherTypedView.SavedAt field instance</summary>
+		public static EntityField2 SavedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingUserVoucherFieldIndex.SavedAt); } }
+	}
+
+	/// <summary>Field Creation Class for typedview marketingVoucherTypedView</summary>
+	public partial class marketingVoucherFields
+	{
+		/// <summary>Creates a new marketingVoucherTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.Id); } }
+		/// <summary>Creates a new marketingVoucherTypedView.ShopId field instance</summary>
+		public static EntityField2 ShopId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.ShopId); } }
+		/// <summary>Creates a new marketingVoucherTypedView.Code field instance</summary>
+		public static EntityField2 Code	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.Code); } }
+		/// <summary>Creates a new marketingVoucherTypedView.Name field instance</summary>
+		public static EntityField2 Name	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.Name); } }
+		/// <summary>Creates a new marketingVoucherTypedView.DiscountType field instance</summary>
+		public static EntityField2 DiscountType	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.DiscountType); } }
+		/// <summary>Creates a new marketingVoucherTypedView.DiscountValue field instance</summary>
+		public static EntityField2 DiscountValue	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.DiscountValue); } }
+		/// <summary>Creates a new marketingVoucherTypedView.MinOrderValue field instance</summary>
+		public static EntityField2 MinOrderValue	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.MinOrderValue); } }
+		/// <summary>Creates a new marketingVoucherTypedView.MaxDiscountValue field instance</summary>
+		public static EntityField2 MaxDiscountValue	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.MaxDiscountValue); } }
+		/// <summary>Creates a new marketingVoucherTypedView.UsageLimit field instance</summary>
+		public static EntityField2 UsageLimit	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.UsageLimit); } }
+		/// <summary>Creates a new marketingVoucherTypedView.UsedCount field instance</summary>
+		public static EntityField2 UsedCount	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.UsedCount); } }
+		/// <summary>Creates a new marketingVoucherTypedView.StartDate field instance</summary>
+		public static EntityField2 StartDate	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.StartDate); } }
+		/// <summary>Creates a new marketingVoucherTypedView.EndDate field instance</summary>
+		public static EntityField2 EndDate	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.EndDate); } }
+		/// <summary>Creates a new marketingVoucherTypedView.IsActive field instance</summary>
+		public static EntityField2 IsActive	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(marketingVoucherFieldIndex.IsActive); } }
+	}
+
+	/// <summary>Field Creation Class for typedview salesCartTypedView</summary>
+	public partial class salesCartFields
+	{
+		/// <summary>Creates a new salesCartTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.Id); } }
+		/// <summary>Creates a new salesCartTypedView.UserId field instance</summary>
+		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.UserId); } }
+		/// <summary>Creates a new salesCartTypedView.VariantId field instance</summary>
+		public static EntityField2 VariantId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.VariantId); } }
+		/// <summary>Creates a new salesCartTypedView.Quantity field instance</summary>
+		public static EntityField2 Quantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.Quantity); } }
+		/// <summary>Creates a new salesCartTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesCartFieldIndex.CreatedAt); } }
+	}
+
+	/// <summary>Field Creation Class for typedview salesOrderTypedView</summary>
+	public partial class salesOrderFields
+	{
+		/// <summary>Creates a new salesOrderTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.Id); } }
+		/// <summary>Creates a new salesOrderTypedView.BuyerId field instance</summary>
+		public static EntityField2 BuyerId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.BuyerId); } }
+		/// <summary>Creates a new salesOrderTypedView.OrderCode field instance</summary>
+		public static EntityField2 OrderCode	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.OrderCode); } }
+		/// <summary>Creates a new salesOrderTypedView.TotalAmount field instance</summary>
+		public static EntityField2 TotalAmount	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.TotalAmount); } }
+		/// <summary>Creates a new salesOrderTypedView.ShippingFee field instance</summary>
+		public static EntityField2 ShippingFee	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.ShippingFee); } }
+		/// <summary>Creates a new salesOrderTypedView.PaymentMethod field instance</summary>
+		public static EntityField2 PaymentMethod	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.PaymentMethod); } }
+		/// <summary>Creates a new salesOrderTypedView.PaymentStatus field instance</summary>
+		public static EntityField2 PaymentStatus	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.PaymentStatus); } }
+		/// <summary>Creates a new salesOrderTypedView.OrderStatus field instance</summary>
+		public static EntityField2 OrderStatus	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.OrderStatus); } }
+		/// <summary>Creates a new salesOrderTypedView.ShippingAddress field instance</summary>
+		public static EntityField2 ShippingAddress	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.ShippingAddress); } }
+		/// <summary>Creates a new salesOrderTypedView.CustomerNote field instance</summary>
+		public static EntityField2 CustomerNote	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.CustomerNote); } }
+		/// <summary>Creates a new salesOrderTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderFieldIndex.CreatedAt); } }
+	}
+
+	/// <summary>Field Creation Class for typedview salesOrderItemTypedView</summary>
+	public partial class salesOrderItemFields
+	{
+		/// <summary>Creates a new salesOrderItemTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.Id); } }
+		/// <summary>Creates a new salesOrderItemTypedView.OrderId field instance</summary>
+		public static EntityField2 OrderId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.OrderId); } }
+		/// <summary>Creates a new salesOrderItemTypedView.VariantId field instance</summary>
+		public static EntityField2 VariantId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.VariantId); } }
+		/// <summary>Creates a new salesOrderItemTypedView.Quantity field instance</summary>
+		public static EntityField2 Quantity	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.Quantity); } }
+		/// <summary>Creates a new salesOrderItemTypedView.UnitPrice field instance</summary>
+		public static EntityField2 UnitPrice	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.UnitPrice); } }
+		/// <summary>Creates a new salesOrderItemTypedView.ProductNameSnapshot field instance</summary>
+		public static EntityField2 ProductNameSnapshot	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.ProductNameSnapshot); } }
+	}
+
+	/// <summary>Field Creation Class for typedview salesShippingTrackingTypedView</summary>
+	public partial class salesShippingTrackingFields
+	{
+		/// <summary>Creates a new salesShippingTrackingTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesShippingTrackingFieldIndex.Id); } }
+		/// <summary>Creates a new salesShippingTrackingTypedView.OrderId field instance</summary>
+		public static EntityField2 OrderId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesShippingTrackingFieldIndex.OrderId); } }
+		/// <summary>Creates a new salesShippingTrackingTypedView.Status field instance</summary>
+		public static EntityField2 Status	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesShippingTrackingFieldIndex.Status); } }
+		/// <summary>Creates a new salesShippingTrackingTypedView.Location field instance</summary>
+		public static EntityField2 Location	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesShippingTrackingFieldIndex.Location); } }
+		/// <summary>Creates a new salesShippingTrackingTypedView.Description field instance</summary>
+		public static EntityField2 Description	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesShippingTrackingFieldIndex.Description); } }
+		/// <summary>Creates a new salesShippingTrackingTypedView.UpdatedAt field instance</summary>
+		public static EntityField2 UpdatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesShippingTrackingFieldIndex.UpdatedAt); } }
 	}
 
 	/// <summary>Field Creation Class for typedview salesTransactionTypedView</summary>
@@ -916,158 +1161,5 @@ namespace DATN.HelperClasses
 		public static EntityField2 RawResponse	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesTransactionFieldIndex.RawResponse); } }
 		/// <summary>Creates a new salesTransactionTypedView.CreatedAt field instance</summary>
 		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesTransactionFieldIndex.CreatedAt); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeCartTypedView</summary>
-	public partial class storeCartFields
-	{
-		/// <summary>Creates a new storeCartTypedView.UserId field instance</summary>
-		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeCartFieldIndex.UserId); } }
-		/// <summary>Creates a new storeCartTypedView.GameId field instance</summary>
-		public static EntityField2 GameId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeCartFieldIndex.GameId); } }
-		/// <summary>Creates a new storeCartTypedView.AddedAt field instance</summary>
-		public static EntityField2 AddedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeCartFieldIndex.AddedAt); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeDiscountTypedView</summary>
-	public partial class storeDiscountFields
-	{
-		/// <summary>Creates a new storeDiscountTypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeDiscountFieldIndex.Id); } }
-		/// <summary>Creates a new storeDiscountTypedView.GameId field instance</summary>
-		public static EntityField2 GameId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeDiscountFieldIndex.GameId); } }
-		/// <summary>Creates a new storeDiscountTypedView.DiscountPercent field instance</summary>
-		public static EntityField2 DiscountPercent	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeDiscountFieldIndex.DiscountPercent); } }
-		/// <summary>Creates a new storeDiscountTypedView.StartDate field instance</summary>
-		public static EntityField2 StartDate	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeDiscountFieldIndex.StartDate); } }
-		/// <summary>Creates a new storeDiscountTypedView.EndDate field instance</summary>
-		public static EntityField2 EndDate	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeDiscountFieldIndex.EndDate); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeGameTypedView</summary>
-	public partial class storeGameFields
-	{
-		/// <summary>Creates a new storeGameTypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.Id); } }
-		/// <summary>Creates a new storeGameTypedView.Title field instance</summary>
-		public static EntityField2 Title	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.Title); } }
-		/// <summary>Creates a new storeGameTypedView.ShortDescription field instance</summary>
-		public static EntityField2 ShortDescription	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.ShortDescription); } }
-		/// <summary>Creates a new storeGameTypedView.FullDescription field instance</summary>
-		public static EntityField2 FullDescription	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.FullDescription); } }
-		/// <summary>Creates a new storeGameTypedView.Price field instance</summary>
-		public static EntityField2 Price	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.Price); } }
-		/// <summary>Creates a new storeGameTypedView.ReleaseDate field instance</summary>
-		public static EntityField2 ReleaseDate	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.ReleaseDate); } }
-		/// <summary>Creates a new storeGameTypedView.PublisherId field instance</summary>
-		public static EntityField2 PublisherId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.PublisherId); } }
-		/// <summary>Creates a new storeGameTypedView.CoverImage field instance</summary>
-		public static EntityField2 CoverImage	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.CoverImage); } }
-		/// <summary>Creates a new storeGameTypedView.Status field instance</summary>
-		public static EntityField2 Status	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.Status); } }
-		/// <summary>Creates a new storeGameTypedView.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.CreatedAt); } }
-		/// <summary>Creates a new storeGameTypedView.UpdatedAt field instance</summary>
-		public static EntityField2 UpdatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameFieldIndex.UpdatedAt); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeGameTagTypedView</summary>
-	public partial class storeGameTagFields
-	{
-		/// <summary>Creates a new storeGameTagTypedView.GameId field instance</summary>
-		public static EntityField2 GameId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameTagFieldIndex.GameId); } }
-		/// <summary>Creates a new storeGameTagTypedView.TagId field instance</summary>
-		public static EntityField2 TagId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeGameTagFieldIndex.TagId); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeOrderTypedView</summary>
-	public partial class storeOrderFields
-	{
-		/// <summary>Creates a new storeOrderTypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeOrderFieldIndex.Id); } }
-		/// <summary>Creates a new storeOrderTypedView.UserId field instance</summary>
-		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeOrderFieldIndex.UserId); } }
-		/// <summary>Creates a new storeOrderTypedView.TotalAmount field instance</summary>
-		public static EntityField2 TotalAmount	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeOrderFieldIndex.TotalAmount); } }
-		/// <summary>Creates a new storeOrderTypedView.Status field instance</summary>
-		public static EntityField2 Status	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeOrderFieldIndex.Status); } }
-		/// <summary>Creates a new storeOrderTypedView.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeOrderFieldIndex.CreatedAt); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeOrderItemTypedView</summary>
-	public partial class storeOrderItemFields
-	{
-		/// <summary>Creates a new storeOrderItemTypedView.OrderId field instance</summary>
-		public static EntityField2 OrderId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeOrderItemFieldIndex.OrderId); } }
-		/// <summary>Creates a new storeOrderItemTypedView.GameId field instance</summary>
-		public static EntityField2 GameId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeOrderItemFieldIndex.GameId); } }
-		/// <summary>Creates a new storeOrderItemTypedView.Price field instance</summary>
-		public static EntityField2 Price	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeOrderItemFieldIndex.Price); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storePublisherTypedView</summary>
-	public partial class storePublisherFields
-	{
-		/// <summary>Creates a new storePublisherTypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storePublisherFieldIndex.Id); } }
-		/// <summary>Creates a new storePublisherTypedView.Name field instance</summary>
-		public static EntityField2 Name	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storePublisherFieldIndex.Name); } }
-		/// <summary>Creates a new storePublisherTypedView.Description field instance</summary>
-		public static EntityField2 Description	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storePublisherFieldIndex.Description); } }
-		/// <summary>Creates a new storePublisherTypedView.Website field instance</summary>
-		public static EntityField2 Website	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storePublisherFieldIndex.Website); } }
-		/// <summary>Creates a new storePublisherTypedView.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storePublisherFieldIndex.CreatedAt); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeReviewTypedView</summary>
-	public partial class storeReviewFields
-	{
-		/// <summary>Creates a new storeReviewTypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeReviewFieldIndex.Id); } }
-		/// <summary>Creates a new storeReviewTypedView.UserId field instance</summary>
-		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeReviewFieldIndex.UserId); } }
-		/// <summary>Creates a new storeReviewTypedView.GameId field instance</summary>
-		public static EntityField2 GameId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeReviewFieldIndex.GameId); } }
-		/// <summary>Creates a new storeReviewTypedView.Rating field instance</summary>
-		public static EntityField2 Rating	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeReviewFieldIndex.Rating); } }
-		/// <summary>Creates a new storeReviewTypedView.Comment field instance</summary>
-		public static EntityField2 Comment	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeReviewFieldIndex.Comment); } }
-		/// <summary>Creates a new storeReviewTypedView.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeReviewFieldIndex.CreatedAt); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeTagTypedView</summary>
-	public partial class storeTagFields
-	{
-		/// <summary>Creates a new storeTagTypedView.Id field instance</summary>
-		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeTagFieldIndex.Id); } }
-		/// <summary>Creates a new storeTagTypedView.Name field instance</summary>
-		public static EntityField2 Name	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeTagFieldIndex.Name); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeUserGameTypedView</summary>
-	public partial class storeUserGameFields
-	{
-		/// <summary>Creates a new storeUserGameTypedView.UserId field instance</summary>
-		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeUserGameFieldIndex.UserId); } }
-		/// <summary>Creates a new storeUserGameTypedView.GameId field instance</summary>
-		public static EntityField2 GameId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeUserGameFieldIndex.GameId); } }
-		/// <summary>Creates a new storeUserGameTypedView.PurchasedAt field instance</summary>
-		public static EntityField2 PurchasedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeUserGameFieldIndex.PurchasedAt); } }
-		/// <summary>Creates a new storeUserGameTypedView.PlaytimeMinutes field instance</summary>
-		public static EntityField2 PlaytimeMinutes	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeUserGameFieldIndex.PlaytimeMinutes); } }
-	}
-
-	/// <summary>Field Creation Class for typedview storeWishlistTypedView</summary>
-	public partial class storeWishlistFields
-	{
-		/// <summary>Creates a new storeWishlistTypedView.UserId field instance</summary>
-		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeWishlistFieldIndex.UserId); } }
-		/// <summary>Creates a new storeWishlistTypedView.GameId field instance</summary>
-		public static EntityField2 GameId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeWishlistFieldIndex.GameId); } }
-		/// <summary>Creates a new storeWishlistTypedView.CreatedAt field instance</summary>
-		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(storeWishlistFieldIndex.CreatedAt); } }
 	}
 }

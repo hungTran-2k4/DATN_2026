@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -48,9 +48,9 @@ namespace DATN.EntityClasses
 		{
 			public RolePermissionEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("RolePermissionEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.RolePermissionEntity, typeof(RolePermissionEntity), typeof(RolePermissionEntityFactory), false);
-				AddNavigatorMetaData<RolePermissionEntity, PermissionEntity>("Permission", "RolePermissions", (a, b) => a._permission = b, a => a._permission, (a, b) => a.Permission = b, DATN.RelationClasses.StaticRolePermissionRelations.PermissionEntityUsingPermissionIdStatic, ()=>new RolePermissionRelations().PermissionEntityUsingPermissionId, null, new int[] { (int)RolePermissionFieldIndex.PermissionId }, null, true, (int)DATN.EntityType.PermissionEntity);
-				AddNavigatorMetaData<RolePermissionEntity, RoleEntity>("Role", "RolePermissions", (a, b) => a._role = b, a => a._role, (a, b) => a.Role = b, DATN.RelationClasses.StaticRolePermissionRelations.RoleEntityUsingRoleIdStatic, ()=>new RolePermissionRelations().RoleEntityUsingRoleId, null, new int[] { (int)RolePermissionFieldIndex.RoleId }, null, true, (int)DATN.EntityType.RoleEntity);
+				SetEntityCoreInfo("RolePermissionEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.RolePermissionEntity, typeof(RolePermissionEntity), typeof(RolePermissionEntityFactory), false);
+				AddNavigatorMetaData<RolePermissionEntity, PermissionEntity>("Permission", "RolePermissions", (a, b) => a._permission = b, a => a._permission, (a, b) => a.Permission = b, DATN_2026.RelationClasses.StaticRolePermissionRelations.PermissionEntityUsingPermissionIdStatic, ()=>new RolePermissionRelations().PermissionEntityUsingPermissionId, null, new int[] { (int)RolePermissionFieldIndex.PermissionId }, null, true, (int)DATN_2026.EntityType.PermissionEntity);
+				AddNavigatorMetaData<RolePermissionEntity, RoleEntity>("Role", "RolePermissions", (a, b) => a._role = b, a => a._role, (a, b) => a.Role = b, DATN_2026.RelationClasses.StaticRolePermissionRelations.RoleEntityUsingRoleIdStatic, ()=>new RolePermissionRelations().RoleEntityUsingRoleId, null, new int[] { (int)RolePermissionFieldIndex.RoleId }, null, true, (int)DATN_2026.EntityType.RoleEntity);
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum RolePermissionFieldIndex
 	{
@@ -203,7 +203,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: RolePermission. </summary>
 	public partial class RolePermissionRelations: RelationFactory

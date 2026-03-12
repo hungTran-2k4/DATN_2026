@@ -8,27 +8,33 @@
 using System;
 using System.ComponentModel;
 
-namespace DATN.TypedViewClasses
+namespace DATN_2026.TypedViewClasses
 {
-	/// <summary>Class which represents a row in the typed view 'Sales.salesCart1'.</summary>
-	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN.FactoryClasses.QueryFactory.salesCart1"/>. </remarks>
+	/// <summary>Class which represents a row in the typed view 'Engagement.engagementReview'.</summary>
+	/// <remarks>This class is a result class for a query, which is produced with the property <see cref="DATN_2026.FactoryClasses.QueryFactory.engagementReview"/>. </remarks>
 	[Serializable]
-	public partial class salesCart1Row 
+	public partial class engagementReviewRow 
 	{
 		partial void OnCreated();
 		
-		/// <summary>Initializes a new instance of the <see cref="salesCart1Row"/> class.</summary>
-		public salesCart1Row()
+		/// <summary>Initializes a new instance of the <see cref="engagementReviewRow"/> class.</summary>
+		public engagementReviewRow()
 		{
 			OnCreated();
 		}
 
+		/// <summary>Gets or sets the Comment field.</summary>
+		public System.String Comment { get; set; }
 		/// <summary>Gets or sets the CreatedAt field.</summary>
 		public Nullable<System.DateTime> CreatedAt { get; set; }
 		/// <summary>Gets or sets the Id field.</summary>
 		public System.Guid Id { get; set; }
-		/// <summary>Gets or sets the Quantity field.</summary>
-		public System.Int32 Quantity { get; set; }
+		/// <summary>Gets or sets the Images field.</summary>
+		public System.String Images { get; set; }
+		/// <summary>Gets or sets the OrderId field.</summary>
+		public Nullable<System.Guid> OrderId { get; set; }
+		/// <summary>Gets or sets the Rating field.</summary>
+		public Nullable<System.Int32> Rating { get; set; }
 		/// <summary>Gets or sets the UserId field.</summary>
 		public Nullable<System.Guid> UserId { get; set; }
 		/// <summary>Gets or sets the VariantId field.</summary>

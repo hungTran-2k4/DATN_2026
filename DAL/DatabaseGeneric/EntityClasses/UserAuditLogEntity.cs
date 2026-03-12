@@ -10,13 +10,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using DATN.HelperClasses;
-using DATN.FactoryClasses;
-using DATN.RelationClasses;
+using DATN_2026.HelperClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.RelationClasses;
 
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.EntityClasses
+namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
@@ -42,7 +42,7 @@ namespace DATN.EntityClasses
 		{
 			public UserAuditLogEntityStaticMetaData()
 			{
-				SetEntityCoreInfo("UserAuditLogEntity", InheritanceHierarchyType.None, false, (int)DATN.EntityType.UserAuditLogEntity, typeof(UserAuditLogEntity), typeof(UserAuditLogEntityFactory), false);
+				SetEntityCoreInfo("UserAuditLogEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.UserAuditLogEntity, typeof(UserAuditLogEntity), typeof(UserAuditLogEntityFactory), false);
 			}
 		}
 
@@ -203,7 +203,7 @@ namespace DATN.EntityClasses
 	}
 }
 
-namespace DATN
+namespace DATN_2026
 {
 	public enum UserAuditLogFieldIndex
 	{
@@ -230,7 +230,7 @@ namespace DATN
 	}
 }
 
-namespace DATN.RelationClasses
+namespace DATN_2026.RelationClasses
 {
 	/// <summary>Implements the relations factory for the entity: UserAuditLog. </summary>
 	public partial class UserAuditLogRelations: RelationFactory

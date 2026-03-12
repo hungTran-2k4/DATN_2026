@@ -8,7 +8,7 @@
 using System;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
-namespace DATN.DatabaseSpecific
+namespace DATN_2026.DatabaseSpecific
 {
 	/// <summary>Singleton implementation of the PersistenceInfoProvider. This class is the singleton wrapper through which the actual instance is retrieved.</summary>
 	internal static class PersistenceInfoProviderSingleton
@@ -43,6 +43,7 @@ namespace DATN.DatabaseSpecific
 			InitRoleEntityMappings();
 			InitRolePermissionEntityMappings();
 			InitUserEntityMappings();
+			InitUserAddressEntityMappings();
 			InitUserRoleEntityMappings();
 			InitUserSessionEntityMappings();
 			InitBrandEntityMappings();
@@ -50,23 +51,21 @@ namespace DATN.DatabaseSpecific
 			InitProductEntityMappings();
 			InitProductImageEntityMappings();
 			InitProductVariantEntityMappings();
-			InitengagementReviewEntityMappings();
+			InitShopEntityMappings();
+			InitChatBoxEntityMappings();
+			InitChatMessageEntityMappings();
 			InitNotificationEntityMappings();
-			InitsalesCartEntityMappings();
-			InitsalesOrderEntityMappings();
-			InitsalesOrderItemEntityMappings();
-			InitTransactionEntityMappings();
+			InitReviewEntityMappings();
+			InitWishlistEntityMappings();
+			InitStockEntityMappings();
+			InitStockTransactionEntityMappings();
+			InitUserVoucherEntityMappings();
+			InitVoucherEntityMappings();
 			InitCartEntityMappings();
-			InitDiscountEntityMappings();
-			InitGameEntityMappings();
-			InitGameTagEntityMappings();
 			InitOrderEntityMappings();
 			InitOrderItemEntityMappings();
-			InitPublisherEntityMappings();
-			InitReviewEntityMappings();
-			InitTagEntityMappings();
-			InitUserGameEntityMappings();
-			InitWishlistEntityMappings();
+			InitShippingTrackingEntityMappings();
+			InitTransactionEntityMappings();
 			InitauditLoginAttemptTypedViewMappings();
 			InitauditUserAuditLogTypedViewMappings();
 			Initauth2PermissionTypedViewMappings();
@@ -74,6 +73,7 @@ namespace DATN.DatabaseSpecific
 			Initauth2RoleTypedViewMappings();
 			Initauth2RolePermissionTypedViewMappings();
 			Initauth2UserTypedViewMappings();
+			Initauth2UserAddressTypedViewMappings();
 			Initauth2UserRoleTypedViewMappings();
 			Initauth2UserSessionTypedViewMappings();
 			InitcatalogBrandTypedViewMappings();
@@ -81,23 +81,21 @@ namespace DATN.DatabaseSpecific
 			InitcatalogProductTypedViewMappings();
 			InitcatalogProductImageTypedViewMappings();
 			InitcatalogProductVariantTypedViewMappings();
+			InitcatalogShopTypedViewMappings();
+			InitengagementChatBoxTypedViewMappings();
+			InitengagementChatMessageTypedViewMappings();
 			InitengagementNotificationTypedViewMappings();
-			InitengagementReview1TypedViewMappings();
-			InitsalesCart1TypedViewMappings();
-			InitsalesOrder1TypedViewMappings();
-			InitsalesOrderItem1TypedViewMappings();
+			InitengagementReviewTypedViewMappings();
+			InitengagementWishlistTypedViewMappings();
+			InitinventoryStockTypedViewMappings();
+			InitinventoryStockTransactionTypedViewMappings();
+			InitmarketingUserVoucherTypedViewMappings();
+			InitmarketingVoucherTypedViewMappings();
+			InitsalesCartTypedViewMappings();
+			InitsalesOrderTypedViewMappings();
+			InitsalesOrderItemTypedViewMappings();
+			InitsalesShippingTrackingTypedViewMappings();
 			InitsalesTransactionTypedViewMappings();
-			InitstoreCartTypedViewMappings();
-			InitstoreDiscountTypedViewMappings();
-			InitstoreGameTypedViewMappings();
-			InitstoreGameTagTypedViewMappings();
-			InitstoreOrderTypedViewMappings();
-			InitstoreOrderItemTypedViewMappings();
-			InitstorePublisherTypedViewMappings();
-			InitstoreReviewTypedViewMappings();
-			InitstoreTagTypedViewMappings();
-			InitstoreUserGameTypedViewMappings();
-			InitstoreWishlistTypedViewMappings();
 		}
 
 		/// <summary>Inits LoginAttemptEntity's mappings</summary>
@@ -185,6 +183,22 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("UserEntity", "Username", "username", false, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 9);
 		}
 
+		/// <summary>Inits UserAddressEntity's mappings</summary>
+		private void InitUserAddressEntityMappings()
+		{
+			this.AddElementMapping("UserAddressEntity", @"postgres", @"auth2", "user_addresses", 10, 0);
+			this.AddElementFieldMapping("UserAddressEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
+			this.AddElementFieldMapping("UserAddressEntity", "DetailedAddress", "detailed_address", false, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 1);
+			this.AddElementFieldMapping("UserAddressEntity", "DistrictId", "district_id", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 2);
+			this.AddElementFieldMapping("UserAddressEntity", "FullName", "full_name", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 3);
+			this.AddElementFieldMapping("UserAddressEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+			this.AddElementFieldMapping("UserAddressEntity", "IsDefault", "is_default", true, "Boolean", 0, 0, 0, false, "", null, typeof(System.Boolean), 5);
+			this.AddElementFieldMapping("UserAddressEntity", "PhoneNumber", "phone_number", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 6);
+			this.AddElementFieldMapping("UserAddressEntity", "ProvinceId", "province_id", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 7);
+			this.AddElementFieldMapping("UserAddressEntity", "UserId", "user_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 8);
+			this.AddElementFieldMapping("UserAddressEntity", "WardId", "ward_id", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 9);
+		}
+
 		/// <summary>Inits UserRoleEntity's mappings</summary>
 		private void InitUserRoleEntityMappings()
 		{
@@ -243,7 +257,7 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("ProductEntity", "Description", "description", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 4);
 			this.AddElementFieldMapping("ProductEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
 			this.AddElementFieldMapping("ProductEntity", "Name", "name", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 6);
-			this.AddElementFieldMapping("ProductEntity", "SellerId", "seller_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 7);
+			this.AddElementFieldMapping("ProductEntity", "ShopId", "shop_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 7);
 			this.AddElementFieldMapping("ProductEntity", "Sku", "sku", false, "Varchar", 100, 0, 0, false, "", null, typeof(System.String), 8);
 			this.AddElementFieldMapping("ProductEntity", "Slug", "slug", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 9);
 			this.AddElementFieldMapping("ProductEntity", "Status", "status", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 10);
@@ -266,29 +280,58 @@ namespace DATN.DatabaseSpecific
 		/// <summary>Inits ProductVariantEntity's mappings</summary>
 		private void InitProductVariantEntityMappings()
 		{
-			this.AddElementMapping("ProductVariantEntity", @"postgres", @"catalog", "product_variants", 8, 0);
+			this.AddElementMapping("ProductVariantEntity", @"postgres", @"catalog", "product_variants", 7, 0);
 			this.AddElementFieldMapping("ProductVariantEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
 			this.AddElementFieldMapping("ProductVariantEntity", "ImageUrl", "image_url", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 1);
 			this.AddElementFieldMapping("ProductVariantEntity", "Name", "name", true, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 2);
 			this.AddElementFieldMapping("ProductVariantEntity", "Price", "price", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 3);
 			this.AddElementFieldMapping("ProductVariantEntity", "ProductId", "product_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
 			this.AddElementFieldMapping("ProductVariantEntity", "Sku", "sku", true, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 5);
-			this.AddElementFieldMapping("ProductVariantEntity", "StockQuantity", "stock_quantity", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 6);
-			this.AddElementFieldMapping("ProductVariantEntity", "VariantAttributes", "variant_attributes", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 7);
+			this.AddElementFieldMapping("ProductVariantEntity", "VariantAttributes", "variant_attributes", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 6);
 		}
 
-		/// <summary>Inits engagementReviewEntity's mappings</summary>
-		private void InitengagementReviewEntityMappings()
+		/// <summary>Inits ShopEntity's mappings</summary>
+		private void InitShopEntityMappings()
 		{
-			this.AddElementMapping("engagementReviewEntity", @"postgres", @"engagement", "reviews", 8, 0);
-			this.AddElementFieldMapping("engagementReviewEntity", "Comment", "comment", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 0);
-			this.AddElementFieldMapping("engagementReviewEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
-			this.AddElementFieldMapping("engagementReviewEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("engagementReviewEntity", "Images", "images", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 3);
-			this.AddElementFieldMapping("engagementReviewEntity", "OrderId", "order_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
-			this.AddElementFieldMapping("engagementReviewEntity", "Rating", "rating", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 5);
-			this.AddElementFieldMapping("engagementReviewEntity", "UserId", "user_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 6);
-			this.AddElementFieldMapping("engagementReviewEntity", "VariantId", "variant_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 7);
+			this.AddElementMapping("ShopEntity", @"postgres", @"catalog", "shops", 14, 0);
+			this.AddElementFieldMapping("ShopEntity", "CoverUrl", "cover_url", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 0);
+			this.AddElementFieldMapping("ShopEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
+			this.AddElementFieldMapping("ShopEntity", "Description", "description", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 2);
+			this.AddElementFieldMapping("ShopEntity", "DistrictId", "district_id", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 3);
+			this.AddElementFieldMapping("ShopEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+			this.AddElementFieldMapping("ShopEntity", "IsActive", "is_active", true, "Boolean", 0, 0, 0, false, "", null, typeof(System.Boolean), 5);
+			this.AddElementFieldMapping("ShopEntity", "LogoUrl", "logo_url", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 6);
+			this.AddElementFieldMapping("ShopEntity", "Name", "name", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 7);
+			this.AddElementFieldMapping("ShopEntity", "OwnerId", "owner_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 8);
+			this.AddElementFieldMapping("ShopEntity", "PickupAddress", "pickup_address", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 9);
+			this.AddElementFieldMapping("ShopEntity", "ProvinceId", "province_id", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 10);
+			this.AddElementFieldMapping("ShopEntity", "Rating", "rating", true, "Numeric", 0, 3, 2, false, "", null, typeof(System.Decimal), 11);
+			this.AddElementFieldMapping("ShopEntity", "Slug", "slug", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 12);
+			this.AddElementFieldMapping("ShopEntity", "WardId", "ward_id", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 13);
+		}
+
+		/// <summary>Inits ChatBoxEntity's mappings</summary>
+		private void InitChatBoxEntityMappings()
+		{
+			this.AddElementMapping("ChatBoxEntity", @"postgres", @"engagement", "chat_box", 5, 0);
+			this.AddElementFieldMapping("ChatBoxEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("ChatBoxEntity", "LastActivity", "last_activity", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
+			this.AddElementFieldMapping("ChatBoxEntity", "LastMessage", "last_message", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 2);
+			this.AddElementFieldMapping("ChatBoxEntity", "ShopId", "shop_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
+			this.AddElementFieldMapping("ChatBoxEntity", "UserId", "user_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+		}
+
+		/// <summary>Inits ChatMessageEntity's mappings</summary>
+		private void InitChatMessageEntityMappings()
+		{
+			this.AddElementMapping("ChatMessageEntity", @"postgres", @"engagement", "chat_messages", 7, 0);
+			this.AddElementFieldMapping("ChatMessageEntity", "Content", "content", false, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 0);
+			this.AddElementFieldMapping("ChatMessageEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
+			this.AddElementFieldMapping("ChatMessageEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("ChatMessageEntity", "IsRead", "is_read", true, "Boolean", 0, 0, 0, false, "", null, typeof(System.Boolean), 3);
+			this.AddElementFieldMapping("ChatMessageEntity", "MessageType", "message_type", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 4);
+			this.AddElementFieldMapping("ChatMessageEntity", "RoomId", "room_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
+			this.AddElementFieldMapping("ChatMessageEntity", "SenderId", "sender_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 6);
 		}
 
 		/// <summary>Inits NotificationEntity's mappings</summary>
@@ -305,44 +348,133 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("NotificationEntity", "UserId", "user_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 7);
 		}
 
-		/// <summary>Inits salesCartEntity's mappings</summary>
-		private void InitsalesCartEntityMappings()
+		/// <summary>Inits ReviewEntity's mappings</summary>
+		private void InitReviewEntityMappings()
 		{
-			this.AddElementMapping("salesCartEntity", @"postgres", @"sales", "carts", 5, 0);
-			this.AddElementFieldMapping("salesCartEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
-			this.AddElementFieldMapping("salesCartEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("salesCartEntity", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 2);
-			this.AddElementFieldMapping("salesCartEntity", "UserId", "user_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
-			this.AddElementFieldMapping("salesCartEntity", "VariantId", "variant_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+			this.AddElementMapping("ReviewEntity", @"postgres", @"engagement", "reviews", 8, 0);
+			this.AddElementFieldMapping("ReviewEntity", "Comment", "comment", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 0);
+			this.AddElementFieldMapping("ReviewEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
+			this.AddElementFieldMapping("ReviewEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("ReviewEntity", "Images", "images", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 3);
+			this.AddElementFieldMapping("ReviewEntity", "OrderId", "order_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+			this.AddElementFieldMapping("ReviewEntity", "Rating", "rating", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 5);
+			this.AddElementFieldMapping("ReviewEntity", "UserId", "user_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 6);
+			this.AddElementFieldMapping("ReviewEntity", "VariantId", "variant_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 7);
 		}
 
-		/// <summary>Inits salesOrderEntity's mappings</summary>
-		private void InitsalesOrderEntityMappings()
+		/// <summary>Inits WishlistEntity's mappings</summary>
+		private void InitWishlistEntityMappings()
 		{
-			this.AddElementMapping("salesOrderEntity", @"postgres", @"sales", "orders", 11, 0);
-			this.AddElementFieldMapping("salesOrderEntity", "BuyerId", "buyer_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("salesOrderEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
-			this.AddElementFieldMapping("salesOrderEntity", "CustomerNote", "customer_note", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 2);
-			this.AddElementFieldMapping("salesOrderEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
-			this.AddElementFieldMapping("salesOrderEntity", "OrderCode", "order_code", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 4);
-			this.AddElementFieldMapping("salesOrderEntity", "OrderStatus", "order_status", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 5);
-			this.AddElementFieldMapping("salesOrderEntity", "PaymentMethod", "payment_method", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 6);
-			this.AddElementFieldMapping("salesOrderEntity", "PaymentStatus", "payment_status", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 7);
-			this.AddElementFieldMapping("salesOrderEntity", "ShippingAddress", "shipping_address", false, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 8);
-			this.AddElementFieldMapping("salesOrderEntity", "ShippingFee", "shipping_fee", true, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 9);
-			this.AddElementFieldMapping("salesOrderEntity", "TotalAmount", "total_amount", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 10);
+			this.AddElementMapping("WishlistEntity", @"postgres", @"engagement", "wishlists", 3, 0);
+			this.AddElementFieldMapping("WishlistEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
+			this.AddElementFieldMapping("WishlistEntity", "ProductId", "product_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("WishlistEntity", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
 		}
 
-		/// <summary>Inits salesOrderItemEntity's mappings</summary>
-		private void InitsalesOrderItemEntityMappings()
+		/// <summary>Inits StockEntity's mappings</summary>
+		private void InitStockEntityMappings()
 		{
-			this.AddElementMapping("salesOrderItemEntity", @"postgres", @"sales", "order_items", 6, 0);
-			this.AddElementFieldMapping("salesOrderItemEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("salesOrderItemEntity", "OrderId", "order_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("salesOrderItemEntity", "ProductNameSnapshot", "product_name_snapshot", true, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 2);
-			this.AddElementFieldMapping("salesOrderItemEntity", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 3);
-			this.AddElementFieldMapping("salesOrderItemEntity", "UnitPrice", "unit_price", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 4);
-			this.AddElementFieldMapping("salesOrderItemEntity", "VariantId", "variant_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
+			this.AddElementMapping("StockEntity", @"postgres", @"inventory", "stocks", 5, 0);
+			this.AddElementFieldMapping("StockEntity", "AvailableQuantity", "available_quantity", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 0);
+			this.AddElementFieldMapping("StockEntity", "PhysicalQuantity", "physical_quantity", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 1);
+			this.AddElementFieldMapping("StockEntity", "ReservedQuantity", "reserved_quantity", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 2);
+			this.AddElementFieldMapping("StockEntity", "UpdatedAt", "updated_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 3);
+			this.AddElementFieldMapping("StockEntity", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+		}
+
+		/// <summary>Inits StockTransactionEntity's mappings</summary>
+		private void InitStockTransactionEntityMappings()
+		{
+			this.AddElementMapping("StockTransactionEntity", @"postgres", @"inventory", "stock_transactions", 8, 0);
+			this.AddElementFieldMapping("StockTransactionEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
+			this.AddElementFieldMapping("StockTransactionEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("StockTransactionEntity", "Note", "note", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 2);
+			this.AddElementFieldMapping("StockTransactionEntity", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 3);
+			this.AddElementFieldMapping("StockTransactionEntity", "ReferenceId", "reference_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+			this.AddElementFieldMapping("StockTransactionEntity", "ShopId", "shop_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
+			this.AddElementFieldMapping("StockTransactionEntity", "TransactionType", "transaction_type", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 6);
+			this.AddElementFieldMapping("StockTransactionEntity", "VariantId", "variant_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 7);
+		}
+
+		/// <summary>Inits UserVoucherEntity's mappings</summary>
+		private void InitUserVoucherEntityMappings()
+		{
+			this.AddElementMapping("UserVoucherEntity", @"postgres", @"marketing", "user_vouchers", 4, 0);
+			this.AddElementFieldMapping("UserVoucherEntity", "IsUsed", "is_used", true, "Boolean", 0, 0, 0, false, "", null, typeof(System.Boolean), 0);
+			this.AddElementFieldMapping("UserVoucherEntity", "SavedAt", "saved_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
+			this.AddElementFieldMapping("UserVoucherEntity", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("UserVoucherEntity", "VoucherId", "voucher_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
+		}
+
+		/// <summary>Inits VoucherEntity's mappings</summary>
+		private void InitVoucherEntityMappings()
+		{
+			this.AddElementMapping("VoucherEntity", @"postgres", @"marketing", "vouchers", 13, 0);
+			this.AddElementFieldMapping("VoucherEntity", "Code", "code", false, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 0);
+			this.AddElementFieldMapping("VoucherEntity", "DiscountType", "discount_type", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 1);
+			this.AddElementFieldMapping("VoucherEntity", "DiscountValue", "discount_value", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 2);
+			this.AddElementFieldMapping("VoucherEntity", "EndDate", "end_date", false, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 3);
+			this.AddElementFieldMapping("VoucherEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+			this.AddElementFieldMapping("VoucherEntity", "IsActive", "is_active", true, "Boolean", 0, 0, 0, false, "", null, typeof(System.Boolean), 5);
+			this.AddElementFieldMapping("VoucherEntity", "MaxDiscountValue", "max_discount_value", true, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 6);
+			this.AddElementFieldMapping("VoucherEntity", "MinOrderValue", "min_order_value", true, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 7);
+			this.AddElementFieldMapping("VoucherEntity", "Name", "name", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 8);
+			this.AddElementFieldMapping("VoucherEntity", "ShopId", "shop_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 9);
+			this.AddElementFieldMapping("VoucherEntity", "StartDate", "start_date", false, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 10);
+			this.AddElementFieldMapping("VoucherEntity", "UsageLimit", "usage_limit", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 11);
+			this.AddElementFieldMapping("VoucherEntity", "UsedCount", "used_count", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 12);
+		}
+
+		/// <summary>Inits CartEntity's mappings</summary>
+		private void InitCartEntityMappings()
+		{
+			this.AddElementMapping("CartEntity", @"postgres", @"sales", "carts", 5, 0);
+			this.AddElementFieldMapping("CartEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
+			this.AddElementFieldMapping("CartEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("CartEntity", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 2);
+			this.AddElementFieldMapping("CartEntity", "UserId", "user_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
+			this.AddElementFieldMapping("CartEntity", "VariantId", "variant_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
+		}
+
+		/// <summary>Inits OrderEntity's mappings</summary>
+		private void InitOrderEntityMappings()
+		{
+			this.AddElementMapping("OrderEntity", @"postgres", @"sales", "orders", 11, 0);
+			this.AddElementFieldMapping("OrderEntity", "BuyerId", "buyer_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("OrderEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
+			this.AddElementFieldMapping("OrderEntity", "CustomerNote", "customer_note", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 2);
+			this.AddElementFieldMapping("OrderEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
+			this.AddElementFieldMapping("OrderEntity", "OrderCode", "order_code", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 4);
+			this.AddElementFieldMapping("OrderEntity", "OrderStatus", "order_status", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 5);
+			this.AddElementFieldMapping("OrderEntity", "PaymentMethod", "payment_method", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 6);
+			this.AddElementFieldMapping("OrderEntity", "PaymentStatus", "payment_status", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 7);
+			this.AddElementFieldMapping("OrderEntity", "ShippingAddress", "shipping_address", false, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 8);
+			this.AddElementFieldMapping("OrderEntity", "ShippingFee", "shipping_fee", true, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 9);
+			this.AddElementFieldMapping("OrderEntity", "TotalAmount", "total_amount", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 10);
+		}
+
+		/// <summary>Inits OrderItemEntity's mappings</summary>
+		private void InitOrderItemEntityMappings()
+		{
+			this.AddElementMapping("OrderItemEntity", @"postgres", @"sales", "order_items", 6, 0);
+			this.AddElementFieldMapping("OrderItemEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("OrderItemEntity", "OrderId", "order_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("OrderItemEntity", "ProductNameSnapshot", "product_name_snapshot", true, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 2);
+			this.AddElementFieldMapping("OrderItemEntity", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 3);
+			this.AddElementFieldMapping("OrderItemEntity", "UnitPrice", "unit_price", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 4);
+			this.AddElementFieldMapping("OrderItemEntity", "VariantId", "variant_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
+		}
+
+		/// <summary>Inits ShippingTrackingEntity's mappings</summary>
+		private void InitShippingTrackingEntityMappings()
+		{
+			this.AddElementMapping("ShippingTrackingEntity", @"postgres", @"sales", "shipping_tracking", 6, 0);
+			this.AddElementFieldMapping("ShippingTrackingEntity", "Description", "description", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 0);
+			this.AddElementFieldMapping("ShippingTrackingEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("ShippingTrackingEntity", "Location", "location", true, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 2);
+			this.AddElementFieldMapping("ShippingTrackingEntity", "OrderId", "order_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
+			this.AddElementFieldMapping("ShippingTrackingEntity", "Status", "status", false, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 4);
+			this.AddElementFieldMapping("ShippingTrackingEntity", "UpdatedAt", "updated_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 5);
 		}
 
 		/// <summary>Inits TransactionEntity's mappings</summary>
@@ -357,121 +489,6 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("TransactionEntity", "Provider", "provider", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 5);
 			this.AddElementFieldMapping("TransactionEntity", "RawResponse", "raw_response", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 6);
 			this.AddElementFieldMapping("TransactionEntity", "Status", "status", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 7);
-		}
-
-		/// <summary>Inits CartEntity's mappings</summary>
-		private void InitCartEntityMappings()
-		{
-			this.AddElementMapping("CartEntity", @"postgres", @"store", "carts", 3, 0);
-			this.AddElementFieldMapping("CartEntity", "AddedAt", "added_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
-			this.AddElementFieldMapping("CartEntity", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("CartEntity", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
-		}
-
-		/// <summary>Inits DiscountEntity's mappings</summary>
-		private void InitDiscountEntityMappings()
-		{
-			this.AddElementMapping("DiscountEntity", @"postgres", @"store", "discounts", 5, 0);
-			this.AddElementFieldMapping("DiscountEntity", "DiscountPercent", "discount_percent", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 0);
-			this.AddElementFieldMapping("DiscountEntity", "EndDate", "end_date", false, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
-			this.AddElementFieldMapping("DiscountEntity", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("DiscountEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
-			this.AddElementFieldMapping("DiscountEntity", "StartDate", "start_date", false, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 4);
-		}
-
-		/// <summary>Inits GameEntity's mappings</summary>
-		private void InitGameEntityMappings()
-		{
-			this.AddElementMapping("GameEntity", @"postgres", @"store", "games", 11, 0);
-			this.AddElementFieldMapping("GameEntity", "CoverImage", "cover_image", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 0);
-			this.AddElementFieldMapping("GameEntity", "CreatedAt", "created_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
-			this.AddElementFieldMapping("GameEntity", "FullDescription", "full_description", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 2);
-			this.AddElementFieldMapping("GameEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
-			this.AddElementFieldMapping("GameEntity", "Price", "price", false, "Numeric", 0, 10, 2, false, "", null, typeof(System.Decimal), 4);
-			this.AddElementFieldMapping("GameEntity", "PublisherId", "publisher_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
-			this.AddElementFieldMapping("GameEntity", "ReleaseDate", "release_date", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 6);
-			this.AddElementFieldMapping("GameEntity", "ShortDescription", "short_description", true, "Varchar", 500, 0, 0, false, "", null, typeof(System.String), 7);
-			this.AddElementFieldMapping("GameEntity", "Status", "status", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 8);
-			this.AddElementFieldMapping("GameEntity", "Title", "title", false, "Varchar", 150, 0, 0, false, "", null, typeof(System.String), 9);
-			this.AddElementFieldMapping("GameEntity", "UpdatedAt", "updated_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 10);
-		}
-
-		/// <summary>Inits GameTagEntity's mappings</summary>
-		private void InitGameTagEntityMappings()
-		{
-			this.AddElementMapping("GameTagEntity", @"postgres", @"store", "game_tags", 2, 0);
-			this.AddElementFieldMapping("GameTagEntity", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("GameTagEntity", "TagId", "tag_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
-		}
-
-		/// <summary>Inits OrderEntity's mappings</summary>
-		private void InitOrderEntityMappings()
-		{
-			this.AddElementMapping("OrderEntity", @"postgres", @"store", "orders", 5, 0);
-			this.AddElementFieldMapping("OrderEntity", "CreatedAt", "created_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
-			this.AddElementFieldMapping("OrderEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("OrderEntity", "Status", "status", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 2);
-			this.AddElementFieldMapping("OrderEntity", "TotalAmount", "total_amount", false, "Numeric", 0, 10, 2, false, "", null, typeof(System.Decimal), 3);
-			this.AddElementFieldMapping("OrderEntity", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
-		}
-
-		/// <summary>Inits OrderItemEntity's mappings</summary>
-		private void InitOrderItemEntityMappings()
-		{
-			this.AddElementMapping("OrderItemEntity", @"postgres", @"store", "order_items", 3, 0);
-			this.AddElementFieldMapping("OrderItemEntity", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("OrderItemEntity", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("OrderItemEntity", "Price", "price", false, "Numeric", 0, 10, 2, false, "", null, typeof(System.Decimal), 2);
-		}
-
-		/// <summary>Inits PublisherEntity's mappings</summary>
-		private void InitPublisherEntityMappings()
-		{
-			this.AddElementMapping("PublisherEntity", @"postgres", @"store", "publishers", 5, 0);
-			this.AddElementFieldMapping("PublisherEntity", "CreatedAt", "created_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
-			this.AddElementFieldMapping("PublisherEntity", "Description", "description", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 1);
-			this.AddElementFieldMapping("PublisherEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("PublisherEntity", "Name", "name", false, "Varchar", 150, 0, 0, false, "", null, typeof(System.String), 3);
-			this.AddElementFieldMapping("PublisherEntity", "Website", "website", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 4);
-		}
-
-		/// <summary>Inits ReviewEntity's mappings</summary>
-		private void InitReviewEntityMappings()
-		{
-			this.AddElementMapping("ReviewEntity", @"postgres", @"store", "reviews", 6, 0);
-			this.AddElementFieldMapping("ReviewEntity", "Comment", "comment", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 0);
-			this.AddElementFieldMapping("ReviewEntity", "CreatedAt", "created_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
-			this.AddElementFieldMapping("ReviewEntity", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("ReviewEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
-			this.AddElementFieldMapping("ReviewEntity", "Rating", "rating", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 4);
-			this.AddElementFieldMapping("ReviewEntity", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
-		}
-
-		/// <summary>Inits TagEntity's mappings</summary>
-		private void InitTagEntityMappings()
-		{
-			this.AddElementMapping("TagEntity", @"postgres", @"store", "tags", 2, 0);
-			this.AddElementFieldMapping("TagEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("TagEntity", "Name", "name", false, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 1);
-		}
-
-		/// <summary>Inits UserGameEntity's mappings</summary>
-		private void InitUserGameEntityMappings()
-		{
-			this.AddElementMapping("UserGameEntity", @"postgres", @"store", "user_games", 4, 0);
-			this.AddElementFieldMapping("UserGameEntity", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("UserGameEntity", "PlaytimeMinutes", "playtime_minutes", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 1);
-			this.AddElementFieldMapping("UserGameEntity", "PurchasedAt", "purchased_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 2);
-			this.AddElementFieldMapping("UserGameEntity", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
-		}
-
-		/// <summary>Inits WishlistEntity's mappings</summary>
-		private void InitWishlistEntityMappings()
-		{
-			this.AddElementMapping("WishlistEntity", @"postgres", @"store", "wishlists", 3, 0);
-			this.AddElementFieldMapping("WishlistEntity", "CreatedAt", "created_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
-			this.AddElementFieldMapping("WishlistEntity", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("WishlistEntity", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
 		}
 
 
@@ -515,7 +532,7 @@ namespace DATN.DatabaseSpecific
 		/// <summary>Inits auth2RefreshTokenView's mappings</summary>
 		private void Initauth2RefreshTokenTypedViewMappings()
 		{
-			this.AddElementMapping("auth2RefreshTokenTypedView", @"postgres", @"auth2", "refresh_tokens", 7);
+			this.AddElementMapping("auth2RefreshTokenTypedView", @"postgres", @"auth2", "refresh_tokens", 8);
 			this.AddElementFieldMapping("auth2RefreshTokenTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
 			this.AddElementFieldMapping("auth2RefreshTokenTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
 			this.AddElementFieldMapping("auth2RefreshTokenTypedView", "TokenHash", "token_hash", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 2);
@@ -523,6 +540,7 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("auth2RefreshTokenTypedView", "RevokedAt", "revoked_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 4);
 			this.AddElementFieldMapping("auth2RefreshTokenTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 5);
 			this.AddElementFieldMapping("auth2RefreshTokenTypedView", "Revoked", "revoked", false, "Boolean", 0, 0, 0, false, string.Empty, null, typeof(System.Boolean), 6);
+			this.AddElementFieldMapping("auth2RefreshTokenTypedView", "ReplacedByTokenId", "replaced_by_token_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 7);
 		}
 
 		/// <summary>Inits auth2RoleView's mappings</summary>
@@ -557,6 +575,22 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("auth2UserTypedView", "UpdatedAt", "updated_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 7);
 			this.AddElementFieldMapping("auth2UserTypedView", "FailedLoginCount", "failed_login_count", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 8);
 			this.AddElementFieldMapping("auth2UserTypedView", "LockoutEnd", "lockout_end", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 9);
+		}
+
+		/// <summary>Inits auth2UserAddressView's mappings</summary>
+		private void Initauth2UserAddressTypedViewMappings()
+		{
+			this.AddElementMapping("auth2UserAddressTypedView", @"postgres", @"auth2", "user_addresses", 10);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "FullName", "full_name", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 2);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "PhoneNumber", "phone_number", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "ProvinceId", "province_id", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 4);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "DistrictId", "district_id", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 5);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "WardId", "ward_id", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 6);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "DetailedAddress", "detailed_address", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 7);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "IsDefault", "is_default", false, "Boolean", 0, 0, 0, false, string.Empty, null, typeof(System.Boolean), 8);
+			this.AddElementFieldMapping("auth2UserAddressTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 9);
 		}
 
 		/// <summary>Inits auth2UserRoleView's mappings</summary>
@@ -611,19 +645,19 @@ namespace DATN.DatabaseSpecific
 		{
 			this.AddElementMapping("catalogProductTypedView", @"postgres", @"catalog", "products", 14);
 			this.AddElementFieldMapping("catalogProductTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("catalogProductTypedView", "SellerId", "seller_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("catalogProductTypedView", "CategoryId", "category_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("catalogProductTypedView", "BrandId", "brand_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 3);
-			this.AddElementFieldMapping("catalogProductTypedView", "Name", "name", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 4);
-			this.AddElementFieldMapping("catalogProductTypedView", "Slug", "slug", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 5);
-			this.AddElementFieldMapping("catalogProductTypedView", "Description", "description", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 6);
-			this.AddElementFieldMapping("catalogProductTypedView", "Summary", "summary", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 7);
-			this.AddElementFieldMapping("catalogProductTypedView", "BaseAttributes", "base_attributes", false, "Jsonb", 2147483647, 0, 0, false, string.Empty, null, typeof(System.String), 8);
-			this.AddElementFieldMapping("catalogProductTypedView", "Status", "status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 9);
-			this.AddElementFieldMapping("catalogProductTypedView", "ViewCount", "view_count", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 10);
-			this.AddElementFieldMapping("catalogProductTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 11);
-			this.AddElementFieldMapping("catalogProductTypedView", "UpdatedAt", "updated_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 12);
-			this.AddElementFieldMapping("catalogProductTypedView", "Sku", "sku", false, "Varchar", 100, 0, 0, false, string.Empty, null, typeof(System.String), 13);
+			this.AddElementFieldMapping("catalogProductTypedView", "CategoryId", "category_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("catalogProductTypedView", "BrandId", "brand_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("catalogProductTypedView", "Name", "name", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("catalogProductTypedView", "Slug", "slug", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 4);
+			this.AddElementFieldMapping("catalogProductTypedView", "Description", "description", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+			this.AddElementFieldMapping("catalogProductTypedView", "Summary", "summary", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 6);
+			this.AddElementFieldMapping("catalogProductTypedView", "BaseAttributes", "base_attributes", false, "Jsonb", 2147483647, 0, 0, false, string.Empty, null, typeof(System.String), 7);
+			this.AddElementFieldMapping("catalogProductTypedView", "Status", "status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 8);
+			this.AddElementFieldMapping("catalogProductTypedView", "ViewCount", "view_count", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 9);
+			this.AddElementFieldMapping("catalogProductTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 10);
+			this.AddElementFieldMapping("catalogProductTypedView", "UpdatedAt", "updated_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 11);
+			this.AddElementFieldMapping("catalogProductTypedView", "Sku", "sku", false, "Varchar", 100, 0, 0, false, string.Empty, null, typeof(System.String), 12);
+			this.AddElementFieldMapping("catalogProductTypedView", "ShopId", "shop_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 13);
 		}
 
 		/// <summary>Inits catalogProductImageView's mappings</summary>
@@ -640,15 +674,58 @@ namespace DATN.DatabaseSpecific
 		/// <summary>Inits catalogProductVariantView's mappings</summary>
 		private void InitcatalogProductVariantTypedViewMappings()
 		{
-			this.AddElementMapping("catalogProductVariantTypedView", @"postgres", @"catalog", "product_variants", 8);
+			this.AddElementMapping("catalogProductVariantTypedView", @"postgres", @"catalog", "product_variants", 7);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "ProductId", "product_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "Sku", "sku", false, "Varchar", 50, 0, 0, false, string.Empty, null, typeof(System.String), 2);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "Name", "name", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 3);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "Price", "price", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 4);
-			this.AddElementFieldMapping("catalogProductVariantTypedView", "StockQuantity", "stock_quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 5);
-			this.AddElementFieldMapping("catalogProductVariantTypedView", "VariantAttributes", "variant_attributes", false, "Jsonb", 2147483647, 0, 0, false, string.Empty, null, typeof(System.String), 6);
-			this.AddElementFieldMapping("catalogProductVariantTypedView", "ImageUrl", "image_url", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 7);
+			this.AddElementFieldMapping("catalogProductVariantTypedView", "VariantAttributes", "variant_attributes", false, "Jsonb", 2147483647, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+			this.AddElementFieldMapping("catalogProductVariantTypedView", "ImageUrl", "image_url", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 6);
+		}
+
+		/// <summary>Inits catalogShopView's mappings</summary>
+		private void InitcatalogShopTypedViewMappings()
+		{
+			this.AddElementMapping("catalogShopTypedView", @"postgres", @"catalog", "shops", 14);
+			this.AddElementFieldMapping("catalogShopTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("catalogShopTypedView", "OwnerId", "owner_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("catalogShopTypedView", "Name", "name", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 2);
+			this.AddElementFieldMapping("catalogShopTypedView", "Slug", "slug", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("catalogShopTypedView", "Description", "description", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 4);
+			this.AddElementFieldMapping("catalogShopTypedView", "LogoUrl", "logo_url", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+			this.AddElementFieldMapping("catalogShopTypedView", "CoverUrl", "cover_url", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 6);
+			this.AddElementFieldMapping("catalogShopTypedView", "Rating", "rating", false, "Numeric", 0, 3, 2, false, string.Empty, null, typeof(System.Decimal), 7);
+			this.AddElementFieldMapping("catalogShopTypedView", "IsActive", "is_active", false, "Boolean", 0, 0, 0, false, string.Empty, null, typeof(System.Boolean), 8);
+			this.AddElementFieldMapping("catalogShopTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 9);
+			this.AddElementFieldMapping("catalogShopTypedView", "ProvinceId", "province_id", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 10);
+			this.AddElementFieldMapping("catalogShopTypedView", "DistrictId", "district_id", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 11);
+			this.AddElementFieldMapping("catalogShopTypedView", "WardId", "ward_id", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 12);
+			this.AddElementFieldMapping("catalogShopTypedView", "PickupAddress", "pickup_address", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 13);
+		}
+
+		/// <summary>Inits engagementChatBoxView's mappings</summary>
+		private void InitengagementChatBoxTypedViewMappings()
+		{
+			this.AddElementMapping("engagementChatBoxTypedView", @"postgres", @"engagement", "chat_box", 5);
+			this.AddElementFieldMapping("engagementChatBoxTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("engagementChatBoxTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("engagementChatBoxTypedView", "ShopId", "shop_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("engagementChatBoxTypedView", "LastMessage", "last_message", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("engagementChatBoxTypedView", "LastActivity", "last_activity", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 4);
+		}
+
+		/// <summary>Inits engagementChatMessageView's mappings</summary>
+		private void InitengagementChatMessageTypedViewMappings()
+		{
+			this.AddElementMapping("engagementChatMessageTypedView", @"postgres", @"engagement", "chat_messages", 7);
+			this.AddElementFieldMapping("engagementChatMessageTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("engagementChatMessageTypedView", "RoomId", "room_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("engagementChatMessageTypedView", "SenderId", "sender_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("engagementChatMessageTypedView", "Content", "content", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("engagementChatMessageTypedView", "MessageType", "message_type", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 4);
+			this.AddElementFieldMapping("engagementChatMessageTypedView", "IsRead", "is_read", false, "Boolean", 0, 0, 0, false, string.Empty, null, typeof(System.Boolean), 5);
+			this.AddElementFieldMapping("engagementChatMessageTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 6);
 		}
 
 		/// <summary>Inits engagementNotificationView's mappings</summary>
@@ -665,58 +742,133 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("engagementNotificationTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 7);
 		}
 
-		/// <summary>Inits engagementReview1View's mappings</summary>
-		private void InitengagementReview1TypedViewMappings()
+		/// <summary>Inits engagementReviewView's mappings</summary>
+		private void InitengagementReviewTypedViewMappings()
 		{
-			this.AddElementMapping("engagementReview1TypedView", @"postgres", @"engagement", "reviews", 8);
-			this.AddElementFieldMapping("engagementReview1TypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("engagementReview1TypedView", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("engagementReview1TypedView", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("engagementReview1TypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 3);
-			this.AddElementFieldMapping("engagementReview1TypedView", "Rating", "rating", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 4);
-			this.AddElementFieldMapping("engagementReview1TypedView", "Comment", "comment", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 5);
-			this.AddElementFieldMapping("engagementReview1TypedView", "Images", "images", false, "Jsonb", 2147483647, 0, 0, false, string.Empty, null, typeof(System.String), 6);
-			this.AddElementFieldMapping("engagementReview1TypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 7);
+			this.AddElementMapping("engagementReviewTypedView", @"postgres", @"engagement", "reviews", 8);
+			this.AddElementFieldMapping("engagementReviewTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("engagementReviewTypedView", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("engagementReviewTypedView", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("engagementReviewTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 3);
+			this.AddElementFieldMapping("engagementReviewTypedView", "Rating", "rating", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 4);
+			this.AddElementFieldMapping("engagementReviewTypedView", "Comment", "comment", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+			this.AddElementFieldMapping("engagementReviewTypedView", "Images", "images", false, "Jsonb", 2147483647, 0, 0, false, string.Empty, null, typeof(System.String), 6);
+			this.AddElementFieldMapping("engagementReviewTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 7);
 		}
 
-		/// <summary>Inits salesCart1View's mappings</summary>
-		private void InitsalesCart1TypedViewMappings()
+		/// <summary>Inits engagementWishlistView's mappings</summary>
+		private void InitengagementWishlistTypedViewMappings()
 		{
-			this.AddElementMapping("salesCart1TypedView", @"postgres", @"sales", "carts", 5);
-			this.AddElementFieldMapping("salesCart1TypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("salesCart1TypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("salesCart1TypedView", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("salesCart1TypedView", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 3);
-			this.AddElementFieldMapping("salesCart1TypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 4);
+			this.AddElementMapping("engagementWishlistTypedView", @"postgres", @"engagement", "wishlists", 3);
+			this.AddElementFieldMapping("engagementWishlistTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("engagementWishlistTypedView", "ProductId", "product_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("engagementWishlistTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 2);
 		}
 
-		/// <summary>Inits salesOrder1View's mappings</summary>
-		private void InitsalesOrder1TypedViewMappings()
+		/// <summary>Inits inventoryStockView's mappings</summary>
+		private void InitinventoryStockTypedViewMappings()
 		{
-			this.AddElementMapping("salesOrder1TypedView", @"postgres", @"sales", "orders", 11);
-			this.AddElementFieldMapping("salesOrder1TypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("salesOrder1TypedView", "BuyerId", "buyer_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("salesOrder1TypedView", "OrderCode", "order_code", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 2);
-			this.AddElementFieldMapping("salesOrder1TypedView", "TotalAmount", "total_amount", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 3);
-			this.AddElementFieldMapping("salesOrder1TypedView", "ShippingFee", "shipping_fee", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 4);
-			this.AddElementFieldMapping("salesOrder1TypedView", "PaymentMethod", "payment_method", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 5);
-			this.AddElementFieldMapping("salesOrder1TypedView", "PaymentStatus", "payment_status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 6);
-			this.AddElementFieldMapping("salesOrder1TypedView", "OrderStatus", "order_status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 7);
-			this.AddElementFieldMapping("salesOrder1TypedView", "ShippingAddress", "shipping_address", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 8);
-			this.AddElementFieldMapping("salesOrder1TypedView", "CustomerNote", "customer_note", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 9);
-			this.AddElementFieldMapping("salesOrder1TypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 10);
+			this.AddElementMapping("inventoryStockTypedView", @"postgres", @"inventory", "stocks", 5);
+			this.AddElementFieldMapping("inventoryStockTypedView", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("inventoryStockTypedView", "PhysicalQuantity", "physical_quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 1);
+			this.AddElementFieldMapping("inventoryStockTypedView", "ReservedQuantity", "reserved_quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 2);
+			this.AddElementFieldMapping("inventoryStockTypedView", "AvailableQuantity", "available_quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 3);
+			this.AddElementFieldMapping("inventoryStockTypedView", "UpdatedAt", "updated_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 4);
 		}
 
-		/// <summary>Inits salesOrderItem1View's mappings</summary>
-		private void InitsalesOrderItem1TypedViewMappings()
+		/// <summary>Inits inventoryStockTransactionView's mappings</summary>
+		private void InitinventoryStockTransactionTypedViewMappings()
 		{
-			this.AddElementMapping("salesOrderItem1TypedView", @"postgres", @"sales", "order_items", 6);
-			this.AddElementFieldMapping("salesOrderItem1TypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("salesOrderItem1TypedView", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("salesOrderItem1TypedView", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("salesOrderItem1TypedView", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 3);
-			this.AddElementFieldMapping("salesOrderItem1TypedView", "UnitPrice", "unit_price", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 4);
-			this.AddElementFieldMapping("salesOrderItem1TypedView", "ProductNameSnapshot", "product_name_snapshot", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+			this.AddElementMapping("inventoryStockTransactionTypedView", @"postgres", @"inventory", "stock_transactions", 8);
+			this.AddElementFieldMapping("inventoryStockTransactionTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("inventoryStockTransactionTypedView", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("inventoryStockTransactionTypedView", "ShopId", "shop_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("inventoryStockTransactionTypedView", "TransactionType", "transaction_type", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("inventoryStockTransactionTypedView", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 4);
+			this.AddElementFieldMapping("inventoryStockTransactionTypedView", "ReferenceId", "reference_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 5);
+			this.AddElementFieldMapping("inventoryStockTransactionTypedView", "Note", "note", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 6);
+			this.AddElementFieldMapping("inventoryStockTransactionTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 7);
+		}
+
+		/// <summary>Inits marketingUserVoucherView's mappings</summary>
+		private void InitmarketingUserVoucherTypedViewMappings()
+		{
+			this.AddElementMapping("marketingUserVoucherTypedView", @"postgres", @"marketing", "user_vouchers", 4);
+			this.AddElementFieldMapping("marketingUserVoucherTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("marketingUserVoucherTypedView", "VoucherId", "voucher_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("marketingUserVoucherTypedView", "IsUsed", "is_used", false, "Boolean", 0, 0, 0, false, string.Empty, null, typeof(System.Boolean), 2);
+			this.AddElementFieldMapping("marketingUserVoucherTypedView", "SavedAt", "saved_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 3);
+		}
+
+		/// <summary>Inits marketingVoucherView's mappings</summary>
+		private void InitmarketingVoucherTypedViewMappings()
+		{
+			this.AddElementMapping("marketingVoucherTypedView", @"postgres", @"marketing", "vouchers", 13);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "ShopId", "shop_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "Code", "code", false, "Varchar", 50, 0, 0, false, string.Empty, null, typeof(System.String), 2);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "Name", "name", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "DiscountType", "discount_type", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 4);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "DiscountValue", "discount_value", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 5);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "MinOrderValue", "min_order_value", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 6);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "MaxDiscountValue", "max_discount_value", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 7);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "UsageLimit", "usage_limit", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 8);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "UsedCount", "used_count", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 9);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "StartDate", "start_date", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 10);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "EndDate", "end_date", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 11);
+			this.AddElementFieldMapping("marketingVoucherTypedView", "IsActive", "is_active", false, "Boolean", 0, 0, 0, false, string.Empty, null, typeof(System.Boolean), 12);
+		}
+
+		/// <summary>Inits salesCartView's mappings</summary>
+		private void InitsalesCartTypedViewMappings()
+		{
+			this.AddElementMapping("salesCartTypedView", @"postgres", @"sales", "carts", 5);
+			this.AddElementFieldMapping("salesCartTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("salesCartTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("salesCartTypedView", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("salesCartTypedView", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 3);
+			this.AddElementFieldMapping("salesCartTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 4);
+		}
+
+		/// <summary>Inits salesOrderView's mappings</summary>
+		private void InitsalesOrderTypedViewMappings()
+		{
+			this.AddElementMapping("salesOrderTypedView", @"postgres", @"sales", "orders", 11);
+			this.AddElementFieldMapping("salesOrderTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("salesOrderTypedView", "BuyerId", "buyer_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("salesOrderTypedView", "OrderCode", "order_code", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 2);
+			this.AddElementFieldMapping("salesOrderTypedView", "TotalAmount", "total_amount", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 3);
+			this.AddElementFieldMapping("salesOrderTypedView", "ShippingFee", "shipping_fee", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 4);
+			this.AddElementFieldMapping("salesOrderTypedView", "PaymentMethod", "payment_method", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+			this.AddElementFieldMapping("salesOrderTypedView", "PaymentStatus", "payment_status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 6);
+			this.AddElementFieldMapping("salesOrderTypedView", "OrderStatus", "order_status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 7);
+			this.AddElementFieldMapping("salesOrderTypedView", "ShippingAddress", "shipping_address", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 8);
+			this.AddElementFieldMapping("salesOrderTypedView", "CustomerNote", "customer_note", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 9);
+			this.AddElementFieldMapping("salesOrderTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 10);
+		}
+
+		/// <summary>Inits salesOrderItemView's mappings</summary>
+		private void InitsalesOrderItemTypedViewMappings()
+		{
+			this.AddElementMapping("salesOrderItemTypedView", @"postgres", @"sales", "order_items", 6);
+			this.AddElementFieldMapping("salesOrderItemTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("salesOrderItemTypedView", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("salesOrderItemTypedView", "VariantId", "variant_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("salesOrderItemTypedView", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 3);
+			this.AddElementFieldMapping("salesOrderItemTypedView", "UnitPrice", "unit_price", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 4);
+			this.AddElementFieldMapping("salesOrderItemTypedView", "ProductNameSnapshot", "product_name_snapshot", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+		}
+
+		/// <summary>Inits salesShippingTrackingView's mappings</summary>
+		private void InitsalesShippingTrackingTypedViewMappings()
+		{
+			this.AddElementMapping("salesShippingTrackingTypedView", @"postgres", @"sales", "shipping_tracking", 6);
+			this.AddElementFieldMapping("salesShippingTrackingTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("salesShippingTrackingTypedView", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("salesShippingTrackingTypedView", "Status", "status", false, "Varchar", 50, 0, 0, false, string.Empty, null, typeof(System.String), 2);
+			this.AddElementFieldMapping("salesShippingTrackingTypedView", "Location", "location", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("salesShippingTrackingTypedView", "Description", "description", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 4);
+			this.AddElementFieldMapping("salesShippingTrackingTypedView", "UpdatedAt", "updated_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 5);
 		}
 
 		/// <summary>Inits salesTransactionView's mappings</summary>
@@ -731,121 +883,6 @@ namespace DATN.DatabaseSpecific
 			this.AddElementFieldMapping("salesTransactionTypedView", "Status", "status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 5);
 			this.AddElementFieldMapping("salesTransactionTypedView", "RawResponse", "raw_response", false, "Jsonb", 2147483647, 0, 0, false, string.Empty, null, typeof(System.String), 6);
 			this.AddElementFieldMapping("salesTransactionTypedView", "CreatedAt", "created_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 7);
-		}
-
-		/// <summary>Inits storeCartView's mappings</summary>
-		private void InitstoreCartTypedViewMappings()
-		{
-			this.AddElementMapping("storeCartTypedView", @"postgres", @"store", "carts", 3);
-			this.AddElementFieldMapping("storeCartTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeCartTypedView", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("storeCartTypedView", "AddedAt", "added_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 2);
-		}
-
-		/// <summary>Inits storeDiscountView's mappings</summary>
-		private void InitstoreDiscountTypedViewMappings()
-		{
-			this.AddElementMapping("storeDiscountTypedView", @"postgres", @"store", "discounts", 5);
-			this.AddElementFieldMapping("storeDiscountTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeDiscountTypedView", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("storeDiscountTypedView", "DiscountPercent", "discount_percent", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 2);
-			this.AddElementFieldMapping("storeDiscountTypedView", "StartDate", "start_date", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 3);
-			this.AddElementFieldMapping("storeDiscountTypedView", "EndDate", "end_date", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 4);
-		}
-
-		/// <summary>Inits storeGameView's mappings</summary>
-		private void InitstoreGameTypedViewMappings()
-		{
-			this.AddElementMapping("storeGameTypedView", @"postgres", @"store", "games", 11);
-			this.AddElementFieldMapping("storeGameTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeGameTypedView", "Title", "title", false, "Varchar", 150, 0, 0, false, string.Empty, null, typeof(System.String), 1);
-			this.AddElementFieldMapping("storeGameTypedView", "ShortDescription", "short_description", false, "Varchar", 500, 0, 0, false, string.Empty, null, typeof(System.String), 2);
-			this.AddElementFieldMapping("storeGameTypedView", "FullDescription", "full_description", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 3);
-			this.AddElementFieldMapping("storeGameTypedView", "Price", "price", false, "Numeric", 0, 10, 2, false, string.Empty, null, typeof(System.Decimal), 4);
-			this.AddElementFieldMapping("storeGameTypedView", "ReleaseDate", "release_date", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 5);
-			this.AddElementFieldMapping("storeGameTypedView", "PublisherId", "publisher_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 6);
-			this.AddElementFieldMapping("storeGameTypedView", "CoverImage", "cover_image", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 7);
-			this.AddElementFieldMapping("storeGameTypedView", "Status", "status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 8);
-			this.AddElementFieldMapping("storeGameTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 9);
-			this.AddElementFieldMapping("storeGameTypedView", "UpdatedAt", "updated_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 10);
-		}
-
-		/// <summary>Inits storeGameTagView's mappings</summary>
-		private void InitstoreGameTagTypedViewMappings()
-		{
-			this.AddElementMapping("storeGameTagTypedView", @"postgres", @"store", "game_tags", 2);
-			this.AddElementFieldMapping("storeGameTagTypedView", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeGameTagTypedView", "TagId", "tag_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-		}
-
-		/// <summary>Inits storeOrderView's mappings</summary>
-		private void InitstoreOrderTypedViewMappings()
-		{
-			this.AddElementMapping("storeOrderTypedView", @"postgres", @"store", "orders", 5);
-			this.AddElementFieldMapping("storeOrderTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeOrderTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("storeOrderTypedView", "TotalAmount", "total_amount", false, "Numeric", 0, 10, 2, false, string.Empty, null, typeof(System.Decimal), 2);
-			this.AddElementFieldMapping("storeOrderTypedView", "Status", "status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 3);
-			this.AddElementFieldMapping("storeOrderTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 4);
-		}
-
-		/// <summary>Inits storeOrderItemView's mappings</summary>
-		private void InitstoreOrderItemTypedViewMappings()
-		{
-			this.AddElementMapping("storeOrderItemTypedView", @"postgres", @"store", "order_items", 3);
-			this.AddElementFieldMapping("storeOrderItemTypedView", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeOrderItemTypedView", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("storeOrderItemTypedView", "Price", "price", false, "Numeric", 0, 10, 2, false, string.Empty, null, typeof(System.Decimal), 2);
-		}
-
-		/// <summary>Inits storePublisherView's mappings</summary>
-		private void InitstorePublisherTypedViewMappings()
-		{
-			this.AddElementMapping("storePublisherTypedView", @"postgres", @"store", "publishers", 5);
-			this.AddElementFieldMapping("storePublisherTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storePublisherTypedView", "Name", "name", false, "Varchar", 150, 0, 0, false, string.Empty, null, typeof(System.String), 1);
-			this.AddElementFieldMapping("storePublisherTypedView", "Description", "description", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 2);
-			this.AddElementFieldMapping("storePublisherTypedView", "Website", "website", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 3);
-			this.AddElementFieldMapping("storePublisherTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 4);
-		}
-
-		/// <summary>Inits storeReviewView's mappings</summary>
-		private void InitstoreReviewTypedViewMappings()
-		{
-			this.AddElementMapping("storeReviewTypedView", @"postgres", @"store", "reviews", 6);
-			this.AddElementFieldMapping("storeReviewTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeReviewTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("storeReviewTypedView", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("storeReviewTypedView", "Rating", "rating", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 3);
-			this.AddElementFieldMapping("storeReviewTypedView", "Comment", "comment", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 4);
-			this.AddElementFieldMapping("storeReviewTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 5);
-		}
-
-		/// <summary>Inits storeTagView's mappings</summary>
-		private void InitstoreTagTypedViewMappings()
-		{
-			this.AddElementMapping("storeTagTypedView", @"postgres", @"store", "tags", 2);
-			this.AddElementFieldMapping("storeTagTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeTagTypedView", "Name", "name", false, "Varchar", 50, 0, 0, false, string.Empty, null, typeof(System.String), 1);
-		}
-
-		/// <summary>Inits storeUserGameView's mappings</summary>
-		private void InitstoreUserGameTypedViewMappings()
-		{
-			this.AddElementMapping("storeUserGameTypedView", @"postgres", @"store", "user_games", 4);
-			this.AddElementFieldMapping("storeUserGameTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeUserGameTypedView", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("storeUserGameTypedView", "PurchasedAt", "purchased_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 2);
-			this.AddElementFieldMapping("storeUserGameTypedView", "PlaytimeMinutes", "playtime_minutes", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 3);
-		}
-
-		/// <summary>Inits storeWishlistView's mappings</summary>
-		private void InitstoreWishlistTypedViewMappings()
-		{
-			this.AddElementMapping("storeWishlistTypedView", @"postgres", @"store", "wishlists", 3);
-			this.AddElementFieldMapping("storeWishlistTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
-			this.AddElementFieldMapping("storeWishlistTypedView", "GameId", "game_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("storeWishlistTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 2);
 		}
 	}
 }
