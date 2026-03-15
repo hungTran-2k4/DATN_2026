@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+using System.Data.Common;
 using System.Diagnostics;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +13,10 @@ using DATN.Application.Interfaces.Services;
 using DATN.Infrastructure.Persistence.Repositories.Users;
 using DATN.Infrastructure.Persistence.Repositories.Roles;
 using DATN.Infrastructure.Persistence.Repositories.Auth;
+using DATN.Infrastructure.Persistence.Repositories.Products;
+using DATN.Infrastructure.Persistence.Repositories.Shops;
+using DATN.Infrastructure.Persistence.Repositories.Categories;
+using DATN.Infrastructure.Persistence.Repositories.Orders;
 using DATN.Infrastructure.Services;
 using DATN_2026.DatabaseSpecific;
 using SD.LLBLGen.Pro.ORMSupportClasses;
@@ -65,6 +69,13 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IShopRepository, ShopRepository>();
+        services.AddScoped<IUserAddressRepository, UserAddressRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
+        services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
         
         // Register Auth services
         services.AddScoped<IJwtService, JwtService>();
@@ -78,6 +89,9 @@ public static class DependencyInjection
 
         // Email Service
         services.AddScoped<IEmailService, SmtpEmailService>();
+
+        // Storage Service (Azure Blob)
+        services.AddScoped<IStorageService, AzureBlobStorageService>();
 
         return services;
     }
