@@ -79,8 +79,76 @@ public class OrderRepository : IOrderRepository
         Guid shopId, string? status = null, int page = 1, int pageSize = 20,
         CancellationToken cancellationToken = default)
     {
-        // TODO: Proper join via LLBLGen relations for production scale
-        return (Enumerable.Empty<Order>(), 0);
+        // Order table doesn't have ShopId directly.
+        // Determine shop's orders through join:
+        // Order -> OrderItem (variant_id) -> ProductVariant -> Product (shop_id)
+
+        var qf = new QueryFactory();
+
+        var baseQuery = qf.Create()
+            .From(qf.Order
+                .InnerJoin(qf.OrderItem).On(OrderFields.Id == OrderItemFields.OrderId)
+                .InnerJoin(qf.ProductVariant).On(OrderItemFields.VariantId == ProductVariantFields.Id)
+                .InnerJoin(qf.Product).On(ProductVariantFields.ProductId == ProductFields.Id))
+            .Where(ProductFields.ShopId == shopId);
+
+        if (!string.IsNullOrWhiteSpace(status))
+        {
+            baseQuery.Where(OrderFields.OrderStatus == status);
+        }
+
+        // 1) Get distinct OrderIds for this shop (for paging + count)
+        var idQuery = qf.Create()
+            .From(baseQuery)
+            .Select(OrderFields.Id)
+            .Distinct()
+            .OrderBy(OrderFields.CreatedAt.Descending())
+            .Page(page, pageSize);
+
+        var idRows = await _adapter.FetchQueryAsync(idQuery, cancellationToken);
+        var ids = idRows
+            .Cast<object[]>()
+            .Select(r => (Guid)r[0])
+            .ToList();
+
+        // Count (MVP): fetch all distinct ids and count them.
+        // For large scale, switch to COUNT(DISTINCT ...) at DB-level.
+        var countIdsQuery = qf.Create()
+            .From(baseQuery)
+            .Select(OrderFields.Id)
+            .Distinct();
+        var allIdRows = await _adapter.FetchQueryAsync(countIdsQuery, cancellationToken);
+        var totalCount = allIdRows.Count;
+
+        if (!ids.Any())
+        {
+            return (Enumerable.Empty<Order>(), totalCount);
+        }
+
+        // 2) Fetch orders + items by ids
+        var col = new EntityCollection<OrderEntity>();
+        var prefetch = new PrefetchPath2((int)DATN_2026.EntityType.OrderEntity);
+        prefetch.Add(OrderEntity.PrefetchPathOrderItems);
+
+        // Build OR predicate for ids
+        IPredicateExpression filter = new PredicateExpression();
+        foreach (var id in ids)
+        {
+            filter.AddWithOr(OrderFields.Id == id);
+        }
+
+        await _adapter.FetchEntityCollectionAsync(new QueryParameters
+        {
+            CollectionToFetch = col,
+            FilterToUse = filter,
+            PrefetchPathToUse = prefetch
+        }, cancellationToken);
+
+        // Preserve paging order (CreatedAt desc)
+        var mapped = col.Select(MapToOrder).ToDictionary(o => o.Id, o => o);
+        var ordered = ids.Where(mapped.ContainsKey).Select(id => mapped[id]).ToList();
+
+        return (ordered, totalCount);
     }
 
     public async Task<IEnumerable<Order>> CreateBulkAsync(IEnumerable<Order> orders, CancellationToken cancellationToken = default)

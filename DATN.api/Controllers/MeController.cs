@@ -24,6 +24,29 @@ public class MeController : ControllerBase
     private Guid GetCurrentUserId() =>
         Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
+    // ──────────────── PROFILE ────────────────
+
+    /// <summary>Lấy thông tin profile của user hiện tại</summary>
+    [HttpGet("profile")]
+    [ProducesResponseType(typeof(ApiResponse<UserProfileDto>), 200)]
+    public async Task<IActionResult> GetProfile()
+    {
+        var result = await _mediator.Send(new GetMyProfileQuery(GetCurrentUserId()));
+        if (!result.Success) return result.StatusCode == 404 ? NotFound(result) : StatusCode(result.StatusCode, result);
+        return Ok(result);
+    }
+
+    /// <summary>Đổi mật khẩu</summary>
+    [HttpPut("change-password")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<bool>), 400)]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        var result = await _mediator.Send(new ChangePasswordCommand(GetCurrentUserId(), request.CurrentPassword, request.NewPassword));
+        if (!result.Success) return BadRequest(result);
+        return Ok(result);
+    }
+
     // ──────────────── ADDRESS BOOK ────────────────
 
     /// <summary>Lấy danh sách địa chỉ của user hiện tại</summary>
@@ -85,4 +108,10 @@ public class MeController : ControllerBase
         if (!result.Success) return NotFound(result);
         return Ok(result);
     }
+}
+
+public class ChangePasswordRequest
+{
+    public string CurrentPassword { get; set; } = string.Empty;
+    public string NewPassword { get; set; } = string.Empty;
 }

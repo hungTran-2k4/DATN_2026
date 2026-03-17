@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DATN.Application.Features.Auth.Commands;
@@ -170,6 +170,27 @@ public class AuthController : ControllerBase
 
         SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Nâng cấp tài khoản thành Seller: tạo Shop + gán role Seller
+    /// </summary>
+    [HttpPost("register-as-seller")]
+    [Authorize]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(ApiResponse<Guid>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<Guid>), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ApiResponse<Guid>>> RegisterAsSeller([FromBody] RegisterAsSellerCommand command)
+    {
+        if (!_currentUserService.IsAuthenticated || _currentUserService.UserId == null)
+        {
+            return Unauthorized(ApiResponse<Guid>.Fail("Không có quyền truy cập", 401, "UNAUTHORIZED"));
+        }
+
+        command.UserId = _currentUserService.UserId.Value;
+        var result = await _mediator.Send(command);
+        if (!result.Success) return BadRequest(result);
         return Ok(result);
     }
 

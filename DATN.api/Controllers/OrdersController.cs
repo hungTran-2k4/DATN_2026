@@ -1,6 +1,7 @@
 using DATN.Application.Common.Models;
 using DATN.Application.DTOs.Orders;
 using DATN.Application.Features.Orders.Commands;
+using DATN.Application.Features.Orders.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,14 +37,14 @@ public class OrdersController : ControllerBase
 
     /// <summary>Lịch sử mua hàng của buyer hiện tại</summary>
     [HttpGet("my")]
-    [ProducesResponseType(typeof(ApiResponse<IEnumerable<OrderSummaryDto>>), 200)]
+    [ProducesResponseType(typeof(PagedResponse<IEnumerable<OrderSummaryDto>>), 200)]
     public async Task<IActionResult> GetMyOrders(
         [FromQuery] string? status,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20)
     {
-        // TODO: implement GetMyOrdersQuery
-        return Ok(ApiResponse<string>.Succeed("Not yet implemented"));
+        var result = await _mediator.Send(new GetMyOrdersQuery(GetCurrentUserId(), status, page, pageSize));
+        return Ok(result);
     }
 
     /// <summary>Chi tiết 1 đơn hàng (buyer hoặc seller)</summary>
@@ -52,8 +53,10 @@ public class OrdersController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse<OrderDto>), 404)]
     public async Task<IActionResult> GetOrderById(Guid id)
     {
-        // TODO: implement GetOrderDetailQuery
-        return Ok(ApiResponse<string>.Succeed("Not yet implemented"));
+        var result = await _mediator.Send(new GetOrderDetailQuery(id, GetCurrentUserId()));
+        if (!result.Success)
+            return result.StatusCode == 404 ? NotFound(result) : StatusCode(result.StatusCode, result);
+        return Ok(result);
     }
 
     /// <summary>Buyer hủy đơn hàng (chỉ khi status = PENDING)</summary>
@@ -90,6 +93,20 @@ public class OrdersController : ControllerBase
         });
         if (!result.Success)
             return result.StatusCode == 404 ? NotFound(result) : BadRequest(result);
+        return Ok(result);
+    }
+
+    /// <summary>Đơn hàng của 1 shop (Seller view)</summary>
+    [HttpGet("/api/shops/{shopId:guid}/orders")]
+    [Authorize(Roles = "Seller,Admin")]
+    [ProducesResponseType(typeof(PagedResponse<IEnumerable<OrderSummaryDto>>), 200)]
+    public async Task<IActionResult> GetShopOrders(
+        Guid shopId,
+        [FromQuery] string? status,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var result = await _mediator.Send(new GetShopOrdersQuery(shopId, status, page, pageSize));
         return Ok(result);
     }
 }

@@ -22,7 +22,7 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, PagedRe
 
     public async Task<PagedResponse<IEnumerable<ProductDto>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
-        var (items, total) = await _productRepository.GetPagedAsync(request.ShopId, request.Search, request.Page, request.PageSize, cancellationToken);
+        var (items, total) = await _productRepository.GetPagedAsync(request.ShopId, request.Search, request.Filter, request.Page, request.PageSize, cancellationToken);
         var dtos = _mapper.Map<IEnumerable<ProductDto>>(items);
         return PagedResponse<IEnumerable<ProductDto>>.SucceedDefault(dtos, request.Page, request.PageSize, total);
     }

@@ -1,6 +1,8 @@
 using AutoMapper;
 using DATN.Domain.Entities.Products;
 using DATN.Domain.Interfaces;
+using DATN.Domain.Common.Models;
+using DATN.Infrastructure.Extensions;
 using DATN_2026.EntityClasses;
 using DATN_2026.FactoryClasses;
 using DATN_2026.HelperClasses;
@@ -26,25 +28,25 @@ public class ProductRepository : IProductRepository
         _mapper = mapper;
     }
 
-    public async Task<(IEnumerable<Product> Items, int Total)> GetPagedAsync(Guid? shopId = null, string? search = null, int page = 1, int pageSize = 20, CancellationToken cancellationToken = default)
+    public async Task<(IEnumerable<Product> Items, int Total)> GetPagedAsync(Guid? shopId = null, string? search = null, FilterDescriptor? filter = null, int page = 1, int pageSize = 20, CancellationToken cancellationToken = default)
     {
         var qf = new QueryFactory();
-        IPredicateExpression filter = new PredicateExpression();
+        IPredicateExpression predicate = filter.ToPredicateExpression(new ProductEntity().Fields);
 
         if (shopId.HasValue)
-            filter.AddWithAnd(ProductFields.ShopId == shopId.Value);
+            predicate.AddWithAnd(ProductFields.ShopId == shopId.Value);
 
         if (!string.IsNullOrWhiteSpace(search))
         {
             var searchFilter = new PredicateExpression(ProductFields.Name % $"%{search}%");
             searchFilter.AddWithOr(ProductFields.Sku % $"%{search}%");
-            filter.AddWithAnd(searchFilter);
+            predicate.AddWithAnd(searchFilter);
         }
 
-        var countQuery = qf.Create().Select(ProductFields.Id.Count()).Where(filter);
+        var countQuery = qf.Create().Select(ProductFields.Id.Count()).Where(predicate);
         var totalCount = await _adapter.FetchScalarAsync<int>(countQuery, cancellationToken);
 
-        var query = qf.Product.Where(filter)
+        var query = qf.Product.Where(predicate)
                       .OrderBy(ProductFields.CreatedAt.Descending())
                       .Page(page, pageSize);
 
