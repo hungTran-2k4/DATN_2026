@@ -1,5 +1,6 @@
 using AutoMapper;
 using DATN.Application.Common.Models;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Entities.Products;
 using DATN.Domain.Interfaces;
 using MediatR;
@@ -12,10 +13,12 @@ namespace DATN.Application.Features.Products.Commands.CreateProduct;
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ApiResponse<Guid>>
 {
     private readonly IProductRepository _productRepository;
+    private readonly ICacheService _cache;
 
-    public CreateProductCommandHandler(IProductRepository productRepository)
+    public CreateProductCommandHandler(IProductRepository productRepository, ICacheService cache)
     {
         _productRepository = productRepository;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<Guid>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -49,6 +52,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         // 3. Lưu vào DB
         await _productRepository.AddAsync(product, cancellationToken);
+        _cache.RemoveByPrefix("products:");
 
         return ApiResponse<Guid>.Succeed(product.Id, "Product created successfully.");
     }

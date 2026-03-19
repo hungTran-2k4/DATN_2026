@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using DATN_2026.EntityClasses;
 using DATN.Domain.Entities.Identity;
 
@@ -22,6 +22,7 @@ public class UserInfrastructureMappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
             .ForMember(dest => dest.FailedLoginCount, opt => opt.MapFrom(src => src.FailedLoginCount))
             .ForMember(dest => dest.LockoutEnd, opt => opt.MapFrom(src => src.LockoutEnd))
+            .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl))
             .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src => src.UserRoles)); // Map navigation properties
 
         // UserRoleEntity -> UserRole (Domain)
@@ -45,7 +46,7 @@ public class UserInfrastructureMappingProfile : Profile
             .ForMember(dest => dest.RefreshTokens, opt => opt.Ignore())
             .ForMember(dest => dest.UserRoles, opt => opt.Ignore())
             .ForMember(dest => dest.UserSessions, opt => opt.Ignore())
-            .ForMember(dest => dest.AvatarUrl, opt => opt.Ignore())
+            .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl))
             .ForMember(dest => dest.Shops, opt => opt.Ignore())
             .ForMember(dest => dest.Reviews, opt => opt.Ignore())
             .ForMember(dest => dest.Notifications, opt => opt.Ignore())

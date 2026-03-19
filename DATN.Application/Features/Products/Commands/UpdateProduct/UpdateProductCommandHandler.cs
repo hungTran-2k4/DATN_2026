@@ -1,4 +1,5 @@
 using DATN.Application.Common.Models;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Interfaces;
 using MediatR;
 using System;
@@ -10,10 +11,12 @@ namespace DATN.Application.Features.Products.Commands.UpdateProduct;
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ApiResponse<bool>>
 {
     private readonly IProductRepository _productRepository;
+    private readonly ICacheService _cache;
 
-    public UpdateProductCommandHandler(IProductRepository productRepository)
+    public UpdateProductCommandHandler(IProductRepository productRepository, ICacheService cache)
     {
         _productRepository = productRepository;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<bool>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
@@ -53,6 +56,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             return ApiResponse<bool>.Fail("Failed to update product.", 500);
         }
 
+        _cache.RemoveByPrefix("products:");
         return ApiResponse<bool>.Succeed(true, "Product updated successfully.");
     }
 }

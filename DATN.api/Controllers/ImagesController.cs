@@ -1,5 +1,6 @@
 using DATN.Application.Common.Models;
 using DATN.Application.Features.Images.Commands.UploadImage;
+using DATN.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -9,18 +10,20 @@ namespace DATN.api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize] // Require authentication to upload images
+[Authorize]
 public class ImagesController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IStorageService _storageService;
 
-    public ImagesController(IMediator mediator)
+    public ImagesController(IMediator mediator, IStorageService storageService)
     {
         _mediator = mediator;
+        _storageService = storageService;
     }
 
     /// <summary>
-    /// Upload file ảnh lên hệ thống Azure Blob Storage
+    /// Upload 1 file ảnh lên Azure Blob Storage
     /// </summary>
     [HttpPost("upload")]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
@@ -48,6 +51,31 @@ public class ImagesController : ControllerBase
             return Ok(response);
         }
 
-        return BadRequest(response); // Return 400 with the error response
+        return BadRequest(response);
+    }
+
+    /// <summary>
+    /// Upload nhiều file ảnh cùng lúc, trả về danh sách URL
+    /// </summary>
+    [HttpPost("upload-multiple")]
+    [ProducesResponseType(typeof(ApiResponse<List<string>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<List<string>>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UploadMultipleImages(List<IFormFile> files)
+    {
+        if (files == null || files.Count == 0)
+            return BadRequest(ApiResponse<List<string>>.Fail("Vui lòng chọn ít nhất 1 file ảnh."));
+
+        var urls = new List<string>();
+        foreach (var file in files)
+        {
+            if (file.Length > 0)
+            {
+                using var stream = file.OpenReadStream();
+                var url = await _storageService.UploadFileAsync(stream, file.FileName, file.ContentType);
+                urls.Add(url);
+            }
+        }
+
+        return Ok(ApiResponse<List<string>>.Succeed(urls, $"Đã upload thành công {urls.Count} ảnh."));
     }
 }

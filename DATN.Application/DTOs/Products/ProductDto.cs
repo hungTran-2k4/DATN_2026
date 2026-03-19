@@ -18,4 +18,6 @@ public class ProductDto
     public string? BaseAttributes { get; set; }
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+
+    public IEnumerable<ProductImageDto> Images { get; set; } = new List<ProductImageDto>();
 }

@@ -1,0 +1,184 @@
+using AutoMapper;
+using DATN.Domain.Entities.Products;
+using DATN.Domain.Interfaces;
+using DATN_2026.DatabaseSpecific;
+using DATN_2026.EntityClasses;
+using DATN_2026.FactoryClasses;
+using DATN_2026.HelperClasses;
+using SD.LLBLGen.Pro.QuerySpec;
+using SD.LLBLGen.Pro.QuerySpec.Adapter;
+
+namespace DATN.Infrastructure.Persistence.Repositories.Products;
+
+public class StockRepository : IStockRepository
+{
+    private readonly string _connectionString;
+    private readonly IMapper _mapper;
+
+    public StockRepository(string connectionString, IMapper mapper)
+    {
+        _connectionString = connectionString;
+        _mapper = mapper;
+    }
+
+    private DataAccessAdapter CreateAdapter() => new DataAccessAdapter(_connectionString);
+
+    public async Task<Stock?> GetStockByVariantIdAsync(Guid variantId, CancellationToken cancellationToken = default)
+    {
+        using var adapter = CreateAdapter();
+        var qf = new QueryFactory();
+        var query = qf.Stock
+            .Where(StockFields.VariantId == variantId);
+
+        var entity = await adapter.FetchFirstAsync(query, cancellationToken);
+        return entity == null ? null : _mapper.Map<Stock>(entity);
+    }
+
+    public async Task<IEnumerable<Stock>> GetStocksByProductAsync(Guid productId, CancellationToken cancellationToken = default)
+    {
+         using var adapter = CreateAdapter();
+         var qf = new QueryFactory();
+
+         // Fetch all variant stocks for a specific product
+         var query = qf.Stock
+             .From(QueryTarget.InnerJoin(qf.ProductVariant).On(StockFields.VariantId == ProductVariantFields.Id))
+             .Where(ProductVariantFields.ProductId == productId);
+
+         var entities = await adapter.FetchQueryAsync(query, cancellationToken);
+         return _mapper.Map<IEnumerable<Stock>>(entities);
+    }
+
+    public async Task<bool> UpdateStockAsync(Stock stock, CancellationToken cancellationToken = default)
+    {
+        using var adapter = CreateAdapter();
+        var entity = _mapper.Map<StockEntity>(stock);
+        // Do not update VariantId, just save constraints
+        
+        return await adapter.SaveEntityAsync(entity, true, cancellationToken);
+    }
+
+    public async Task<bool> ReserveStockAsync(Guid variantId, int quantity, CancellationToken cancellationToken = default)
+    {
+        if (quantity <= 0) return false;
+        
+        using var adapter = CreateAdapter();
+        var qf = new QueryFactory();
+        var entity = await adapter.FetchFirstAsync(qf.Stock.Where(StockFields.VariantId == variantId), cancellationToken);
+        if (entity == null) return false;
+
+        // Check availability
+        if ((entity.AvailableQuantity ?? 0) < quantity) return false;
+
+        // Update fields
+        entity.ReservedQuantity += quantity;
+        entity.AvailableQuantity = entity.PhysicalQuantity - entity.ReservedQuantity;
+        entity.UpdatedAt = DateTime.UtcNow;
+
+        return await adapter.SaveEntityAsync(entity, true, cancellationToken);
+    }
+
+    public async Task<bool> CommitReservedStockAsync(Guid variantId, int quantity, CancellationToken cancellationToken = default)
+    {
+        if (quantity <= 0) return false;
+
+        using var adapter = CreateAdapter();
+        var qf = new QueryFactory();
+        var entity = await adapter.FetchFirstAsync(qf.Stock.Where(StockFields.VariantId == variantId), cancellationToken);
+        if (entity == null) return false;
+
+        // Ensure we don't commit more than reserved
+        if (entity.ReservedQuantity < quantity) return false;
+
+        entity.PhysicalQuantity -= quantity;
+        entity.ReservedQuantity -= quantity;
+        entity.AvailableQuantity = entity.PhysicalQuantity - entity.ReservedQuantity;
+        entity.UpdatedAt = DateTime.UtcNow;
+
+        return await adapter.SaveEntityAsync(entity, true, cancellationToken);
+    }
+
+    public async Task<bool> RestockAsync(Guid variantId, int quantity, CancellationToken cancellationToken = default)
+    {
+        if (quantity <= 0) return false;
+
+        using var adapter = CreateAdapter();
+        var qf = new QueryFactory();
+        var entity = await adapter.FetchFirstAsync(qf.Stock.Where(StockFields.VariantId == variantId), cancellationToken);
+        
+        if (entity == null)
+        {
+            // Initialize stock if it somehow didn't exist
+            entity = new StockEntity();
+            entity.VariantId = variantId;
+            entity.PhysicalQuantity = quantity;
+            entity.ReservedQuantity = 0;
+            entity.AvailableQuantity = quantity;
+            entity.IsNew = true;
+        }
+        else
+        {
+            entity.PhysicalQuantity += quantity;
+            entity.AvailableQuantity = entity.PhysicalQuantity - entity.ReservedQuantity;
+        }
+        
+        entity.UpdatedAt = DateTime.UtcNow;
+
+        return await adapter.SaveEntityAsync(entity, true, cancellationToken);
+    }
+
+    public async Task<StockTransaction> AddTransactionAsync(StockTransaction transaction, CancellationToken cancellationToken = default)
+    {
+        using var adapter = CreateAdapter();
+        var entity = _mapper.Map<StockTransactionEntity>(transaction);
+        
+        if (entity.IsNew && entity.Id == Guid.Empty)
+        {
+             entity.Id = Guid.NewGuid();
+        }
+        
+        entity.CreatedAt ??= DateTime.UtcNow;
+        
+        await adapter.SaveEntityAsync(entity, true, cancellationToken);
+        return _mapper.Map<StockTransaction>(entity);
+    }
+
+    public async Task<(IEnumerable<StockTransaction> Items, int TotalCount)> GetTransactionsByVariantAsync(Guid variantId, int page, int pageSize, CancellationToken cancellationToken = default)
+    {
+        using var adapter = CreateAdapter();
+        var qf = new QueryFactory();
+
+        var query = qf.StockTransaction
+            .Where(StockTransactionFields.VariantId == variantId)
+            .OrderBy(StockTransactionFields.CreatedAt.Descending());
+
+        var (total, elements) = await FetchPagedAsync(adapter, query, page, pageSize, cancellationToken);
+        return (_mapper.Map<IEnumerable<StockTransaction>>(elements), total);
+    }
+
+    public async Task<(IEnumerable<StockTransaction> Items, int TotalCount)> GetTransactionsByShopAsync(Guid shopId, int page, int pageSize, CancellationToken cancellationToken = default)
+    {
+        using var adapter = CreateAdapter();
+        var qf = new QueryFactory();
+
+        var query = qf.StockTransaction
+            .Where(StockTransactionFields.ShopId == shopId)
+            .OrderBy(StockTransactionFields.CreatedAt.Descending());
+
+        var (total, elements) = await FetchPagedAsync(adapter, query, page, pageSize, cancellationToken);
+        return (_mapper.Map<IEnumerable<StockTransaction>>(elements), total);
+    }
+    
+    private async Task<(int TotalCount, List<StockTransactionEntity> Elements)> FetchPagedAsync(
+        DataAccessAdapter adapter, EntityQuery<StockTransactionEntity> baseQuery, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        var countQuery = baseQuery.Select(Functions.CountRow());
+        var totalCount = await adapter.FetchScalarAsync<int>(countQuery, cancellationToken);
+
+        if (totalCount == 0) return (0, new List<StockTransactionEntity>());
+
+        var pagedQuery = baseQuery.Limit(pageSize).Offset((page - 1) * pageSize);
+        var elements = await adapter.FetchQueryAsync(pagedQuery, cancellationToken);
+
+        return (totalCount, elements.Cast<StockTransactionEntity>().ToList());
+    }
+}

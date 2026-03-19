@@ -14,6 +14,7 @@ using DATN.Infrastructure.Persistence.Repositories.Users;
 using DATN.Infrastructure.Persistence.Repositories.Roles;
 using DATN.Infrastructure.Persistence.Repositories.Auth;
 using DATN.Infrastructure.Persistence.Repositories.Products;
+using DATN.Infrastructure.Persistence.Repositories.Marketing;
 using DATN.Infrastructure.Persistence.Repositories.Shops;
 using DATN.Infrastructure.Persistence.Repositories.Categories;
 using DATN.Infrastructure.Persistence.Repositories.Orders;
@@ -76,6 +77,11 @@ public static class DependencyInjection
         services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
         services.AddScoped<ICartRepository, CartRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IWishlistRepository, WishlistRepository>();
+        services.AddScoped<IBrandRepository, BrandRepository>();
+        services.AddScoped<IVoucherRepository, VoucherRepository>();
+        services.AddScoped<IStockRepository, StockRepository>();
         
         // Register Auth services
         services.AddScoped<IJwtService, JwtService>();
@@ -92,6 +98,9 @@ public static class DependencyInjection
 
         // Storage Service (Azure Blob)
         services.AddScoped<IStorageService, AzureBlobStorageService>();
+
+        // Cache
+        services.AddSingleton<ICacheService, MemoryCacheService>();
 
         return services;
     }

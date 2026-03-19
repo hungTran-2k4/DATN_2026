@@ -5,6 +5,7 @@ using DATN.Application.Features.Shops.Commands.UpdateShop;
 using DATN.Application.Features.Shops.Commands.DeleteShop;
 using DATN.Application.Features.Shops.Queries.GetShops;
 using DATN.Application.Features.Shops.Queries.GetShopById;
+using DATN.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,14 +19,16 @@ namespace DATN.api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize] // Hầu hết thao tác của cửa hàng yêu cầu đăng nhập
+[Authorize]
 public class ShopsController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IStorageService _storageService;
 
-    public ShopsController(IMediator mediator)
+    public ShopsController(IMediator mediator, IStorageService storageService)
     {
         _mediator = mediator;
+        _storageService = storageService;
     }
 
     private Guid? GetCurrentUserId()
@@ -42,7 +45,7 @@ public class ShopsController : ControllerBase
     /// Lấy danh sách toàn bộ Shop
     /// </summary>
     [HttpGet]
-    [AllowAnonymous] // Cho phép tất cả xem danh sách cửa hàng
+    [AllowAnonymous]
     [ProducesResponseType(typeof(ApiResponse<IEnumerable<ShopDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetShops()
     {
@@ -90,7 +93,6 @@ public class ShopsController : ControllerBase
         var userId = GetCurrentUserId();
         if (userId == null) return Unauthorized(ApiResponse<Guid>.Fail("User not authenticated"));
 
-        // Gán cứng OwnerId bằng user đang đăng nhập để tránh tạo giùm người khác.
         command.OwnerId = userId;
 
         var result = await _mediator.Send(command);
@@ -116,7 +118,6 @@ public class ShopsController : ControllerBase
         var userId = GetCurrentUserId();
         if (userId == null) return Unauthorized(ApiResponse<bool>.Fail("User not authenticated"));
 
-        // Bắt buộc quyền sở hữu (Owner)
         command.OwnerId = userId;
 
         var result = await _mediator.Send(command);
@@ -150,5 +151,54 @@ public class ShopsController : ControllerBase
              return BadRequest(result);
         }
         return Ok(result);
+    }
+
+    // ──────────────── IMAGE UPLOAD ────────────────
+
+    /// <summary>Upload logo cho Shop (IFormFile → Azure Blob → cập nhật LogoUrl)</summary>
+    [HttpPost("{id}/logo")]
+    [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UploadLogo(Guid id, IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(ApiResponse<ShopDto>.Fail("Vui lòng chọn file ảnh.", 400, "NO_FILE"));
+
+        var userId = GetCurrentUserId();
+        if (userId == null) return Unauthorized(ApiResponse<ShopDto>.Fail("User not authenticated"));
+
+        using var stream = file.OpenReadStream();
+        var imageUrl = await _storageService.UploadFileAsync(stream, file.FileName, file.ContentType);
+
+        var command = new UpdateShopCommand { Id = id, OwnerId = userId, LogoUrl = imageUrl };
+        var result = await _mediator.Send(command);
+        if (!result.Success) return BadRequest(result);
+
+        // Trả về ShopDto mới nhất
+        var shopResult = await _mediator.Send(new GetShopByIdQuery(id));
+        return Ok(shopResult);
+    }
+
+    /// <summary>Upload ảnh bìa cho Shop (IFormFile → Azure Blob → cập nhật CoverUrl)</summary>
+    [HttpPost("{id}/cover")]
+    [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UploadCover(Guid id, IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(ApiResponse<ShopDto>.Fail("Vui lòng chọn file ảnh.", 400, "NO_FILE"));
+
+        var userId = GetCurrentUserId();
+        if (userId == null) return Unauthorized(ApiResponse<ShopDto>.Fail("User not authenticated"));
+
+        using var stream = file.OpenReadStream();
+        var imageUrl = await _storageService.UploadFileAsync(stream, file.FileName, file.ContentType);
+
+        var command = new UpdateShopCommand { Id = id, OwnerId = userId, CoverUrl = imageUrl };
+        var result = await _mediator.Send(command);
+        if (!result.Success) return BadRequest(result);
+
+        var shopResult = await _mediator.Send(new GetShopByIdQuery(id));
+        return Ok(shopResult);
     }
 }

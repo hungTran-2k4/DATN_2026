@@ -16,4 +16,10 @@ public interface IProductRepository
     Task<Product> AddAsync(Product product, CancellationToken cancellationToken = default);
     Task<bool> UpdateAsync(Product product, CancellationToken cancellationToken = default);
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    // Product Images
+    Task<IEnumerable<ProductImage>> GetImagesAsync(Guid productId, CancellationToken cancellationToken = default);
+    Task<ProductImage> AddImageAsync(ProductImage image, CancellationToken cancellationToken = default);
+    Task<bool> DeleteImageAsync(Guid imageId, CancellationToken cancellationToken = default);
+    Task<bool> SetMainImageAsync(Guid productId, Guid imageId, CancellationToken cancellationToken = default);
 }

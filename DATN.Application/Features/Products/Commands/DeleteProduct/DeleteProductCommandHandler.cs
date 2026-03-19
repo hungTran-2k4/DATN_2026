@@ -1,4 +1,5 @@
 using DATN.Application.Common.Models;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Interfaces;
 using MediatR;
 using System.Threading;
@@ -9,10 +10,12 @@ namespace DATN.Application.Features.Products.Commands.DeleteProduct;
 public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, ApiResponse<bool>>
 {
     private readonly IProductRepository _productRepository;
+    private readonly ICacheService _cache;
 
-    public DeleteProductCommandHandler(IProductRepository productRepository)
+    public DeleteProductCommandHandler(IProductRepository productRepository, ICacheService cache)
     {
         _productRepository = productRepository;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<bool>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
@@ -30,6 +33,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
             return ApiResponse<bool>.Fail("Failed to delete product.", 500);
         }
 
+        _cache.RemoveByPrefix("products:");
         return ApiResponse<bool>.Succeed(true, "Product deleted successfully.");
     }
 }

@@ -3,8 +3,10 @@ using DATN.Application.DTOs.Products;
 using DATN.Application.Features.Products.Commands.CreateProduct;
 using DATN.Application.Features.Products.Commands.DeleteProduct;
 using DATN.Application.Features.Products.Commands.UpdateProduct;
+using DATN.Application.Features.Products.Commands;
 using DATN.Application.Features.Products.Queries.GetProductById;
 using DATN.Application.Features.Products.Queries.GetProducts;
+using DATN.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,21 +19,23 @@ namespace DATN.api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize] // Có thể thêm [Authorize(Roles = "Admin")] nếu chỉ Admin được quản lý Product
+[Authorize]
 public class ProductsController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IStorageService _storageService;
 
-    public ProductsController(IMediator mediator)
+    public ProductsController(IMediator mediator, IStorageService storageService)
     {
         _mediator = mediator;
+        _storageService = storageService;
     }
 
     /// <summary>
     /// Lấy danh sách sản phẩm (hỗ trợ phân trang, tìm kiếm)
     /// </summary>
     [HttpPost("paging")]
-    [AllowAnonymous] // Cho phép khách xem sản phẩm
+    [AllowAnonymous]
     [ProducesResponseType(typeof(PagedResponse<IEnumerable<ProductDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchProducts([FromBody] GetProductsQuery query)
     {
@@ -80,11 +84,8 @@ public class ProductsController : ControllerBase
             return BadRequest(ApiResponse<bool>.Fail("ID mismatch"));
         }
 
-        // Tùy chọn nếu bạn muốn client phải báo rõ sửa cho shop nào qua querystring,
-        // nếu không có querystring thì dùng command.ShopId.
         if (shopId.HasValue && command.ShopId != shopId.Value)
         {
-            // Ép đồng bộ nếu truyền trên query
             command.ShopId = shopId.Value;
         }
 
@@ -107,6 +108,56 @@ public class ProductsController : ControllerBase
     {
         var result = await _mediator.Send(new DeleteProductCommand(id, shopId));
         if (!result.Success) return NotFound(result);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Thêm ảnh cho sản phẩm (IFormFile → Azure Blob → lưu URL vào DB)
+    /// </summary>
+    [HttpPost("{id}/images")]
+    [ProducesResponseType(typeof(ApiResponse<ProductImageDto>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<ProductImageDto>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddImage(Guid id, IFormFile file, [FromQuery] bool isMain = false)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(ApiResponse<ProductImageDto>.Fail("Vui lòng chọn file ảnh.", 400, "NO_FILE"));
+
+        // Upload lên Azure Blob Storage
+        using var stream = file.OpenReadStream();
+        var imageUrl = await _storageService.UploadFileAsync(stream, file.FileName, file.ContentType);
+
+        var command = new UploadProductImageCommand
+        {
+            ProductId = id,
+            ImageUrl = imageUrl,
+            IsMain = isMain
+        };
+        var result = await _mediator.Send(command);
+        if (!result.Success) return BadRequest(result);
+        return StatusCode(201, result);
+    }
+
+    /// <summary>
+    /// Xóa ảnh sản phẩm
+    /// </summary>
+    [HttpDelete("{id}/images/{imageId}")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteImage(Guid id, Guid imageId)
+    {
+        var result = await _mediator.Send(new DeleteProductImageCommand(id, imageId));
+        if (!result.Success) return BadRequest(result);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Đặt ảnh làm đại diện (Main image)
+    /// </summary>
+    [HttpPut("{id}/images/{imageId}/main")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> SetMainImage(Guid id, Guid imageId)
+    {
+        var result = await _mediator.Send(new SetMainProductImageCommand(id, imageId));
+        if (!result.Success) return BadRequest(result);
         return Ok(result);
     }
 }

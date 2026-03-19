@@ -1,4 +1,5 @@
 using DATN.Application.Common.Models;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Interfaces;
 using MediatR;
 using System.Threading;
@@ -9,10 +10,12 @@ namespace DATN.Application.Features.Shops.Commands.DeleteShop;
 public class DeleteShopCommandHandler : IRequestHandler<DeleteShopCommand, ApiResponse<bool>>
 {
     private readonly IShopRepository _shopRepository;
+    private readonly ICacheService _cache;
 
-    public DeleteShopCommandHandler(IShopRepository shopRepository)
+    public DeleteShopCommandHandler(IShopRepository shopRepository, ICacheService cache)
     {
         _shopRepository = shopRepository;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<bool>> Handle(DeleteShopCommand request, CancellationToken cancellationToken)
@@ -36,6 +39,7 @@ public class DeleteShopCommandHandler : IRequestHandler<DeleteShopCommand, ApiRe
             return ApiResponse<bool>.Fail("Failed to delete shop.", 500);
         }
 
+        _cache.RemoveByPrefix("shops:");
         return ApiResponse<bool>.Succeed(true, "Shop deleted successfully.");
     }
 }

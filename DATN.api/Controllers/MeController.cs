@@ -2,6 +2,7 @@ using DATN.Application.Common.Models;
 using DATN.Application.DTOs.Users;
 using DATN.Application.Features.Me.Commands;
 using DATN.Application.Features.Me.Queries;
+using DATN.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,13 @@ namespace DATN.api.Controllers;
 public class MeController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IStorageService _storageService;
 
-    public MeController(IMediator mediator) => _mediator = mediator;
+    public MeController(IMediator mediator, IStorageService storageService)
+    {
+        _mediator = mediator;
+        _storageService = storageService;
+    }
 
     private Guid GetCurrentUserId() =>
         Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
@@ -33,6 +39,47 @@ public class MeController : ControllerBase
     {
         var result = await _mediator.Send(new GetMyProfileQuery(GetCurrentUserId()));
         if (!result.Success) return result.StatusCode == 404 ? NotFound(result) : StatusCode(result.StatusCode, result);
+        return Ok(result);
+    }
+
+    /// <summary>Cập nhật profile (tên hiển thị, avatar URL)</summary>
+    [HttpPut("profile")]
+    [ProducesResponseType(typeof(ApiResponse<UserProfileDto>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<UserProfileDto>), 404)]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
+    {
+        var command = new UpdateProfileCommand
+        {
+            UserId = GetCurrentUserId(),
+            FullName = request.FullName,
+            AvatarUrl = request.AvatarUrl
+        };
+        var result = await _mediator.Send(command);
+        if (!result.Success) return result.StatusCode == 404 ? NotFound(result) : BadRequest(result);
+        return Ok(result);
+    }
+
+    /// <summary>Upload avatar cho user (IFormFile → Azure Blob → lưu URL vào DB)</summary>
+    [HttpPost("avatar")]
+    [ProducesResponseType(typeof(ApiResponse<UserProfileDto>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<UserProfileDto>), 400)]
+    public async Task<IActionResult> UploadAvatar(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(ApiResponse<UserProfileDto>.Fail("Vui lòng chọn file ảnh.", 400, "NO_FILE"));
+
+        // Upload lên Azure Blob Storage
+        using var stream = file.OpenReadStream();
+        var imageUrl = await _storageService.UploadFileAsync(stream, file.FileName, file.ContentType);
+
+        // Lưu URL vào profile
+        var command = new UpdateProfileCommand
+        {
+            UserId = GetCurrentUserId(),
+            AvatarUrl = imageUrl
+        };
+        var result = await _mediator.Send(command);
+        if (!result.Success) return BadRequest(result);
         return Ok(result);
     }
 
@@ -114,4 +161,10 @@ public class ChangePasswordRequest
 {
     public string CurrentPassword { get; set; } = string.Empty;
     public string NewPassword { get; set; } = string.Empty;
+}
+
+public class UpdateProfileRequest
+{
+    public string? FullName { get; set; }
+    public string? AvatarUrl { get; set; }
 }

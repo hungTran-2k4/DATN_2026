@@ -1,4 +1,5 @@
 using DATN.Application.Common.Models;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Interfaces;
 using MediatR;
 using System;
@@ -10,10 +11,12 @@ namespace DATN.Application.Features.Shops.Commands.UpdateShop;
 public class UpdateShopCommandHandler : IRequestHandler<UpdateShopCommand, ApiResponse<bool>>
 {
     private readonly IShopRepository _shopRepository;
+    private readonly ICacheService _cache;
 
-    public UpdateShopCommandHandler(IShopRepository shopRepository)
+    public UpdateShopCommandHandler(IShopRepository shopRepository, ICacheService cache)
     {
         _shopRepository = shopRepository;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<bool>> Handle(UpdateShopCommand request, CancellationToken cancellationToken)
@@ -62,6 +65,7 @@ public class UpdateShopCommandHandler : IRequestHandler<UpdateShopCommand, ApiRe
             return ApiResponse<bool>.Fail("Failed to update shop.", 500);
         }
 
+        _cache.RemoveByPrefix("shops:");
         return ApiResponse<bool>.Succeed(true, "Shop updated successfully.");
     }
 }

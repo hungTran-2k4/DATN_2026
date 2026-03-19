@@ -133,4 +133,62 @@ public class ProductRepository : IProductRepository
         
         return await _adapter.DeleteEntityAsync(entity, cancellationToken: cancellationToken);
     }
+
+    public async Task<IEnumerable<ProductImage>> GetImagesAsync(Guid productId, CancellationToken cancellationToken = default)
+    {
+        var col = new EntityCollection<ProductImageEntity>();
+        var filter = new PredicateExpression(ProductImageFields.ProductId == productId);
+        
+        await _adapter.FetchEntityCollectionAsync(new QueryParameters
+        {
+            CollectionToFetch = col,
+            FilterToUse = filter,
+            SorterToUse = new SortExpression(ProductImageFields.DisplayOrder.Ascending())
+        }, cancellationToken);
+
+        return _mapper.Map<IEnumerable<ProductImage>>(col);
+    }
+
+    public async Task<ProductImage> AddImageAsync(ProductImage image, CancellationToken cancellationToken = default)
+    {
+        var entity = _mapper.Map<ProductImageEntity>(image);
+        entity.IsNew = true;
+        entity.Id = Guid.NewGuid();
+        
+        if (entity.DisplayOrder == null)
+        {
+             // Get max display order
+             var qf = new QueryFactory();
+             var maxQ = qf.Create().Select(ProductImageFields.DisplayOrder.Max()).Where(ProductImageFields.ProductId == image.ProductId);
+             var maxVal = await _adapter.FetchScalarAsync<object>(maxQ, cancellationToken);
+             entity.DisplayOrder = maxVal != DBNull.Value && maxVal != null ? Convert.ToInt32(maxVal) + 1 : 1;
+        }
+
+        await _adapter.SaveEntityAsync(entity, refetchAfterSave: true, cancellationToken: cancellationToken);
+        return _mapper.Map<ProductImage>(entity);
+    }
+
+    public async Task<bool> DeleteImageAsync(Guid imageId, CancellationToken cancellationToken = default)
+    {
+        var entity = new ProductImageEntity(imageId);
+        entity.IsNew = false;
+        return await _adapter.DeleteEntityAsync(entity, cancellationToken: cancellationToken);
+    }
+
+    public async Task<bool> SetMainImageAsync(Guid productId, Guid imageId, CancellationToken cancellationToken = default)
+    {
+        // Set all to false first
+        var updateToFalse = new ProductImageEntity();
+        updateToFalse.IsPrimary = false;
+        var filterFalse = new PredicateExpression(ProductImageFields.ProductId == productId);
+        await _adapter.UpdateEntitiesDirectlyAsync(updateToFalse, new RelationPredicateBucket(filterFalse), cancellationToken);
+
+        // Set target to true
+        var updateToTrue = new ProductImageEntity();
+        updateToTrue.IsPrimary = true;
+        var filterTrue = new PredicateExpression(ProductImageFields.Id == imageId);
+        await _adapter.UpdateEntitiesDirectlyAsync(updateToTrue, new RelationPredicateBucket(filterTrue), cancellationToken);
+
+        return true;
+    }
 }

@@ -1,4 +1,5 @@
 using DATN.Application.Common.Models;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Entities.Shops;
 using DATN.Domain.Interfaces;
 using MediatR;
@@ -11,10 +12,12 @@ namespace DATN.Application.Features.Shops.Commands.CreateShop;
 public class CreateShopCommandHandler : IRequestHandler<CreateShopCommand, ApiResponse<Guid>>
 {
     private readonly IShopRepository _shopRepository;
+    private readonly ICacheService _cache;
 
-    public CreateShopCommandHandler(IShopRepository shopRepository)
+    public CreateShopCommandHandler(IShopRepository shopRepository, ICacheService cache)
     {
         _shopRepository = shopRepository;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<Guid>> Handle(CreateShopCommand request, CancellationToken cancellationToken)
@@ -47,6 +50,7 @@ public class CreateShopCommandHandler : IRequestHandler<CreateShopCommand, ApiRe
 
         // 3. Lưu vào DB
         await _shopRepository.AddAsync(shop, cancellationToken);
+        _cache.RemoveByPrefix("shops:");
 
         return ApiResponse<Guid>.Succeed(shop.Id, "Shop created successfully.");
     }

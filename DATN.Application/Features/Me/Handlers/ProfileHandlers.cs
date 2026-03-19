@@ -23,9 +23,10 @@ public class GetMyProfileHandler : IRequestHandler<GetMyProfileQuery, ApiRespons
         return ApiResponse<UserProfileDto>.Succeed(new UserProfileDto
         {
             Id = user.Id,
-            Username = user.Email, // Domain user currently doesn't expose Username consistently
+            Username = user.FullName ?? user.Email,
             Email = user.Email,
-            AvatarUrl = null,
+            FullName = user.FullName,
+            AvatarUrl = user.AvatarUrl,
             Status = user.IsActive ? "active" : "inactive",
             CreatedAt = user.CreatedAt
         });
@@ -63,3 +64,35 @@ public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand, ApiR
     }
 }
 
+public class UpdateProfileHandler : IRequestHandler<UpdateProfileCommand, ApiResponse<UserProfileDto>>
+{
+    private readonly IUserRepository _userRepo;
+
+    public UpdateProfileHandler(IUserRepository userRepo) => _userRepo = userRepo;
+
+    public async Task<ApiResponse<UserProfileDto>> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+    {
+        var user = await _userRepo.GetByIdAsync(request.UserId, cancellationToken);
+        if (user == null)
+            return ApiResponse<UserProfileDto>.Fail("Không tìm thấy người dùng.", 404, "USER_NOT_FOUND");
+
+        if (request.FullName != null)
+            user.FullName = request.FullName;
+        if (request.AvatarUrl != null)
+            user.AvatarUrl = request.AvatarUrl;
+
+        user.UpdatedAt = DateTime.UtcNow;
+        await _userRepo.UpdateAsync(user, cancellationToken);
+
+        return ApiResponse<UserProfileDto>.Succeed(new UserProfileDto
+        {
+            Id = user.Id,
+            Username = user.FullName ?? user.Email,
+            Email = user.Email,
+            FullName = user.FullName,
+            AvatarUrl = user.AvatarUrl,
+            Status = user.IsActive ? "active" : "inactive",
+            CreatedAt = user.CreatedAt
+        }, "Cập nhật profile thành công.");
+    }
+}
