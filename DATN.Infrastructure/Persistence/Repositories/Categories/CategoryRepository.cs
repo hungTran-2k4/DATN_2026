@@ -8,6 +8,7 @@ using DATN_2026.HelperClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
+using DATN.Infrastructure.Extensions;
 
 namespace DATN.Infrastructure.Persistence.Repositories.Categories;
 
@@ -29,8 +30,9 @@ public class CategoryRepository : ICategoryRepository
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var searchFilter = new PredicateExpression(CategoryFields.Name % $"%{search}%");
-            searchFilter.AddWithOr(CategoryFields.Slug % $"%{search}%");
+            var searchFilter = new PredicateExpression();
+            searchFilter.AddWithOr(CategoryFields.Name.UnaccentILike(search));
+            searchFilter.AddWithOr(CategoryFields.Slug.UnaccentILike(search));
             filter.AddWithAnd(searchFilter);
         }
 

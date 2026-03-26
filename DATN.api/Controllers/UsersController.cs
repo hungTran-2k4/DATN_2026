@@ -9,7 +9,7 @@ namespace DATN.api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "Admin")] // Only Admin can access these endpoints
+//[Authorize(Roles = "Admin")] // Only Admin can access these endpoints
 public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;

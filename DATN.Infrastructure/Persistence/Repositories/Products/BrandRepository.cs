@@ -8,6 +8,7 @@ using DATN_2026.HelperClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
+using DATN.Infrastructure.Extensions;
 
 namespace DATN.Infrastructure.Persistence.Repositories.Products;
 
@@ -29,8 +30,9 @@ public class BrandRepository : IBrandRepository
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var searchFilter = new PredicateExpression(BrandFields.Name % $"%{search}%");
-            searchFilter.AddWithOr(BrandFields.Slug % $"%{search}%");
+            var searchFilter = new PredicateExpression();
+            searchFilter.AddWithOr(BrandFields.Name.UnaccentILike(search));
+            searchFilter.AddWithOr(BrandFields.Slug.UnaccentILike(search));
             filter.Add(searchFilter);
         }
 

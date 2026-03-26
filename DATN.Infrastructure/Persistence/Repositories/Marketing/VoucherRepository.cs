@@ -8,6 +8,7 @@ using DATN_2026.HelperClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
+using DATN.Infrastructure.Extensions;
 
 namespace DATN.Infrastructure.Persistence.Repositories.Marketing;
 
@@ -39,8 +40,9 @@ public class VoucherRepository : IVoucherRepository
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var searchFilter = new PredicateExpression(VoucherFields.Name % $"%{search}%");
-            searchFilter.AddWithOr(VoucherFields.Code % $"%{search}%");
+            var searchFilter = new PredicateExpression();
+            searchFilter.AddWithOr(VoucherFields.Name.UnaccentILike(search));
+            searchFilter.AddWithOr(VoucherFields.Code.UnaccentILike(search));
             filter.AddWithAnd(searchFilter);
         }
 

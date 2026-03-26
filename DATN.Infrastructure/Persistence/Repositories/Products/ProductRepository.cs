@@ -38,8 +38,11 @@ public class ProductRepository : IProductRepository
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var searchFilter = new PredicateExpression(ProductFields.Name % $"%{search}%");
-            searchFilter.AddWithOr(ProductFields.Sku % $"%{search}%");
+            var searchFilter = new PredicateExpression();
+            searchFilter.AddWithOr(ProductFields.Name.UnaccentILike(search));
+            searchFilter.AddWithOr(ProductFields.Description.UnaccentILike(search));
+            searchFilter.AddWithOr(ProductFields.Slug.UnaccentILike(search));
+            searchFilter.AddWithOr(ProductFields.Sku.UnaccentILike(search));
             predicate.AddWithAnd(searchFilter);
         }
 

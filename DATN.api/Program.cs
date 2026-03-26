@@ -13,8 +13,17 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
+// Add AntiForgery protection
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-XSRF-TOKEN";
+});
+
+// Add services to the container with global CSRF validation filter
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute());
+});
 builder.Services.AddMemoryCache();
 
 // Add Swagger/OpenAPI with JWT support
@@ -101,7 +110,7 @@ builder.Services.AddCors(options =>
             options.AddPolicy("AllowSpecificOrigins", policy =>
             {
                 policy
-                    .WithOrigins("http://localhost:4200", "https://api/sepay.vn", "https://grocery-ecommerce.azurewebsites.net", "https://groceryecommerce.live")
+                    .WithOrigins("http://localhost:4200")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
@@ -123,6 +132,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
+
+// Thêm Antiforgery middleware (được khuyến nghị)
+app.UseAntiforgery();
 
 app.MapControllers();
 app.Run();

@@ -8,6 +8,7 @@ using DATN_2026.HelperClasses;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
+using DATN.Infrastructure.Extensions;
 
 namespace DATN.Infrastructure.Persistence.Repositories.Products;
 
@@ -54,8 +55,9 @@ public class ProductVariantRepository : IProductVariantRepository
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var searchFilter = new PredicateExpression(ProductVariantFields.Name % $"%{search}%");
-            searchFilter.AddWithOr(ProductVariantFields.Sku % $"%{search}%");
+            var searchFilter = new PredicateExpression();
+            searchFilter.AddWithOr(ProductVariantFields.Name.UnaccentILike(search));
+            searchFilter.AddWithOr(ProductVariantFields.Sku.UnaccentILike(search));
             filter.AddWithAnd(searchFilter);
         }
 
