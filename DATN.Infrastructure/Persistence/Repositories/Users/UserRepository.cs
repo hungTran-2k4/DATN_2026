@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using DATN.Application.Interfaces.Services;
 using DATN.Domain.Interfaces;
 using DATN.Domain.Entities.Identity;
+using DATN.Domain.Common.Models;
+using DATN.Infrastructure.Extensions;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
 using SD.LLBLGen.Pro.QuerySpec.Adapter;
@@ -75,6 +77,49 @@ public class UserRepository : IUserRepository
         var entities = await _adapter.FetchQueryAsync(query, cancellationToken);
         
         return _mapper.Map<IEnumerable<User>>(entities);
+    }
+
+    public async Task<(IEnumerable<User> items, int totalCount)> GetPagedAsync(string? search = null, FilterDescriptor? filter = null, int page = 1, int pageSize = 10, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User
+            .WithPath(UserEntity.PrefetchPathUserRoles
+                .WithSubPath(UserRoleEntity.PrefetchPathRole));
+
+        var countQuery = qf.User.Select(Functions.CountRow());
+        var predicate = new PredicateExpression();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var searchPattern = $"%{search}%";
+            predicate.AddWithAnd(UserFields.Email.Like(searchPattern)
+                  .Or(UserFields.Username.Like(searchPattern)));
+        }
+
+        if (filter != null)
+        {
+            var kendoExpression = filter.ToPredicateExpression(new UserEntity().Fields);
+            if (kendoExpression != null)
+            {
+                predicate.AddWithAnd(kendoExpression);
+            }
+        }
+
+        if (predicate.Count > 0)
+        {
+            query = query.Where(predicate);
+            countQuery = countQuery.Where(predicate);
+        }
+
+        int totalCount = await _adapter.FetchScalarAsync<int>(countQuery, cancellationToken);
+        
+        var pagedQuery = query.OrderBy(UserFields.CreatedAt.Descending())
+                              .Offset((page - 1) * pageSize)
+                              .Limit(pageSize);
+                              
+        var entities = await _adapter.FetchQueryAsync(pagedQuery, cancellationToken);
+
+        return (_mapper.Map<IEnumerable<User>>(entities), totalCount);
     }
 
     public async Task<User> CreateAsync(User user, CancellationToken cancellationToken = default)

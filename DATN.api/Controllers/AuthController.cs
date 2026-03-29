@@ -48,13 +48,12 @@ public class AuthController : ControllerBase
 
         if (!result.Success)
         {
-            return Unauthorized(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
-        // Return tokens in body as well for non-browser clients (Mobile/Postman)
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 
     /// <summary>
@@ -79,12 +78,12 @@ public class AuthController : ControllerBase
 
         if (!result.Success)
         {
-            return Unauthorized(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 
     /// <summary>
@@ -109,11 +108,10 @@ public class AuthController : ControllerBase
 
         if (!result.Success)
         {
-            return BadRequest(result);
+            return StatusCode(result.StatusCode, result);
         }
 
-        // Return 201 Created but without tokens (client needs to login)
-         return CreatedAtAction(nameof(LoginWithFirebase), result);
+        return StatusCode(201, result);
     }
 
     /// <summary>
@@ -138,12 +136,12 @@ public class AuthController : ControllerBase
 
         if (!result.Success)
         {
-            return BadRequest(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
-        return CreatedAtAction(nameof(Login), result);
+        return StatusCode(201, result);
     }
 
     /// <summary>
@@ -151,6 +149,9 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost("refresh-token")]
     [AllowAnonymous]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<ApiResponse<AuthResponse>>> RefreshToken()
     {
         var refreshToken = Request.Cookies["refresh_token"];
@@ -165,12 +166,12 @@ public class AuthController : ControllerBase
 
         if (!result.Success)
         {
-            return Unauthorized(result);
+            return StatusCode(result.StatusCode, result);
         }
 
         SetTokenCookies(result.Data!.AccessToken!, result.Data!.RefreshToken!);
         
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 
     /// <summary>
@@ -190,8 +191,8 @@ public class AuthController : ControllerBase
 
         command.UserId = _currentUserService.UserId.Value;
         var result = await _mediator.Send(command);
-        if (!result.Success) return BadRequest(result);
-        return Ok(result);
+
+        return StatusCode(result.StatusCode, result);
     }
 
     private void SetTokenCookies(string accessToken, string refreshToken)
@@ -232,18 +233,56 @@ public class AuthController : ControllerBase
             return Unauthorized(ApiResponse<UserDto>.Fail("Không có quyền truy cập", 401, "UNAUTHORIZED"));
         }
 
-        return Ok(ApiResponse<UserDto>.Succeed(new UserDto
+        var response = ApiResponse<UserDto>.Succeed(new UserDto
         {
             Id = _currentUserService.UserId.Value,
             Email = _currentUserService.Email ?? "",
-            // FullName is not yet in ICurrentUserService (only Email/Id/Roles based on interface), 
-            // but we can parse it from claims if needed or add to Interface.
-            // For now let's stick to what we have or pull generic claim if needed.
-            // Wait, ICurrentUserService usually should expose common claims. 
-            // Let's rely on manual claim for name if missing in service, OR update service.
-            // For now, I'll use the service for what it provides.
             FullName = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value, 
             Roles = _currentUserService.Roles.ToList()
-        }, "Lấy thông tin người dùng thành công"));
+        }, "Lấy thông tin người dùng thành công");
+
+        return StatusCode(response.StatusCode, response);
+    }
+
+    /// <summary>
+    /// Yêu cầu đặt lại mật khẩu (gửi email link reset)
+    /// </summary>
+    [HttpPost("forgot-password")]
+    [AllowAnonymous]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ApiResponse<string>>> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ApiResponse<string>.Fail("Dữ liệu không hợp lệ", 400, "INVALID_DATA"));
+        }
+
+        var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+        var command = new ForgotPasswordCommand(request.Email, ipAddress);
+        var result = await _mediator.Send(command);
+
+        return StatusCode(result.StatusCode, result);
+    }
+
+    /// <summary>
+    /// Đặt lại mật khẩu bằng token từ email
+    /// </summary>
+    [HttpPost("reset-password")]
+    [AllowAnonymous]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ApiResponse<string>>> ResetPassword([FromBody] ResetPasswordRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ApiResponse<string>.Fail("Dữ liệu không hợp lệ", 400, "INVALID_DATA"));
+        }
+
+        var command = new ResetPasswordCommand(request.Email, request.Token, request.NewPassword);
+        var result = await _mediator.Send(command);
+
+        return StatusCode(result.StatusCode, result);
     }
 }

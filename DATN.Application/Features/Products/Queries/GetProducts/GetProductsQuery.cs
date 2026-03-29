@@ -7,20 +7,13 @@ using System.Collections.Generic;
 
 namespace DATN.Application.Features.Products.Queries.GetProducts;
 
-public class GetProductsQuery : IRequest<PagedResponse<IEnumerable<ProductDto>>>
+public class GetProductsQuery : PagedRequest, IRequest<PagedResponse<IEnumerable<ProductDto>>>
 {
     public Guid? ShopId { get; set; }
-    public string? Search { get; set; }
-    public FilterDescriptor? Filter { get; set; }
-    public int Page { get; set; }
-    public int PageSize { get; set; }
 
     public GetProductsQuery(Guid? shopId = null, string? search = null, FilterDescriptor? filter = null, int page = 1, int pageSize = 20)
+        : base(search, filter, page, pageSize)
     {
         ShopId = shopId;
-        Search = search;
-        Filter = filter;
-        Page = page;
-        PageSize = pageSize;
     }
 }

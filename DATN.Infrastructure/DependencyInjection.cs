@@ -82,6 +82,7 @@ public static class DependencyInjection
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IVoucherRepository, VoucherRepository>();
         services.AddScoped<IStockRepository, StockRepository>();
+        services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
         
         // Register Auth services
         services.AddScoped<IJwtService, JwtService>();

@@ -48,6 +48,8 @@ namespace DATN_2026.Linq
 					return this.LoginAttempt;
 				case DATN_2026.EntityType.UserAuditLogEntity:
 					return this.UserAuditLog;
+				case DATN_2026.EntityType.PasswordResetTokenEntity:
+					return this.PasswordResetToken;
 				case DATN_2026.EntityType.PermissionEntity:
 					return this.Permission;
 				case DATN_2026.EntityType.RefreshTokenEntity:
@@ -135,6 +137,9 @@ namespace DATN_2026.Linq
 		
 		/// <summary>returns the datasource to use in a Linq query when targeting UserAuditLogEntity instances in the database.</summary>
 		public DataSource2<UserAuditLogEntity> UserAuditLog {	get { return new DataSource2<UserAuditLogEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
+		/// <summary>returns the datasource to use in a Linq query when targeting PasswordResetTokenEntity instances in the database.</summary>
+		public DataSource2<PasswordResetTokenEntity> PasswordResetToken {	get { return new DataSource2<PasswordResetTokenEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
 		/// <summary>returns the datasource to use in a Linq query when targeting PermissionEntity instances in the database.</summary>
 		public DataSource2<PermissionEntity> Permission {	get { return new DataSource2<PermissionEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }

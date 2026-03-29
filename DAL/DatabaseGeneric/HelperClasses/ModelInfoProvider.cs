@@ -43,6 +43,7 @@ namespace DATN_2026.HelperClasses
 			this.InitClass();
 			InitLoginAttemptEntityInfo();
 			InitUserAuditLogEntityInfo();
+			InitPasswordResetTokenEntityInfo();
 			InitPermissionEntityInfo();
 			InitRefreshTokenEntityInfo();
 			InitRoleEntityInfo();
@@ -73,6 +74,7 @@ namespace DATN_2026.HelperClasses
 			InitTransactionEntityInfo();
 			InitauditLoginAttemptTypedViewInfo();
 			InitauditUserAuditLogTypedViewInfo();
+			Initauth2PasswordResetTokenTypedViewInfo();
 			Initauth2PermissionTypedViewInfo();
 			Initauth2RefreshTokenTypedViewInfo();
 			Initauth2RoleTypedViewInfo();
@@ -129,6 +131,20 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("UserAuditLogEntity", "TargetType", typeof(System.String), false, false, false, true,  (int)UserAuditLogFieldIndex.TargetType, 50, 0, 0);
 			this.AddElementFieldInfo("UserAuditLogEntity", "UserAgent", typeof(System.String), false, false, false, true,  (int)UserAuditLogFieldIndex.UserAgent, 1073741824, 0, 0);
 			this.AddElementFieldInfo("UserAuditLogEntity", "UserId", typeof(Nullable<System.Guid>), false, false, false, true,  (int)UserAuditLogFieldIndex.UserId, 0, 0, 0);
+		}
+
+		/// <summary>Inits PasswordResetTokenEntity's info objects</summary>
+		private void InitPasswordResetTokenEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(PasswordResetTokenFieldIndex), "PasswordResetTokenEntity");
+			this.AddElementFieldInfo("PasswordResetTokenEntity", "CreatedAt", typeof(System.DateTime), false, false, false, false,  (int)PasswordResetTokenFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("PasswordResetTokenEntity", "ExpiresAt", typeof(System.DateTime), false, false, false, false,  (int)PasswordResetTokenFieldIndex.ExpiresAt, 0, 0, 0);
+			this.AddElementFieldInfo("PasswordResetTokenEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)PasswordResetTokenFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("PasswordResetTokenEntity", "IpAddress", typeof(System.String), false, false, false, true,  (int)PasswordResetTokenFieldIndex.IpAddress, 45, 0, 0);
+			this.AddElementFieldInfo("PasswordResetTokenEntity", "IsUsed", typeof(System.Boolean), false, false, false, false,  (int)PasswordResetTokenFieldIndex.IsUsed, 0, 0, 0);
+			this.AddElementFieldInfo("PasswordResetTokenEntity", "TokenHash", typeof(System.String), false, false, false, false,  (int)PasswordResetTokenFieldIndex.TokenHash, 255, 0, 0);
+			this.AddElementFieldInfo("PasswordResetTokenEntity", "UsedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)PasswordResetTokenFieldIndex.UsedAt, 0, 0, 0);
+			this.AddElementFieldInfo("PasswordResetTokenEntity", "UserId", typeof(System.Guid), false, true, false, false,  (int)PasswordResetTokenFieldIndex.UserId, 0, 0, 0);
 		}
 
 		/// <summary>Inits PermissionEntity's info objects</summary>
@@ -522,6 +538,20 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("auditUserAuditLogTypedView", "IpAddress", typeof(System.String), false, false, true, false, (int)auditUserAuditLogFieldIndex.IpAddress, 45, 0, 0);
 			this.AddElementFieldInfo("auditUserAuditLogTypedView", "UserAgent", typeof(System.String), false, false, true, false, (int)auditUserAuditLogFieldIndex.UserAgent, 1073741824, 0, 0);
 			this.AddElementFieldInfo("auditUserAuditLogTypedView", "CreatedAt", typeof(System.DateTime), false, false, true, false, (int)auditUserAuditLogFieldIndex.CreatedAt, 0, 0, 0);
+		}
+
+		/// <summary>Inits auth2PasswordResetTokenView's info objects</summary>
+		private void Initauth2PasswordResetTokenTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(auth2PasswordResetTokenFieldIndex), "auth2PasswordResetTokenTypedView");
+			this.AddElementFieldInfo("auth2PasswordResetTokenTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)auth2PasswordResetTokenFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("auth2PasswordResetTokenTypedView", "UserId", typeof(System.Guid), false, false, true, false, (int)auth2PasswordResetTokenFieldIndex.UserId, 0, 0, 0);
+			this.AddElementFieldInfo("auth2PasswordResetTokenTypedView", "TokenHash", typeof(System.String), false, false, true, false, (int)auth2PasswordResetTokenFieldIndex.TokenHash, 255, 0, 0);
+			this.AddElementFieldInfo("auth2PasswordResetTokenTypedView", "ExpiresAt", typeof(System.DateTime), false, false, true, false, (int)auth2PasswordResetTokenFieldIndex.ExpiresAt, 0, 0, 0);
+			this.AddElementFieldInfo("auth2PasswordResetTokenTypedView", "IsUsed", typeof(System.Boolean), false, false, true, false, (int)auth2PasswordResetTokenFieldIndex.IsUsed, 0, 0, 0);
+			this.AddElementFieldInfo("auth2PasswordResetTokenTypedView", "UsedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)auth2PasswordResetTokenFieldIndex.UsedAt, 0, 0, 0);
+			this.AddElementFieldInfo("auth2PasswordResetTokenTypedView", "CreatedAt", typeof(System.DateTime), false, false, true, false, (int)auth2PasswordResetTokenFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("auth2PasswordResetTokenTypedView", "IpAddress", typeof(System.String), false, false, true, false, (int)auth2PasswordResetTokenFieldIndex.IpAddress, 45, 0, 0);
 		}
 
 		/// <summary>Inits auth2PermissionView's info objects</summary>

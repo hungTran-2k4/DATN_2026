@@ -38,6 +38,7 @@ namespace DATN_2026.DatabaseSpecific
 			this.InitClass();
 			InitLoginAttemptEntityMappings();
 			InitUserAuditLogEntityMappings();
+			InitPasswordResetTokenEntityMappings();
 			InitPermissionEntityMappings();
 			InitRefreshTokenEntityMappings();
 			InitRoleEntityMappings();
@@ -68,6 +69,7 @@ namespace DATN_2026.DatabaseSpecific
 			InitTransactionEntityMappings();
 			InitauditLoginAttemptTypedViewMappings();
 			InitauditUserAuditLogTypedViewMappings();
+			Initauth2PasswordResetTokenTypedViewMappings();
 			Initauth2PermissionTypedViewMappings();
 			Initauth2RefreshTokenTypedViewMappings();
 			Initauth2RoleTypedViewMappings();
@@ -123,6 +125,20 @@ namespace DATN_2026.DatabaseSpecific
 			this.AddElementFieldMapping("UserAuditLogEntity", "TargetType", "target_type", true, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 6);
 			this.AddElementFieldMapping("UserAuditLogEntity", "UserAgent", "user_agent", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 7);
 			this.AddElementFieldMapping("UserAuditLogEntity", "UserId", "user_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 8);
+		}
+
+		/// <summary>Inits PasswordResetTokenEntity's mappings</summary>
+		private void InitPasswordResetTokenEntityMappings()
+		{
+			this.AddElementMapping("PasswordResetTokenEntity", @"postgres", @"auth2", "password_reset_tokens", 8, 0);
+			this.AddElementFieldMapping("PasswordResetTokenEntity", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 0);
+			this.AddElementFieldMapping("PasswordResetTokenEntity", "ExpiresAt", "expires_at", false, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 1);
+			this.AddElementFieldMapping("PasswordResetTokenEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("PasswordResetTokenEntity", "IpAddress", "ip_address", true, "Varchar", 45, 0, 0, false, "", null, typeof(System.String), 3);
+			this.AddElementFieldMapping("PasswordResetTokenEntity", "IsUsed", "is_used", false, "Boolean", 0, 0, 0, false, "", null, typeof(System.Boolean), 4);
+			this.AddElementFieldMapping("PasswordResetTokenEntity", "TokenHash", "token_hash", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 5);
+			this.AddElementFieldMapping("PasswordResetTokenEntity", "UsedAt", "used_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 6);
+			this.AddElementFieldMapping("PasswordResetTokenEntity", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 7);
 		}
 
 		/// <summary>Inits PermissionEntity's mappings</summary>
@@ -517,6 +533,20 @@ namespace DATN_2026.DatabaseSpecific
 			this.AddElementFieldMapping("auditUserAuditLogTypedView", "IpAddress", "ip_address", false, "Varchar", 45, 0, 0, false, string.Empty, null, typeof(System.String), 6);
 			this.AddElementFieldMapping("auditUserAuditLogTypedView", "UserAgent", "user_agent", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 7);
 			this.AddElementFieldMapping("auditUserAuditLogTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 8);
+		}
+
+		/// <summary>Inits auth2PasswordResetTokenView's mappings</summary>
+		private void Initauth2PasswordResetTokenTypedViewMappings()
+		{
+			this.AddElementMapping("auth2PasswordResetTokenTypedView", @"postgres", @"auth2", "password_reset_tokens", 8);
+			this.AddElementFieldMapping("auth2PasswordResetTokenTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("auth2PasswordResetTokenTypedView", "UserId", "user_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("auth2PasswordResetTokenTypedView", "TokenHash", "token_hash", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 2);
+			this.AddElementFieldMapping("auth2PasswordResetTokenTypedView", "ExpiresAt", "expires_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 3);
+			this.AddElementFieldMapping("auth2PasswordResetTokenTypedView", "IsUsed", "is_used", false, "Boolean", 0, 0, 0, false, string.Empty, null, typeof(System.Boolean), 4);
+			this.AddElementFieldMapping("auth2PasswordResetTokenTypedView", "UsedAt", "used_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 5);
+			this.AddElementFieldMapping("auth2PasswordResetTokenTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 6);
+			this.AddElementFieldMapping("auth2PasswordResetTokenTypedView", "IpAddress", "ip_address", false, "Varchar", 45, 0, 0, false, string.Empty, null, typeof(System.String), 7);
 		}
 
 		/// <summary>Inits auth2PermissionView's mappings</summary>

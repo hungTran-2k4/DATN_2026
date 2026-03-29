@@ -24,6 +24,9 @@ namespace DATN_2026.FactoryClasses
 		/// <summary>Creates and returns a new EntityQuery for the UserAuditLog entity</summary>
 		public EntityQuery<UserAuditLogEntity> UserAuditLog { get { return Create<UserAuditLogEntity>(); } }
 
+		/// <summary>Creates and returns a new EntityQuery for the PasswordResetToken entity</summary>
+		public EntityQuery<PasswordResetTokenEntity> PasswordResetToken { get { return Create<PasswordResetTokenEntity>(); } }
+
 		/// <summary>Creates and returns a new EntityQuery for the Permission entity</summary>
 		public EntityQuery<PermissionEntity> Permission { get { return Create<PermissionEntity>(); } }
 
@@ -121,6 +124,12 @@ namespace DATN_2026.FactoryClasses
 		public DynamicQuery<DATN_2026.TypedViewClasses.auditUserAuditLogRow> auditUserAuditLog
 		{
 			get { return this.Create().Select<DATN_2026.TypedViewClasses.auditUserAuditLogRow, DATN_2026.HelperClasses.auditUserAuditLogFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2PasswordResetToken</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.auth2PasswordResetTokenRow> auth2PasswordResetToken
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.auth2PasswordResetTokenRow, DATN_2026.HelperClasses.auth2PasswordResetTokenFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Auth2.auth2Permission</summary>

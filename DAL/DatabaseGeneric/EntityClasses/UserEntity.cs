@@ -26,6 +26,7 @@ namespace DATN_2026.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
+		private EntityCollection<PasswordResetTokenEntity> _passwordResetTokens;
 		private EntityCollection<RefreshTokenEntity> _refreshTokens;
 		private EntityCollection<UserAddressEntity> _userAddresses;
 		private EntityCollection<UserRoleEntity> _userRoles;
@@ -48,6 +49,8 @@ namespace DATN_2026.EntityClasses
 		/// <summary>All names of fields mapped onto a relation. Usable for in-memory filtering</summary>
 		public static partial class MemberNames
 		{
+			/// <summary>Member name PasswordResetTokens</summary>
+			public static readonly string PasswordResetTokens = "PasswordResetTokens";
 			/// <summary>Member name RefreshTokens</summary>
 			public static readonly string RefreshTokens = "RefreshTokens";
 			/// <summary>Member name UserAddresses</summary>
@@ -82,6 +85,7 @@ namespace DATN_2026.EntityClasses
 			public UserEntityStaticMetaData()
 			{
 				SetEntityCoreInfo("UserEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.UserEntity, typeof(UserEntity), typeof(UserEntityFactory), false);
+				AddNavigatorMetaData<UserEntity, EntityCollection<PasswordResetTokenEntity>>("PasswordResetTokens", a => a._passwordResetTokens, (a, b) => a._passwordResetTokens = b, a => a.PasswordResetTokens, () => new UserRelations().PasswordResetTokenEntityUsingUserId, typeof(PasswordResetTokenEntity), (int)DATN_2026.EntityType.PasswordResetTokenEntity);
 				AddNavigatorMetaData<UserEntity, EntityCollection<RefreshTokenEntity>>("RefreshTokens", a => a._refreshTokens, (a, b) => a._refreshTokens = b, a => a.RefreshTokens, () => new UserRelations().RefreshTokenEntityUsingUserId, typeof(RefreshTokenEntity), (int)DATN_2026.EntityType.RefreshTokenEntity);
 				AddNavigatorMetaData<UserEntity, EntityCollection<UserAddressEntity>>("UserAddresses", a => a._userAddresses, (a, b) => a._userAddresses = b, a => a.UserAddresses, () => new UserRelations().UserAddressEntityUsingUserId, typeof(UserAddressEntity), (int)DATN_2026.EntityType.UserAddressEntity);
 				AddNavigatorMetaData<UserEntity, EntityCollection<UserRoleEntity>>("UserRoles", a => a._userRoles, (a, b) => a._userRoles = b, a => a.UserRoles, () => new UserRelations().UserRoleEntityUsingUserId, typeof(UserRoleEntity), (int)DATN_2026.EntityType.UserRoleEntity);
@@ -165,6 +169,10 @@ namespace DATN_2026.EntityClasses
  			return filter;
 		}
 
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'PasswordResetToken' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoPasswordResetTokens() { return CreateRelationInfoForNavigator("PasswordResetTokens"); }
+
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'RefreshToken' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoRefreshTokens() { return CreateRelationInfoForNavigator("RefreshTokens"); }
@@ -246,6 +254,10 @@ namespace DATN_2026.EntityClasses
 
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static UserRelations Relations { get { return _relationsFactory; } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'PasswordResetToken' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathPasswordResetTokens { get { return _staticMetaData.GetPrefetchPathElement("PasswordResetTokens", CommonEntityBase.CreateEntityCollection<PasswordResetTokenEntity>()); } }
 
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'RefreshToken' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
@@ -379,6 +391,10 @@ namespace DATN_2026.EntityClasses
 			set { SetValue((int)UserFieldIndex.Username, value); }
 		}
 
+		/// <summary>Gets the EntityCollection with the related entities of type 'PasswordResetTokenEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(PasswordResetTokenEntity))]
+		public virtual EntityCollection<PasswordResetTokenEntity> PasswordResetTokens { get { return GetOrCreateEntityCollection<PasswordResetTokenEntity, PasswordResetTokenEntityFactory>("User", true, false, ref _passwordResetTokens); } }
+
 		/// <summary>Gets the EntityCollection with the related entities of type 'RefreshTokenEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
 		[TypeContainedAttribute(typeof(RefreshTokenEntity))]
 		public virtual EntityCollection<RefreshTokenEntity> RefreshTokens { get { return GetOrCreateEntityCollection<RefreshTokenEntity, RefreshTokenEntityFactory>("User", true, false, ref _refreshTokens); } }
@@ -471,6 +487,12 @@ namespace DATN_2026.RelationClasses
 	/// <summary>Implements the relations factory for the entity: User. </summary>
 	public partial class UserRelations: RelationFactory
 	{
+		/// <summary>Returns a new IEntityRelation object, between UserEntity and PasswordResetTokenEntity over the 1:n relation they have, using the relation between the fields: User.Id - PasswordResetToken.UserId</summary>
+		public virtual IEntityRelation PasswordResetTokenEntityUsingUserId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "PasswordResetTokens", true, new[] { UserFields.Id, PasswordResetTokenFields.UserId }); }
+		}
+
 		/// <summary>Returns a new IEntityRelation object, between UserEntity and RefreshTokenEntity over the 1:n relation they have, using the relation between the fields: User.Id - RefreshToken.UserId</summary>
 		public virtual IEntityRelation RefreshTokenEntityUsingUserId
 		{
@@ -554,6 +576,7 @@ namespace DATN_2026.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticUserRelations
 	{
+		internal static readonly IEntityRelation PasswordResetTokenEntityUsingUserIdStatic = new UserRelations().PasswordResetTokenEntityUsingUserId;
 		internal static readonly IEntityRelation RefreshTokenEntityUsingUserIdStatic = new UserRelations().RefreshTokenEntityUsingUserId;
 		internal static readonly IEntityRelation UserAddressEntityUsingUserIdStatic = new UserRelations().UserAddressEntityUsingUserId;
 		internal static readonly IEntityRelation UserRoleEntityUsingUserIdStatic = new UserRelations().UserRoleEntityUsingUserId;

@@ -84,6 +84,16 @@ namespace DATN_2026.FactoryClasses
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new UserAuditLogEntity(fields); }
 	}
 
+	/// <summary>Factory to create new, empty PasswordResetTokenEntity objects.</summary>
+	[Serializable]
+	public partial class PasswordResetTokenEntityFactory : EntityFactoryBase2<PasswordResetTokenEntity> 
+	{
+		/// <summary>CTor</summary>
+		public PasswordResetTokenEntityFactory() : base("PasswordResetTokenEntity", DATN_2026.EntityType.PasswordResetTokenEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new PasswordResetTokenEntity(fields); }
+	}
+
 	/// <summary>Factory to create new, empty PermissionEntity objects.</summary>
 	[Serializable]
 	public partial class PermissionEntityFactory : EntityFactoryBase2<PermissionEntity> 
@@ -415,6 +425,8 @@ namespace DATN_2026.FactoryClasses
 					return new LoginAttemptEntityFactory();
 				case DATN_2026.EntityType.UserAuditLogEntity:
 					return new UserAuditLogEntityFactory();
+				case DATN_2026.EntityType.PasswordResetTokenEntity:
+					return new PasswordResetTokenEntityFactory();
 				case DATN_2026.EntityType.PermissionEntity:
 					return new PermissionEntityFactory();
 				case DATN_2026.EntityType.RefreshTokenEntity:

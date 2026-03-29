@@ -20,19 +20,17 @@ namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
-
 	/// <summary>Entity class which represents the entity 'ChatMessage'.<br/><br/></summary>
 	[Serializable]
 	public partial class ChatMessageEntity : CommonEntityBase
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
-		// __LLBLGENPRO_USER_CODE_REGION_END
-	
+		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
 		private UserEntity _user;
 		private ChatBoxEntity _chatBox;
+
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
-
 		private static ChatMessageEntityStaticMetaData _staticMetaData = new ChatMessageEntityStaticMetaData();
 		private static ChatMessageRelations _relationsFactory = new ChatMessageRelations();
 
@@ -122,7 +120,6 @@ namespace DATN_2026.EntityClasses
 			PerformDependencyInjection();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassMembers
 			// __LLBLGENPRO_USER_CODE_REGION_END
-
 			OnInitClassMembersComplete();
 		}
 
@@ -137,7 +134,6 @@ namespace DATN_2026.EntityClasses
 			InitClassMembers();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassEmpty
 			// __LLBLGENPRO_USER_CODE_REGION_END
-
 
 			OnInitialized();
 		}
@@ -224,9 +220,9 @@ namespace DATN_2026.EntityClasses
 			get { return _chatBox; }
 			set { SetSingleRelatedEntityNavigator(value, "ChatBox"); }
 		}
+
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
-
 
 	}
 }

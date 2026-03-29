@@ -51,6 +51,28 @@ namespace DATN_2026
 		/// <summary></summary>
 		AmountOfFields
 	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : auth2PasswordResetToken.</summary>
+	public enum auth2PasswordResetTokenFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>UserId</summary>
+		UserId,
+		///<summary>TokenHash</summary>
+		TokenHash,
+		///<summary>ExpiresAt</summary>
+		ExpiresAt,
+		///<summary>IsUsed</summary>
+		IsUsed,
+		///<summary>UsedAt</summary>
+		UsedAt,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
+		///<summary>IpAddress</summary>
+		IpAddress,
+		/// <summary></summary>
+		AmountOfFields
+	}
 	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : auth2Permission.</summary>
 	public enum auth2PermissionFieldIndex
 	{
@@ -624,6 +646,8 @@ namespace DATN_2026
 		LoginAttemptEntity,
 		///<summary>UserAuditLog</summary>
 		UserAuditLogEntity,
+		///<summary>PasswordResetToken</summary>
+		PasswordResetTokenEntity,
 		///<summary>Permission</summary>
 		PermissionEntity,
 		///<summary>RefreshToken</summary>
@@ -689,6 +713,8 @@ namespace DATN_2026
 		auditLoginAttemptTypedView,
 		///<summary>auditUserAuditLog</summary>
 		auditUserAuditLogTypedView,
+		///<summary>auth2PasswordResetToken</summary>
+		auth2PasswordResetTokenTypedView,
 		///<summary>auth2Permission</summary>
 		auth2PermissionTypedView,
 		///<summary>auth2RefreshToken</summary>

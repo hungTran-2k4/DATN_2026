@@ -1,5 +1,5 @@
-﻿using DATN.Domain.Entities.Identity;
-
+using DATN.Domain.Entities.Identity;
+using DATN.Domain.Common.Models;
 namespace DATN.Domain.Interfaces;
 
 /// <summary>
@@ -41,6 +41,12 @@ public interface IUserRepository
     /// Gán role cho user
     /// </summary>
     Task AssignRoleAsync(Guid userId, Guid roleId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Lấy danh sách users có phân trang và tìm kiếm
+    /// </summary>
+    Task<(IEnumerable<User> items, int totalCount)> GetPagedAsync(string? search = null, FilterDescriptor? filter = null, int page = 1, int pageSize = 10, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Lấy danh sách tất cả users
     /// </summary>

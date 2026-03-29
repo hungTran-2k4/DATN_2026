@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DATN.Application.Features.Users.Commands;
@@ -20,15 +20,14 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Lấy danh sách tất cả users (Admin Only)
+    /// Lấy danh sách users (Admin Only, có phân trang, hỗ trợ Kendo filter)
     /// </summary>
-    [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
+    [HttpPost("paging")]
+    [ProducesResponseType(typeof(DATN.Application.Common.Models.PagedResponse<IEnumerable<UserDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
+    public async Task<ActionResult<DATN.Application.Common.Models.PagedResponse<IEnumerable<UserDto>>>> SearchUsers([FromBody] GetUsersQuery query)
     {
-        var query = new GetUsersQuery();
         var result = await _mediator.Send(query);
         return Ok(result);
     }

@@ -50,6 +50,27 @@ namespace DATN_2026.HelperClasses
 		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(UserAuditLogFieldIndex.UserId); }}
 	}
 
+	/// <summary>Field Creation Class for entity PasswordResetTokenEntity</summary>
+	public partial class PasswordResetTokenFields
+	{
+		/// <summary>Creates a new PasswordResetTokenEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PasswordResetTokenFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new PasswordResetTokenEntity.ExpiresAt field instance</summary>
+		public static EntityField2 ExpiresAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PasswordResetTokenFieldIndex.ExpiresAt); }}
+		/// <summary>Creates a new PasswordResetTokenEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PasswordResetTokenFieldIndex.Id); }}
+		/// <summary>Creates a new PasswordResetTokenEntity.IpAddress field instance</summary>
+		public static EntityField2 IpAddress { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PasswordResetTokenFieldIndex.IpAddress); }}
+		/// <summary>Creates a new PasswordResetTokenEntity.IsUsed field instance</summary>
+		public static EntityField2 IsUsed { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PasswordResetTokenFieldIndex.IsUsed); }}
+		/// <summary>Creates a new PasswordResetTokenEntity.TokenHash field instance</summary>
+		public static EntityField2 TokenHash { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PasswordResetTokenFieldIndex.TokenHash); }}
+		/// <summary>Creates a new PasswordResetTokenEntity.UsedAt field instance</summary>
+		public static EntityField2 UsedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PasswordResetTokenFieldIndex.UsedAt); }}
+		/// <summary>Creates a new PasswordResetTokenEntity.UserId field instance</summary>
+		public static EntityField2 UserId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PasswordResetTokenFieldIndex.UserId); }}
+	}
+
 	/// <summary>Field Creation Class for entity PermissionEntity</summary>
 	public partial class PermissionFields
 	{
@@ -625,6 +646,27 @@ namespace DATN_2026.HelperClasses
 		public static EntityField2 UserAgent	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auditUserAuditLogFieldIndex.UserAgent); } }
 		/// <summary>Creates a new auditUserAuditLogTypedView.CreatedAt field instance</summary>
 		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auditUserAuditLogFieldIndex.CreatedAt); } }
+	}
+
+	/// <summary>Field Creation Class for typedview auth2PasswordResetTokenTypedView</summary>
+	public partial class auth2PasswordResetTokenFields
+	{
+		/// <summary>Creates a new auth2PasswordResetTokenTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2PasswordResetTokenFieldIndex.Id); } }
+		/// <summary>Creates a new auth2PasswordResetTokenTypedView.UserId field instance</summary>
+		public static EntityField2 UserId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2PasswordResetTokenFieldIndex.UserId); } }
+		/// <summary>Creates a new auth2PasswordResetTokenTypedView.TokenHash field instance</summary>
+		public static EntityField2 TokenHash	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2PasswordResetTokenFieldIndex.TokenHash); } }
+		/// <summary>Creates a new auth2PasswordResetTokenTypedView.ExpiresAt field instance</summary>
+		public static EntityField2 ExpiresAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2PasswordResetTokenFieldIndex.ExpiresAt); } }
+		/// <summary>Creates a new auth2PasswordResetTokenTypedView.IsUsed field instance</summary>
+		public static EntityField2 IsUsed	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2PasswordResetTokenFieldIndex.IsUsed); } }
+		/// <summary>Creates a new auth2PasswordResetTokenTypedView.UsedAt field instance</summary>
+		public static EntityField2 UsedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2PasswordResetTokenFieldIndex.UsedAt); } }
+		/// <summary>Creates a new auth2PasswordResetTokenTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2PasswordResetTokenFieldIndex.CreatedAt); } }
+		/// <summary>Creates a new auth2PasswordResetTokenTypedView.IpAddress field instance</summary>
+		public static EntityField2 IpAddress	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(auth2PasswordResetTokenFieldIndex.IpAddress); } }
 	}
 
 	/// <summary>Field Creation Class for typedview auth2PermissionTypedView</summary>

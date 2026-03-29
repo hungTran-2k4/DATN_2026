@@ -13,17 +13,14 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add AntiForgery protection
-builder.Services.AddAntiforgery(options =>
-{
-    options.HeaderName = "X-XSRF-TOKEN";
-});
+// [CSRF] Tạm tắt cho môi trường dev local. Bật lại khi deploy production.
+// builder.Services.AddAntiforgery(options =>
+// {
+//     options.HeaderName = "X-XSRF-TOKEN";
+// });
 
-// Add services to the container with global CSRF validation filter
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute());
-});
+// Add services to the container
+builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
 
 // Add Swagger/OpenAPI with JWT support
@@ -133,8 +130,8 @@ app.UseAuthentication();
 app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
 
-// Thêm Antiforgery middleware (được khuyến nghị)
-app.UseAntiforgery();
+// [CSRF] Tạm tắt cho môi trường dev local. Bật lại khi deploy production.
+// app.UseAntiforgery();
 
 app.MapControllers();
 app.Run();

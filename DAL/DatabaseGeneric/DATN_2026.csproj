@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -7,7 +8,6 @@
     <AssemblyName>DATN_2026</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="SD.LLBLGen.Pro.ORMSupportClasses" Version="5.12.2-hotfix-20251212" />
   </ItemGroup>
