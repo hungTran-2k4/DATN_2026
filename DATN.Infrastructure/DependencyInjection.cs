@@ -19,6 +19,7 @@ using DATN.Infrastructure.Persistence.Repositories.Shops;
 using DATN.Infrastructure.Persistence.Repositories.Categories;
 using DATN.Infrastructure.Persistence.Repositories.Orders;
 using DATN.Infrastructure.Services;
+using DATN.Infrastructure.Persistence.Repositories.Audit;
 using DATN_2026.DatabaseSpecific;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.DQE.PostgreSql;
@@ -83,6 +84,8 @@ public static class DependencyInjection
         services.AddScoped<IVoucherRepository, VoucherRepository>();
         services.AddScoped<IStockRepository, StockRepository>();
         services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
+        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        services.AddScoped<IUserSessionRepository, UserSessionRepository>();
         
         // Register Auth services
         services.AddScoped<IJwtService, JwtService>();

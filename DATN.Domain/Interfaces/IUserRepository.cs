@@ -66,4 +66,34 @@ public interface IUserRepository
     /// Reset số lần đăng nhập sai về 0 và xóa LockoutEnd
     /// </summary>
     Task ResetFailedLoginAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Lấy user theo Id kèm UserRoles + Role (cho chi tiết)
+    /// </summary>
+    Task<User?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Khóa tài khoản user (Admin action)
+    /// </summary>
+    Task LockUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Mở khóa tài khoản user (Admin action)
+    /// </summary>
+    Task UnlockUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Vô hiệu hóa tài khoản (dài hạn)
+    /// </summary>
+    Task DeactivateUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Kích hoạt lại tài khoản
+    /// </summary>
+    Task ActivateUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Lấy status hiện tại của user
+    /// </summary>
+    Task<string?> GetUserStatusAsync(Guid userId, CancellationToken cancellationToken = default);
 }

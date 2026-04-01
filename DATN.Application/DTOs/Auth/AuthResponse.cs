@@ -1,4 +1,4 @@
-﻿namespace DATN.Application.DTOs.Auth;
+namespace DATN.Application.DTOs.Auth;
 
 /// <summary>
 /// Response DTO trả về sau khi đăng nhập/đăng ký thành công
@@ -29,5 +29,10 @@ public class UserDto
     public Guid Id { get; set; }
     public string Email { get; set; } = string.Empty;
     public string? FullName { get; set; }
+    public string? AvatarUrl { get; set; }
+    public string Status { get; set; } = "active";
+    public DateTime CreatedAt { get; set; }
+    public DateTime? LockoutEnd { get; set; }
     public List<string> Roles { get; set; } = new();
 }
+

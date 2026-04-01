@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
@@ -77,6 +77,21 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, ApiResponse<A
                 await _userRepository.ResetFailedLoginAsync(user.Id, cancellationToken);
                 user.FailedLoginCount = 0;
                 user.LockoutEnd = null;
+            }
+
+            // 3.5 Kiểm tra trạng thái tài khoản (locked bởi admin, deactivated)
+            var userStatus = await _userRepository.GetUserStatusAsync(user.Id, cancellationToken);
+            if (userStatus == "locked")
+            {
+                return ApiResponse<AuthResponse>.Fail(
+                    "Tài khoản đã bị khóa bởi quản trị viên. Vui lòng liên hệ hỗ trợ.",
+                    403, "ACCOUNT_LOCKED_BY_ADMIN");
+            }
+            if (userStatus == "deactivated")
+            {
+                return ApiResponse<AuthResponse>.Fail(
+                    "Tài khoản đã bị vô hiệu hóa. Vui lòng liên hệ hỗ trợ.",
+                    403, "ACCOUNT_DEACTIVATED");
             }
 
             // 4. Kiểm tra password

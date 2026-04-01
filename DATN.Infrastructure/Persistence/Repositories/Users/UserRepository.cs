@@ -156,6 +156,8 @@ public class UserRepository : IUserRepository
 
         userEntity.Email = user.Email;
         userEntity.PasswordHash = user.PasswordHash;
+        userEntity.Username = user.FullName ?? userEntity.Username;
+        userEntity.AvatarUrl = user.AvatarUrl;
         userEntity.Status = user.IsActive ? "active" : "inactive";
         userEntity.UpdatedAt = DateTime.Now;
         userEntity.IsNew = false;
@@ -231,4 +233,83 @@ public class UserRepository : IUserRepository
         userEntity.IsNew = false;
         await _adapter.SaveEntityAsync(userEntity, cancellationToken);
     }
+
+    public async Task<User?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User
+            .Where(UserFields.Id == id)
+            .WithPath(UserEntity.PrefetchPathUserRoles
+                .WithSubPath(UserRoleEntity.PrefetchPathRole));
+
+        var entity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        if (entity == null) return null;
+
+        return _mapper.Map<User>(entity);
+    }
+
+    public async Task LockUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User.Where(UserFields.Id == userId);
+        var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        if (userEntity == null) return;
+
+        userEntity.Status = "locked";
+        userEntity.UpdatedAt = DateTime.UtcNow;
+        userEntity.IsNew = false;
+        await _adapter.SaveEntityAsync(userEntity, cancellationToken);
+    }
+
+    public async Task UnlockUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User.Where(UserFields.Id == userId);
+        var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        if (userEntity == null) return;
+
+        userEntity.Status = "active";
+        userEntity.FailedLoginCount = 0;
+        userEntity.LockoutEnd = null;
+        userEntity.UpdatedAt = DateTime.UtcNow;
+        userEntity.IsNew = false;
+        await _adapter.SaveEntityAsync(userEntity, cancellationToken);
+    }
+
+    public async Task DeactivateUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User.Where(UserFields.Id == userId);
+        var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        if (userEntity == null) return;
+
+        userEntity.Status = "deactivated";
+        userEntity.UpdatedAt = DateTime.UtcNow;
+        userEntity.IsNew = false;
+        await _adapter.SaveEntityAsync(userEntity, cancellationToken);
+    }
+
+    public async Task ActivateUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User.Where(UserFields.Id == userId);
+        var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        if (userEntity == null) return;
+
+        userEntity.Status = "active";
+        userEntity.FailedLoginCount = 0;
+        userEntity.LockoutEnd = null;
+        userEntity.UpdatedAt = DateTime.UtcNow;
+        userEntity.IsNew = false;
+        await _adapter.SaveEntityAsync(userEntity, cancellationToken);
+    }
+
+    public async Task<string?> GetUserStatusAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User.Where(UserFields.Id == userId);
+        var entity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        return entity?.Status;
+    }
 }
+
