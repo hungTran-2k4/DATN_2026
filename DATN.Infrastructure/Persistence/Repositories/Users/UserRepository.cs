@@ -4,6 +4,8 @@ using DATN.Application.Interfaces.Services;
 using DATN.Domain.Interfaces;
 using DATN.Domain.Entities.Identity;
 using DATN.Domain.Common.Models;
+using DATN.Domain.Enums;
+using DATN.Domain.Extensions;
 using DATN.Infrastructure.Extensions;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 using SD.LLBLGen.Pro.QuerySpec;
@@ -130,7 +132,7 @@ public class UserRepository : IUserRepository
             Email = user.Email,
             Username = user.Email,
             PasswordHash = user.PasswordHash,
-            Status = user.IsActive ? "active" : "inactive",
+            Status = user.AccountStatus.ToDatabaseString(),
             CreatedAt = user.CreatedAt
         };
         userEntity.IsNew = true;
@@ -158,7 +160,7 @@ public class UserRepository : IUserRepository
         userEntity.PasswordHash = user.PasswordHash;
         userEntity.Username = user.FullName ?? userEntity.Username;
         userEntity.AvatarUrl = user.AvatarUrl;
-        userEntity.Status = user.IsActive ? "active" : "inactive";
+        userEntity.Status = user.AccountStatus.ToDatabaseString();
         userEntity.UpdatedAt = DateTime.Now;
         userEntity.IsNew = false;
 
@@ -255,7 +257,20 @@ public class UserRepository : IUserRepository
         var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
         if (userEntity == null) return;
 
-        userEntity.Status = "locked";
+        userEntity.Status = UserAccountStatus.Locked.ToDatabaseString();
+        userEntity.UpdatedAt = DateTime.UtcNow;
+        userEntity.IsNew = false;
+        await _adapter.SaveEntityAsync(userEntity, cancellationToken);
+    }
+
+    public async Task BanUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var qf = new QueryFactory();
+        var query = qf.User.Where(UserFields.Id == userId);
+        var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
+        if (userEntity == null) return;
+
+        userEntity.Status = UserAccountStatus.Banned.ToDatabaseString();
         userEntity.UpdatedAt = DateTime.UtcNow;
         userEntity.IsNew = false;
         await _adapter.SaveEntityAsync(userEntity, cancellationToken);
@@ -268,7 +283,7 @@ public class UserRepository : IUserRepository
         var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
         if (userEntity == null) return;
 
-        userEntity.Status = "active";
+        userEntity.Status = UserAccountStatus.Active.ToDatabaseString();
         userEntity.FailedLoginCount = 0;
         userEntity.LockoutEnd = null;
         userEntity.UpdatedAt = DateTime.UtcNow;
@@ -283,7 +298,7 @@ public class UserRepository : IUserRepository
         var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
         if (userEntity == null) return;
 
-        userEntity.Status = "deactivated";
+        userEntity.Status = UserAccountStatus.Deactivated.ToDatabaseString();
         userEntity.UpdatedAt = DateTime.UtcNow;
         userEntity.IsNew = false;
         await _adapter.SaveEntityAsync(userEntity, cancellationToken);
@@ -296,20 +311,12 @@ public class UserRepository : IUserRepository
         var userEntity = await _adapter.FetchFirstAsync(query, cancellationToken);
         if (userEntity == null) return;
 
-        userEntity.Status = "active";
+        userEntity.Status = UserAccountStatus.Active.ToDatabaseString();
         userEntity.FailedLoginCount = 0;
         userEntity.LockoutEnd = null;
         userEntity.UpdatedAt = DateTime.UtcNow;
         userEntity.IsNew = false;
         await _adapter.SaveEntityAsync(userEntity, cancellationToken);
-    }
-
-    public async Task<string?> GetUserStatusAsync(Guid userId, CancellationToken cancellationToken = default)
-    {
-        var qf = new QueryFactory();
-        var query = qf.User.Where(UserFields.Id == userId);
-        var entity = await _adapter.FetchFirstAsync(query, cancellationToken);
-        return entity?.Status;
     }
 }
 

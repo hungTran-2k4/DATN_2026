@@ -25,12 +25,6 @@ public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, PagedResponse
         {
             var dto = _mapper.Map<UserDto>(user);
 
-            // Status is now mapped in User object from Repository
-            if (!string.IsNullOrEmpty(user.Status))
-            {
-                dto.Status = user.Status;
-            }
-
             // Roles are already fetched via PrefetchPath in Repository
             if (user.UserRoles != null)
             {

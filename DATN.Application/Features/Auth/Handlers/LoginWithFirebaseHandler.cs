@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using DATN.Application.Features.Auth.Commands;
@@ -6,6 +6,8 @@ using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
+using DATN.Domain.Enums;
+using DATN.Domain.Extensions;
 using System.Net.Http.Json;
 using DATN.Application.Common.Models;
 
@@ -94,6 +96,13 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                         };
                     }
 
+                    var statusDenial = existingUser.AccountStatus.GetLoginDenial();
+                    if (statusDenial != null)
+                    {
+                        return ApiResponse<AuthResponse>.Fail(
+                            statusDenial.Value.Message, 403, statusDenial.Value.ErrorCode);
+                    }
+
                     // Reset nếu lockout đã hết hạn
                     if (existingUser.LockoutEnd.HasValue && existingUser.LockoutEnd.Value <= DateTime.UtcNow)
                     {
@@ -160,7 +169,7 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                     Id = Guid.NewGuid(),
                     Email = email,
                     FullName = paramsResult.displayName ?? email.Split('@')[0],
-                    IsActive = true,
+                    AccountStatus = UserAccountStatus.Active,
                     CreatedAt = DateTime.UtcNow,
                     PasswordHash = _passwordHasher.HashPassword(Guid.NewGuid().ToString()) 
                 };
@@ -200,9 +209,10 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                 }
             }
 
-             if (!user.IsActive)
+            var loginDenial = user.AccountStatus.GetLoginDenial();
+            if (loginDenial != null)
             {
-                return ApiResponse<AuthResponse>.Fail("Tài khoản đã bị vô hiệu hóa", 403, "ACCOUNT_DISABLED");
+                return ApiResponse<AuthResponse>.Fail(loginDenial.Value.Message, 403, loginDenial.Value.ErrorCode);
             }
 
             // Đăng nhập thành công → Reset bộ đếm sai
@@ -237,6 +247,7 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                 Id = user.Id,
                 Email = user.Email,
                 FullName = user.FullName,
+                Status = user.AccountStatus.ToDatabaseString(),
                 Roles = roles.ToList()
             };
 

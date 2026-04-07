@@ -285,4 +285,29 @@ public class AuthController : ControllerBase
 
         return StatusCode(result.StatusCode, result);
     }
+
+    /// <summary>
+    /// Đăng xuất
+    /// </summary>
+    [HttpPost("logout")]
+    [AllowAnonymous]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ApiResponse<bool>>> Logout()
+    {
+        var refreshToken = Request.Cookies["refresh_token"];
+        
+        if (!string.IsNullOrEmpty(refreshToken))
+        {
+            var command = new LogoutCommand(refreshToken);
+            await _mediator.Send(command);
+        }
+
+        // Xoá cookies
+        var cookieOptions = new CookieOptions { Secure = true, SameSite = SameSiteMode.None };
+        Response.Cookies.Delete("access_token", cookieOptions);
+        Response.Cookies.Delete("refresh_token", cookieOptions);
+
+        return Ok(ApiResponse<bool>.Succeed(true, "Đăng xuất thành công"));
+    }
 }

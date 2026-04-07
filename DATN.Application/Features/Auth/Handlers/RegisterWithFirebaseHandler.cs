@@ -1,4 +1,4 @@
-﻿using FirebaseAdmin.Auth;
+using FirebaseAdmin.Auth;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using DATN.Application.Features.Auth.Commands;
@@ -6,6 +6,7 @@ using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
+using DATN.Domain.Enums;
 using DATN.Application.Common.Models;
 
 namespace DATN.Application.Features.Auth.Handlers;
@@ -62,7 +63,7 @@ public class RegisterWithFirebaseHandler : IRequestHandler<RegisterWithFirebaseC
                 Id = Guid.NewGuid(),
                 Email = request.Email,
                 FullName = request.FullName,
-                IsActive = true,
+                AccountStatus = UserAccountStatus.Active,
                 CreatedAt = DateTime.UtcNow,
                 PasswordHash = "FirebaseUser" // Placeholder, not used for authentication
             };

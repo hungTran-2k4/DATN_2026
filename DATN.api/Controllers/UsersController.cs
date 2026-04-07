@@ -48,7 +48,27 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
-    // ──────────────── UPDATE ────────────────
+    // ──────────────── CREATE & UPDATE ────────────────
+
+    /// <summary>
+    /// Admin tạo tài khoản cho User (Khách hàng)
+    /// </summary>
+    [HttpPost("create")]
+    [ProducesResponseType(typeof(ApiResponse<Guid>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<Guid>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
+    {
+        var command = new CreateUserCommand(
+            request.Email,
+            request.FullName,
+            request.Password,
+            request.PhoneNumber,
+            request.RoleIds
+        );
+        var result = await _mediator.Send(command);
+        if (!result.Success) return BadRequest(result);
+        return Created($"/api/users/{result.Data}", result);
+    }
 
     /// <summary>
     /// Admin cập nhật thông tin user (FullName)
@@ -78,6 +98,20 @@ public class UsersController : ControllerBase
         var success = await _mediator.Send(command);
         if (!success) return NotFound(new { Message = "User not found" });
         return Ok(new { Message = "User locked successfully" });
+    }
+
+    /// <summary>
+    /// Cấm tài khoản (vi phạm policy / gian lận) — trạng thái banned
+    /// </summary>
+    [HttpPatch("{userId:guid}/ban")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> BanUser(Guid userId, [FromBody] LockUserRequest? request)
+    {
+        var command = new BanUserCommand(userId, request?.Reason);
+        var success = await _mediator.Send(command);
+        if (!success) return NotFound(new { Message = "User not found" });
+        return Ok(new { Message = "User banned successfully" });
     }
 
     /// <summary>
@@ -238,4 +272,13 @@ public class AssignRoleRequest
 public class UpdateUserRolesRequest
 {
     public List<Guid> RoleIds { get; set; } = new();
+}
+
+public class CreateUserRequest
+{
+    public string Email { get; set; }
+    public string FullName { get; set; }
+    public string Password { get; set; }
+    public string? PhoneNumber { get; set; }
+    public List<Guid>? RoleIds { get; set; }
 }

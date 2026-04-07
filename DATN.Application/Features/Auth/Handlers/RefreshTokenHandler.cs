@@ -1,10 +1,11 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using DATN.Application.Features.Auth.Commands;
 using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
+using DATN.Domain.Extensions;
 using AutoMapper;
 using System.Security.Cryptography;
 using System.Text;
@@ -69,7 +70,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, ApiRespo
 
             // 5. Get User
             var user = await _userRepository.GetByIdAsync(existingToken.UserId, cancellationToken);
-            if (user == null || !user.IsActive)
+            if (user == null || !user.AccountStatus.AllowsFullSession())
             {
                 return ApiResponse<AuthResponse>.Fail("User not found or inactive", 401, "USER_INACTIVE");
             }

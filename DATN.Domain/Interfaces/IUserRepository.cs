@@ -72,28 +72,18 @@ public interface IUserRepository
     /// </summary>
     Task<User?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default);
 
-    /// <summary>
-    /// Khóa tài khoản user (Admin action)
-    /// </summary>
+    /// <summary>Khóa tài khoản (admin — trạng thái Locked).</summary>
     Task LockUserAsync(Guid userId, CancellationToken cancellationToken = default);
 
-    /// <summary>
-    /// Mở khóa tài khoản user (Admin action)
-    /// </summary>
+    /// <summary>Cấm tài khoản (vi phạm — trạng thái Banned).</summary>
+    Task BanUserAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>Mở khóa / gỡ cấm → Active (admin).</summary>
     Task UnlockUserAsync(Guid userId, CancellationToken cancellationToken = default);
 
-    /// <summary>
-    /// Vô hiệu hóa tài khoản (dài hạn)
-    /// </summary>
+    /// <summary>Vô hiệu hóa tài khoản (Deactivated).</summary>
     Task DeactivateUserAsync(Guid userId, CancellationToken cancellationToken = default);
 
-    /// <summary>
-    /// Kích hoạt lại tài khoản
-    /// </summary>
+    /// <summary>Kích hoạt lại tài khoản (Active).</summary>
     Task ActivateUserAsync(Guid userId, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Lấy status hiện tại của user
-    /// </summary>
-    Task<string?> GetUserStatusAsync(Guid userId, CancellationToken cancellationToken = default);
 }

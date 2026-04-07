@@ -3,6 +3,7 @@ using DATN.Application.Features.Users.Queries;
 using DATN.Application.DTOs.Users;
 using DATN.Application.Common.Models;
 using DATN.Domain.Interfaces;
+using DATN.Domain.Extensions;
 
 namespace DATN.Application.Features.Users.Handlers;
 
@@ -29,7 +30,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, ApiResponse<
             Email = user.Email,
             FullName = user.FullName,
             AvatarUrl = user.AvatarUrl,
-            Status = user.IsActive ? "active" : "inactive",
+            Status = user.AccountStatus.ToDatabaseString(),
             CreatedAt = user.CreatedAt,
             UpdatedAt = user.UpdatedAt,
             FailedLoginCount = user.FailedLoginCount,
@@ -43,13 +44,6 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, ApiResponse<
                 .Where(ur => ur.Role != null)
                 .Select(ur => ur.Role.Name)
                 .ToList();
-        }
-
-        // Get actual status from DB
-        var status = await _userRepository.GetUserStatusAsync(request.UserId, cancellationToken);
-        if (!string.IsNullOrEmpty(status))
-        {
-            dto.Status = status;
         }
 
         return ApiResponse<UserDetailDto>.Succeed(dto, "Lấy thông tin người dùng thành công");

@@ -4,6 +4,7 @@ using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
+using DATN.Domain.Extensions;
 using AutoMapper;
 using DATN.Application.Common.Models;
 
@@ -50,7 +51,7 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, ApiResponse<A
             
             if (user == null)
             {
-                return ApiResponse<AuthResponse>.Fail("Email hoặc mật khẩu không chính xác", 401, "INVALID_CREDENTIALS");
+                return ApiResponse<AuthResponse>.Fail("Không tìm thấy tài khoản!");
             }
 
             // 2. Kiểm tra tài khoản có đang bị khóa không
@@ -79,19 +80,11 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, ApiResponse<A
                 user.LockoutEnd = null;
             }
 
-            // 3.5 Kiểm tra trạng thái tài khoản (locked bởi admin, deactivated)
-            var userStatus = await _userRepository.GetUserStatusAsync(user.Id, cancellationToken);
-            if (userStatus == "locked")
+            // 3.5 Trạng thái tài khoản (Pending/Locked/Banned/Deactivated — tách với lockout sai mật khẩu)
+            var denial = user.AccountStatus.GetLoginDenial();
+            if (denial != null)
             {
-                return ApiResponse<AuthResponse>.Fail(
-                    "Tài khoản đã bị khóa bởi quản trị viên. Vui lòng liên hệ hỗ trợ.",
-                    403, "ACCOUNT_LOCKED_BY_ADMIN");
-            }
-            if (userStatus == "deactivated")
-            {
-                return ApiResponse<AuthResponse>.Fail(
-                    "Tài khoản đã bị vô hiệu hóa. Vui lòng liên hệ hỗ trợ.",
-                    403, "ACCOUNT_DEACTIVATED");
+                return ApiResponse<AuthResponse>.Fail(denial.Value.Message, 403, denial.Value.ErrorCode);
             }
 
             // 4. Kiểm tra password
@@ -123,7 +116,7 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, ApiResponse<A
                     Success = false,
                     StatusCode = 401,
                     ErrorCode = "INVALID_CREDENTIALS",
-                    Message = $"Email hoặc mật khẩu không chính xác. Còn {remaining} lần thử.",
+                    Message = $"Email hoặc mật khẩu không chính xác!",
                     Data = new AuthResponse
                     {
                         RemainingAttempts = remaining
@@ -131,22 +124,16 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, ApiResponse<A
                 };
             }
 
-            // 5. Kiểm tra user có active không
-            if (!user.IsActive)
-            {
-                return ApiResponse<AuthResponse>.Fail("Tài khoản đã bị vô hiệu hóa", 403, "ACCOUNT_DISABLED");
-            }
-
-            // 6. Đăng nhập thành công → Reset bộ đếm sai
+            // 5. Đăng nhập thành công → Reset bộ đếm sai
             if (user.FailedLoginCount > 0)
             {
                 await _userRepository.ResetFailedLoginAsync(user.Id, cancellationToken);
             }
 
-            // 7. Lấy roles của user
+            // 6. Lấy roles của user
             var roles = await _userRepository.GetUserRolesAsync(user.Id, cancellationToken);
 
-            // 8. Tạo access token
+            // 7. Tạo access token
             var accessToken = _jwtService.GenerateAccessToken(user, roles);
             var refreshToken = _jwtService.GenerateRefreshToken();
             var expiresAt = DateTime.UtcNow.AddMinutes(_jwtService.GetTokenExpirationMinutes());
@@ -178,7 +165,7 @@ public class LoginHandler : IRequestHandler<Commands.LoginCommand, ApiResponse<A
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during login for {Email}", request.Email);
-            return ApiResponse<AuthResponse>.Fail("Đã xảy ra lỗi trong quá trình đăng nhập", 500, "INTERNAL_SERVER_ERROR");
+            return ApiResponse<AuthResponse>.Fail("Đã xảy ra lỗi trong quá trình đăng nhập");
         }
     }
 

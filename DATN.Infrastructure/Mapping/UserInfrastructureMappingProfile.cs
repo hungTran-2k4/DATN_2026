@@ -1,6 +1,7 @@
 using AutoMapper;
 using DATN_2026.EntityClasses;
 using DATN.Domain.Entities.Identity;
+using DATN.Domain.Extensions;
 
 namespace DATN.Infrastructure.Mapping;
 
@@ -17,13 +18,12 @@ public class UserInfrastructureMappingProfile : Profile
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.PasswordHash))
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Username)) // Username làm FullName
-            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.Status == "active"))
+            .ForMember(dest => dest.AccountStatus, opt => opt.MapFrom(src => UserAccountStatusExtensions.FromDatabaseString(src.Status)))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
             .ForMember(dest => dest.FailedLoginCount, opt => opt.MapFrom(src => src.FailedLoginCount))
             .ForMember(dest => dest.LockoutEnd, opt => opt.MapFrom(src => src.LockoutEnd))
             .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
             .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src => src.UserRoles)); // Map navigation properties
 
         // UserRoleEntity -> UserRole (Domain)
@@ -38,7 +38,7 @@ public class UserInfrastructureMappingProfile : Profile
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Email)) // Email làm Username
             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.PasswordHash))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status ?? (src.IsActive ? "active" : "inactive")))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.AccountStatus.ToDatabaseString()))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
             .ForMember(dest => dest.FailedLoginCount, opt => opt.MapFrom(src => src.FailedLoginCount))

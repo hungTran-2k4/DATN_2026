@@ -1,12 +1,12 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using DATN.Application.Features.Auth.Commands;
 using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
 using DATN.Application.Interfaces.Services;
-using DATN.Domain.Interfaces;
 using DATN.Application.DTOs.Auth;
 using DATN.Domain.Entities.Identity;
+using DATN.Domain.Enums;
 using AutoMapper;
 using DATN.Application.Common.Models;
 
@@ -66,7 +66,7 @@ public class RegisterHandler : IRequestHandler<RegisterCommand, ApiResponse<Auth
                 Email = request.Email,
                 PasswordHash = passwordHash,
                 FullName = request.FullName,
-                IsActive = true,
+                AccountStatus = UserAccountStatus.Active,
                 CreatedAt = DateTime.Now
             };
 

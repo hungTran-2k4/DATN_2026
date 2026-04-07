@@ -4,6 +4,7 @@ using DATN.Application.Features.Me.Commands;
 using DATN.Application.Features.Me.Queries;
 using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
+using DATN.Domain.Extensions;
 using MediatR;
 
 namespace DATN.Application.Features.Me.Handlers;
@@ -27,7 +28,7 @@ public class GetMyProfileHandler : IRequestHandler<GetMyProfileQuery, ApiRespons
             Email = user.Email,
             FullName = user.FullName,
             AvatarUrl = user.AvatarUrl,
-            Status = user.IsActive ? "active" : "inactive",
+            Status = user.AccountStatus.ToDatabaseString(),
             CreatedAt = user.CreatedAt
         });
     }
@@ -91,7 +92,7 @@ public class UpdateProfileHandler : IRequestHandler<UpdateProfileCommand, ApiRes
             Email = user.Email,
             FullName = user.FullName,
             AvatarUrl = user.AvatarUrl,
-            Status = user.IsActive ? "active" : "inactive",
+            Status = user.AccountStatus.ToDatabaseString(),
             CreatedAt = user.CreatedAt
         }, "Cập nhật profile thành công.");
     }
