@@ -125,9 +125,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting(); // Tốt nhất nên khai báo rõ ràng UseRouting trước CORS trong .NET
+app.UseCors("AllowSpecificOrigins"); // CORS PHẢI nằm trước Authentication và Authorization
+
 // QUAN TRỌNG: UseAuthentication() PHẢI đặt TRƯỚC UseAuthorization()
 app.UseAuthentication();
-app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
 
 // [CSRF] Tạm tắt cho môi trường dev local. Bật lại khi deploy production.
