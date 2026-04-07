@@ -39,13 +39,35 @@ public static class DependencyInjection
         });
 
         // Firebase Config
-        // Make sure it's only initialized once
+        // Khởi tạo Firebase, Catch exception để tránh sập toàn bộ ứng dụng nếu thiếu file credential
         if (FirebaseApp.DefaultInstance == null)
         {
-            FirebaseApp.Create(new AppOptions
+            try
             {
-                Credential = GoogleCredential.FromFile("firebase-adminsdk.json")
-            });
+                var firebaseOptions = new AppOptions();
+                var firebaseCreds = configuration["Firebase:Credentials"]; // Lấy từ Environment Variable trên Azure thay vì file
+
+                if (!string.IsNullOrEmpty(firebaseCreds))
+                {
+                    firebaseOptions.Credential = GoogleCredential.FromJson(firebaseCreds);
+                }
+                else if (File.Exists("firebase-adminsdk.json"))
+                {
+                    firebaseOptions.Credential = GoogleCredential.FromFile("firebase-adminsdk.json");
+                }
+                else 
+                {
+                    // Fall back
+                    firebaseOptions.Credential = GoogleCredential.GetApplicationDefault();
+                }
+
+                FirebaseApp.Create(firebaseOptions);
+            }
+            catch (Exception ex)
+            {
+                // Bỏ qua lỗi sập chương trình lúc khởi động, chỉ lưu vết lại.
+                Console.WriteLine("Lỗi khởi tạo Firebase: " + ex.Message);
+            }
         }
 
         services.AddScoped<IDataAccessAdapterFactory, DataAccessAdapterFactory>();

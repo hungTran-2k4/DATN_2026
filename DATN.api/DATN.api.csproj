@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
@@ -23,6 +23,12 @@
     <ItemGroup>
       <ProjectReference Include="..\DATN.Application\DATN.Application.csproj" />
       <ProjectReference Include="..\DATN.Infrastructure\DATN.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="firebase-adminsdk.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

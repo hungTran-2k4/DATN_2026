@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Study API",
+        Title = "Đồ án API",
         Version = "v1",
         Description = "API với JWT Authentication"
     });
