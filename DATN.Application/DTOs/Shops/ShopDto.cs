@@ -11,6 +11,8 @@ public class ShopDto
     public string? LogoUrl { get; set; }
     public string? CoverUrl { get; set; }
     public Guid? OwnerId { get; set; }
+    public string? OwnerName { get; set; }
+    public string? OwnerEmail { get; set; }
     public int? ProvinceId { get; set; }
     public int? DistrictId { get; set; }
     public int? WardId { get; set; }
@@ -18,4 +20,5 @@ public class ShopDto
     public decimal? Rating { get; set; }
     public bool? IsActive { get; set; }
     public DateTime? CreatedAt { get; set; }
+    public DATN.Domain.Enums.ShopApprovalStatus ApprovalStatus { get; set; }
 }

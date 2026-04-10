@@ -62,6 +62,7 @@ public class RegisterWithFirebaseHandler : IRequestHandler<RegisterWithFirebaseC
             {
                 Id = Guid.NewGuid(),
                 Email = request.Email,
+                Username = request.FullName ?? request.Email,
                 FullName = request.FullName,
                 AccountStatus = UserAccountStatus.Active,
                 CreatedAt = DateTime.UtcNow,

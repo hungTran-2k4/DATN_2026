@@ -15,4 +15,5 @@ public interface IShopRepository
     Task<Shop> AddAsync(Shop shop, CancellationToken cancellationToken = default);
     Task<bool> UpdateAsync(Shop shop, CancellationToken cancellationToken = default);
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<(IEnumerable<Shop> Items, int TotalCount)> GetPagedAsync(string? search = null, DATN.Domain.Common.Models.FilterDescriptor? filter = null, int page = 1, int pageSize = 10, CancellationToken cancellationToken = default);
 }

@@ -3,7 +3,9 @@ using DATN.Application.DTOs.Shops;
 using DATN.Application.Features.Shops.Commands.CreateShop;
 using DATN.Application.Features.Shops.Commands.UpdateShop;
 using DATN.Application.Features.Shops.Commands.DeleteShop;
+using DATN.Application.Features.Shops.Commands.ChangeShopStatus;
 using DATN.Application.Features.Shops.Queries.GetShops;
+using DATN.Application.Features.Shops.Queries.GetShopsPaging;
 using DATN.Application.Features.Shops.Queries.GetShopById;
 using DATN.Application.Interfaces.Services;
 using MediatR;
@@ -50,6 +52,19 @@ public class ShopsController : ControllerBase
     public async Task<IActionResult> GetShops()
     {
         var result = await _mediator.Send(new GetShopsQuery());
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Lấy danh sách Shop có phân trang và tìm kiếm (cho Admin)
+    /// </summary>
+    [HttpPost("paging")]
+    //[Authorize(Roles = "Admin")]
+    [ProducesResponseType(typeof(PagedResponse<IEnumerable<ShopDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetShopsPaging([FromBody] PagedRequest request)
+    {
+        var query = new GetShopsPagingQuery(request.Search, request.Filter, request.Page, request.PageSize);
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 
@@ -200,5 +215,20 @@ public class ShopsController : ControllerBase
 
         var shopResult = await _mediator.Send(new GetShopByIdQuery(id));
         return Ok(shopResult);
+    }
+
+
+
+    /// <summary>
+    /// Đổi trạng thái duyệt của Shop (Approve, Reject, Suspend, Pending)
+    /// </summary>
+    [HttpPut("{id}/status")]
+    //[Authorize(Roles = "Admin")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ChangeStatus(Guid id, [FromBody] DATN.Domain.Enums.ShopApprovalStatus status)
+    {
+        var result = await _mediator.Send(new ChangeShopStatusCommand(id, status));
+        if (!result.Success) return BadRequest(result);
+        return Ok(result);
     }
 }

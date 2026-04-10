@@ -5,6 +5,7 @@ using DATN.Domain.Entities.Identity;
 using DATN.Domain.Enums;
 using DATN.Application.Common.Models;
 using DATN.Application.Interfaces.Auth;
+using DATN.Application.Interfaces.Services;
 using Microsoft.Extensions.Logging;
 
 namespace DATN.Application.Features.Users.Handlers;
@@ -16,19 +17,22 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, ApiResponse<
     private readonly IPasswordHasher _passwordHasher;
     private readonly IAuditLogRepository _auditLogRepository;
     private readonly ILogger<CreateUserHandler> _logger;
+    private readonly IEmailService _emailService;
 
     public CreateUserHandler(
         IUserRepository userRepository,
         IRoleRepository roleRepository,
         IPasswordHasher passwordHasher,
         IAuditLogRepository auditLogRepository,
-        ILogger<CreateUserHandler> logger)
+        ILogger<CreateUserHandler> logger,
+        IEmailService emailService)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _passwordHasher = passwordHasher;
         _auditLogRepository = auditLogRepository;
         _logger = logger;
+        _emailService = emailService;
     }
 
     public async Task<ApiResponse<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -80,6 +84,16 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, ApiResponse<
                 user.Id, "ADMIN_CREATE_USER", "User", user.Id,
                 new { email = request.Email, fullName = request.FullName, rolesAssigned = request.RoleIds },
                 cancellationToken: cancellationToken);
+
+            // 6. Gửi Email thông báo chứa mật khẩu
+            var emailBody = $@"
+                <h3>Xin chào {request.FullName},</h3>
+                <p>Tài khoản của bạn đã được admin khởi tạo thành công.</p>
+                <p><strong>Email đăng nhập:</strong> {request.Email}</p>
+                <p><strong>Mật khẩu:</strong> {request.Password}</p>
+                <p>Vui lòng đăng nhập và đổi mật khẩu trong lần đầu để bảo mật tài khoản.</p>
+                <p>Trân trọng,<br>Đội ngũ hỗ trợ.</p>";
+            await _emailService.SendEmailAsync(user.Email, "Thông tin tài khoản mới từ hệ thống", emailBody, cancellationToken);
 
             _logger.LogInformation("Admin created new user {Email}", user.Email);
 

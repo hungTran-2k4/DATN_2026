@@ -17,7 +17,8 @@ public class UserInfrastructureMappingProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.PasswordHash))
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Username)) // Username làm FullName
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Username)) // Username làm FullName (backward compat)
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username))
             .ForMember(dest => dest.AccountStatus, opt => opt.MapFrom(src => UserAccountStatusExtensions.FromDatabaseString(src.Status)))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
@@ -36,7 +37,7 @@ public class UserInfrastructureMappingProfile : Profile
         CreateMap<User, UserEntity>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Email)) // Email làm Username
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => !string.IsNullOrWhiteSpace(src.Username) ? src.Username : src.Email))
             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.PasswordHash))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.AccountStatus.ToDatabaseString()))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))

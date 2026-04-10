@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using DATN.Application.Common.Models;
 using DATN.Application.DTOs.Auth;
 
@@ -10,5 +10,6 @@ namespace DATN.Application.Features.Auth.Commands;
 public record RegisterCommand(
     string Email, 
     string Password, 
-    string? FullName
+    string? FullName,
+    string? Username
 ) : IRequest<ApiResponse<AuthResponse>>;

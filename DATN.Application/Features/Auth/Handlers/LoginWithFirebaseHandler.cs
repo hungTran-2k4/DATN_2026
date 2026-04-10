@@ -168,6 +168,7 @@ public class LoginWithFirebaseHandler : IRequestHandler<LoginWithFirebaseCommand
                 {
                     Id = Guid.NewGuid(),
                     Email = email,
+                    Username = paramsResult.displayName ?? email.Split('@')[0],
                     FullName = paramsResult.displayName ?? email.Split('@')[0],
                     AccountStatus = UserAccountStatus.Active,
                     CreatedAt = DateTime.UtcNow,
