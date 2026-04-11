@@ -20,5 +20,5 @@ public class RegisterRequest
     public string ConfirmPassword { get; set; } = string.Empty;
 
     [MaxLength(100, ErrorMessage = "Họ tên không được quá 100 ký tự")]
-    public string? FullName { get; set; }
+    public string? userName { get; set; }
 }

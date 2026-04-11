@@ -131,7 +131,7 @@ public class AuthController : ControllerBase
             return BadRequest(ApiResponse<AuthResponse>.Fail("Dữ liệu không hợp lệ", 400, "INVALID_DATA"));
         }
 
-        var command = new RegisterCommand(request.Email, request.Password, request.FullName);
+        var command = new RegisterCommand(request.Email, request.Password, request.userName);
         var result = await _mediator.Send(command);
 
         if (!result.Success)

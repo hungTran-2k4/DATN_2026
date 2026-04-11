@@ -59,7 +59,7 @@ public class ShopsController : ControllerBase
     /// Lấy danh sách Shop có phân trang và tìm kiếm (cho Admin)
     /// </summary>
     [HttpPost("paging")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(PagedResponse<IEnumerable<ShopDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetShopsPaging([FromBody] PagedRequest request)
     {
@@ -223,7 +223,7 @@ public class ShopsController : ControllerBase
     /// Đổi trạng thái duyệt của Shop (Approve, Reject, Suspend, Pending)
     /// </summary>
     [HttpPut("{id}/status")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ChangeStatus(Guid id, [FromBody] DATN.Domain.Enums.ShopApprovalStatus status)
     {

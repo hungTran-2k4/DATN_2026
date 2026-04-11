@@ -66,7 +66,7 @@ public class RegisterHandler : IRequestHandler<RegisterCommand, ApiResponse<Auth
                 Email = request.Email,
                 Username = !string.IsNullOrWhiteSpace(request.Username) ? request.Username : request.Email,
                 PasswordHash = passwordHash,
-                FullName = request.FullName,
+                //FullName = request.FullName,
                 AccountStatus = UserAccountStatus.Active,
                 CreatedAt = DateTime.Now
             };
