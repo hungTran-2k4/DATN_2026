@@ -33,9 +33,6 @@ public class AuthController : ControllerBase
     /// <returns>JWT token nếu thành công</returns>
     [HttpPost("login")]
     [AllowAnonymous]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<ApiResponse<AuthResponse>>> Login([FromBody] LoginRequest request)
     {
         if (!ModelState.IsValid)
@@ -64,8 +61,6 @@ public class AuthController : ControllerBase
     [HttpPost("login-firebase")]
     [AllowAnonymous]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<ApiResponse<AuthResponse>>> LoginWithFirebase([FromBody] LoginWithFirebaseRequest request)
     {
         if (!ModelState.IsValid)
