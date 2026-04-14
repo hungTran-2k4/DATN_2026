@@ -9,6 +9,7 @@ public class UserProfileDto
     public string? AvatarUrl { get; set; }
     public string Status { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+    public List<string> Roles { get; set; } = new();
 }
 
 public class UserAddressDto

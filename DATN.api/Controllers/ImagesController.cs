@@ -26,11 +26,13 @@ public class ImagesController : ControllerBase
     /// Upload 1 file ảnh lên Azure Blob Storage
     /// </summary>
     [HttpPost("upload")]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> UploadImage(IFormFile file)
+    public async Task<IActionResult> UploadImage([FromForm] SingleFileUploadRequest request)
     {
+        var file = request.File;
         if (file == null || file.Length == 0)
         {
             return BadRequest(ApiResponse<string>.Fail("No file uploaded."));
@@ -78,4 +80,9 @@ public class ImagesController : ControllerBase
 
         return Ok(ApiResponse<List<string>>.Succeed(urls, $"Đã upload thành công {urls.Count} ảnh."));
     }
+}
+
+public class SingleFileUploadRequest
+{
+    public IFormFile File { get; set; } = null!;
 }

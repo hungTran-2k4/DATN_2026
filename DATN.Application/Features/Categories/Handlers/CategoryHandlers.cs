@@ -22,6 +22,49 @@ public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, ApiRespo
         _cache = cache;
     }
 
+public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, ApiResponse<bool>>
+{
+    private readonly ICategoryRepository _repo;
+    private readonly ICacheService _cache;
+
+    public UpdateCategoryHandler(ICategoryRepository repo, ICacheService cache)
+    {
+        _repo = repo;
+        _cache = cache;
+    }
+
+    public async Task<ApiResponse<bool>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    {
+        var existing = await _repo.GetByIdAsync(request.Id, cancellationToken);
+        if (existing == null)
+            return ApiResponse<bool>.Fail("Không tìm thấy danh mục.", 404, "CATEGORY_NOT_FOUND");
+
+        var slug = string.IsNullOrWhiteSpace(request.Slug)
+            ? GenerateSlug(request.Name)
+            : request.Slug.Trim().ToLower();
+
+        if (await _repo.SlugExistsAsync(slug, request.Id, cancellationToken))
+            return ApiResponse<bool>.Fail("Slug đã tồn tại.", 400, "SLUG_EXISTS");
+
+        existing.Name = request.Name;
+        existing.Slug = slug;
+        existing.IconUrl = request.IconUrl;
+        existing.ParentId = request.ParentId;
+        existing.DisplayOrder = request.DisplayOrder;
+        existing.IsActive = request.IsActive;
+
+        var updated = await _repo.UpdateAsync(existing, cancellationToken);
+        if (!updated)
+            return ApiResponse<bool>.Fail("Cập nhật danh mục thất bại.", 400, "CATEGORY_UPDATE_FAILED");
+
+        _cache.RemoveByPrefix("categories:");
+        return ApiResponse<bool>.Succeed(true, "Cập nhật danh mục thành công.");
+    }
+
+    private static string GenerateSlug(string name) =>
+        Regex.Replace(name.ToLower().Trim(), @"[^a-z0-9]+", "-").Trim('-');
+}
+
     public async Task<ApiResponse<IEnumerable<CategoryDto>>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {
         var key = $"categories:tree:activeOnly={request.ActiveOnly}";

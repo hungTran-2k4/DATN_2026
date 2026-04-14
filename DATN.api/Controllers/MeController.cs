@@ -5,6 +5,7 @@ using DATN.Application.Features.Me.Queries;
 using DATN.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -61,10 +62,12 @@ public class MeController : ControllerBase
 
     /// <summary>Upload avatar cho user (IFormFile → Azure Blob → lưu URL vào DB)</summary>
     [HttpPost("avatar")]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(ApiResponse<UserProfileDto>), 200)]
     [ProducesResponseType(typeof(ApiResponse<UserProfileDto>), 400)]
-    public async Task<IActionResult> UploadAvatar(IFormFile file)
+    public async Task<IActionResult> UploadAvatar([FromForm] SingleFileUploadRequest request)
     {
+        var file = request.File;
         if (file == null || file.Length == 0)
             return BadRequest(ApiResponse<UserProfileDto>.Fail("Vui lòng chọn file ảnh.", 400, "NO_FILE"));
 

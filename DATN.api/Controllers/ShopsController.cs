@@ -172,10 +172,12 @@ public class ShopsController : ControllerBase
 
     /// <summary>Upload logo cho Shop (IFormFile → Azure Blob → cập nhật LogoUrl)</summary>
     [HttpPost("{id}/logo")]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UploadLogo(Guid id, IFormFile file)
+    public async Task<IActionResult> UploadLogo(Guid id, [FromForm] SingleFileUploadRequest request)
     {
+        var file = request.File;
         if (file == null || file.Length == 0)
             return BadRequest(ApiResponse<ShopDto>.Fail("Vui lòng chọn file ảnh.", 400, "NO_FILE"));
 
@@ -196,10 +198,12 @@ public class ShopsController : ControllerBase
 
     /// <summary>Upload ảnh bìa cho Shop (IFormFile → Azure Blob → cập nhật CoverUrl)</summary>
     [HttpPost("{id}/cover")]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UploadCover(Guid id, IFormFile file)
+    public async Task<IActionResult> UploadCover(Guid id, [FromForm] SingleFileUploadRequest request)
     {
+        var file = request.File;
         if (file == null || file.Length == 0)
             return BadRequest(ApiResponse<ShopDto>.Fail("Vui lòng chọn file ảnh.", 400, "NO_FILE"));
 

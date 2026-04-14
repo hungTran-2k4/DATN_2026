@@ -6,6 +6,7 @@ using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
 using DATN.Domain.Extensions;
 using MediatR;
+using System.Linq;
 
 namespace DATN.Application.Features.Me.Handlers;
 
@@ -21,6 +22,7 @@ public class GetMyProfileHandler : IRequestHandler<GetMyProfileQuery, ApiRespons
         if (user == null)
             return ApiResponse<UserProfileDto>.Fail("Không tìm thấy người dùng.", 404, "USER_NOT_FOUND");
 
+        var roles = await _userRepo.GetUserRolesAsync(user.Id, cancellationToken);
         return ApiResponse<UserProfileDto>.Succeed(new UserProfileDto
         {
             Id = user.Id,
@@ -29,7 +31,8 @@ public class GetMyProfileHandler : IRequestHandler<GetMyProfileQuery, ApiRespons
             FullName = user.FullName,
             AvatarUrl = user.AvatarUrl,
             Status = user.AccountStatus.ToDatabaseString(),
-            CreatedAt = user.CreatedAt
+            CreatedAt = user.CreatedAt,
+            Roles = roles.ToList()
         });
     }
 }
@@ -85,6 +88,7 @@ public class UpdateProfileHandler : IRequestHandler<UpdateProfileCommand, ApiRes
         user.UpdatedAt = DateTime.UtcNow;
         await _userRepo.UpdateAsync(user, cancellationToken);
 
+        var roles = await _userRepo.GetUserRolesAsync(user.Id, cancellationToken);
         return ApiResponse<UserProfileDto>.Succeed(new UserProfileDto
         {
             Id = user.Id,
@@ -93,7 +97,8 @@ public class UpdateProfileHandler : IRequestHandler<UpdateProfileCommand, ApiRes
             FullName = user.FullName,
             AvatarUrl = user.AvatarUrl,
             Status = user.AccountStatus.ToDatabaseString(),
-            CreatedAt = user.CreatedAt
+            CreatedAt = user.CreatedAt,
+            Roles = roles.ToList()
         }, "Cập nhật profile thành công.");
     }
 }

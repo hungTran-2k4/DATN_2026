@@ -130,7 +130,7 @@ public class UserRepository : IUserRepository
         {
             Id = user.Id,
             Email = user.Email,
-            Username = user.Email,
+            Username = user.Username,
             PasswordHash = user.PasswordHash,
             Status = user.AccountStatus.ToDatabaseString(),
             CreatedAt = user.CreatedAt
