@@ -7,6 +7,7 @@ using DATN.Application.Features.Shops.Commands.ChangeShopStatus;
 using DATN.Application.Features.Shops.Queries.GetShops;
 using DATN.Application.Features.Shops.Queries.GetShopsPaging;
 using DATN.Application.Features.Shops.Queries.GetShopById;
+using DATN.Application.Features.Shops.Queries.GetShopBySlug;
 using DATN.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,22 @@ public class ShopsController : ControllerBase
             return userId;
         }
         return null;
+    }
+
+    /// <summary>
+    /// Kiểm tra slug shop có khả dụng không (dùng cho async validator FE)
+    /// </summary>
+    [HttpGet("check-slug")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> CheckSlugAvailable([FromQuery] string slug)
+    {
+        if (string.IsNullOrWhiteSpace(slug))
+            return BadRequest(ApiResponse<bool>.Fail("Slug không được để trống.", 400));
+
+        var result = await _mediator.Send(new GetShopBySlugQuery(slug.Trim().ToLowerInvariant()));
+        var isAvailable = result.Data == null;
+        return Ok(ApiResponse<bool>.Succeed(isAvailable, isAvailable ? "Slug khả dụng." : "Slug đã được sử dụng."));
     }
 
     /// <summary>
@@ -81,6 +98,29 @@ public class ShopsController : ControllerBase
 
         var result = await _mediator.Send(new DATN.Application.Features.Shops.Queries.GetMyShops.GetMyShopsQuery(userId.Value));
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Lấy thông tin shop hiện tại của người dùng đang đăng nhập (shop đầu tiên active/pending)
+    /// Dùng cho trang Profile để kiểm tra trạng thái đăng ký bán hàng
+    /// </summary>
+    [HttpGet("my-shop")]
+    [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse<ShopDto>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetMyShop()
+    {
+        var userId = GetCurrentUserId();
+        if (userId == null) return Unauthorized(ApiResponse<ShopDto>.Fail("User not authenticated"));
+
+        var result = await _mediator.Send(new DATN.Application.Features.Shops.Queries.GetMyShops.GetMyShopsQuery(userId.Value));
+        if (!result.Success) return StatusCode(result.StatusCode, result);
+
+        var shop = result.Data?.FirstOrDefault();
+        if (shop == null)
+            return NotFound(ApiResponse<ShopDto>.Fail("Bạn chưa có shop nào.", 404, "SHOP_NOT_FOUND"));
+
+        return Ok(ApiResponse<ShopDto>.Succeed(shop));
     }
 
     /// <summary>
@@ -158,12 +198,12 @@ public class ShopsController : ControllerBase
         if (userId == null) return Unauthorized(ApiResponse<bool>.Fail("User not authenticated"));
 
         var result = await _mediator.Send(new DeleteShopCommand(id, userId));
-        
+
         if (!result.Success)
         {
-             if (result.StatusCode == 404) return NotFound(result);
-             if (result.StatusCode == 403) return StatusCode(403, result);
-             return BadRequest(result);
+            if (result.StatusCode == 404) return NotFound(result);
+            if (result.StatusCode == 403) return StatusCode(403, result);
+            return BadRequest(result);
         }
         return Ok(result);
     }

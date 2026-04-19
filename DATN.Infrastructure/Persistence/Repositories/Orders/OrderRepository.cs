@@ -85,21 +85,20 @@ public class OrderRepository : IOrderRepository
 
         var qf = new QueryFactory();
 
-        var baseQuery = qf.Create()
-            .From(qf.Order
-                .InnerJoin(qf.OrderItem).On(OrderFields.Id == OrderItemFields.OrderId)
-                .InnerJoin(qf.ProductVariant).On(OrderItemFields.VariantId == ProductVariantFields.Id)
-                .InnerJoin(qf.Product).On(ProductVariantFields.ProductId == ProductFields.Id))
-            .Where(ProductFields.ShopId == shopId);
-
+        IPredicateExpression filter = new PredicateExpression(ProductFields.ShopId == shopId);
         if (!string.IsNullOrWhiteSpace(status))
         {
-            baseQuery.Where(OrderFields.OrderStatus == status);
+            filter.AddWithAnd(OrderFields.OrderStatus == status);
         }
+
+        var orderJoin = qf.Order
+            .InnerJoin(qf.OrderItem).On(OrderFields.Id == OrderItemFields.OrderId)
+            .InnerJoin(qf.ProductVariant).On(OrderItemFields.VariantId == ProductVariantFields.Id)
+            .InnerJoin(qf.Product).On(ProductVariantFields.ProductId == ProductFields.Id);
 
         // 1) Get distinct OrderIds for this shop (for paging + count)
         var idQuery = qf.Create()
-            .From(baseQuery)
+            .From(orderJoin)
             .Select(OrderFields.Id)
             .Distinct()
             .OrderBy(OrderFields.CreatedAt.Descending())
@@ -114,7 +113,7 @@ public class OrderRepository : IOrderRepository
         // Count (MVP): fetch all distinct ids and count them.
         // For large scale, switch to COUNT(DISTINCT ...) at DB-level.
         var countIdsQuery = qf.Create()
-            .From(baseQuery)
+            .From(orderJoin)
             .Select(OrderFields.Id)
             .Distinct();
         var allIdRows = await _adapter.FetchQueryAsync(countIdsQuery, cancellationToken);
@@ -131,16 +130,16 @@ public class OrderRepository : IOrderRepository
         prefetch.Add(OrderEntity.PrefetchPathOrderItems);
 
         // Build OR predicate for ids
-        IPredicateExpression filter = new PredicateExpression();
+        IPredicateExpression filter2 = new PredicateExpression();
         foreach (var id in ids)
         {
-            filter.AddWithOr(OrderFields.Id == id);
+            filter2.AddWithOr(OrderFields.Id == id);
         }
 
         await _adapter.FetchEntityCollectionAsync(new QueryParameters
         {
             CollectionToFetch = col,
-            FilterToUse = filter,
+            FilterToUse = filter2,
             PrefetchPathToUse = prefetch
         }, cancellationToken);
 

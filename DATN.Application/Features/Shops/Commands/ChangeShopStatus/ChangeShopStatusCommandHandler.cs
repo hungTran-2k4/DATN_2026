@@ -1,6 +1,7 @@
 using AutoMapper;
 using MediatR;
 using DATN.Application.Common.Models;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Enums;
 using DATN.Domain.Interfaces;
 using System.Threading;
@@ -11,30 +12,35 @@ namespace DATN.Application.Features.Shops.Commands.ChangeShopStatus;
 public class ChangeShopStatusCommandHandler : IRequestHandler<ChangeShopStatusCommand, ApiResponse<bool>>
 {
     private readonly IShopRepository _shopRepository;
+    private readonly ICacheService _cache;
 
-    public ChangeShopStatusCommandHandler(IShopRepository shopRepository)
+    public ChangeShopStatusCommandHandler(IShopRepository shopRepository, ICacheService cache)
     {
         _shopRepository = shopRepository;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<bool>> Handle(ChangeShopStatusCommand request, CancellationToken cancellationToken)
     {
         var shop = await _shopRepository.GetByIdAsync(request.ShopId, cancellationToken);
-        
+
         if (shop == null)
             return ApiResponse<bool>.Fail("Không tìm thấy Shop.", 404);
 
         if (request.Status == ShopApprovalStatus.Rejected)
-            {
-            // For now, if a shop is rejected, we simply logically or physically remove it to save space
-            // Or we could map it to IsActive = false, but what if they want to re-register?
-            // Deleting is a better approach until we have an explicit Rejected DB column
-            await _shopRepository.DeleteAsync(shop.Id, cancellationToken);
-            return ApiResponse<bool>.Succeed(true, "Shop đã bị từ chối và khoá vĩnh viễn (xóa khỏi hệ thống).");
+        {
+            // Soft reject: chuyển trạng thái sang Rejected và deactivate thay vì xóa vật lý
+            // Giúp lưu lịch sử và ngăn spam đăng ký lại với cùng thông tin
+            shop.ApprovalStatus = ShopApprovalStatus.Rejected;
+            shop.IsActive = false;
+            await _shopRepository.UpdateAsync(shop, cancellationToken);
+            return ApiResponse<bool>.Succeed(true, "Đã từ chối đơn đăng ký Shop.");
         }
 
         shop.ApprovalStatus = request.Status;
         await _shopRepository.UpdateAsync(shop, cancellationToken);
+
+        _cache.RemoveByPrefix("shops:list:");
 
         string message = request.Status switch
         {

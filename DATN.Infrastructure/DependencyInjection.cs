@@ -55,7 +55,7 @@ public static class DependencyInjection
                 {
                     firebaseOptions.Credential = GoogleCredential.FromFile("firebase-adminsdk.json");
                 }
-                else 
+                else
                 {
                     // Fall back
                     firebaseOptions.Credential = GoogleCredential.GetApplicationDefault();
@@ -71,14 +71,14 @@ public static class DependencyInjection
         }
 
         services.AddScoped<IDataAccessAdapterFactory, DataAccessAdapterFactory>();
-        
+
         // Register IDataAccessAdapter using factory
         services.AddScoped<IDataAccessAdapter>(provider =>
         {
             var factory = provider.GetRequiredService<IDataAccessAdapterFactory>();
             return (IDataAccessAdapter)factory.CreateAdapter();
         });
-        
+
         services.AddScoped<DataAccessAdapter>(provider =>
         {
             var factory = provider.GetRequiredService<IDataAccessAdapterFactory>();
@@ -108,11 +108,11 @@ public static class DependencyInjection
         services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IUserSessionRepository, UserSessionRepository>();
-        
+
         // Register Auth services
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
-        
+
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
@@ -127,6 +127,9 @@ public static class DependencyInjection
 
         // Cache
         services.AddSingleton<ICacheService, MemoryCacheService>();
+
+        // Unit of Work (transaction support)
+        services.AddScoped<IUnitOfWork, LLBLGenUnitOfWork>();
 
         return services;
     }
