@@ -42,8 +42,8 @@ public class CartRepository : ICartRepository
             var imageUrl = variant?.ImageUrl;
             if (string.IsNullOrEmpty(imageUrl) && product != null)
             {
-                var primaryImage = product.ProductImages.FirstOrDefault(img => img.IsPrimary);
-                imageUrl = primaryImage?.ImageUrl ?? product.ProductImages.FirstOrDefault()?.ImageUrl;
+                var primaryImage = product.ProductImages.FirstOrDefault(img => img.IsPrimary == true);
+                imageUrl = primaryImage?.Url ?? product.ProductImages.FirstOrDefault()?.Url;
             }
 
             return new CartItem
