@@ -1,4 +1,5 @@
-using AutoMapper;
+using DATN.Application.Common.Models;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Entities.Products;
 using DATN.Domain.Interfaces;
 using DATN_2026.DatabaseSpecific;
@@ -15,10 +16,12 @@ namespace DATN.Infrastructure.Persistence.Repositories.Products;
 public class ProductVariantRepository : IProductVariantRepository
 {
     private readonly DataAccessAdapter _adapter;
+    private readonly IUnitOfWork _uow;
 
-    public ProductVariantRepository(DataAccessAdapter adapter)
+    public ProductVariantRepository(DataAccessAdapter adapter, IUnitOfWork uow)
     {
         _adapter = adapter;
+        _uow = uow;
     }
 
     public async Task<IEnumerable<ProductVariant>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default)
@@ -113,34 +116,44 @@ public class ProductVariantRepository : IProductVariantRepository
 
     public async Task<ProductVariant> AddAsync(ProductVariant variant, CancellationToken cancellationToken = default)
     {
-        // 1. Create variant entity
-        var variantEntity = new ProductVariantEntity
+        // Wrap cả 2 bước trong transaction — nếu lưu stock lỗi thì rollback variant
+        using var tx = _uow.BeginTransaction();
+        try
         {
-            Id = variant.Id,
-            ProductId = variant.ProductId,
-            Name = variant.Name,
-            Sku = variant.Sku,
-            Price = variant.Price,
-            ImageUrl = variant.ImageUrl,
-            VariantAttributes = variant.VariantAttributes,
-            IsNew = true
-        };
-        await _adapter.SaveEntityAsync(variantEntity, refetchAfterSave: true, cancellationToken: cancellationToken);
+            // 1. Create variant entity
+            var variantEntity = new ProductVariantEntity
+            {
+                Id = variant.Id,
+                ProductId = variant.ProductId,
+                Name = variant.Name,
+                Sku = variant.Sku,
+                Price = variant.Price,
+                ImageUrl = variant.ImageUrl,
+                VariantAttributes = variant.VariantAttributes,
+                IsNew = true
+            };
+            await _adapter.SaveEntityAsync(variantEntity, refetchAfterSave: true, cancellationToken: cancellationToken);
 
-        // 2. Create stock record (PK = VariantId, no separate Id)
-        // Stock table: variant_id (PK), physical_quantity, available_quantity, reserved_quantity
-        var stockEntity = new StockEntity
+            // 2. Create stock record
+            // available_quantity là GENERATED COLUMN (physical_quantity - reserved_quantity) — không insert trực tiếp
+            var stockEntity = new StockEntity
+            {
+                VariantId = variantEntity.Id,
+                PhysicalQuantity = variant.StockQty,
+                ReservedQuantity = 0,
+                IsNew = true
+            };
+            await _adapter.SaveEntityAsync(stockEntity, cancellationToken: cancellationToken);
+
+            tx.Commit();
+            variant.Id = variantEntity.Id;
+            return variant;
+        }
+        catch
         {
-            VariantId = variantEntity.Id,
-            PhysicalQuantity = variant.StockQty,
-            AvailableQuantity = variant.StockQty,
-            ReservedQuantity = 0,
-            IsNew = true
-        };
-        await _adapter.SaveEntityAsync(stockEntity, cancellationToken: cancellationToken);
-
-        variant.Id = variantEntity.Id;
-        return variant;
+            tx.Rollback();
+            throw;
+        }
     }
 
     public async Task<bool> UpdateAsync(ProductVariant variant, CancellationToken cancellationToken = default)
@@ -200,8 +213,8 @@ public class ProductVariantRepository : IProductVariantRepository
         var entity = stockCol.FirstOrDefault();
         if (entity == null || (entity.AvailableQuantity ?? 0) < quantity) return false;
 
-        entity.AvailableQuantity = (entity.AvailableQuantity ?? 0) - quantity;
         entity.PhysicalQuantity = entity.PhysicalQuantity - quantity;
+        // Không set AvailableQuantity trực tiếp — là GENERATED COLUMN (physical - reserved)
         entity.UpdatedAt = DateTime.UtcNow;
         entity.IsNew = false;
         return await _adapter.SaveEntityAsync(entity, cancellationToken: cancellationToken);

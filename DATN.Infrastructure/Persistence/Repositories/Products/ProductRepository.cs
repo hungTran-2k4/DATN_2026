@@ -51,6 +51,8 @@ public class ProductRepository : IProductRepository
 
         var query = qf.Product.Where(predicate)
                       .OrderBy(ProductFields.CreatedAt.Descending())
+                      .WithPath(ProductEntity.PrefetchPathProductImages)
+                      .WithPath(ProductEntity.PrefetchPathProductVariants.WithSubPath(ProductVariantEntity.PrefetchPathStock))
                       .Page(page, pageSize);
 
         var entities = await _adapter.FetchQueryAsync(query, cancellationToken);
@@ -62,7 +64,9 @@ public class ProductRepository : IProductRepository
     public async Task<IEnumerable<Product>> GetAllAsync(Guid? shopId = null, CancellationToken cancellationToken = default)
     {
         var qf = new QueryFactory();
-        var query = qf.Product.OrderBy(ProductFields.CreatedAt.Descending());
+        var query = qf.Product.OrderBy(ProductFields.CreatedAt.Descending())
+                      .WithPath(ProductEntity.PrefetchPathProductImages)
+                      .WithPath(ProductEntity.PrefetchPathProductVariants.WithSubPath(ProductVariantEntity.PrefetchPathStock));
         
         if (shopId.HasValue)
         {
@@ -76,7 +80,9 @@ public class ProductRepository : IProductRepository
     public async Task<Product?> GetByIdAsync(Guid id, Guid? shopId = null, CancellationToken cancellationToken = default)
     {
         var qf = new QueryFactory();
-        var query = qf.Product.Where(ProductFields.Id == id);
+        var query = qf.Product.Where(ProductFields.Id == id)
+                      .WithPath(ProductEntity.PrefetchPathProductImages)
+                      .WithPath(ProductEntity.PrefetchPathProductVariants.WithSubPath(ProductVariantEntity.PrefetchPathStock));
         
         if (shopId.HasValue)
         {
@@ -93,7 +99,9 @@ public class ProductRepository : IProductRepository
     {
         var qf = new QueryFactory();
         var filter = new PredicateExpression(ProductFields.Sku == sku | ProductFields.Slug == slug);
-        var query = qf.Product.Where(filter);
+        var query = qf.Product.Where(filter)
+                      .WithPath(ProductEntity.PrefetchPathProductImages)
+                      .WithPath(ProductEntity.PrefetchPathProductVariants.WithSubPath(ProductVariantEntity.PrefetchPathStock));
 
         if (shopId.HasValue)
         {

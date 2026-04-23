@@ -20,7 +20,9 @@ public class CartRepository : ICartRepository
         // Prefetch: Cart → ProductVariant → Product (for shop/name), Stock (for qty)
         var prefetch = new PrefetchPath2((int)DATN_2026.EntityType.CartEntity);
         var variantPath = prefetch.Add(CartEntity.PrefetchPathProductVariant);
-        variantPath.SubPath.Add(ProductVariantEntity.PrefetchPathProduct);
+        var productPath = variantPath.SubPath.Add(ProductVariantEntity.PrefetchPathProduct);
+        productPath.SubPath.Add(ProductEntity.PrefetchPathShop); // Fetch Shop info
+        productPath.SubPath.Add(ProductEntity.PrefetchPathProductImages); // Fetch Product Images for fallback
         variantPath.SubPath.Add(ProductVariantEntity.PrefetchPathStock);
 
         await _adapter.FetchEntityCollectionAsync(new QueryParameters
@@ -34,6 +36,16 @@ public class CartRepository : ICartRepository
         {
             var variant = e.ProductVariant;
             var product = variant?.Product;
+            var shop = product?.Shop;
+
+            // Fallback: Variant Image -> Primary Product Image -> First Product Image
+            var imageUrl = variant?.ImageUrl;
+            if (string.IsNullOrEmpty(imageUrl) && product != null)
+            {
+                var primaryImage = product.ProductImages.FirstOrDefault(img => img.IsPrimary);
+                imageUrl = primaryImage?.ImageUrl ?? product.ProductImages.FirstOrDefault()?.ImageUrl;
+            }
+
             return new CartItem
             {
                 Id = e.Id,
@@ -42,11 +54,13 @@ public class CartRepository : ICartRepository
                 Quantity = e.Quantity,
                 CreatedAt = e.CreatedAt,
                 ShopId = product?.ShopId,
+                ShopName = shop?.Name,
                 ProductName = product?.Name,
                 VariantName = variant?.Name,
-                VariantImageUrl = variant?.ImageUrl,
+                VariantImageUrl = imageUrl,
                 UnitPrice = variant?.Price ?? 0m,
-                VariantAttributes = variant?.VariantAttributes
+                VariantAttributes = variant?.VariantAttributes,
+                StockQty = (int)(variant?.Stock?.AvailableQuantity ?? 0)
             };
         }).ToList();
     }

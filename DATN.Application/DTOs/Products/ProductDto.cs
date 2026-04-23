@@ -20,4 +20,5 @@ public class ProductDto
     public DateTime? UpdatedAt { get; set; }
 
     public IEnumerable<ProductImageDto> Images { get; set; } = new List<ProductImageDto>();
+    public IEnumerable<ProductVariantDto> Variants { get; set; } = new List<ProductVariantDto>();
 }

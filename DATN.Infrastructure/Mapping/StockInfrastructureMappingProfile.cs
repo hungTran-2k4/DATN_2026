@@ -13,7 +13,8 @@ public class StockInfrastructureMappingProfile : Profile
             .ForMember(d => d.Id, opt => opt.MapFrom(s => s.VariantId)); // Map PK
 
         CreateMap<Stock, StockEntity>()
-            .ForMember(d => d.VariantId, opt => opt.MapFrom(s => s.Id));
+            .ForMember(d => d.VariantId, opt => opt.MapFrom(s => s.Id))
+            .ForMember(d => d.AvailableQuantity, opt => opt.Ignore());
 
         CreateMap<StockTransactionEntity, StockTransaction>();
         CreateMap<StockTransaction, StockTransactionEntity>();

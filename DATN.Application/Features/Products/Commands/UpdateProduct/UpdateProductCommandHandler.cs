@@ -1,5 +1,6 @@
 using DATN.Application.Common.Models;
 using DATN.Application.Interfaces.Services;
+using DATN.Domain.Enums;
 using DATN.Domain.Interfaces;
 using MediatR;
 using System;
@@ -22,7 +23,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
     public async Task<ApiResponse<bool>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(request.Id, request.ShopId, cancellationToken);
-        
+
         if (product == null)
         {
             return ApiResponse<bool>.Fail("Product not found or does not belong to this shop.", 404);
@@ -30,7 +31,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         // Tùy chọn: Kiểm tra xem SKU hoặc Slug vừa sửa có trùng với sản phẩm khác (trong cùng shop) không
         var existingProduct = await _productRepository.GetBySkuOrSlugAsync(request.Sku, request.Slug, request.ShopId, cancellationToken);
-        
+
         if (existingProduct != null && existingProduct.Id != request.Id)
         {
             return ApiResponse<bool>.Fail("Another product with the same SKU or Slug already exists.", 400);
@@ -42,7 +43,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         product.Slug = request.Slug;
         product.Description = request.Description ?? string.Empty;
         product.Summary = request.Summary ?? string.Empty;
-        product.Status = request.Status ?? "Active";
+        product.Status = (request.Status ?? "Draft").ToProductStatus();
         product.BrandId = request.BrandId;
         product.CategoryId = request.CategoryId;
         product.ShopId = request.ShopId;

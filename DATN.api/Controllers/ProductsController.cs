@@ -7,6 +7,7 @@ using DATN.Application.Features.Products.Commands;
 using DATN.Application.Features.Products.Queries.GetProductById;
 using DATN.Application.Features.Products.Queries.GetProducts;
 using DATN.Application.Interfaces.Services;
+using DATN.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DATN.api.Controllers;
+
+public class ReviewProductRequest
+{
+    /// <summary>"approve" hoặc "reject"</summary>
+    public string Action { get; set; } = string.Empty;
+    public string? Note { get; set; }
+}
 
 [Route("api/[controller]")]
 [ApiController]
@@ -96,6 +104,80 @@ public class ProductsController : ControllerBase
             return BadRequest(result);
         }
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Seller gửi sản phẩm để Admin duyệt (Draft → Pending)
+    /// </summary>
+    [HttpPut("{id}/submit-for-review")]
+    [Authorize(Roles = "Seller,Admin")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SubmitForReview(Guid id, [FromQuery] Guid? shopId)
+    {
+        var product = await _mediator.Send(new GetProductByIdQuery(id, shopId));
+        if (!product.Success || product.Data == null)
+            return NotFound(ApiResponse<bool>.Fail("Sản phẩm không tồn tại.", 404));
+
+        if (product.Data.Status != ProductStatus.Draft.ToStatusString() && product.Data.Status != ProductStatus.Rejected.ToStatusString())
+            return BadRequest(ApiResponse<bool>.Fail("Chỉ có thể gửi duyệt sản phẩm ở trạng thái Nháp hoặc Bị từ chối.", 400, "INVALID_STATUS"));
+
+        var command = new UpdateProductCommand
+        {
+            Id = id,
+            Name = product.Data.Name ?? string.Empty,
+            Sku = product.Data.Sku ?? string.Empty,
+            Slug = product.Data.Slug ?? string.Empty,
+            Description = product.Data.Description,
+            Summary = product.Data.Summary,
+            Status = ProductStatus.Pending.ToStatusString(),
+            BrandId = product.Data.BrandId,
+            CategoryId = product.Data.CategoryId,
+            ShopId = shopId ?? product.Data.ShopId,
+            BaseAttributes = product.Data.BaseAttributes,
+        };
+        var result = await _mediator.Send(command);
+        if (!result.Success) return BadRequest(result);
+        return Ok(ApiResponse<bool>.Succeed(true, "Đã gửi sản phẩm để Admin duyệt."));
+    }
+
+    /// <summary>
+    /// Admin duyệt hoặc từ chối sản phẩm (Pending → Active / Rejected)
+    /// </summary>
+    [HttpPut("{id}/review")]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ReviewProduct(Guid id, [FromBody] ReviewProductRequest request)
+    {
+        if (request.Action != "approve" && request.Action != "reject")
+            return BadRequest(ApiResponse<bool>.Fail("Action phải là 'approve' hoặc 'reject'.", 400));
+
+        var product = await _mediator.Send(new GetProductByIdQuery(id, null));
+        if (!product.Success || product.Data == null)
+            return NotFound(ApiResponse<bool>.Fail("Sản phẩm không tồn tại.", 404));
+
+        var newStatus = request.Action == "approve"
+            ? ProductStatus.Active.ToStatusString()
+            : ProductStatus.Rejected.ToStatusString();
+        var command = new UpdateProductCommand
+        {
+            Id = id,
+            Name = product.Data.Name ?? string.Empty,
+            Sku = product.Data.Sku ?? string.Empty,
+            Slug = product.Data.Slug ?? string.Empty,
+            Description = product.Data.Description,
+            Summary = product.Data.Summary,
+            Status = newStatus,
+            BrandId = product.Data.BrandId,
+            CategoryId = product.Data.CategoryId,
+            ShopId = product.Data.ShopId,
+            BaseAttributes = product.Data.BaseAttributes,
+        };
+        var result = await _mediator.Send(command);
+        if (!result.Success) return BadRequest(result);
+
+        var msg = request.Action == "approve" ? "Sản phẩm đã được duyệt và hiển thị." : "Sản phẩm đã bị từ chối.";
+        return Ok(ApiResponse<bool>.Succeed(true, msg));
     }
 
     /// <summary>

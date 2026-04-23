@@ -15,9 +15,11 @@ public class CartItem
     // -- Enrichment (populated when reading, not stored) --
     /// <summary>ShopId của variant → dùng để group giỏ hàng theo shop</summary>
     public Guid? ShopId { get; set; }
+    public string? ShopName { get; set; }
     public string? ProductName { get; set; }
     public string? VariantName { get; set; }
     public string? VariantImageUrl { get; set; }
     public decimal UnitPrice { get; set; }
     public string? VariantAttributes { get; set; }
+    public int StockQty { get; set; }
 }

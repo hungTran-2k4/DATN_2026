@@ -25,7 +25,7 @@ public class GetMyCartHandler : IRequestHandler<GetMyCartQuery, ApiResponse<Cart
             .Select(g => new CartGroupDto
             {
                 ShopId = g.Key ?? Guid.Empty,
-                ShopName = g.FirstOrDefault()?.ProductName, // enriched by repo
+                ShopName = g.FirstOrDefault()?.ShopName, // enriched by repo
                 Items = g.Select(i => new CartItemDto
                 {
                     Id = i.Id,
@@ -39,7 +39,7 @@ public class GetMyCartHandler : IRequestHandler<GetMyCartQuery, ApiResponse<Cart
                         : null,
                     Quantity = i.Quantity,
                     UnitPrice = i.UnitPrice,
-                    StockAvailable = 0 // filled by repo enrichment
+                    StockAvailable = i.StockQty
                 }).ToList()
             })
             .ToList();

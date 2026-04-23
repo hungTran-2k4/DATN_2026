@@ -47,7 +47,7 @@ public class StockRepository : IStockRepository
     public async Task<bool> UpdateStockAsync(Stock stock, CancellationToken cancellationToken = default)
     {
         var entity = _mapper.Map<StockEntity>(stock);
-        // Do not update VariantId, just save constraints
+        entity.IsNew = false; // It's an update
         
         return await _adapter.SaveEntityAsync(entity, true, cancellationToken);
     }
@@ -61,11 +61,10 @@ public class StockRepository : IStockRepository
         if (entity == null) return false;
 
         // Check availability
-        if ((entity.AvailableQuantity ?? 0) < quantity) return false;
+        if ((entity.PhysicalQuantity - entity.ReservedQuantity) < quantity) return false;
 
         // Update fields
         entity.ReservedQuantity += quantity;
-        entity.AvailableQuantity = entity.PhysicalQuantity - entity.ReservedQuantity;
         entity.UpdatedAt = DateTime.UtcNow;
 
         return await _adapter.SaveEntityAsync(entity, true, cancellationToken);
@@ -84,7 +83,6 @@ public class StockRepository : IStockRepository
 
         entity.PhysicalQuantity -= quantity;
         entity.ReservedQuantity -= quantity;
-        entity.AvailableQuantity = entity.PhysicalQuantity - entity.ReservedQuantity;
         entity.UpdatedAt = DateTime.UtcNow;
 
         return await _adapter.SaveEntityAsync(entity, true, cancellationToken);
@@ -104,13 +102,11 @@ public class StockRepository : IStockRepository
             entity.VariantId = variantId;
             entity.PhysicalQuantity = quantity;
             entity.ReservedQuantity = 0;
-            entity.AvailableQuantity = quantity;
             entity.IsNew = true;
         }
         else
         {
             entity.PhysicalQuantity += quantity;
-            entity.AvailableQuantity = entity.PhysicalQuantity - entity.ReservedQuantity;
         }
         
         entity.UpdatedAt = DateTime.UtcNow;

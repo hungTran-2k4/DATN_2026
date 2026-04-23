@@ -24,19 +24,39 @@ public class ReviewRepository : IReviewRepository
 
     public async Task<(IEnumerable<Review> Items, int Total)> GetByProductIdAsync(Guid productId, int page = 1, int pageSize = 20, CancellationToken cancellationToken = default)
     {
-        var col = new EntityCollection<ReviewEntity>();
-        
-        // Cần join qua Variant để lọc theo ProductId
-        var qf = new QueryFactory();
-        var filter = new PredicateExpression(ProductVariantFields.ProductId == productId);
-        
-        var q = qf.Review.From(QueryTarget.InnerJoin(qf.ProductVariant).On(ReviewFields.VariantId == ProductVariantFields.Id))
-                         .Where(filter);
-
-        var totalCount = await _adapter.FetchScalarAsync<int>(qf.Create().Select(qf.Review.Select(ReviewFields.Id).Count()).From(QueryTarget.InnerJoin(qf.ProductVariant).On(ReviewFields.VariantId == ProductVariantFields.Id)).Where(filter), cancellationToken);
-
+        // Join Review → ProductVariant để lọc theo ProductId
+        // LLBLGen: dùng RelationCollection + FilterToUse, không dùng QueryTarget trong scalar query
         var relations = new RelationCollection(ReviewEntity.Relations.ProductVariantEntityUsingVariantId);
+        var filter = new PredicateExpression(ProductVariantFields.ProductId == productId);
 
+        // Count: fetch toàn bộ ID để đếm (hoặc dùng EntityQuery count)
+        var qf = new QueryFactory();
+        var countQuery = qf.Review
+            .Select(ReviewFields.Id.Count())
+            .From(QueryTarget.InnerJoin(qf.ProductVariant)
+                .On(ReviewFields.VariantId == ProductVariantFields.Id))
+            .Where(filter);
+
+        int totalCount;
+        try
+        {
+            totalCount = await _adapter.FetchScalarAsync<int>(countQuery, cancellationToken);
+        }
+        catch
+        {
+            // Fallback: fetch all IDs và đếm
+            var countCol = new EntityCollection<ReviewEntity>();
+            await _adapter.FetchEntityCollectionAsync(new QueryParameters
+            {
+                CollectionToFetch = countCol,
+                FilterToUse = filter,
+                RelationsToUse = relations,
+            }, cancellationToken);
+            totalCount = countCol.Count;
+        }
+
+        // Fetch paged
+        var col = new EntityCollection<ReviewEntity>();
         await _adapter.FetchEntityCollectionAsync(new QueryParameters
         {
             CollectionToFetch = col,
@@ -54,7 +74,7 @@ public class ReviewRepository : IReviewRepository
     {
         var col = new EntityCollection<ReviewEntity>();
         var filter = new PredicateExpression(ReviewFields.UserId == userId);
-        
+
         var qf = new QueryFactory();
         var totalCount = await _adapter.FetchScalarAsync<int>(qf.Create().Select(ReviewFields.Id.Count()).Where(filter), cancellationToken);
 
@@ -79,7 +99,7 @@ public class ReviewRepository : IReviewRepository
             FilterToUse = ReviewFields.Id == id,
             RowsToTake = 1
         }, cancellationToken);
-        
+
         var entity = col.FirstOrDefault();
         return entity == null ? null : _mapper.Map<Review>(entity);
     }
@@ -97,7 +117,7 @@ public class ReviewRepository : IReviewRepository
             FilterToUse = filter,
             RowsToTake = 1
         }, cancellationToken);
-        
+
         return col.Any();
     }
 
@@ -107,7 +127,7 @@ public class ReviewRepository : IReviewRepository
         entity.IsNew = true;
         entity.Id = Guid.NewGuid();
         entity.CreatedAt = DateTime.UtcNow;
-        
+
         await _adapter.SaveEntityAsync(entity, refetchAfterSave: true, cancellationToken: cancellationToken);
         return _mapper.Map<Review>(entity);
     }
@@ -121,15 +141,11 @@ public class ReviewRepository : IReviewRepository
 
     public async Task<(double AverageRating, int TotalReviews)> GetProductRatingAsync(Guid productId, CancellationToken cancellationToken = default)
     {
-        var qf = new QueryFactory();
-        var filter = new PredicateExpression(ProductVariantFields.ProductId == productId);
-        
-        var q = qf.Review.From(QueryTarget.InnerJoin(qf.ProductVariant).On(ReviewFields.VariantId == ProductVariantFields.Id))
-                         .Where(filter);
-
+        // Dùng RelationCollection thay vì QueryTarget trong scalar query
         var relations = new RelationCollection(ReviewEntity.Relations.ProductVariantEntityUsingVariantId);
+        var filter = new PredicateExpression(ProductVariantFields.ProductId == productId);
+
         var col = new EntityCollection<ReviewEntity>();
-        
         await _adapter.FetchEntityCollectionAsync(new QueryParameters
         {
             CollectionToFetch = col,
@@ -141,7 +157,6 @@ public class ReviewRepository : IReviewRepository
         if (total == 0) return (0.0, 0);
 
         var avg = col.Select(r => r.Rating).Average();
-        
         return (Math.Round((double)avg, 1), total);
     }
 }
