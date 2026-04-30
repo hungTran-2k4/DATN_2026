@@ -300,6 +300,8 @@ namespace DATN_2026.HelperClasses
 		public static EntityField2 ImageUrl { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductVariantFieldIndex.ImageUrl); }}
 		/// <summary>Creates a new ProductVariantEntity.Name field instance</summary>
 		public static EntityField2 Name { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductVariantFieldIndex.Name); }}
+		/// <summary>Creates a new ProductVariantEntity.Originalprice field instance</summary>
+		public static EntityField2 Originalprice { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductVariantFieldIndex.Originalprice); }}
 		/// <summary>Creates a new ProductVariantEntity.Price field instance</summary>
 		public static EntityField2 Price { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductVariantFieldIndex.Price); }}
 		/// <summary>Creates a new ProductVariantEntity.ProductId field instance</summary>
@@ -906,6 +908,8 @@ namespace DATN_2026.HelperClasses
 		public static EntityField2 VariantAttributes	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductVariantFieldIndex.VariantAttributes); } }
 		/// <summary>Creates a new catalogProductVariantTypedView.ImageUrl field instance</summary>
 		public static EntityField2 ImageUrl	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductVariantFieldIndex.ImageUrl); } }
+		/// <summary>Creates a new catalogProductVariantTypedView.Originalprice field instance</summary>
+		public static EntityField2 Originalprice	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductVariantFieldIndex.Originalprice); } }
 	}
 
 	/// <summary>Field Creation Class for typedview catalogShopTypedView</summary>

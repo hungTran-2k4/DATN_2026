@@ -296,14 +296,15 @@ namespace DATN_2026.DatabaseSpecific
 		/// <summary>Inits ProductVariantEntity's mappings</summary>
 		private void InitProductVariantEntityMappings()
 		{
-			this.AddElementMapping("ProductVariantEntity", @"postgres", @"catalog", "product_variants", 7, 0);
+			this.AddElementMapping("ProductVariantEntity", @"postgres", @"catalog", "product_variants", 8, 0);
 			this.AddElementFieldMapping("ProductVariantEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 0);
 			this.AddElementFieldMapping("ProductVariantEntity", "ImageUrl", "image_url", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 1);
 			this.AddElementFieldMapping("ProductVariantEntity", "Name", "name", true, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 2);
-			this.AddElementFieldMapping("ProductVariantEntity", "Price", "price", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 3);
-			this.AddElementFieldMapping("ProductVariantEntity", "ProductId", "product_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 4);
-			this.AddElementFieldMapping("ProductVariantEntity", "Sku", "sku", true, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 5);
-			this.AddElementFieldMapping("ProductVariantEntity", "VariantAttributes", "variant_attributes", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 6);
+			this.AddElementFieldMapping("ProductVariantEntity", "Originalprice", "originalprice", true, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 3);
+			this.AddElementFieldMapping("ProductVariantEntity", "Price", "price", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 4);
+			this.AddElementFieldMapping("ProductVariantEntity", "ProductId", "product_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
+			this.AddElementFieldMapping("ProductVariantEntity", "Sku", "sku", true, "Varchar", 50, 0, 0, false, "", null, typeof(System.String), 6);
+			this.AddElementFieldMapping("ProductVariantEntity", "VariantAttributes", "variant_attributes", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 7);
 		}
 
 		/// <summary>Inits ShopEntity's mappings</summary>
@@ -704,7 +705,7 @@ namespace DATN_2026.DatabaseSpecific
 		/// <summary>Inits catalogProductVariantView's mappings</summary>
 		private void InitcatalogProductVariantTypedViewMappings()
 		{
-			this.AddElementMapping("catalogProductVariantTypedView", @"postgres", @"catalog", "product_variants", 7);
+			this.AddElementMapping("catalogProductVariantTypedView", @"postgres", @"catalog", "product_variants", 8);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "ProductId", "product_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "Sku", "sku", false, "Varchar", 50, 0, 0, false, string.Empty, null, typeof(System.String), 2);
@@ -712,6 +713,7 @@ namespace DATN_2026.DatabaseSpecific
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "Price", "price", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 4);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "VariantAttributes", "variant_attributes", false, "Jsonb", 2147483647, 0, 0, false, string.Empty, null, typeof(System.String), 5);
 			this.AddElementFieldMapping("catalogProductVariantTypedView", "ImageUrl", "image_url", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 6);
+			this.AddElementFieldMapping("catalogProductVariantTypedView", "Originalprice", "originalprice", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 7);
 		}
 
 		/// <summary>Inits catalogShopView's mappings</summary>

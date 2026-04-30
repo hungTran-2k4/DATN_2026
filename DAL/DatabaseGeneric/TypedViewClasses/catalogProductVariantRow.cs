@@ -29,6 +29,8 @@ namespace DATN_2026.TypedViewClasses
 		public System.String ImageUrl { get; set; }
 		/// <summary>Gets or sets the Name field.</summary>
 		public System.String Name { get; set; }
+		/// <summary>Gets or sets the Originalprice field.</summary>
+		public Nullable<System.Decimal> Originalprice { get; set; }
 		/// <summary>Gets or sets the Price field.</summary>
 		public System.Decimal Price { get; set; }
 		/// <summary>Gets or sets the ProductId field.</summary>

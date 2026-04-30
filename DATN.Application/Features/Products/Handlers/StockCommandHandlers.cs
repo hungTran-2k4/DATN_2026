@@ -1,6 +1,7 @@
 using DATN.Application.Common.Models;
 using DATN.Application.DTOs.Products;
 using DATN.Application.Features.Products.Commands;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Entities.Products;
 using DATN.Domain.Interfaces;
 using MediatR;
@@ -16,11 +17,13 @@ public class StockCommandHandlers :
 {
     private readonly IStockRepository _stockRepository;
     private readonly IMapper _mapper;
+    private readonly ICacheService _cache;
 
-    public StockCommandHandlers(IStockRepository stockRepository, IMapper mapper)
+    public StockCommandHandlers(IStockRepository stockRepository, IMapper mapper, ICacheService cache)
     {
         _stockRepository = stockRepository;
         _mapper = mapper;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<StockDto>> Handle(UpdateStockCommand request, CancellationToken cancellationToken)
@@ -45,6 +48,7 @@ public class StockCommandHandlers :
         }, cancellationToken);
 
         var dto = _mapper.Map<StockDto>(stock);
+        _cache.RemoveByPrefix("products:");
         return ApiResponse<StockDto>.Succeed(dto, "Stock updated successfully");
     }
 
@@ -64,6 +68,7 @@ public class StockCommandHandlers :
             CreatedAt = DateTime.UtcNow
         }, cancellationToken);
 
+        _cache.RemoveByPrefix("products:");
         return ApiResponse<bool>.Succeed(true, "Restocked successfully");
     }
 
@@ -82,6 +87,7 @@ public class StockCommandHandlers :
             CreatedAt = DateTime.UtcNow
         }, cancellationToken);
 
+        _cache.RemoveByPrefix("products:");
         return ApiResponse<bool>.Succeed(true, "Stock reserved");
     }
 
@@ -100,6 +106,7 @@ public class StockCommandHandlers :
             CreatedAt = DateTime.UtcNow
         }, cancellationToken);
 
+        _cache.RemoveByPrefix("products:");
         return ApiResponse<bool>.Succeed(true, "Stock committed");
     }
 }

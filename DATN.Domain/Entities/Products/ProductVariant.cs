@@ -17,6 +17,9 @@ public class ProductVariant
     /// <summary>Giá bán của biến thể (bắt buộc)</summary>
     public decimal Price { get; set; }
 
+    /// <summary>Giá gốc của biến thể (để hiển thị giảm giá)</summary>
+    public decimal? OriginalPrice { get; set; }
+
     /// <summary>Hình ảnh riêng của biến thể</summary>
     public string? ImageUrl { get; set; }
 

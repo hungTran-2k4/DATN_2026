@@ -1,6 +1,7 @@
 using DATN.Application.Common.Models;
 using DATN.Application.DTOs.Products;
 using DATN.Application.Features.ProductVariants.Commands;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Entities.Products;
 using DATN.Domain.Interfaces;
 using MediatR;
@@ -12,11 +13,13 @@ public class CreateVariantHandler : IRequestHandler<CreateVariantCommand, ApiRes
 {
     private readonly IProductVariantRepository _variantRepo;
     private readonly IProductRepository _productRepo;
+    private readonly ICacheService _cache;
 
-    public CreateVariantHandler(IProductVariantRepository variantRepo, IProductRepository productRepo)
+    public CreateVariantHandler(IProductVariantRepository variantRepo, IProductRepository productRepo, ICacheService cache)
     {
         _variantRepo = variantRepo;
         _productRepo = productRepo;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<ProductVariantDto>> Handle(CreateVariantCommand request, CancellationToken cancellationToken)
@@ -45,12 +48,14 @@ public class CreateVariantHandler : IRequestHandler<CreateVariantCommand, ApiRes
             Name = request.Name,
             Sku = request.Sku,
             Price = request.Price,
+            OriginalPrice = request.OriginalPrice,
             ImageUrl = request.ImageUrl,
             VariantAttributes = attrJson,
             StockQty = request.InitialStock
         };
 
         var created = await _variantRepo.AddAsync(variant, cancellationToken);
+        _cache.RemoveByPrefix("products:");
         return ApiResponse<ProductVariantDto>.Succeed(MapToDto(created), "Tạo biến thể thành công.", 201);
     }
 
@@ -61,6 +66,7 @@ public class CreateVariantHandler : IRequestHandler<CreateVariantCommand, ApiRes
         Name = v.Name,
         Sku = v.Sku,
         Price = v.Price,
+        OriginalPrice = v.OriginalPrice,
         ImageUrl = v.ImageUrl,
         VariantAttributes = v.VariantAttributes != null
             ? JsonSerializer.Deserialize<Dictionary<string, string>>(v.VariantAttributes)
@@ -73,11 +79,13 @@ public class UpdateVariantHandler : IRequestHandler<UpdateVariantCommand, ApiRes
 {
     private readonly IProductVariantRepository _variantRepo;
     private readonly IProductRepository _productRepo;
+    private readonly ICacheService _cache;
 
-    public UpdateVariantHandler(IProductVariantRepository variantRepo, IProductRepository productRepo)
+    public UpdateVariantHandler(IProductVariantRepository variantRepo, IProductRepository productRepo, ICacheService cache)
     {
         _variantRepo = variantRepo;
         _productRepo = productRepo;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<bool>> Handle(UpdateVariantCommand request, CancellationToken cancellationToken)
@@ -100,12 +108,14 @@ public class UpdateVariantHandler : IRequestHandler<UpdateVariantCommand, ApiRes
         variant.Name = request.Name;
         variant.Sku = request.Sku;
         variant.Price = request.Price;
+        variant.OriginalPrice = request.OriginalPrice;
         variant.ImageUrl = request.ImageUrl;
         variant.VariantAttributes = request.VariantAttributes != null
             ? JsonSerializer.Serialize(request.VariantAttributes)
             : variant.VariantAttributes;
 
         await _variantRepo.UpdateAsync(variant, cancellationToken);
+        _cache.RemoveByPrefix("products:");
         return ApiResponse<bool>.Succeed(true, "Cập nhật biến thể thành công.");
     }
 }
@@ -114,11 +124,13 @@ public class DeleteVariantHandler : IRequestHandler<DeleteVariantCommand, ApiRes
 {
     private readonly IProductVariantRepository _variantRepo;
     private readonly IProductRepository _productRepo;
+    private readonly ICacheService _cache;
 
-    public DeleteVariantHandler(IProductVariantRepository variantRepo, IProductRepository productRepo)
+    public DeleteVariantHandler(IProductVariantRepository variantRepo, IProductRepository productRepo, ICacheService cache)
     {
         _variantRepo = variantRepo;
         _productRepo = productRepo;
+        _cache = cache;
     }
 
     public async Task<ApiResponse<bool>> Handle(DeleteVariantCommand request, CancellationToken cancellationToken)
@@ -128,6 +140,7 @@ public class DeleteVariantHandler : IRequestHandler<DeleteVariantCommand, ApiRes
             return ApiResponse<bool>.Fail("Sản phẩm không thuộc shop của bạn.", 403, "PRODUCT_FORBIDDEN");
 
         var result = await _variantRepo.DeleteAsync(request.Id, cancellationToken);
+        if (result) _cache.RemoveByPrefix("products:");
         return result
             ? ApiResponse<bool>.Succeed(true, "Đã xóa biến thể.")
             : ApiResponse<bool>.Fail("Không tìm thấy biến thể.", 404, "VARIANT_NOT_FOUND");

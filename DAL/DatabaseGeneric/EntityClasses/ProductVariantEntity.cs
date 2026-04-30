@@ -230,6 +230,14 @@ namespace DATN_2026.EntityClasses
 			set { SetValue((int)ProductVariantFieldIndex.Name, value); }
 		}
 
+		/// <summary>The Originalprice property of the Entity ProductVariant<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "product_variants"."originalprice".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Decimal> Originalprice
+		{
+			get { return (Nullable<System.Decimal>)GetValue((int)ProductVariantFieldIndex.Originalprice, false); }
+			set { SetValue((int)ProductVariantFieldIndex.Originalprice, value); }
+		}
+
 		/// <summary>The Price property of the Entity ProductVariant<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "product_variants"."price".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
 		public virtual System.Decimal Price
@@ -310,6 +318,8 @@ namespace DATN_2026
 		ImageUrl,
 		///<summary>Name. </summary>
 		Name,
+		///<summary>Originalprice. </summary>
+		Originalprice,
 		///<summary>Price. </summary>
 		Price,
 		///<summary>ProductId. </summary>

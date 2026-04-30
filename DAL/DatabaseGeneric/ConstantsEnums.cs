@@ -322,6 +322,8 @@ namespace DATN_2026
 		VariantAttributes,
 		///<summary>ImageUrl</summary>
 		ImageUrl,
+		///<summary>Originalprice</summary>
+		Originalprice,
 		/// <summary></summary>
 		AmountOfFields
 	}

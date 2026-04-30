@@ -128,6 +128,7 @@ public class ProductVariantRepository : IProductVariantRepository
                 Name = variant.Name,
                 Sku = variant.Sku,
                 Price = variant.Price,
+                Originalprice = variant.OriginalPrice,
                 ImageUrl = variant.ImageUrl,
                 VariantAttributes = variant.VariantAttributes,
                 IsNew = true
@@ -172,11 +173,80 @@ public class ProductVariantRepository : IProductVariantRepository
         entity.Name = variant.Name;
         entity.Sku = variant.Sku;
         entity.Price = variant.Price;
+        entity.Originalprice = variant.OriginalPrice;
         entity.ImageUrl = variant.ImageUrl;
         entity.VariantAttributes = variant.VariantAttributes;
         entity.IsNew = false;
 
         return await _adapter.SaveEntityAsync(entity, cancellationToken: cancellationToken);
+    }
+
+    public async Task<bool> BulkSaveAsync(IEnumerable<ProductVariant> creates, IEnumerable<ProductVariant> updates, CancellationToken cancellationToken = default)
+    {
+        using var tx = _uow.BeginTransaction();
+        try
+        {
+            // 1. Process Updates
+            foreach (var variant in updates)
+            {
+                var col = new EntityCollection<ProductVariantEntity>();
+                await _adapter.FetchEntityCollectionAsync(new QueryParameters
+                {
+                    CollectionToFetch = col,
+                    FilterToUse = ProductVariantFields.Id == variant.Id,
+                    RowsToTake = 1
+                }, cancellationToken);
+
+                var entity = col.FirstOrDefault();
+                if (entity != null)
+                {
+                    entity.Name = variant.Name;
+                    entity.Sku = variant.Sku;
+                    entity.Price = variant.Price;
+                    entity.Originalprice = variant.OriginalPrice;
+                    entity.ImageUrl = variant.ImageUrl;
+                    entity.VariantAttributes = variant.VariantAttributes;
+                    entity.IsNew = false;
+                    await _adapter.SaveEntityAsync(entity, cancellationToken: cancellationToken);
+                }
+            }
+
+            // 2. Process Creates
+            foreach (var variant in creates)
+            {
+                var variantEntity = new ProductVariantEntity
+                {
+                    Id = variant.Id,
+                    ProductId = variant.ProductId,
+                    Name = variant.Name,
+                    Sku = variant.Sku,
+                    Price = variant.Price,
+                    Originalprice = variant.OriginalPrice,
+                    ImageUrl = variant.ImageUrl,
+                    VariantAttributes = variant.VariantAttributes,
+                    IsNew = true
+                };
+                await _adapter.SaveEntityAsync(variantEntity, refetchAfterSave: true, cancellationToken: cancellationToken);
+
+                var stockEntity = new StockEntity
+                {
+                    VariantId = variantEntity.Id,
+                    PhysicalQuantity = variant.StockQty,
+                    ReservedQuantity = 0,
+                    IsNew = true
+                };
+                await _adapter.SaveEntityAsync(stockEntity, cancellationToken: cancellationToken);
+                variant.Id = variantEntity.Id;
+            }
+
+            tx.Commit();
+            return true;
+        }
+        catch
+        {
+            tx.Rollback();
+            throw;
+        }
     }
 
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
@@ -227,6 +297,7 @@ public class ProductVariantRepository : IProductVariantRepository
         Name = e.Name,
         Sku = e.Sku,
         Price = e.Price,
+        OriginalPrice = e.Originalprice,
         ImageUrl = e.ImageUrl,
         VariantAttributes = e.VariantAttributes,
         // Stock được prefetch: AvailableQuantity là số thực tế để bán

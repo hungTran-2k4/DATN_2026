@@ -40,26 +40,28 @@ public class ProductRepository : IProductRepository
         {
             var searchFilter = new PredicateExpression();
             searchFilter.AddWithOr(ProductFields.Name.UnaccentILike(search));
-            searchFilter.AddWithOr(ProductFields.Description.UnaccentILike(search));
             searchFilter.AddWithOr(ProductFields.Slug.UnaccentILike(search));
             searchFilter.AddWithOr(ProductFields.Sku.UnaccentILike(search));
             predicate.AddWithAnd(searchFilter);
         }
 
+        // Count query
         var countQuery = qf.Create().Select(ProductFields.Id.Count()).Where(predicate);
         var totalCount = await _adapter.FetchScalarAsync<int>(countQuery, cancellationToken);
 
-        var query = qf.Product.Where(predicate)
+        // Data query
+        var dataQuery = qf.Product.Where(predicate)
                       .OrderBy(ProductFields.CreatedAt.Descending())
                       .WithPath(ProductEntity.PrefetchPathProductImages)
-                      .WithPath(ProductEntity.PrefetchPathProductVariants.WithSubPath(ProductVariantEntity.PrefetchPathStock))
+                      .WithPath(ProductEntity.PrefetchPathProductVariants)
                       .Page(page, pageSize);
 
-        var entities = await _adapter.FetchQueryAsync(query, cancellationToken);
+        var entities = await _adapter.FetchQueryAsync(dataQuery, cancellationToken);
         var items = _mapper.Map<IEnumerable<Product>>(entities);
         
         return (items, totalCount);
     }
+
 
     public async Task<IEnumerable<Product>> GetAllAsync(Guid? shopId = null, CancellationToken cancellationToken = default)
     {

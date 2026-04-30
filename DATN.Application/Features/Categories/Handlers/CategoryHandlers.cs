@@ -7,6 +7,7 @@ using DATN.Domain.Entities.Categories;
 using DATN.Domain.Interfaces;
 using MediatR;
 using System.Text.RegularExpressions;
+using DATN.Application.Common;
 
 namespace DATN.Application.Features.Categories.Handlers;
 
@@ -62,7 +63,7 @@ public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, ApiR
     }
 
     private static string GenerateSlug(string name) =>
-        Regex.Replace(name.ToLower().Trim(), @"[^a-z0-9]+", "-").Trim('-');
+        SlugHelper.GenerateSlug(name);
 }
 
     public async Task<ApiResponse<IEnumerable<CategoryDto>>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
@@ -164,7 +165,7 @@ public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, ApiR
     }
 
     private static string GenerateSlug(string name) =>
-        Regex.Replace(name.ToLower().Trim(), @"[^a-z0-9]+", "-").Trim('-');
+        SlugHelper.GenerateSlug(name);
 }
 
 public class DeactivateCategoryHandler : IRequestHandler<DeactivateCategoryCommand, ApiResponse<bool>>

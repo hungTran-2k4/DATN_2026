@@ -306,6 +306,7 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("ProductVariantEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ProductVariantFieldIndex.Id, 0, 0, 0);
 			this.AddElementFieldInfo("ProductVariantEntity", "ImageUrl", typeof(System.String), false, false, false, true,  (int)ProductVariantFieldIndex.ImageUrl, 1073741824, 0, 0);
 			this.AddElementFieldInfo("ProductVariantEntity", "Name", typeof(System.String), false, false, false, true,  (int)ProductVariantFieldIndex.Name, 255, 0, 0);
+			this.AddElementFieldInfo("ProductVariantEntity", "Originalprice", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)ProductVariantFieldIndex.Originalprice, 0, 2, 18);
 			this.AddElementFieldInfo("ProductVariantEntity", "Price", typeof(System.Decimal), false, false, false, false,  (int)ProductVariantFieldIndex.Price, 0, 2, 18);
 			this.AddElementFieldInfo("ProductVariantEntity", "ProductId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ProductVariantFieldIndex.ProductId, 0, 0, 0);
 			this.AddElementFieldInfo("ProductVariantEntity", "Sku", typeof(System.String), false, false, false, true,  (int)ProductVariantFieldIndex.Sku, 50, 0, 0);
@@ -717,6 +718,7 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "Price", typeof(System.Decimal), false, false, true, false, (int)catalogProductVariantFieldIndex.Price, 0, 2, 18);
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "VariantAttributes", typeof(System.String), false, false, true, false, (int)catalogProductVariantFieldIndex.VariantAttributes, 2147483647, 0, 0);
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "ImageUrl", typeof(System.String), false, false, true, false, (int)catalogProductVariantFieldIndex.ImageUrl, 1073741824, 0, 0);
+			this.AddElementFieldInfo("catalogProductVariantTypedView", "Originalprice", typeof(Nullable<System.Decimal>), false, false, true, false, (int)catalogProductVariantFieldIndex.Originalprice, 0, 2, 18);
 		}
 
 		/// <summary>Inits catalogShopView's info objects</summary>

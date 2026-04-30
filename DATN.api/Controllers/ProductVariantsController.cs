@@ -66,4 +66,20 @@ public class ProductVariantsController : ControllerBase
             return result.StatusCode == 403 ? StatusCode(403, result) : NotFound(result);
         return Ok(result);
     }
+
+    /// <summary>Lưu hàng loạt biến thể (Bulk Upsert) có Transaction</summary>
+    [HttpPost]
+    [Route("variantsBulkSave")]
+    [Authorize(Roles = "Seller,Admin")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<bool>), 400)]
+    [ProducesResponseType(typeof(ApiResponse<bool>), 403)]
+    public async Task<IActionResult> BulkSave(Guid productId, [FromBody] BulkSaveVariantsCommand command)
+    {
+        command.ProductId = productId;
+        var result = await _mediator.Send(command);
+        if (!result.Success)
+            return result.StatusCode == 403 ? StatusCode(403, result) : BadRequest(result);
+        return Ok(result);
+    }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Globalization;
 using SD.LLBLGen.Pro.ORMSupportClasses;
 
 namespace DATN.Infrastructure.Extensions;
@@ -8,67 +7,69 @@ namespace DATN.Infrastructure.Extensions;
 public static class StringSearchExtensions
 {
     /// <summary>
-    /// Tạo điều kiện tìm kiếm không phân biệt dấu tiếng Việt (Sử dụng extension unaccent và ILIKE trong PostgreSQL).
+    /// Tìm kiếm không phân biệt dấu tiếng Việt.
+    /// Tách từ khóa thành từng từ và yêu cầu TẤT CẢ các từ đều phải có mặt (AND).
     /// </summary>
     public static IPredicate UnaccentILike(this IEntityFieldCore field, string searchTerm)
     {
-        if (string.IsNullOrWhiteSpace(searchTerm)) 
+        if (string.IsNullOrWhiteSpace(searchTerm))
             return new PredicateExpression();
 
-        // 1. Loại bỏ dấu trên C# (giảm tải cho DB)
-        string normalizedTerm = RemoveDiacritics(searchTerm).ToLowerInvariant();
-        string pattern = $"%{normalizedTerm}%";
+        var words = searchTerm.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        // 2. Clone field để không ảnh hưởng đến singleton gốc
+        if (words.Length == 1)
+        {
+            return BuildWordPredicate(field, words[0]);
+        }
+
+        // Nhiều từ: AND tất cả lại
+        var combined = new PredicateExpression();
+        foreach (var word in words)
+        {
+            combined.AddWithAnd(BuildWordPredicate(field, word));
+        }
+        return combined;
+    }
+
+    private static IPredicate BuildWordPredicate(IEntityFieldCore field, string word)
+    {
+        string normalized = RemoveDiacritics(word).ToLowerInvariant();
+        string pattern = $"%{normalized}%";
+
         var clonedField = CloneField(field);
-
-        // 3. Gán function unaccent thông qua DbFunctionCall lên field cloned
         clonedField.ExpressionToApply = new DbFunctionCall("unaccent", new object[] { field });
 
-        // 4. CaseSensitiveCollation = false trên PostgresDQE sẽ sinh ra phép toán ILIKE
         return new FieldLikePredicate(clonedField, null, pattern) { CaseSensitiveCollation = false };
     }
 
     private static IEntityFieldCore CloneField(IEntityFieldCore field)
     {
-        // LLBLGen Pro EntityField và EntityField2 implement ICloneable
         if (field is ICloneable cloneable)
-        {
             return (IEntityFieldCore)cloneable.Clone();
-        }
-
-        // Reflection dự phòng
-        var cloneMethod = field.GetType().GetMethod("Clone", Type.EmptyTypes);
-        if (cloneMethod != null)
-        {
-            return (IEntityFieldCore)cloneMethod.Invoke(field, null)!;
-        }
-
         return field;
     }
 
-    /// <summary>
-    /// Hàm xử lý xóa bỏ dấu tiếng Việt
-    /// </summary>
     public static string RemoveDiacritics(string text)
     {
         if (string.IsNullOrWhiteSpace(text)) return text;
-        
-        var normalizedString = text.Normalize(NormalizationForm.FormD);
-        var stringBuilder = new StringBuilder();
 
-        foreach (var c in normalizedString)
+        text = text.Normalize(NormalizationForm.FormC);
+
+        string[] arr1 = { "á","à","ả","ã","ạ","â","ấ","ầ","ẩ","ẫ","ậ","ă","ắ","ằ","ẳ","ẵ","ặ",
+            "đ","é","è","ẻ","ẽ","ẹ","ê","ế","ề","ể","ễ","ệ","í","ì","ỉ","ĩ","ị",
+            "ó","ò","ỏ","õ","ọ","ô","ố","ồ","ổ","ỗ","ộ","ơ","ớ","ờ","ở","ỡ","ợ",
+            "ú","ù","ủ","ũ","ụ","ư","ứ","ừ","ử","ữ","ự","ý","ỳ","ỷ","ỹ","ỵ" };
+
+        string[] arr2 = { "a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a",
+            "d","e","e","e","e","e","e","e","e","e","e","e","i","i","i","i","i",
+            "o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o",
+            "u","u","u","u","u","u","u","u","u","u","u","y","y","y","y","y" };
+
+        for (int i = 0; i < arr1.Length; i++)
         {
-            var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-            if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-            {
-                stringBuilder.Append(c);
-            }
+            text = text.Replace(arr1[i], arr2[i]);
+            text = text.Replace(arr1[i].ToUpper(), arr2[i].ToUpper());
         }
-        
-        // Fix riêng cho chữ Đ/đ vì FormD không phân tách được
-        return stringBuilder.ToString().Normalize(NormalizationForm.FormC)
-            .Replace('đ', 'd')
-            .Replace('Đ', 'D');
+        return text;
     }
 }

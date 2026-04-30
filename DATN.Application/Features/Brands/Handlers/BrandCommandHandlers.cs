@@ -4,6 +4,7 @@ using DATN.Application.Features.Brands.Commands;
 using DATN.Domain.Entities.Products;
 using DATN.Domain.Interfaces;
 using MediatR;
+using DATN.Application.Common;
 using System.Text.RegularExpressions;
 
 namespace DATN.Application.Features.Brands.Handlers;
@@ -45,7 +46,7 @@ public class CreateBrandHandler : IRequestHandler<CreateBrandCommand, ApiRespons
     }
 
     private static string GenerateSlug(string name) =>
-        Regex.Replace(name.ToLower().Trim(), @"[^a-z0-9]+", "-").Trim('-');
+        SlugHelper.GenerateSlug(name);
 }
 
 public class UpdateBrandHandler : IRequestHandler<UpdateBrandCommand, ApiResponse<bool>>

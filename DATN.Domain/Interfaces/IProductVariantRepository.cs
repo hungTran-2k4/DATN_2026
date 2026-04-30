@@ -18,6 +18,9 @@ public interface IProductVariantRepository
     Task<ProductVariant> AddAsync(ProductVariant variant, CancellationToken cancellationToken = default);
     Task<bool> UpdateAsync(ProductVariant variant, CancellationToken cancellationToken = default);
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    
+    /// <summary>Lưu hàng loạt biến thể trong một transaction</summary>
+    Task<bool> BulkSaveAsync(IEnumerable<ProductVariant> creates, IEnumerable<ProductVariant> updates, CancellationToken cancellationToken = default);
 
     /// <summary>Kiểm tra tồn kho — dùng trước khi thêm vào giỏ / đặt hàng</summary>
     Task<int> GetStockQtyAsync(Guid variantId, CancellationToken cancellationToken = default);

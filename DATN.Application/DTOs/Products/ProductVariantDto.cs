@@ -7,6 +7,7 @@ public class ProductVariantDto
     public string? Name { get; set; }
     public string? Sku { get; set; }
     public decimal Price { get; set; }
+    public decimal? OriginalPrice { get; set; }
     public string? ImageUrl { get; set; }
 
     /// <summary>Parsed variant attributes, e.g. {"color":"Đỏ","size":"XL"}</summary>
