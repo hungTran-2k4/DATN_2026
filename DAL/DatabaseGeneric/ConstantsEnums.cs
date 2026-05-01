@@ -599,6 +599,42 @@ namespace DATN_2026
 		/// <summary></summary>
 		AmountOfFields
 	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesPayment.</summary>
+	public enum salesPaymentFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>OrderId</summary>
+		OrderId,
+		///<summary>Provider</summary>
+		Provider,
+		///<summary>TransactionId</summary>
+		TransactionId,
+		///<summary>Amount</summary>
+		Amount,
+		///<summary>Status</summary>
+		Status,
+		///<summary>ResponseCode</summary>
+		ResponseCode,
+		///<summary>BankCode</summary>
+		BankCode,
+		///<summary>CardType</summary>
+		CardType,
+		///<summary>PayDate</summary>
+		PayDate,
+		///<summary>RawResponse</summary>
+		RawResponse,
+		///<summary>Signature</summary>
+		Signature,
+		///<summary>Currency</summary>
+		Currency,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
+		///<summary>UpdatedAt</summary>
+		UpdatedAt,
+		/// <summary></summary>
+		AmountOfFields
+	}
 	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesShippingTracking.</summary>
 	public enum salesShippingTrackingFieldIndex
 	{
@@ -702,6 +738,8 @@ namespace DATN_2026
 		OrderEntity,
 		///<summary>OrderItem</summary>
 		OrderItemEntity,
+		///<summary>Payment</summary>
+		PaymentEntity,
 		///<summary>ShippingTracking</summary>
 		ShippingTrackingEntity,
 		///<summary>Transaction</summary>
@@ -769,6 +807,8 @@ namespace DATN_2026
 		salesOrderTypedView,
 		///<summary>salesOrderItem</summary>
 		salesOrderItemTypedView,
+		///<summary>salesPayment</summary>
+		salesPaymentTypedView,
 		///<summary>salesShippingTracking</summary>
 		salesShippingTrackingTypedView,
 		///<summary>salesTransaction</summary>

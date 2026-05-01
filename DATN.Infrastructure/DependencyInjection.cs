@@ -19,6 +19,7 @@ using DATN.Infrastructure.Persistence.Repositories.Shops;
 using DATN.Infrastructure.Persistence.Repositories.Categories;
 using DATN.Infrastructure.Persistence.Repositories.Orders;
 using DATN.Infrastructure.Services;
+using DATN.Infrastructure.Services.Payment;
 using DATN.Infrastructure.Persistence.Repositories.Audit;
 using DATN_2026.DatabaseSpecific;
 using SD.LLBLGen.Pro.ORMSupportClasses;
@@ -127,6 +128,11 @@ public static class DependencyInjection
 
         // Cache
         services.AddSingleton<ICacheService, MemoryCacheService>();
+
+        // Payment Gateway — Provider Pattern
+        services.AddScoped<IPaymentProvider, VNPayProvider>(); // Thêm MoMoProvider ở đây khi cần
+        services.AddScoped<IPaymentProviderFactory, PaymentProviderFactory>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
 
         // Unit of Work (transaction support)
         services.AddScoped<IUnitOfWork, LLBLGenUnitOfWork>();

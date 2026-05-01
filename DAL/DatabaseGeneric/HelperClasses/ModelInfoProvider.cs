@@ -70,6 +70,7 @@ namespace DATN_2026.HelperClasses
 			InitCartEntityInfo();
 			InitOrderEntityInfo();
 			InitOrderItemEntityInfo();
+			InitPaymentEntityInfo();
 			InitShippingTrackingEntityInfo();
 			InitTransactionEntityInfo();
 			InitauditLoginAttemptTypedViewInfo();
@@ -101,6 +102,7 @@ namespace DATN_2026.HelperClasses
 			InitsalesCartTypedViewInfo();
 			InitsalesOrderTypedViewInfo();
 			InitsalesOrderItemTypedViewInfo();
+			InitsalesPaymentTypedViewInfo();
 			InitsalesShippingTrackingTypedViewInfo();
 			InitsalesTransactionTypedViewInfo();
 			this.BuildInternalStructures();
@@ -486,6 +488,27 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("OrderItemEntity", "Quantity", typeof(System.Int32), false, false, false, false,  (int)OrderItemFieldIndex.Quantity, 0, 0, 10);
 			this.AddElementFieldInfo("OrderItemEntity", "UnitPrice", typeof(System.Decimal), false, false, false, false,  (int)OrderItemFieldIndex.UnitPrice, 0, 2, 18);
 			this.AddElementFieldInfo("OrderItemEntity", "VariantId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)OrderItemFieldIndex.VariantId, 0, 0, 0);
+		}
+
+		/// <summary>Inits PaymentEntity's info objects</summary>
+		private void InitPaymentEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(PaymentFieldIndex), "PaymentEntity");
+			this.AddElementFieldInfo("PaymentEntity", "Amount", typeof(System.Decimal), false, false, false, false,  (int)PaymentFieldIndex.Amount, 0, 2, 18);
+			this.AddElementFieldInfo("PaymentEntity", "BankCode", typeof(System.String), false, false, false, true,  (int)PaymentFieldIndex.BankCode, 20, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "CardType", typeof(System.String), false, false, false, true,  (int)PaymentFieldIndex.CardType, 20, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "CreatedAt", typeof(System.DateTime), false, false, false, false,  (int)PaymentFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "Currency", typeof(System.String), false, false, false, false,  (int)PaymentFieldIndex.Currency, 10, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)PaymentFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "OrderId", typeof(System.Guid), false, true, false, false,  (int)PaymentFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "PayDate", typeof(System.String), false, false, false, true,  (int)PaymentFieldIndex.PayDate, 20, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "Provider", typeof(System.String), false, false, false, false,  (int)PaymentFieldIndex.Provider, 20, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "RawResponse", typeof(System.String), false, false, false, true,  (int)PaymentFieldIndex.RawResponse, 1073741824, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "ResponseCode", typeof(System.String), false, false, false, true,  (int)PaymentFieldIndex.ResponseCode, 10, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "Signature", typeof(System.String), false, false, false, true,  (int)PaymentFieldIndex.Signature, 1073741824, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "Status", typeof(System.String), false, false, false, false,  (int)PaymentFieldIndex.Status, 20, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "TransactionId", typeof(System.String), false, false, false, true,  (int)PaymentFieldIndex.TransactionId, 100, 0, 0);
+			this.AddElementFieldInfo("PaymentEntity", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)PaymentFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 
 		/// <summary>Inits ShippingTrackingEntity's info objects</summary>
@@ -894,6 +917,27 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("salesOrderItemTypedView", "Quantity", typeof(System.Int32), false, false, true, false, (int)salesOrderItemFieldIndex.Quantity, 0, 0, 10);
 			this.AddElementFieldInfo("salesOrderItemTypedView", "UnitPrice", typeof(System.Decimal), false, false, true, false, (int)salesOrderItemFieldIndex.UnitPrice, 0, 2, 18);
 			this.AddElementFieldInfo("salesOrderItemTypedView", "ProductNameSnapshot", typeof(System.String), false, false, true, false, (int)salesOrderItemFieldIndex.ProductNameSnapshot, 255, 0, 0);
+		}
+
+		/// <summary>Inits salesPaymentView's info objects</summary>
+		private void InitsalesPaymentTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(salesPaymentFieldIndex), "salesPaymentTypedView");
+			this.AddElementFieldInfo("salesPaymentTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesPaymentFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "OrderId", typeof(System.Guid), false, false, true, false, (int)salesPaymentFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "Provider", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.Provider, 20, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "TransactionId", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.TransactionId, 100, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "Amount", typeof(System.Decimal), false, false, true, false, (int)salesPaymentFieldIndex.Amount, 0, 2, 18);
+			this.AddElementFieldInfo("salesPaymentTypedView", "Status", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.Status, 20, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "ResponseCode", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.ResponseCode, 10, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "BankCode", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.BankCode, 20, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "CardType", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.CardType, 20, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "PayDate", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.PayDate, 20, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "RawResponse", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.RawResponse, 1073741824, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "Signature", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.Signature, 1073741824, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "Currency", typeof(System.String), false, false, true, false, (int)salesPaymentFieldIndex.Currency, 10, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "CreatedAt", typeof(System.DateTime), false, false, true, false, (int)salesPaymentFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("salesPaymentTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesPaymentFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 
 		/// <summary>Inits salesShippingTrackingView's info objects</summary>

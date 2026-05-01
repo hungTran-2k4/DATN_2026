@@ -65,6 +65,7 @@ namespace DATN_2026.DatabaseSpecific
 			InitCartEntityMappings();
 			InitOrderEntityMappings();
 			InitOrderItemEntityMappings();
+			InitPaymentEntityMappings();
 			InitShippingTrackingEntityMappings();
 			InitTransactionEntityMappings();
 			InitauditLoginAttemptTypedViewMappings();
@@ -96,6 +97,7 @@ namespace DATN_2026.DatabaseSpecific
 			InitsalesCartTypedViewMappings();
 			InitsalesOrderTypedViewMappings();
 			InitsalesOrderItemTypedViewMappings();
+			InitsalesPaymentTypedViewMappings();
 			InitsalesShippingTrackingTypedViewMappings();
 			InitsalesTransactionTypedViewMappings();
 		}
@@ -480,6 +482,27 @@ namespace DATN_2026.DatabaseSpecific
 			this.AddElementFieldMapping("OrderItemEntity", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 3);
 			this.AddElementFieldMapping("OrderItemEntity", "UnitPrice", "unit_price", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 4);
 			this.AddElementFieldMapping("OrderItemEntity", "VariantId", "variant_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
+		}
+
+		/// <summary>Inits PaymentEntity's mappings</summary>
+		private void InitPaymentEntityMappings()
+		{
+			this.AddElementMapping("PaymentEntity", @"postgres", @"sales", "payments", 15, 0);
+			this.AddElementFieldMapping("PaymentEntity", "Amount", "amount", false, "Numeric", 0, 18, 2, false, "", null, typeof(System.Decimal), 0);
+			this.AddElementFieldMapping("PaymentEntity", "BankCode", "bank_code", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 1);
+			this.AddElementFieldMapping("PaymentEntity", "CardType", "card_type", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 2);
+			this.AddElementFieldMapping("PaymentEntity", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 3);
+			this.AddElementFieldMapping("PaymentEntity", "Currency", "currency", false, "Varchar", 10, 0, 0, false, "", null, typeof(System.String), 4);
+			this.AddElementFieldMapping("PaymentEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
+			this.AddElementFieldMapping("PaymentEntity", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 6);
+			this.AddElementFieldMapping("PaymentEntity", "PayDate", "pay_date", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 7);
+			this.AddElementFieldMapping("PaymentEntity", "Provider", "provider", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 8);
+			this.AddElementFieldMapping("PaymentEntity", "RawResponse", "raw_response", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 9);
+			this.AddElementFieldMapping("PaymentEntity", "ResponseCode", "response_code", true, "Varchar", 10, 0, 0, false, "", null, typeof(System.String), 10);
+			this.AddElementFieldMapping("PaymentEntity", "Signature", "signature", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 11);
+			this.AddElementFieldMapping("PaymentEntity", "Status", "status", false, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 12);
+			this.AddElementFieldMapping("PaymentEntity", "TransactionId", "transaction_id", true, "Varchar", 100, 0, 0, false, "", null, typeof(System.String), 13);
+			this.AddElementFieldMapping("PaymentEntity", "UpdatedAt", "updated_at", true, "Timestamp", 0, 0, 0, false, "", null, typeof(System.DateTime), 14);
 		}
 
 		/// <summary>Inits ShippingTrackingEntity's mappings</summary>
@@ -889,6 +912,27 @@ namespace DATN_2026.DatabaseSpecific
 			this.AddElementFieldMapping("salesOrderItemTypedView", "Quantity", "quantity", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 3);
 			this.AddElementFieldMapping("salesOrderItemTypedView", "UnitPrice", "unit_price", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 4);
 			this.AddElementFieldMapping("salesOrderItemTypedView", "ProductNameSnapshot", "product_name_snapshot", false, "Varchar", 255, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+		}
+
+		/// <summary>Inits salesPaymentView's mappings</summary>
+		private void InitsalesPaymentTypedViewMappings()
+		{
+			this.AddElementMapping("salesPaymentTypedView", @"postgres", @"sales", "payments", 15);
+			this.AddElementFieldMapping("salesPaymentTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
+			this.AddElementFieldMapping("salesPaymentTypedView", "OrderId", "order_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
+			this.AddElementFieldMapping("salesPaymentTypedView", "Provider", "provider", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 2);
+			this.AddElementFieldMapping("salesPaymentTypedView", "TransactionId", "transaction_id", false, "Varchar", 100, 0, 0, false, string.Empty, null, typeof(System.String), 3);
+			this.AddElementFieldMapping("salesPaymentTypedView", "Amount", "amount", false, "Numeric", 0, 18, 2, false, string.Empty, null, typeof(System.Decimal), 4);
+			this.AddElementFieldMapping("salesPaymentTypedView", "Status", "status", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 5);
+			this.AddElementFieldMapping("salesPaymentTypedView", "ResponseCode", "response_code", false, "Varchar", 10, 0, 0, false, string.Empty, null, typeof(System.String), 6);
+			this.AddElementFieldMapping("salesPaymentTypedView", "BankCode", "bank_code", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 7);
+			this.AddElementFieldMapping("salesPaymentTypedView", "CardType", "card_type", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 8);
+			this.AddElementFieldMapping("salesPaymentTypedView", "PayDate", "pay_date", false, "Varchar", 20, 0, 0, false, string.Empty, null, typeof(System.String), 9);
+			this.AddElementFieldMapping("salesPaymentTypedView", "RawResponse", "raw_response", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 10);
+			this.AddElementFieldMapping("salesPaymentTypedView", "Signature", "signature", false, "Text", 1073741824, 0, 0, false, string.Empty, null, typeof(System.String), 11);
+			this.AddElementFieldMapping("salesPaymentTypedView", "Currency", "currency", false, "Varchar", 10, 0, 0, false, string.Empty, null, typeof(System.String), 12);
+			this.AddElementFieldMapping("salesPaymentTypedView", "CreatedAt", "created_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 13);
+			this.AddElementFieldMapping("salesPaymentTypedView", "UpdatedAt", "updated_at", false, "Timestamp", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 14);
 		}
 
 		/// <summary>Inits salesShippingTrackingView's mappings</summary>

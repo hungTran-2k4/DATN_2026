@@ -231,6 +231,24 @@ public class OrderRepository : IOrderRepository
         return code;
     }
 
+    public async Task<bool> UpdatePaymentStatusAsync(Guid id, string newPaymentStatus, CancellationToken cancellationToken = default)
+    {
+        var col = new EntityCollection<OrderEntity>();
+        await _adapter.FetchEntityCollectionAsync(new QueryParameters
+        {
+            CollectionToFetch = col,
+            FilterToUse = OrderFields.Id == id,
+            RowsToTake = 1
+        }, cancellationToken);
+
+        var entity = col.FirstOrDefault();
+        if (entity == null) return false;
+
+        entity.PaymentStatus = newPaymentStatus;
+        entity.IsNew = false;
+        return await _adapter.SaveEntityAsync(entity, cancellationToken: cancellationToken);
+    }
+
     private static Order MapToOrder(OrderEntity e) => new()
     {
         Id = e.Id,

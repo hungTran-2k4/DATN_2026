@@ -105,6 +105,9 @@ namespace DATN_2026.FactoryClasses
 		/// <summary>Creates and returns a new EntityQuery for the OrderItem entity</summary>
 		public EntityQuery<OrderItemEntity> OrderItem { get { return Create<OrderItemEntity>(); } }
 
+		/// <summary>Creates and returns a new EntityQuery for the Payment entity</summary>
+		public EntityQuery<PaymentEntity> Payment { get { return Create<PaymentEntity>(); } }
+
 		/// <summary>Creates and returns a new EntityQuery for the ShippingTracking entity</summary>
 		public EntityQuery<ShippingTrackingEntity> ShippingTracking { get { return Create<ShippingTrackingEntity>(); } }
 
@@ -286,6 +289,12 @@ namespace DATN_2026.FactoryClasses
 		public DynamicQuery<DATN_2026.TypedViewClasses.salesOrderItemRow> salesOrderItem
 		{
 			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesOrderItemRow, DATN_2026.HelperClasses.salesOrderItemFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Sales.salesPayment</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesPaymentRow> salesPayment
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesPaymentRow, DATN_2026.HelperClasses.salesPaymentFields>(); }
 		}
 
 		/// <summary>Creates and returns the query to fetch the typed view Sales.salesShippingTracking</summary>

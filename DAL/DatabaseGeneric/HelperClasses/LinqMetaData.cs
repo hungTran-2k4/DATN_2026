@@ -102,6 +102,8 @@ namespace DATN_2026.Linq
 					return this.Order;
 				case DATN_2026.EntityType.OrderItemEntity:
 					return this.OrderItem;
+				case DATN_2026.EntityType.PaymentEntity:
+					return this.Payment;
 				case DATN_2026.EntityType.ShippingTrackingEntity:
 					return this.ShippingTracking;
 				case DATN_2026.EntityType.TransactionEntity:
@@ -218,6 +220,9 @@ namespace DATN_2026.Linq
 		
 		/// <summary>returns the datasource to use in a Linq query when targeting OrderItemEntity instances in the database.</summary>
 		public DataSource2<OrderItemEntity> OrderItem {	get { return new DataSource2<OrderItemEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
+		/// <summary>returns the datasource to use in a Linq query when targeting PaymentEntity instances in the database.</summary>
+		public DataSource2<PaymentEntity> Payment {	get { return new DataSource2<PaymentEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
 		/// <summary>returns the datasource to use in a Linq query when targeting ShippingTrackingEntity instances in the database.</summary>
 		public DataSource2<ShippingTrackingEntity> ShippingTracking {	get { return new DataSource2<ShippingTrackingEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }

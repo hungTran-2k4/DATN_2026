@@ -46,25 +46,21 @@ public class Order
 public static class OrderStatus
 {
     public const string Pending = "PENDING";
-    public const string Confirmed = "CONFIRMED";
-    public const string Preparing = "PREPARING";
-    public const string Shipping = "SHIPPING";
+    public const string Processing = "PROCESSING";
+    public const string Shipped = "SHIPPED";
     public const string Delivered = "DELIVERED";
     public const string Cancelled = "CANCELLED";
-
-    private static readonly string[] SellerCanTransition = { Confirmed, Preparing, Shipping, Delivered, Cancelled };
 
     /// <summary>Kiểm tra luồng chuyển trạng thái hợp lệ</summary>
     public static bool IsValidTransition(string current, string next)
     {
         return (current, next) switch
         {
-            (Pending, Confirmed) => true,
+            (Pending, Processing) => true,
             (Pending, Cancelled) => true,
-            (Confirmed, Preparing) => true,
-            (Confirmed, Cancelled) => true,
-            (Preparing, Shipping) => true,
-            (Shipping, Delivered) => true,
+            (Processing, Shipped) => true,
+            (Processing, Cancelled) => true,
+            (Shipped, Delivered) => true,
             _ => false
         };
     }
@@ -75,4 +71,15 @@ public static class PaymentMethod
 {
     public const string Cod = "COD";
     public const string BankTransfer = "BANK_TRANSFER";
+    public const string VnPay = "VNPAY";
+}
+
+/// <summary>Trạng thái thanh toán</summary>
+public static class PaymentStatus
+{
+    public const string Unpaid = "UNPAID";
+    public const string Processing = "PROCESSING";
+    public const string Paid = "PAID";
+    public const string Failed = "FAILED";
+    public const string Refunded = "REFUNDED";
 }

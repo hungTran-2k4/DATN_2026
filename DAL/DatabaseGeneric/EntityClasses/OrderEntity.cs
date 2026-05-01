@@ -28,6 +28,7 @@ namespace DATN_2026.EntityClasses
 	{
 		private EntityCollection<ReviewEntity> _reviews;
 		private EntityCollection<OrderItemEntity> _orderItems;
+		private EntityCollection<PaymentEntity> _payments;
 		private EntityCollection<ShippingTrackingEntity> _shippingTrackings;
 		private EntityCollection<TransactionEntity> _transactions;
 		private UserEntity _user;
@@ -46,6 +47,8 @@ namespace DATN_2026.EntityClasses
 			public static readonly string Reviews = "Reviews";
 			/// <summary>Member name OrderItems</summary>
 			public static readonly string OrderItems = "OrderItems";
+			/// <summary>Member name Payments</summary>
+			public static readonly string Payments = "Payments";
 			/// <summary>Member name ShippingTrackings</summary>
 			public static readonly string ShippingTrackings = "ShippingTrackings";
 			/// <summary>Member name Transactions</summary>
@@ -60,6 +63,7 @@ namespace DATN_2026.EntityClasses
 				SetEntityCoreInfo("OrderEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.OrderEntity, typeof(OrderEntity), typeof(OrderEntityFactory), false);
 				AddNavigatorMetaData<OrderEntity, EntityCollection<ReviewEntity>>("Reviews", a => a._reviews, (a, b) => a._reviews = b, a => a.Reviews, () => new OrderRelations().ReviewEntityUsingOrderId, typeof(ReviewEntity), (int)DATN_2026.EntityType.ReviewEntity);
 				AddNavigatorMetaData<OrderEntity, EntityCollection<OrderItemEntity>>("OrderItems", a => a._orderItems, (a, b) => a._orderItems = b, a => a.OrderItems, () => new OrderRelations().OrderItemEntityUsingOrderId, typeof(OrderItemEntity), (int)DATN_2026.EntityType.OrderItemEntity);
+				AddNavigatorMetaData<OrderEntity, EntityCollection<PaymentEntity>>("Payments", a => a._payments, (a, b) => a._payments = b, a => a.Payments, () => new OrderRelations().PaymentEntityUsingOrderId, typeof(PaymentEntity), (int)DATN_2026.EntityType.PaymentEntity);
 				AddNavigatorMetaData<OrderEntity, EntityCollection<ShippingTrackingEntity>>("ShippingTrackings", a => a._shippingTrackings, (a, b) => a._shippingTrackings = b, a => a.ShippingTrackings, () => new OrderRelations().ShippingTrackingEntityUsingOrderId, typeof(ShippingTrackingEntity), (int)DATN_2026.EntityType.ShippingTrackingEntity);
 				AddNavigatorMetaData<OrderEntity, EntityCollection<TransactionEntity>>("Transactions", a => a._transactions, (a, b) => a._transactions = b, a => a.Transactions, () => new OrderRelations().TransactionEntityUsingOrderId, typeof(TransactionEntity), (int)DATN_2026.EntityType.TransactionEntity);
 				AddNavigatorMetaData<OrderEntity, UserEntity>("User", "Orders", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticOrderRelations.UserEntityUsingBuyerIdStatic, ()=>new OrderRelations().UserEntityUsingBuyerId, null, new int[] { (int)OrderFieldIndex.BuyerId }, null, true, (int)DATN_2026.EntityType.UserEntity);
@@ -132,6 +136,10 @@ namespace DATN_2026.EntityClasses
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoOrderItems() { return CreateRelationInfoForNavigator("OrderItems"); }
 
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Payment' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoPayments() { return CreateRelationInfoForNavigator("Payments"); }
+
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'ShippingTracking' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoShippingTrackings() { return CreateRelationInfoForNavigator("ShippingTrackings"); }
@@ -181,6 +189,10 @@ namespace DATN_2026.EntityClasses
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'OrderItem' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathOrderItems { get { return _staticMetaData.GetPrefetchPathElement("OrderItems", CommonEntityBase.CreateEntityCollection<OrderItemEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Payment' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathPayments { get { return _staticMetaData.GetPrefetchPathElement("Payments", CommonEntityBase.CreateEntityCollection<PaymentEntity>()); } }
 
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'ShippingTracking' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
@@ -290,6 +302,10 @@ namespace DATN_2026.EntityClasses
 		[TypeContainedAttribute(typeof(OrderItemEntity))]
 		public virtual EntityCollection<OrderItemEntity> OrderItems { get { return GetOrCreateEntityCollection<OrderItemEntity, OrderItemEntityFactory>("Order", true, false, ref _orderItems); } }
 
+		/// <summary>Gets the EntityCollection with the related entities of type 'PaymentEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(PaymentEntity))]
+		public virtual EntityCollection<PaymentEntity> Payments { get { return GetOrCreateEntityCollection<PaymentEntity, PaymentEntityFactory>("Order", true, false, ref _payments); } }
+
 		/// <summary>Gets the EntityCollection with the related entities of type 'ShippingTrackingEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
 		[TypeContainedAttribute(typeof(ShippingTrackingEntity))]
 		public virtual EntityCollection<ShippingTrackingEntity> ShippingTrackings { get { return GetOrCreateEntityCollection<ShippingTrackingEntity, ShippingTrackingEntityFactory>("Order", true, false, ref _shippingTrackings); } }
@@ -360,6 +376,12 @@ namespace DATN_2026.RelationClasses
 			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "OrderItems", true, new[] { OrderFields.Id, OrderItemFields.OrderId }); }
 		}
 
+		/// <summary>Returns a new IEntityRelation object, between OrderEntity and PaymentEntity over the 1:n relation they have, using the relation between the fields: Order.Id - Payment.OrderId</summary>
+		public virtual IEntityRelation PaymentEntityUsingOrderId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Payments", true, new[] { OrderFields.Id, PaymentFields.OrderId }); }
+		}
+
 		/// <summary>Returns a new IEntityRelation object, between OrderEntity and ShippingTrackingEntity over the 1:n relation they have, using the relation between the fields: Order.Id - ShippingTracking.OrderId</summary>
 		public virtual IEntityRelation ShippingTrackingEntityUsingOrderId
 		{
@@ -385,6 +407,7 @@ namespace DATN_2026.RelationClasses
 	{
 		internal static readonly IEntityRelation ReviewEntityUsingOrderIdStatic = new OrderRelations().ReviewEntityUsingOrderId;
 		internal static readonly IEntityRelation OrderItemEntityUsingOrderIdStatic = new OrderRelations().OrderItemEntityUsingOrderId;
+		internal static readonly IEntityRelation PaymentEntityUsingOrderIdStatic = new OrderRelations().PaymentEntityUsingOrderId;
 		internal static readonly IEntityRelation ShippingTrackingEntityUsingOrderIdStatic = new OrderRelations().ShippingTrackingEntityUsingOrderId;
 		internal static readonly IEntityRelation TransactionEntityUsingOrderIdStatic = new OrderRelations().TransactionEntityUsingOrderId;
 		internal static readonly IEntityRelation UserEntityUsingBuyerIdStatic = new OrderRelations().UserEntityUsingBuyerId;

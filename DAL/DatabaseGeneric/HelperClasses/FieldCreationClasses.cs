@@ -571,6 +571,41 @@ namespace DATN_2026.HelperClasses
 		public static EntityField2 VariantId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(OrderItemFieldIndex.VariantId); }}
 	}
 
+	/// <summary>Field Creation Class for entity PaymentEntity</summary>
+	public partial class PaymentFields
+	{
+		/// <summary>Creates a new PaymentEntity.Amount field instance</summary>
+		public static EntityField2 Amount { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.Amount); }}
+		/// <summary>Creates a new PaymentEntity.BankCode field instance</summary>
+		public static EntityField2 BankCode { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.BankCode); }}
+		/// <summary>Creates a new PaymentEntity.CardType field instance</summary>
+		public static EntityField2 CardType { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.CardType); }}
+		/// <summary>Creates a new PaymentEntity.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.CreatedAt); }}
+		/// <summary>Creates a new PaymentEntity.Currency field instance</summary>
+		public static EntityField2 Currency { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.Currency); }}
+		/// <summary>Creates a new PaymentEntity.Id field instance</summary>
+		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.Id); }}
+		/// <summary>Creates a new PaymentEntity.OrderId field instance</summary>
+		public static EntityField2 OrderId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.OrderId); }}
+		/// <summary>Creates a new PaymentEntity.PayDate field instance</summary>
+		public static EntityField2 PayDate { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.PayDate); }}
+		/// <summary>Creates a new PaymentEntity.Provider field instance</summary>
+		public static EntityField2 Provider { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.Provider); }}
+		/// <summary>Creates a new PaymentEntity.RawResponse field instance</summary>
+		public static EntityField2 RawResponse { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.RawResponse); }}
+		/// <summary>Creates a new PaymentEntity.ResponseCode field instance</summary>
+		public static EntityField2 ResponseCode { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.ResponseCode); }}
+		/// <summary>Creates a new PaymentEntity.Signature field instance</summary>
+		public static EntityField2 Signature { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.Signature); }}
+		/// <summary>Creates a new PaymentEntity.Status field instance</summary>
+		public static EntityField2 Status { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.Status); }}
+		/// <summary>Creates a new PaymentEntity.TransactionId field instance</summary>
+		public static EntityField2 TransactionId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.TransactionId); }}
+		/// <summary>Creates a new PaymentEntity.UpdatedAt field instance</summary>
+		public static EntityField2 UpdatedAt { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(PaymentFieldIndex.UpdatedAt); }}
+	}
+
 	/// <summary>Field Creation Class for entity ShippingTrackingEntity</summary>
 	public partial class ShippingTrackingFields
 	{
@@ -1169,6 +1204,41 @@ namespace DATN_2026.HelperClasses
 		public static EntityField2 UnitPrice	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.UnitPrice); } }
 		/// <summary>Creates a new salesOrderItemTypedView.ProductNameSnapshot field instance</summary>
 		public static EntityField2 ProductNameSnapshot	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesOrderItemFieldIndex.ProductNameSnapshot); } }
+	}
+
+	/// <summary>Field Creation Class for typedview salesPaymentTypedView</summary>
+	public partial class salesPaymentFields
+	{
+		/// <summary>Creates a new salesPaymentTypedView.Id field instance</summary>
+		public static EntityField2 Id	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.Id); } }
+		/// <summary>Creates a new salesPaymentTypedView.OrderId field instance</summary>
+		public static EntityField2 OrderId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.OrderId); } }
+		/// <summary>Creates a new salesPaymentTypedView.Provider field instance</summary>
+		public static EntityField2 Provider	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.Provider); } }
+		/// <summary>Creates a new salesPaymentTypedView.TransactionId field instance</summary>
+		public static EntityField2 TransactionId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.TransactionId); } }
+		/// <summary>Creates a new salesPaymentTypedView.Amount field instance</summary>
+		public static EntityField2 Amount	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.Amount); } }
+		/// <summary>Creates a new salesPaymentTypedView.Status field instance</summary>
+		public static EntityField2 Status	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.Status); } }
+		/// <summary>Creates a new salesPaymentTypedView.ResponseCode field instance</summary>
+		public static EntityField2 ResponseCode	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.ResponseCode); } }
+		/// <summary>Creates a new salesPaymentTypedView.BankCode field instance</summary>
+		public static EntityField2 BankCode	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.BankCode); } }
+		/// <summary>Creates a new salesPaymentTypedView.CardType field instance</summary>
+		public static EntityField2 CardType	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.CardType); } }
+		/// <summary>Creates a new salesPaymentTypedView.PayDate field instance</summary>
+		public static EntityField2 PayDate	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.PayDate); } }
+		/// <summary>Creates a new salesPaymentTypedView.RawResponse field instance</summary>
+		public static EntityField2 RawResponse	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.RawResponse); } }
+		/// <summary>Creates a new salesPaymentTypedView.Signature field instance</summary>
+		public static EntityField2 Signature	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.Signature); } }
+		/// <summary>Creates a new salesPaymentTypedView.Currency field instance</summary>
+		public static EntityField2 Currency	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.Currency); } }
+		/// <summary>Creates a new salesPaymentTypedView.CreatedAt field instance</summary>
+		public static EntityField2 CreatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.CreatedAt); } }
+		/// <summary>Creates a new salesPaymentTypedView.UpdatedAt field instance</summary>
+		public static EntityField2 UpdatedAt	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(salesPaymentFieldIndex.UpdatedAt); } }
 	}
 
 	/// <summary>Field Creation Class for typedview salesShippingTrackingTypedView</summary>

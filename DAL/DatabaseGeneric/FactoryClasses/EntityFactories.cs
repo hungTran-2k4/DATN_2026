@@ -354,6 +354,16 @@ namespace DATN_2026.FactoryClasses
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new OrderItemEntity(fields); }
 	}
 
+	/// <summary>Factory to create new, empty PaymentEntity objects.</summary>
+	[Serializable]
+	public partial class PaymentEntityFactory : EntityFactoryBase2<PaymentEntity> 
+	{
+		/// <summary>CTor</summary>
+		public PaymentEntityFactory() : base("PaymentEntity", DATN_2026.EntityType.PaymentEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new PaymentEntity(fields); }
+	}
+
 	/// <summary>Factory to create new, empty ShippingTrackingEntity objects.</summary>
 	[Serializable]
 	public partial class ShippingTrackingEntityFactory : EntityFactoryBase2<ShippingTrackingEntity> 
@@ -479,6 +489,8 @@ namespace DATN_2026.FactoryClasses
 					return new OrderEntityFactory();
 				case DATN_2026.EntityType.OrderItemEntity:
 					return new OrderItemEntityFactory();
+				case DATN_2026.EntityType.PaymentEntity:
+					return new PaymentEntityFactory();
 				case DATN_2026.EntityType.ShippingTrackingEntity:
 					return new ShippingTrackingEntityFactory();
 				case DATN_2026.EntityType.TransactionEntity:

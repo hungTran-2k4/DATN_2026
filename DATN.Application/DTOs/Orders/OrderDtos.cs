@@ -31,6 +31,7 @@ public class OrderSummaryDto
     public string OrderCode { get; set; } = string.Empty;
     public string? OrderStatus { get; set; }
     public string? PaymentMethod { get; set; }
+    public string? PaymentStatus { get; set; }
     public decimal TotalAmount { get; set; }
     public int TotalItems { get; set; }
     public string? FirstItemName { get; set; }

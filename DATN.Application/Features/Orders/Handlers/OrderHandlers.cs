@@ -68,7 +68,8 @@ public class CheckoutHandler : IRequestHandler<CheckoutCommand, ApiResponse<IEnu
 
         // ─── 3. Validate phương thức thanh toán ───
         if (request.PaymentMethod != Domain.Entities.Orders.PaymentMethod.Cod
-            && request.PaymentMethod != Domain.Entities.Orders.PaymentMethod.BankTransfer)
+            && request.PaymentMethod != Domain.Entities.Orders.PaymentMethod.BankTransfer
+            && request.PaymentMethod != Domain.Entities.Orders.PaymentMethod.VnPay)
             return ApiResponse<IEnumerable<OrderSummaryDto>>.Fail("Phương thức thanh toán không hợp lệ.", 400, "INVALID_PAYMENT_METHOD");
 
         // ─── 4. Lấy địa chỉ giao hàng và tạo snapshot ───
@@ -146,6 +147,7 @@ public class CheckoutHandler : IRequestHandler<CheckoutCommand, ApiResponse<IEnu
             OrderCode = o.OrderCode,
             OrderStatus = o.OrderStatus,
             PaymentMethod = o.PaymentMethod,
+            PaymentStatus = o.PaymentStatus,
             TotalAmount = o.TotalAmount,
             TotalItems = o.Items.Count,
             FirstItemName = o.Items.FirstOrDefault()?.ProductNameSnapshot,
@@ -195,6 +197,17 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
             return ApiResponse<bool>.Fail(
                 $"Không thể chuyển từ '{order.OrderStatus}' sang '{request.NewStatus}'.",
                 400, "INVALID_STATUS_TRANSITION");
+
+        // ── Validation: VNPAY order must be PAID before processing ──
+        if (order.PaymentMethod == Domain.Entities.Orders.PaymentMethod.VnPay 
+            && order.OrderStatus == Domain.Entities.Orders.OrderStatus.Pending 
+            && request.NewStatus == Domain.Entities.Orders.OrderStatus.Processing
+            && order.PaymentStatus != Domain.Entities.Orders.PaymentStatus.Paid)
+        {
+            return ApiResponse<bool>.Fail(
+                "Đơn hàng VNPay chưa được thanh toán. Không thể xác nhận đơn.",
+                400, "VNPAY_NOT_PAID");
+        }
 
         await _orderRepo.UpdateStatusAsync(request.OrderId, request.NewStatus, cancellationToken);
         return ApiResponse<bool>.Succeed(true, $"Đã cập nhật trạng thái đơn hàng thành '{request.NewStatus}'.");

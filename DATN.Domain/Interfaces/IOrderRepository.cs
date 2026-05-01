@@ -31,4 +31,7 @@ public interface IOrderRepository
 
     /// <summary>Sinh OrderCode dạng ORD-YYYYMMDD-{random4} đảm bảo unique</summary>
     Task<string> GenerateOrderCodeAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>Cập nhật trạng thái thanh toán (PaymentStatus) cho đơn hàng</summary>
+    Task<bool> UpdatePaymentStatusAsync(Guid id, string newPaymentStatus, CancellationToken cancellationToken = default);
 }
