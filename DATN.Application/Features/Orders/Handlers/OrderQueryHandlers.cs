@@ -103,6 +103,9 @@ public class GetOrderDetailHandler : IRequestHandler<GetOrderDetailQuery, ApiRes
                 Id = i.Id,
                 VariantId = i.VariantId,
                 ProductNameSnapshot = i.ProductNameSnapshot,
+                VariantName = i.VariantName,
+                VariantImageUrl = i.VariantImageUrl,
+                VariantAttributes = i.VariantAttributes,
                 UnitPrice = i.UnitPrice,
                 Quantity = i.Quantity
             }).ToList()

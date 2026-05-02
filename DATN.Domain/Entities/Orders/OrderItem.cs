@@ -19,4 +19,9 @@ public class OrderItem
 
     /// <summary>Thành tiền = UnitPrice * Quantity</summary>
     public decimal SubTotal => UnitPrice * Quantity;
+
+    // Additional info from Variant
+    public string? VariantName { get; set; }
+    public string? VariantImageUrl { get; set; }
+    public string? VariantAttributes { get; set; }
 }

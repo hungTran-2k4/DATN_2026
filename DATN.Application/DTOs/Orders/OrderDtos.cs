@@ -5,6 +5,9 @@ public class OrderItemDto
     public Guid Id { get; set; }
     public Guid? VariantId { get; set; }
     public string? ProductNameSnapshot { get; set; }
+    public string? VariantName { get; set; }
+    public string? VariantImageUrl { get; set; }
+    public string? VariantAttributes { get; set; } // JSON string
     public decimal UnitPrice { get; set; }
     public int Quantity { get; set; }
     public decimal SubTotal => UnitPrice * Quantity;

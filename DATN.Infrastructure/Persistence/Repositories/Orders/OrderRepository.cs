@@ -20,7 +20,8 @@ public class OrderRepository : IOrderRepository
     {
         var col = new EntityCollection<OrderEntity>();
         var prefetch = new PrefetchPath2((int)DATN_2026.EntityType.OrderEntity);
-        prefetch.Add(OrderEntity.PrefetchPathOrderItems);
+        var itemPath = prefetch.Add(OrderEntity.PrefetchPathOrderItems);
+        itemPath.SubPath.Add(OrderItemEntity.PrefetchPathProductVariant);
 
         await _adapter.FetchEntityCollectionAsync(new QueryParameters
         {
@@ -36,7 +37,8 @@ public class OrderRepository : IOrderRepository
     {
         var col = new EntityCollection<OrderEntity>();
         var prefetch = new PrefetchPath2((int)DATN_2026.EntityType.OrderEntity);
-        prefetch.Add(OrderEntity.PrefetchPathOrderItems);
+        var itemPath = prefetch.Add(OrderEntity.PrefetchPathOrderItems);
+        itemPath.SubPath.Add(OrderItemEntity.PrefetchPathProductVariant);
 
         await _adapter.FetchEntityCollectionAsync(new QueryParameters
         {
@@ -127,7 +129,8 @@ public class OrderRepository : IOrderRepository
         // 2) Fetch orders + items by ids
         var col = new EntityCollection<OrderEntity>();
         var prefetch = new PrefetchPath2((int)DATN_2026.EntityType.OrderEntity);
-        prefetch.Add(OrderEntity.PrefetchPathOrderItems);
+        var itemPath = prefetch.Add(OrderEntity.PrefetchPathOrderItems);
+        itemPath.SubPath.Add(OrderItemEntity.PrefetchPathProductVariant);
 
         // Build OR predicate for ids
         IPredicateExpression filter2 = new PredicateExpression();
@@ -270,7 +273,10 @@ public class OrderRepository : IOrderRepository
             VariantId = i.VariantId ?? Guid.Empty,
             ProductNameSnapshot = i.ProductNameSnapshot,
             UnitPrice = i.UnitPrice,
-            Quantity = i.Quantity
+            Quantity = i.Quantity,
+            VariantName = i.ProductVariant?.Name,
+            VariantImageUrl = i.ProductVariant?.ImageUrl,
+            VariantAttributes = i.ProductVariant?.VariantAttributes
         }).ToList()
     };
 }
