@@ -5,12 +5,10 @@ using System.Text.Json;
 using DATN.Application.Interfaces.Services;
 using DATN.Domain.Entities.Orders;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace DATN.Infrastructure.Services.Payment;
 
-/// <summary>
-/// Cấu hình VNPay được bind từ appsettings.json section "VNPay".
-/// </summary>
 public class VNPaySettings
 {
     public string TmnCode { get; set; } = string.Empty;
@@ -19,28 +17,23 @@ public class VNPaySettings
     public string ReturnUrl { get; set; } = string.Empty;
 }
 
-/// <summary>
-/// VNPay Provider — implement IPaymentProvider cho cổng VNPay.
-/// Thuật toán: HMACSHA512, Version: 2.1.0
-/// Tham chiếu: https://sandbox.vnpayment.vn/apis/docs/thanh-toan-pay/pay.html
-/// </summary>
 public class VNPayProvider : IPaymentProvider
 {
     private readonly VNPaySettings _settings;
+    private readonly ILogger<VNPayProvider> _logger;
     public string ProviderName => PaymentMethod.VnPay;
 
-    public VNPayProvider(IConfiguration configuration)
+    public VNPayProvider(IConfiguration configuration, ILogger<VNPayProvider> logger)
     {
         _settings = new VNPaySettings();
         configuration.GetSection("VNPay").Bind(_settings);
+        _logger = logger;
     }
 
-    /// <inheritdoc/>
     public string CreatePaymentUrl(Guid orderId, decimal amount, string orderInfo, string ipAddress)
     {
         var now = GetVietnamNow();
         
-        // Đảm bảo IP là IPv4 hợp lệ (VNPay Sandbox không thích IPv6 hoặc chuỗi lạ)
         if (string.IsNullOrEmpty(ipAddress) || ipAddress.Contains(":")) 
         {
             ipAddress = "127.0.0.1"; 
@@ -59,8 +52,8 @@ public class VNPayProvider : IPaymentProvider
             { "vnp_Locale", "vn" },
             { "vnp_ReturnUrl", _settings.ReturnUrl },
             { "vnp_IpAddr", ipAddress },
-            { "vnp_CreateDate", now.ToString("yyyyMMddHHmmss") },
-            { "vnp_ExpireDate", now.AddMinutes(15).ToString("yyyyMMddHHmmss") }
+            { "vnp_CreateDate", now.ToString("yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture) },
+            { "vnp_ExpireDate", now.AddMinutes(15).ToString("yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture) }
         };
 
         var hashData = new StringBuilder();
@@ -76,8 +69,9 @@ public class VNPayProvider : IPaymentProvider
                     hashData.Append('&'); 
                     query.Append('&'); 
                 }
-                
-                // VNPay 2.1.0: Cả chuỗi hash và query đều CẦN UrlEncode
+
+                //var key = Uri.EscapeDataString(kv.Key);
+                //var value = Uri.EscapeDataString(kv.Value);
                 var key = WebUtility.UrlEncode(kv.Key);
                 var value = WebUtility.UrlEncode(kv.Value);
 
@@ -88,13 +82,21 @@ public class VNPayProvider : IPaymentProvider
             }
         }
 
-        var secureHash = HmacSha512(_settings.HashSecret, hashData.ToString());
-        query.Append("&vnp_SecureHash=" + secureHash);
+        var rawData = hashData.ToString();
+        var secureHash = HmacSha512(_settings.HashSecret, rawData);
+        
+        // Log dữ liệu để debug trên Azure
+        _logger.LogInformation("[VNPay] HashData: {RawData}", rawData);
+        _logger.LogInformation("[VNPay] SecureHash: {SecureHash}", secureHash);
 
-        return _settings.BaseUrl + "?" + query.ToString();
+        query.Append("&vnp_SecureHash=" + secureHash);
+        var finalUrl = _settings.BaseUrl + "?" + query.ToString();
+        
+        _logger.LogInformation("[VNPay] Final URL: {Url}", finalUrl);
+
+        return finalUrl;
     }
 
-    /// <inheritdoc/>
     public PaymentResult HandleIpn(IDictionary<string, string> data)
     {
         var result = new PaymentResult
@@ -103,7 +105,6 @@ public class VNPayProvider : IPaymentProvider
             Signature = data.TryGetValue("vnp_SecureHash", out var sig) ? sig : null
         };
 
-        // 1. Validate signature
         if (!ValidateSignature(data))
         {
             result.IsSuccess = false;
@@ -112,7 +113,6 @@ public class VNPayProvider : IPaymentProvider
             return result;
         }
 
-        // 2. Parse response data
         data.TryGetValue("vnp_TxnRef", out var txnRef);
         data.TryGetValue("vnp_Amount", out var amountStr);
         data.TryGetValue("vnp_ResponseCode", out var responseCode);
@@ -122,7 +122,6 @@ public class VNPayProvider : IPaymentProvider
         data.TryGetValue("vnp_CardType", out var cardType);
         data.TryGetValue("vnp_PayDate", out var payDate);
 
-        // Parse OrderId
         if (!Guid.TryParse(txnRef, out var orderId))
         {
             result.IsSuccess = false;
@@ -144,27 +143,21 @@ public class VNPayProvider : IPaymentProvider
         return result;
     }
 
-    /// <inheritdoc/>
     public PaymentResult HandleReturn(IDictionary<string, string> data)
     {
-        // Return URL chỉ để hiển thị, logic giống HandleIpn nhưng KHÔNG update DB
         return HandleIpn(data);
     }
-
-    // ──── Private helpers ────
 
     private DateTime GetVietnamNow()
     {
         try 
         {
-            // Windows: "SE Asia Standard Time", Linux/Azure: "Asia/Ho_Chi_Minh"
             var timezoneId = OperatingSystem.IsWindows() ? "SE Asia Standard Time" : "Asia/Ho_Chi_Minh";
             var timezone = TimeZoneInfo.FindSystemTimeZoneById(timezoneId);
             return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timezone);
         }
         catch 
         {
-            // Fallback nếu không tìm thấy timezone
             return DateTime.UtcNow.AddHours(7);
         }
     }
@@ -189,7 +182,6 @@ public class VNPayProvider : IPaymentProvider
         foreach (var kv in inputData)
         {
             if (!isFirst) hashData.Append('&');
-            // VNPay 2.1.0: Cần UrlEncode cả Key và Value khi kiểm tra chữ ký
             hashData.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value));
             isFirst = false;
         }
