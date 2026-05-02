@@ -178,7 +178,14 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, ApiRespons
                 400, "CANNOT_CANCEL");
 
         await _orderRepo.UpdateStatusAsync(request.OrderId, Domain.Entities.Orders.OrderStatus.Cancelled, cancellationToken);
-        return ApiResponse<bool>.Succeed(true, "Đã hủy đơn hàng.");
+        
+        // ── If it was already paid, mark as refunded ──
+        if (order.PaymentStatus == Domain.Entities.Orders.PaymentStatus.Paid)
+        {
+            await _orderRepo.UpdatePaymentStatusAsync(request.OrderId, Domain.Entities.Orders.PaymentStatus.Refunded, cancellationToken);
+        }
+
+        return ApiResponse<bool>.Succeed(true, "Đơn hàng đã được hủy thành công.");
     }
 }
 
@@ -210,6 +217,14 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
         }
 
         await _orderRepo.UpdateStatusAsync(request.OrderId, request.NewStatus, cancellationToken);
+
+        // ── If PAID and moving to CANCELLED or RETURNED -> Mark as REFUNDED ──
+        if (order.PaymentStatus == Domain.Entities.Orders.PaymentStatus.Paid 
+            && (request.NewStatus == Domain.Entities.Orders.OrderStatus.Cancelled || request.NewStatus == Domain.Entities.Orders.OrderStatus.Returned))
+        {
+            await _orderRepo.UpdatePaymentStatusAsync(request.OrderId, Domain.Entities.Orders.PaymentStatus.Refunded, cancellationToken);
+        }
+
         return ApiResponse<bool>.Succeed(true, $"Đã cập nhật trạng thái đơn hàng thành '{request.NewStatus}'.");
     }
 }

@@ -49,6 +49,7 @@ public static class OrderStatus
     public const string Processing = "PROCESSING";
     public const string Shipped = "SHIPPED";
     public const string Delivered = "DELIVERED";
+    public const string Returned = "RETURNED";
     public const string Cancelled = "CANCELLED";
 
     /// <summary>Kiểm tra luồng chuyển trạng thái hợp lệ</summary>
@@ -61,6 +62,7 @@ public static class OrderStatus
             (Processing, Shipped) => true,
             (Processing, Cancelled) => true,
             (Shipped, Delivered) => true,
+            (Delivered, Returned) => true,
             _ => false
         };
     }
