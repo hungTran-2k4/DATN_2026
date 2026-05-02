@@ -39,6 +39,13 @@ public class VNPayProvider : IPaymentProvider
     public string CreatePaymentUrl(Guid orderId, decimal amount, string orderInfo, string ipAddress)
     {
         var now = GetVietnamNow();
+        
+        // Đảm bảo IP là IPv4 hợp lệ (VNPay Sandbox không thích IPv6 hoặc chuỗi lạ)
+        if (string.IsNullOrEmpty(ipAddress) || ipAddress.Contains(":")) 
+        {
+            ipAddress = "127.0.0.1"; 
+        }
+
         var vnpParams = new SortedDictionary<string, string>
         {
             { "vnp_Version", "2.1.0" },
@@ -64,9 +71,19 @@ public class VNPayProvider : IPaymentProvider
         {
             if (!string.IsNullOrEmpty(kv.Value))
             {
-                if (!isFirst) { hashData.Append('&'); query.Append('&'); }
-                hashData.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value));
-                query.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value));
+                if (!isFirst) 
+                { 
+                    hashData.Append('&'); 
+                    query.Append('&'); 
+                }
+                
+                // VNPay 2.1.0: Cả chuỗi hash và query đều CẦN UrlEncode
+                var key = WebUtility.UrlEncode(kv.Key);
+                var value = WebUtility.UrlEncode(kv.Value);
+
+                hashData.Append(key + "=" + value);
+                query.Append(key + "=" + value);
+                
                 isFirst = false;
             }
         }
@@ -74,7 +91,7 @@ public class VNPayProvider : IPaymentProvider
         var secureHash = HmacSha512(_settings.HashSecret, hashData.ToString());
         query.Append("&vnp_SecureHash=" + secureHash);
 
-        return _settings.BaseUrl + "?" + query;
+        return _settings.BaseUrl + "?" + query.ToString();
     }
 
     /// <inheritdoc/>
@@ -172,6 +189,7 @@ public class VNPayProvider : IPaymentProvider
         foreach (var kv in inputData)
         {
             if (!isFirst) hashData.Append('&');
+            // VNPay 2.1.0: Cần UrlEncode cả Key và Value khi kiểm tra chữ ký
             hashData.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value));
             isFirst = false;
         }
