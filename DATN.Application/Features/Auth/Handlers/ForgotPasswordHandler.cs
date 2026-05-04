@@ -1,12 +1,9 @@
-using System.Security.Cryptography;
-using System.Text;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using DATN.Application.Common.Models;
 using DATN.Application.Features.Auth.Commands;
 using DATN.Application.Interfaces.Services;
-using DATN.Domain.Entities.Identity;
+using DATN.Application.Interfaces.Auth;
 using DATN.Domain.Interfaces;
 
 namespace DATN.Application.Features.Auth.Handlers;
@@ -14,32 +11,27 @@ namespace DATN.Application.Features.Auth.Handlers;
 public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordCommand, ApiResponse<string>>
 {
     private readonly IUserRepository _userRepository;
-    private readonly IPasswordResetTokenRepository _tokenRepository;
     private readonly IEmailService _emailService;
-    private readonly IConfiguration _configuration;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly ILogger<ForgotPasswordHandler> _logger;
 
-    private const int MaxRequestsPerDay = 3;
-    private const int TokenExpiryMinutes = 15;
-    private const string GenericMessage = "Nếu email tồn tại, chúng tôi đã gửi link đặt lại mật khẩu.";
+    private const string DefaultPassword = "abc@1234";
+    private const string GenericMessage = "Nếu email tồn tại, chúng tôi đã gửi mật khẩu mới về hòm thư của bạn.";
 
     public ForgotPasswordHandler(
         IUserRepository userRepository,
-        IPasswordResetTokenRepository tokenRepository,
         IEmailService emailService,
-        IConfiguration configuration,
+        IPasswordHasher passwordHasher,
         ILogger<ForgotPasswordHandler> logger)
     {
         _userRepository = userRepository;
-        _tokenRepository = tokenRepository;
         _emailService = emailService;
-        _configuration = configuration;
+        _passwordHasher = passwordHasher;
         _logger = logger;
     }
 
     public async Task<ApiResponse<string>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
     {
-        // Luôn trả cùng 1 message để không leak thông tin email tồn tại hay không
         var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
         if (user == null)
         {
@@ -47,74 +39,40 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordCommand, ApiR
             return ApiResponse<string>.Succeed(GenericMessage);
         }
 
-        // Rate limit: max 3 lần/ngày/user
-        var todayCount = await _tokenRepository.CountTodayByUserAsync(user.Id, cancellationToken);
-        if (todayCount >= MaxRequestsPerDay)
-        {
-            _logger.LogWarning("Rate limit exceeded for forgot password. UserId: {UserId}, Count: {Count}", user.Id, todayCount);
-            return ApiResponse<string>.Succeed(GenericMessage);
-        }
+        // 1. Reset mật khẩu về mặc định
+        user.PasswordHash = _passwordHasher.HashPassword(DefaultPassword);
+        await _userRepository.UpdateAsync(user, cancellationToken);
 
-        // Invalidate tất cả token cũ của user
-        await _tokenRepository.InvalidateUserTokensAsync(user.Id, cancellationToken);
-
-        // Generate token bảo mật: 32 bytes random → Base64 URL-safe
-        var tokenBytes = RandomNumberGenerator.GetBytes(32);
-        var rawToken = Convert.ToBase64String(tokenBytes)
-            .Replace("+", "-")
-            .Replace("/", "_")
-            .TrimEnd('=');
-
-        // Hash token bằng SHA256 trước khi lưu DB
-        var tokenHash = ComputeSha256Hash(rawToken);
-
-        // Lưu vào DB
-        var resetToken = new PasswordResetToken
-        {
-            Id = Guid.NewGuid(),
-            UserId = user.Id,
-            TokenHash = tokenHash,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(TokenExpiryMinutes),
-            IsUsed = false,
-            CreatedAt = DateTime.UtcNow,
-            IpAddress = request.IpAddress
-        };
-
-        await _tokenRepository.CreateAsync(resetToken, cancellationToken);
-
-        // Gửi email chứa link reset (rawToken chỉ gửi qua email, DB chỉ lưu hash)
-        var frontendUrl = _configuration["FrontendUrl"] ?? "http://localhost:4200";
-        var resetLink = $"{frontendUrl}/auth/reset-password?token={Uri.EscapeDataString(rawToken)}&email={Uri.EscapeDataString(request.Email)}";
-
+        // 2. Gửi email thông báo
         var htmlBody = $@"
-            <div style=""font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;"">
-                <h2 style=""color: #333;"">Đặt lại mật khẩu</h2>
-                <p>Xin chào,</p>
-                <p>Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn.</p>
-                <p>Nhấn vào nút bên dưới để đặt mật khẩu mới:</p>
-                <div style=""text-align: center; margin: 30px 0;"">
-                    <a href=""{resetLink}"" 
-                       style=""background-color: #4F46E5; color: white; padding: 12px 24px; 
-                              text-decoration: none; border-radius: 6px; font-weight: bold;"">
-                        Đặt lại mật khẩu
-                    </a>
+            <div style=""font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; border: 1px solid #e1e4e8; border-radius: 12px; background-color: #ffffff;"">
+                <div style=""text-align: center; margin-bottom: 30px;"">
+                    <h1 style=""color: #1a73e8; margin: 0; font-size: 24px;"">Khôi phục mật khẩu thành công</h1>
                 </div>
-                <p style=""color: #666; font-size: 14px;"">Link này sẽ hết hạn sau {TokenExpiryMinutes} phút.</p>
-                <p style=""color: #666; font-size: 14px;"">Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
-                <hr style=""border: none; border-top: 1px solid #eee; margin: 20px 0;"" />
-                <p style=""color: #999; font-size: 12px;"">Email này được gửi tự động, vui lòng không trả lời.</p>
+                
+                <p style=""color: #3c4043; font-size: 16px; line-height: 1.6;"">Xin chào,</p>
+                <p style=""color: #3c4043; font-size: 16px; line-height: 1.6;"">Chúng tôi đã đặt lại mật khẩu cho tài khoản của bạn theo yêu cầu. Dưới đây là thông tin đăng nhập tạm thời:</p>
+                
+                <div style=""background-color: #f8f9fa; border-left: 4px solid #1a73e8; padding: 20px; margin: 25px 0; border-radius: 4px;"">
+                    <p style=""margin: 0; color: #5f6368; font-size: 14px;"">Mật khẩu mới của bạn là:</p>
+                    <p style=""margin: 10px 0 0 0; color: #202124; font-size: 20px; font-weight: bold; letter-spacing: 1px;"">{DefaultPassword}</p>
+                </div>
+
+                <div style=""background-color: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 8px; margin-bottom: 25px;"">
+                    <p style=""margin: 0; color: #856404; font-size: 14px; font-weight: bold;"">⚠️ CẢNH BÁO BẢO MẬT:</p>
+                    <p style=""margin: 5px 0 0 0; color: #856404; font-size: 14px;"">Vì lý do an toàn, vui lòng <strong>đổi lại mật khẩu ngay lập tức</strong> sau khi đăng nhập thành công.</p>
+                </div>
+
+                <p style=""color: #5f6368; font-size: 14px; line-height: 1.5;"">Nếu bạn không yêu cầu thay đổi này, hãy liên hệ ngay với bộ phận hỗ trợ của chúng tôi để được giúp đỡ.</p>
+                
+                <hr style=""border: none; border-top: 1px solid #eee; margin: 30px 0;"" />
+                <p style=""color: #999; font-size: 12px; text-align: center;"">Đây là email tự động, vui lòng không trả lời email này.<br>© 2026 DATN App Team</p>
             </div>";
 
-        await _emailService.SendEmailAsync(request.Email, "Đặt lại mật khẩu", htmlBody, cancellationToken);
+        await _emailService.SendEmailAsync(request.Email, "Thông tin khôi phục mật khẩu - DATN App", htmlBody, cancellationToken);
 
-        _logger.LogInformation("Password reset email sent to {Email}, UserId: {UserId}", request.Email, user.Id);
+        _logger.LogInformation("Password reset to default and email sent to {Email}, UserId: {UserId}", request.Email, user.Id);
 
         return ApiResponse<string>.Succeed(GenericMessage);
-    }
-
-    private static string ComputeSha256Hash(string rawData)
-    {
-        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(rawData));
-        return Convert.ToBase64String(bytes);
     }
 }

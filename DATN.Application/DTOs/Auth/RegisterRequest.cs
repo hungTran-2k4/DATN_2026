@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN.Application.DTOs.Auth;
 
@@ -12,7 +12,7 @@ public class RegisterRequest
     public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Mật khẩu là bắt buộc")]
-    [MinLength(6, ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự")]
+    [MinLength(8, ErrorMessage = "Mật khẩu phải có ít nhất 8 ký tự")]
     public string Password { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Xác nhận mật khẩu là bắt buộc")]
