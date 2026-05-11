@@ -270,6 +270,14 @@ namespace DATN_2026.EntityClasses
 			set { SetValue((int)ProductVariantFieldIndex.VariantAttributes, value); }
 		}
 
+		/// <summary>The Weight property of the Entity ProductVariant<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "product_variants"."weight".<br/>Table field type characteristics (type, precision, scale, length): Integer, 10, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Int32> Weight
+		{
+			get { return (Nullable<System.Int32>)GetValue((int)ProductVariantFieldIndex.Weight, false); }
+			set { SetValue((int)ProductVariantFieldIndex.Weight, value); }
+		}
+
 		/// <summary>Gets the EntityCollection with the related entities of type 'ReviewEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
 		[TypeContainedAttribute(typeof(ReviewEntity))]
 		public virtual EntityCollection<ReviewEntity> Reviews { get { return GetOrCreateEntityCollection<ReviewEntity, ReviewEntityFactory>("ProductVariant", true, false, ref _reviews); } }
@@ -328,6 +336,8 @@ namespace DATN_2026
 		Sku,
 		///<summary>VariantAttributes. </summary>
 		VariantAttributes,
+		///<summary>Weight. </summary>
+		Weight,
 		/// <summary></summary>
 		AmountOfFields
 	}

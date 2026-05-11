@@ -71,8 +71,11 @@ namespace DATN_2026.HelperClasses
 			InitOrderEntityInfo();
 			InitOrderItemEntityInfo();
 			InitPaymentEntityInfo();
+			InitShipmentEntityInfo();
 			InitShippingTrackingEntityInfo();
 			InitTransactionEntityInfo();
+			InitWalletLedgerEntityInfo();
+			InitWithdrawRequestEntityInfo();
 			InitauditLoginAttemptTypedViewInfo();
 			InitauditUserAuditLogTypedViewInfo();
 			Initauth2PasswordResetTokenTypedViewInfo();
@@ -103,8 +106,11 @@ namespace DATN_2026.HelperClasses
 			InitsalesOrderTypedViewInfo();
 			InitsalesOrderItemTypedViewInfo();
 			InitsalesPaymentTypedViewInfo();
+			InitsalesShipmentTypedViewInfo();
 			InitsalesShippingTrackingTypedViewInfo();
 			InitsalesTransactionTypedViewInfo();
+			InitsalesWalletLedgerTypedViewInfo();
+			InitsalesWithdrawRequestTypedViewInfo();
 			this.BuildInternalStructures();
 		}
 
@@ -313,18 +319,21 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("ProductVariantEntity", "ProductId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ProductVariantFieldIndex.ProductId, 0, 0, 0);
 			this.AddElementFieldInfo("ProductVariantEntity", "Sku", typeof(System.String), false, false, false, true,  (int)ProductVariantFieldIndex.Sku, 50, 0, 0);
 			this.AddElementFieldInfo("ProductVariantEntity", "VariantAttributes", typeof(System.String), false, false, false, true,  (int)ProductVariantFieldIndex.VariantAttributes, 2147483647, 0, 0);
+			this.AddElementFieldInfo("ProductVariantEntity", "Weight", typeof(Nullable<System.Int32>), false, false, false, true,  (int)ProductVariantFieldIndex.Weight, 0, 0, 10);
 		}
 
 		/// <summary>Inits ShopEntity's info objects</summary>
 		private void InitShopEntityInfo()
 		{
 			this.AddFieldIndexEnumForElementName(typeof(ShopFieldIndex), "ShopEntity");
+			this.AddElementFieldInfo("ShopEntity", "AvailableBalance", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)ShopFieldIndex.AvailableBalance, 0, 2, 18);
 			this.AddElementFieldInfo("ShopEntity", "CoverUrl", typeof(System.String), false, false, false, true,  (int)ShopFieldIndex.CoverUrl, 1073741824, 0, 0);
 			this.AddElementFieldInfo("ShopEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ShopFieldIndex.CreatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("ShopEntity", "Description", typeof(System.String), false, false, false, true,  (int)ShopFieldIndex.Description, 1073741824, 0, 0);
 			this.AddElementFieldInfo("ShopEntity", "DistrictId", typeof(Nullable<System.Int32>), false, false, false, true,  (int)ShopFieldIndex.DistrictId, 0, 0, 10);
 			this.AddElementFieldInfo("ShopEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ShopFieldIndex.Id, 0, 0, 0);
 			this.AddElementFieldInfo("ShopEntity", "IsActive", typeof(Nullable<System.Boolean>), false, false, false, true,  (int)ShopFieldIndex.IsActive, 0, 0, 0);
+			this.AddElementFieldInfo("ShopEntity", "LockedBalance", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)ShopFieldIndex.LockedBalance, 0, 2, 18);
 			this.AddElementFieldInfo("ShopEntity", "LogoUrl", typeof(System.String), false, false, false, true,  (int)ShopFieldIndex.LogoUrl, 1073741824, 0, 0);
 			this.AddElementFieldInfo("ShopEntity", "Name", typeof(System.String), false, false, false, false,  (int)ShopFieldIndex.Name, 255, 0, 0);
 			this.AddElementFieldInfo("ShopEntity", "OwnerId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ShopFieldIndex.OwnerId, 0, 0, 0);
@@ -466,6 +475,7 @@ namespace DATN_2026.HelperClasses
 		{
 			this.AddFieldIndexEnumForElementName(typeof(OrderFieldIndex), "OrderEntity");
 			this.AddElementFieldInfo("OrderEntity", "BuyerId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)OrderFieldIndex.BuyerId, 0, 0, 0);
+			this.AddElementFieldInfo("OrderEntity", "CommissionFee", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)OrderFieldIndex.CommissionFee, 0, 2, 18);
 			this.AddElementFieldInfo("OrderEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)OrderFieldIndex.CreatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("OrderEntity", "CustomerNote", typeof(System.String), false, false, false, true,  (int)OrderFieldIndex.CustomerNote, 1073741824, 0, 0);
 			this.AddElementFieldInfo("OrderEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)OrderFieldIndex.Id, 0, 0, 0);
@@ -475,6 +485,7 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("OrderEntity", "PaymentStatus", typeof(System.String), false, false, false, true,  (int)OrderFieldIndex.PaymentStatus, 20, 0, 0);
 			this.AddElementFieldInfo("OrderEntity", "ShippingAddress", typeof(System.String), false, false, false, false,  (int)OrderFieldIndex.ShippingAddress, 1073741824, 0, 0);
 			this.AddElementFieldInfo("OrderEntity", "ShippingFee", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)OrderFieldIndex.ShippingFee, 0, 2, 18);
+			this.AddElementFieldInfo("OrderEntity", "ShopId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)OrderFieldIndex.ShopId, 0, 0, 0);
 			this.AddElementFieldInfo("OrderEntity", "TotalAmount", typeof(System.Decimal), false, false, false, false,  (int)OrderFieldIndex.TotalAmount, 0, 2, 18);
 		}
 
@@ -511,6 +522,22 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("PaymentEntity", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)PaymentFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 
+		/// <summary>Inits ShipmentEntity's info objects</summary>
+		private void InitShipmentEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(ShipmentFieldIndex), "ShipmentEntity");
+			this.AddElementFieldInfo("ShipmentEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ShipmentFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("ShipmentEntity", "ExpectedDeliveryDate", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ShipmentFieldIndex.ExpectedDeliveryDate, 0, 0, 0);
+			this.AddElementFieldInfo("ShipmentEntity", "GhnOrderCode", typeof(System.String), false, false, false, true,  (int)ShipmentFieldIndex.GhnOrderCode, 50, 0, 0);
+			this.AddElementFieldInfo("ShipmentEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ShipmentFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("ShipmentEntity", "OrderId", typeof(System.Guid), false, false, false, false,  (int)ShipmentFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("ShipmentEntity", "Provider", typeof(System.String), false, false, false, false,  (int)ShipmentFieldIndex.Provider, 20, 0, 0);
+			this.AddElementFieldInfo("ShipmentEntity", "ShippingFee", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)ShipmentFieldIndex.ShippingFee, 0, 2, 18);
+			this.AddElementFieldInfo("ShipmentEntity", "Status", typeof(System.String), false, false, false, true,  (int)ShipmentFieldIndex.Status, 30, 0, 0);
+			this.AddElementFieldInfo("ShipmentEntity", "TrackingCode", typeof(System.String), false, false, false, true,  (int)ShipmentFieldIndex.TrackingCode, 50, 0, 0);
+			this.AddElementFieldInfo("ShipmentEntity", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)ShipmentFieldIndex.UpdatedAt, 0, 0, 0);
+		}
+
 		/// <summary>Inits ShippingTrackingEntity's info objects</summary>
 		private void InitShippingTrackingEntityInfo()
 		{
@@ -534,7 +561,37 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("TransactionEntity", "OrderId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)TransactionFieldIndex.OrderId, 0, 0, 0);
 			this.AddElementFieldInfo("TransactionEntity", "Provider", typeof(System.String), false, false, false, true,  (int)TransactionFieldIndex.Provider, 20, 0, 0);
 			this.AddElementFieldInfo("TransactionEntity", "RawResponse", typeof(System.String), false, false, false, true,  (int)TransactionFieldIndex.RawResponse, 2147483647, 0, 0);
+			this.AddElementFieldInfo("TransactionEntity", "ReferenceId", typeof(System.String), false, false, false, true,  (int)TransactionFieldIndex.ReferenceId, 100, 0, 0);
 			this.AddElementFieldInfo("TransactionEntity", "Status", typeof(System.String), false, false, false, true,  (int)TransactionFieldIndex.Status, 20, 0, 0);
+			this.AddElementFieldInfo("TransactionEntity", "TransactionType", typeof(System.String), false, false, false, true,  (int)TransactionFieldIndex.TransactionType, 50, 0, 0);
+		}
+
+		/// <summary>Inits WalletLedgerEntity's info objects</summary>
+		private void InitWalletLedgerEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(WalletLedgerFieldIndex), "WalletLedgerEntity");
+			this.AddElementFieldInfo("WalletLedgerEntity", "Amount", typeof(System.Decimal), false, false, false, false,  (int)WalletLedgerFieldIndex.Amount, 0, 2, 18);
+			this.AddElementFieldInfo("WalletLedgerEntity", "BalanceAfter", typeof(System.Decimal), false, false, false, false,  (int)WalletLedgerFieldIndex.BalanceAfter, 0, 2, 18);
+			this.AddElementFieldInfo("WalletLedgerEntity", "BalanceBefore", typeof(System.Decimal), false, false, false, false,  (int)WalletLedgerFieldIndex.BalanceBefore, 0, 2, 18);
+			this.AddElementFieldInfo("WalletLedgerEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)WalletLedgerFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("WalletLedgerEntity", "Description", typeof(System.String), false, false, false, true,  (int)WalletLedgerFieldIndex.Description, 1073741824, 0, 0);
+			this.AddElementFieldInfo("WalletLedgerEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)WalletLedgerFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("WalletLedgerEntity", "ShopId", typeof(System.Guid), false, true, false, false,  (int)WalletLedgerFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("WalletLedgerEntity", "TransactionId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)WalletLedgerFieldIndex.TransactionId, 0, 0, 0);
+		}
+
+		/// <summary>Inits WithdrawRequestEntity's info objects</summary>
+		private void InitWithdrawRequestEntityInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(WithdrawRequestFieldIndex), "WithdrawRequestEntity");
+			this.AddElementFieldInfo("WithdrawRequestEntity", "Amount", typeof(System.Decimal), false, false, false, false,  (int)WithdrawRequestFieldIndex.Amount, 0, 2, 18);
+			this.AddElementFieldInfo("WithdrawRequestEntity", "BankInfo", typeof(System.String), false, false, false, true,  (int)WithdrawRequestFieldIndex.BankInfo, 2147483647, 0, 0);
+			this.AddElementFieldInfo("WithdrawRequestEntity", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)WithdrawRequestFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("WithdrawRequestEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)WithdrawRequestFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("WithdrawRequestEntity", "Note", typeof(System.String), false, false, false, true,  (int)WithdrawRequestFieldIndex.Note, 1073741824, 0, 0);
+			this.AddElementFieldInfo("WithdrawRequestEntity", "ShopId", typeof(System.Guid), false, true, false, false,  (int)WithdrawRequestFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("WithdrawRequestEntity", "Status", typeof(System.String), false, false, false, true,  (int)WithdrawRequestFieldIndex.Status, 20, 0, 0);
+			this.AddElementFieldInfo("WithdrawRequestEntity", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, false, true,  (int)WithdrawRequestFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 
 		/// <summary>Inits auditLoginAttemptView's info objects</summary>
@@ -742,6 +799,7 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "VariantAttributes", typeof(System.String), false, false, true, false, (int)catalogProductVariantFieldIndex.VariantAttributes, 2147483647, 0, 0);
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "ImageUrl", typeof(System.String), false, false, true, false, (int)catalogProductVariantFieldIndex.ImageUrl, 1073741824, 0, 0);
 			this.AddElementFieldInfo("catalogProductVariantTypedView", "Originalprice", typeof(Nullable<System.Decimal>), false, false, true, false, (int)catalogProductVariantFieldIndex.Originalprice, 0, 2, 18);
+			this.AddElementFieldInfo("catalogProductVariantTypedView", "Weight", typeof(Nullable<System.Int32>), false, false, true, false, (int)catalogProductVariantFieldIndex.Weight, 0, 0, 10);
 		}
 
 		/// <summary>Inits catalogShopView's info objects</summary>
@@ -762,6 +820,8 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("catalogShopTypedView", "DistrictId", typeof(Nullable<System.Int32>), false, false, true, false, (int)catalogShopFieldIndex.DistrictId, 0, 0, 10);
 			this.AddElementFieldInfo("catalogShopTypedView", "WardId", typeof(Nullable<System.Int32>), false, false, true, false, (int)catalogShopFieldIndex.WardId, 0, 0, 10);
 			this.AddElementFieldInfo("catalogShopTypedView", "PickupAddress", typeof(System.String), false, false, true, false, (int)catalogShopFieldIndex.PickupAddress, 1073741824, 0, 0);
+			this.AddElementFieldInfo("catalogShopTypedView", "AvailableBalance", typeof(Nullable<System.Decimal>), false, false, true, false, (int)catalogShopFieldIndex.AvailableBalance, 0, 2, 18);
+			this.AddElementFieldInfo("catalogShopTypedView", "LockedBalance", typeof(Nullable<System.Decimal>), false, false, true, false, (int)catalogShopFieldIndex.LockedBalance, 0, 2, 18);
 		}
 
 		/// <summary>Inits engagementChatBoxView's info objects</summary>
@@ -905,6 +965,7 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("salesOrderTypedView", "ShippingAddress", typeof(System.String), false, false, true, false, (int)salesOrderFieldIndex.ShippingAddress, 1073741824, 0, 0);
 			this.AddElementFieldInfo("salesOrderTypedView", "CustomerNote", typeof(System.String), false, false, true, false, (int)salesOrderFieldIndex.CustomerNote, 1073741824, 0, 0);
 			this.AddElementFieldInfo("salesOrderTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesOrderFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("salesOrderTypedView", "CommissionFee", typeof(Nullable<System.Decimal>), false, false, true, false, (int)salesOrderFieldIndex.CommissionFee, 0, 2, 18);
 		}
 
 		/// <summary>Inits salesOrderItemView's info objects</summary>
@@ -940,6 +1001,22 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("salesPaymentTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesPaymentFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 
+		/// <summary>Inits salesShipmentView's info objects</summary>
+		private void InitsalesShipmentTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(salesShipmentFieldIndex), "salesShipmentTypedView");
+			this.AddElementFieldInfo("salesShipmentTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesShipmentFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("salesShipmentTypedView", "OrderId", typeof(System.Guid), false, false, true, false, (int)salesShipmentFieldIndex.OrderId, 0, 0, 0);
+			this.AddElementFieldInfo("salesShipmentTypedView", "Provider", typeof(System.String), false, false, true, false, (int)salesShipmentFieldIndex.Provider, 20, 0, 0);
+			this.AddElementFieldInfo("salesShipmentTypedView", "TrackingCode", typeof(System.String), false, false, true, false, (int)salesShipmentFieldIndex.TrackingCode, 50, 0, 0);
+			this.AddElementFieldInfo("salesShipmentTypedView", "ShippingFee", typeof(Nullable<System.Decimal>), false, false, true, false, (int)salesShipmentFieldIndex.ShippingFee, 0, 2, 18);
+			this.AddElementFieldInfo("salesShipmentTypedView", "Status", typeof(System.String), false, false, true, false, (int)salesShipmentFieldIndex.Status, 30, 0, 0);
+			this.AddElementFieldInfo("salesShipmentTypedView", "ExpectedDeliveryDate", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesShipmentFieldIndex.ExpectedDeliveryDate, 0, 0, 0);
+			this.AddElementFieldInfo("salesShipmentTypedView", "GhnOrderCode", typeof(System.String), false, false, true, false, (int)salesShipmentFieldIndex.GhnOrderCode, 50, 0, 0);
+			this.AddElementFieldInfo("salesShipmentTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesShipmentFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("salesShipmentTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesShipmentFieldIndex.UpdatedAt, 0, 0, 0);
+		}
+
 		/// <summary>Inits salesShippingTrackingView's info objects</summary>
 		private void InitsalesShippingTrackingTypedViewInfo()
 		{
@@ -964,6 +1041,36 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("salesTransactionTypedView", "Status", typeof(System.String), false, false, true, false, (int)salesTransactionFieldIndex.Status, 20, 0, 0);
 			this.AddElementFieldInfo("salesTransactionTypedView", "RawResponse", typeof(System.String), false, false, true, false, (int)salesTransactionFieldIndex.RawResponse, 2147483647, 0, 0);
 			this.AddElementFieldInfo("salesTransactionTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesTransactionFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("salesTransactionTypedView", "TransactionType", typeof(System.String), false, false, true, false, (int)salesTransactionFieldIndex.TransactionType, 50, 0, 0);
+			this.AddElementFieldInfo("salesTransactionTypedView", "ReferenceId", typeof(System.String), false, false, true, false, (int)salesTransactionFieldIndex.ReferenceId, 100, 0, 0);
+		}
+
+		/// <summary>Inits salesWalletLedgerView's info objects</summary>
+		private void InitsalesWalletLedgerTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(salesWalletLedgerFieldIndex), "salesWalletLedgerTypedView");
+			this.AddElementFieldInfo("salesWalletLedgerTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesWalletLedgerFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("salesWalletLedgerTypedView", "ShopId", typeof(System.Guid), false, false, true, false, (int)salesWalletLedgerFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("salesWalletLedgerTypedView", "TransactionId", typeof(Nullable<System.Guid>), false, false, true, false, (int)salesWalletLedgerFieldIndex.TransactionId, 0, 0, 0);
+			this.AddElementFieldInfo("salesWalletLedgerTypedView", "Amount", typeof(System.Decimal), false, false, true, false, (int)salesWalletLedgerFieldIndex.Amount, 0, 2, 18);
+			this.AddElementFieldInfo("salesWalletLedgerTypedView", "BalanceBefore", typeof(System.Decimal), false, false, true, false, (int)salesWalletLedgerFieldIndex.BalanceBefore, 0, 2, 18);
+			this.AddElementFieldInfo("salesWalletLedgerTypedView", "BalanceAfter", typeof(System.Decimal), false, false, true, false, (int)salesWalletLedgerFieldIndex.BalanceAfter, 0, 2, 18);
+			this.AddElementFieldInfo("salesWalletLedgerTypedView", "Description", typeof(System.String), false, false, true, false, (int)salesWalletLedgerFieldIndex.Description, 1073741824, 0, 0);
+			this.AddElementFieldInfo("salesWalletLedgerTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesWalletLedgerFieldIndex.CreatedAt, 0, 0, 0);
+		}
+
+		/// <summary>Inits salesWithdrawRequestView's info objects</summary>
+		private void InitsalesWithdrawRequestTypedViewInfo()
+		{
+			this.AddFieldIndexEnumForElementName(typeof(salesWithdrawRequestFieldIndex), "salesWithdrawRequestTypedView");
+			this.AddElementFieldInfo("salesWithdrawRequestTypedView", "Id", typeof(System.Guid), false, false, true, false, (int)salesWithdrawRequestFieldIndex.Id, 0, 0, 0);
+			this.AddElementFieldInfo("salesWithdrawRequestTypedView", "ShopId", typeof(System.Guid), false, false, true, false, (int)salesWithdrawRequestFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("salesWithdrawRequestTypedView", "Amount", typeof(System.Decimal), false, false, true, false, (int)salesWithdrawRequestFieldIndex.Amount, 0, 2, 18);
+			this.AddElementFieldInfo("salesWithdrawRequestTypedView", "Status", typeof(System.String), false, false, true, false, (int)salesWithdrawRequestFieldIndex.Status, 20, 0, 0);
+			this.AddElementFieldInfo("salesWithdrawRequestTypedView", "BankInfo", typeof(System.String), false, false, true, false, (int)salesWithdrawRequestFieldIndex.BankInfo, 2147483647, 0, 0);
+			this.AddElementFieldInfo("salesWithdrawRequestTypedView", "Note", typeof(System.String), false, false, true, false, (int)salesWithdrawRequestFieldIndex.Note, 1073741824, 0, 0);
+			this.AddElementFieldInfo("salesWithdrawRequestTypedView", "CreatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesWithdrawRequestFieldIndex.CreatedAt, 0, 0, 0);
+			this.AddElementFieldInfo("salesWithdrawRequestTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)salesWithdrawRequestFieldIndex.UpdatedAt, 0, 0, 0);
 		}
 	}
 }

@@ -23,6 +23,8 @@ namespace DATN_2026.TypedViewClasses
 			OnCreated();
 		}
 
+		/// <summary>Gets or sets the AvailableBalance field.</summary>
+		public Nullable<System.Decimal> AvailableBalance { get; set; }
 		/// <summary>Gets or sets the CoverUrl field.</summary>
 		public System.String CoverUrl { get; set; }
 		/// <summary>Gets or sets the CreatedAt field.</summary>
@@ -35,6 +37,8 @@ namespace DATN_2026.TypedViewClasses
 		public System.Guid Id { get; set; }
 		/// <summary>Gets or sets the IsActive field.</summary>
 		public Nullable<System.Boolean> IsActive { get; set; }
+		/// <summary>Gets or sets the LockedBalance field.</summary>
+		public Nullable<System.Decimal> LockedBalance { get; set; }
 		/// <summary>Gets or sets the LogoUrl field.</summary>
 		public System.String LogoUrl { get; set; }
 		/// <summary>Gets or sets the Name field.</summary>

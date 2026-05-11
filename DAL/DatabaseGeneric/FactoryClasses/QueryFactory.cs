@@ -108,11 +108,20 @@ namespace DATN_2026.FactoryClasses
 		/// <summary>Creates and returns a new EntityQuery for the Payment entity</summary>
 		public EntityQuery<PaymentEntity> Payment { get { return Create<PaymentEntity>(); } }
 
+		/// <summary>Creates and returns a new EntityQuery for the Shipment entity</summary>
+		public EntityQuery<ShipmentEntity> Shipment { get { return Create<ShipmentEntity>(); } }
+
 		/// <summary>Creates and returns a new EntityQuery for the ShippingTracking entity</summary>
 		public EntityQuery<ShippingTrackingEntity> ShippingTracking { get { return Create<ShippingTrackingEntity>(); } }
 
 		/// <summary>Creates and returns a new EntityQuery for the Transaction entity</summary>
 		public EntityQuery<TransactionEntity> Transaction { get { return Create<TransactionEntity>(); } }
+
+		/// <summary>Creates and returns a new EntityQuery for the WalletLedger entity</summary>
+		public EntityQuery<WalletLedgerEntity> WalletLedger { get { return Create<WalletLedgerEntity>(); } }
+
+		/// <summary>Creates and returns a new EntityQuery for the WithdrawRequest entity</summary>
+		public EntityQuery<WithdrawRequestEntity> WithdrawRequest { get { return Create<WithdrawRequestEntity>(); } }
 
 		/// <inheritdoc/>
 		protected override IElementCreatorCore CreateElementCreator() { return new ElementCreator(); }
@@ -297,6 +306,12 @@ namespace DATN_2026.FactoryClasses
 			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesPaymentRow, DATN_2026.HelperClasses.salesPaymentFields>(); }
 		}
 
+		/// <summary>Creates and returns the query to fetch the typed view Sales.salesShipment</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesShipmentRow> salesShipment
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesShipmentRow, DATN_2026.HelperClasses.salesShipmentFields>(); }
+		}
+
 		/// <summary>Creates and returns the query to fetch the typed view Sales.salesShippingTracking</summary>
 		public DynamicQuery<DATN_2026.TypedViewClasses.salesShippingTrackingRow> salesShippingTracking
 		{
@@ -307,6 +322,18 @@ namespace DATN_2026.FactoryClasses
 		public DynamicQuery<DATN_2026.TypedViewClasses.salesTransactionRow> salesTransaction
 		{
 			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesTransactionRow, DATN_2026.HelperClasses.salesTransactionFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Sales.salesWalletLedger</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesWalletLedgerRow> salesWalletLedger
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesWalletLedgerRow, DATN_2026.HelperClasses.salesWalletLedgerFields>(); }
+		}
+
+		/// <summary>Creates and returns the query to fetch the typed view Sales.salesWithdrawRequest</summary>
+		public DynamicQuery<DATN_2026.TypedViewClasses.salesWithdrawRequestRow> salesWithdrawRequest
+		{
+			get { return this.Create().Select<DATN_2026.TypedViewClasses.salesWithdrawRequestRow, DATN_2026.HelperClasses.salesWithdrawRequestFields>(); }
 		}
 
 	}

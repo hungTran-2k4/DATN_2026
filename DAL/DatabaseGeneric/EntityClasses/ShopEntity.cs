@@ -30,6 +30,9 @@ namespace DATN_2026.EntityClasses
 		private EntityCollection<ChatBoxEntity> _chatBoxes;
 		private EntityCollection<StockTransactionEntity> _stockTransactions;
 		private EntityCollection<VoucherEntity> _vouchers;
+		private EntityCollection<OrderEntity> _orders;
+		private EntityCollection<WalletLedgerEntity> _walletLedgers;
+		private EntityCollection<WithdrawRequestEntity> _withdrawRequests;
 		private UserEntity _user;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
@@ -50,6 +53,12 @@ namespace DATN_2026.EntityClasses
 			public static readonly string StockTransactions = "StockTransactions";
 			/// <summary>Member name Vouchers</summary>
 			public static readonly string Vouchers = "Vouchers";
+			/// <summary>Member name Orders</summary>
+			public static readonly string Orders = "Orders";
+			/// <summary>Member name WalletLedgers</summary>
+			public static readonly string WalletLedgers = "WalletLedgers";
+			/// <summary>Member name WithdrawRequests</summary>
+			public static readonly string WithdrawRequests = "WithdrawRequests";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -62,6 +71,9 @@ namespace DATN_2026.EntityClasses
 				AddNavigatorMetaData<ShopEntity, EntityCollection<ChatBoxEntity>>("ChatBoxes", a => a._chatBoxes, (a, b) => a._chatBoxes = b, a => a.ChatBoxes, () => new ShopRelations().ChatBoxEntityUsingShopId, typeof(ChatBoxEntity), (int)DATN_2026.EntityType.ChatBoxEntity);
 				AddNavigatorMetaData<ShopEntity, EntityCollection<StockTransactionEntity>>("StockTransactions", a => a._stockTransactions, (a, b) => a._stockTransactions = b, a => a.StockTransactions, () => new ShopRelations().StockTransactionEntityUsingShopId, typeof(StockTransactionEntity), (int)DATN_2026.EntityType.StockTransactionEntity);
 				AddNavigatorMetaData<ShopEntity, EntityCollection<VoucherEntity>>("Vouchers", a => a._vouchers, (a, b) => a._vouchers = b, a => a.Vouchers, () => new ShopRelations().VoucherEntityUsingShopId, typeof(VoucherEntity), (int)DATN_2026.EntityType.VoucherEntity);
+				AddNavigatorMetaData<ShopEntity, EntityCollection<OrderEntity>>("Orders", a => a._orders, (a, b) => a._orders = b, a => a.Orders, () => new ShopRelations().OrderEntityUsingShopId, typeof(OrderEntity), (int)DATN_2026.EntityType.OrderEntity);
+				AddNavigatorMetaData<ShopEntity, EntityCollection<WalletLedgerEntity>>("WalletLedgers", a => a._walletLedgers, (a, b) => a._walletLedgers = b, a => a.WalletLedgers, () => new ShopRelations().WalletLedgerEntityUsingShopId, typeof(WalletLedgerEntity), (int)DATN_2026.EntityType.WalletLedgerEntity);
+				AddNavigatorMetaData<ShopEntity, EntityCollection<WithdrawRequestEntity>>("WithdrawRequests", a => a._withdrawRequests, (a, b) => a._withdrawRequests = b, a => a.WithdrawRequests, () => new ShopRelations().WithdrawRequestEntityUsingShopId, typeof(WithdrawRequestEntity), (int)DATN_2026.EntityType.WithdrawRequestEntity);
 				AddNavigatorMetaData<ShopEntity, UserEntity>("User", "Shops", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticShopRelations.UserEntityUsingOwnerIdStatic, ()=>new ShopRelations().UserEntityUsingOwnerId, null, new int[] { (int)ShopFieldIndex.OwnerId }, null, true, (int)DATN_2026.EntityType.UserEntity);
 			}
 		}
@@ -140,6 +152,18 @@ namespace DATN_2026.EntityClasses
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoVouchers() { return CreateRelationInfoForNavigator("Vouchers"); }
 
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'Order' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoOrders() { return CreateRelationInfoForNavigator("Orders"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'WalletLedger' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoWalletLedgers() { return CreateRelationInfoForNavigator("WalletLedgers"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'WithdrawRequest' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoWithdrawRequests() { return CreateRelationInfoForNavigator("WithdrawRequests"); }
+
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'User' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoUser() { return CreateRelationInfoForNavigator("User"); }
@@ -190,9 +214,29 @@ namespace DATN_2026.EntityClasses
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathVouchers { get { return _staticMetaData.GetPrefetchPathElement("Vouchers", CommonEntityBase.CreateEntityCollection<VoucherEntity>()); } }
 
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Order' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathOrders { get { return _staticMetaData.GetPrefetchPathElement("Orders", CommonEntityBase.CreateEntityCollection<OrderEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'WalletLedger' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathWalletLedgers { get { return _staticMetaData.GetPrefetchPathElement("WalletLedgers", CommonEntityBase.CreateEntityCollection<WalletLedgerEntity>()); } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'WithdrawRequest' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathWithdrawRequests { get { return _staticMetaData.GetPrefetchPathElement("WithdrawRequests", CommonEntityBase.CreateEntityCollection<WithdrawRequestEntity>()); } }
+
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'User' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathUser { get { return _staticMetaData.GetPrefetchPathElement("User", CommonEntityBase.CreateEntityCollection<UserEntity>()); } }
+
+		/// <summary>The AvailableBalance property of the Entity Shop<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "shops"."available_balance".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Decimal> AvailableBalance
+		{
+			get { return (Nullable<System.Decimal>)GetValue((int)ShopFieldIndex.AvailableBalance, false); }
+			set { SetValue((int)ShopFieldIndex.AvailableBalance, value); }
+		}
 
 		/// <summary>The CoverUrl property of the Entity Shop<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "shops"."cover_url".<br/>Table field type characteristics (type, precision, scale, length): Text, 0, 0, 1073741824.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
@@ -240,6 +284,14 @@ namespace DATN_2026.EntityClasses
 		{
 			get { return (Nullable<System.Boolean>)GetValue((int)ShopFieldIndex.IsActive, false); }
 			set { SetValue((int)ShopFieldIndex.IsActive, value); }
+		}
+
+		/// <summary>The LockedBalance property of the Entity Shop<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "shops"."locked_balance".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Decimal> LockedBalance
+		{
+			get { return (Nullable<System.Decimal>)GetValue((int)ShopFieldIndex.LockedBalance, false); }
+			set { SetValue((int)ShopFieldIndex.LockedBalance, value); }
 		}
 
 		/// <summary>The LogoUrl property of the Entity Shop<br/><br/></summary>
@@ -322,6 +374,18 @@ namespace DATN_2026.EntityClasses
 		[TypeContainedAttribute(typeof(VoucherEntity))]
 		public virtual EntityCollection<VoucherEntity> Vouchers { get { return GetOrCreateEntityCollection<VoucherEntity, VoucherEntityFactory>("Shop", true, false, ref _vouchers); } }
 
+		/// <summary>Gets the EntityCollection with the related entities of type 'OrderEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(OrderEntity))]
+		public virtual EntityCollection<OrderEntity> Orders { get { return GetOrCreateEntityCollection<OrderEntity, OrderEntityFactory>("Shop", true, false, ref _orders); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'WalletLedgerEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(WalletLedgerEntity))]
+		public virtual EntityCollection<WalletLedgerEntity> WalletLedgers { get { return GetOrCreateEntityCollection<WalletLedgerEntity, WalletLedgerEntityFactory>("Shop", true, false, ref _walletLedgers); } }
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'WithdrawRequestEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(WithdrawRequestEntity))]
+		public virtual EntityCollection<WithdrawRequestEntity> WithdrawRequests { get { return GetOrCreateEntityCollection<WithdrawRequestEntity, WithdrawRequestEntityFactory>("Shop", true, false, ref _withdrawRequests); } }
+
 		/// <summary>Gets / sets related entity of type 'UserEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
 		[Browsable(false)]
 		public virtual UserEntity User
@@ -340,6 +404,8 @@ namespace DATN_2026
 {
 	public enum ShopFieldIndex
 	{
+		///<summary>AvailableBalance. </summary>
+		AvailableBalance,
 		///<summary>CoverUrl. </summary>
 		CoverUrl,
 		///<summary>CreatedAt. </summary>
@@ -352,6 +418,8 @@ namespace DATN_2026
 		Id,
 		///<summary>IsActive. </summary>
 		IsActive,
+		///<summary>LockedBalance. </summary>
+		LockedBalance,
 		///<summary>LogoUrl. </summary>
 		LogoUrl,
 		///<summary>Name. </summary>
@@ -402,6 +470,24 @@ namespace DATN_2026.RelationClasses
 			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Vouchers", true, new[] { ShopFields.Id, VoucherFields.ShopId }); }
 		}
 
+		/// <summary>Returns a new IEntityRelation object, between ShopEntity and OrderEntity over the 1:n relation they have, using the relation between the fields: Shop.Id - Order.ShopId</summary>
+		public virtual IEntityRelation OrderEntityUsingShopId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "Orders", true, new[] { ShopFields.Id, OrderFields.ShopId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between ShopEntity and WalletLedgerEntity over the 1:n relation they have, using the relation between the fields: Shop.Id - WalletLedger.ShopId</summary>
+		public virtual IEntityRelation WalletLedgerEntityUsingShopId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "WalletLedgers", true, new[] { ShopFields.Id, WalletLedgerFields.ShopId }); }
+		}
+
+		/// <summary>Returns a new IEntityRelation object, between ShopEntity and WithdrawRequestEntity over the 1:n relation they have, using the relation between the fields: Shop.Id - WithdrawRequest.ShopId</summary>
+		public virtual IEntityRelation WithdrawRequestEntityUsingShopId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "WithdrawRequests", true, new[] { ShopFields.Id, WithdrawRequestFields.ShopId }); }
+		}
+
 		/// <summary>Returns a new IEntityRelation object, between ShopEntity and UserEntity over the m:1 relation they have, using the relation between the fields: Shop.OwnerId - User.Id</summary>
 		public virtual IEntityRelation UserEntityUsingOwnerId
 		{
@@ -417,6 +503,9 @@ namespace DATN_2026.RelationClasses
 		internal static readonly IEntityRelation ChatBoxEntityUsingShopIdStatic = new ShopRelations().ChatBoxEntityUsingShopId;
 		internal static readonly IEntityRelation StockTransactionEntityUsingShopIdStatic = new ShopRelations().StockTransactionEntityUsingShopId;
 		internal static readonly IEntityRelation VoucherEntityUsingShopIdStatic = new ShopRelations().VoucherEntityUsingShopId;
+		internal static readonly IEntityRelation OrderEntityUsingShopIdStatic = new ShopRelations().OrderEntityUsingShopId;
+		internal static readonly IEntityRelation WalletLedgerEntityUsingShopIdStatic = new ShopRelations().WalletLedgerEntityUsingShopId;
+		internal static readonly IEntityRelation WithdrawRequestEntityUsingShopIdStatic = new ShopRelations().WithdrawRequestEntityUsingShopId;
 		internal static readonly IEntityRelation UserEntityUsingOwnerIdStatic = new ShopRelations().UserEntityUsingOwnerId;
 
 		/// <summary>CTor</summary>

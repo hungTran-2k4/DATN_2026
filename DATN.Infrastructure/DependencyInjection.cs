@@ -20,6 +20,7 @@ using DATN.Infrastructure.Persistence.Repositories.Categories;
 using DATN.Infrastructure.Persistence.Repositories.Orders;
 using DATN.Infrastructure.Services;
 using DATN.Infrastructure.Services.Payment;
+using DATN.Infrastructure.Services.Shipping;
 using DATN.Infrastructure.Persistence.Repositories.Audit;
 using DATN_2026.DatabaseSpecific;
 using SD.LLBLGen.Pro.ORMSupportClasses;
@@ -109,6 +110,9 @@ public static class DependencyInjection
         services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IUserSessionRepository, UserSessionRepository>();
+        services.AddScoped<IWalletRepository, WalletRepository>();
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
+        services.AddScoped<IShipmentRepository, ShipmentRepository>();
 
         // Register Auth services
         services.AddScoped<IJwtService, JwtService>();
@@ -119,6 +123,7 @@ public static class DependencyInjection
 
         // Background Service
         services.AddHostedService<TokenCleanupService>();
+        services.AddHostedService<WalletEscrowService>();
 
         // Email Service
         services.AddScoped<IEmailService, SmtpEmailService>();
@@ -133,6 +138,11 @@ public static class DependencyInjection
         services.AddScoped<IPaymentProvider, VNPayProvider>(); // Thêm MoMoProvider ở đây khi cần
         services.AddScoped<IPaymentProviderFactory, PaymentProviderFactory>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<IStatisticsService, StatisticsService>();
+
+        // Shipping Provider — Strategy Pattern (giống Payment)
+        services.AddHttpClient("GHN"); // HttpClientFactory cho GHN API
+        services.AddScoped<IShippingProvider, GHNProvider>();
 
         // Unit of Work (transaction support)
         services.AddScoped<IUnitOfWork, LLBLGenUnitOfWork>();

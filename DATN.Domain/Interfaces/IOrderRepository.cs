@@ -23,6 +23,13 @@ public interface IOrderRepository
         int pageSize = 20,
         CancellationToken cancellationToken = default);
 
+    /// <summary>Toàn bộ đơn hàng trên hệ thống (Admin view) — có phân trang</summary>
+    Task<(IEnumerable<Order> Items, int Total)> GetAllAsync(
+        string? status = null,
+        int page = 1,
+        int pageSize = 20,
+        CancellationToken cancellationToken = default);
+
     /// <summary>Tạo nhiều đơn cùng lúc (1 checkout → nhiều order, 1 per shop)</summary>
     Task<IEnumerable<Order>> CreateBulkAsync(IEnumerable<Order> orders, CancellationToken cancellationToken = default);
 

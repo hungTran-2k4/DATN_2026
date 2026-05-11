@@ -324,6 +324,8 @@ namespace DATN_2026
 		ImageUrl,
 		///<summary>Originalprice</summary>
 		Originalprice,
+		///<summary>Weight</summary>
+		Weight,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -358,6 +360,10 @@ namespace DATN_2026
 		WardId,
 		///<summary>PickupAddress</summary>
 		PickupAddress,
+		///<summary>AvailableBalance</summary>
+		AvailableBalance,
+		///<summary>LockedBalance</summary>
+		LockedBalance,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -578,6 +584,8 @@ namespace DATN_2026
 		CustomerNote,
 		///<summary>CreatedAt</summary>
 		CreatedAt,
+		///<summary>CommissionFee</summary>
+		CommissionFee,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -635,6 +643,32 @@ namespace DATN_2026
 		/// <summary></summary>
 		AmountOfFields
 	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesShipment.</summary>
+	public enum salesShipmentFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>OrderId</summary>
+		OrderId,
+		///<summary>Provider</summary>
+		Provider,
+		///<summary>TrackingCode</summary>
+		TrackingCode,
+		///<summary>ShippingFee</summary>
+		ShippingFee,
+		///<summary>Status</summary>
+		Status,
+		///<summary>ExpectedDeliveryDate</summary>
+		ExpectedDeliveryDate,
+		///<summary>GhnOrderCode</summary>
+		GhnOrderCode,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
+		///<summary>UpdatedAt</summary>
+		UpdatedAt,
+		/// <summary></summary>
+		AmountOfFields
+	}
 	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesShippingTracking.</summary>
 	public enum salesShippingTrackingFieldIndex
 	{
@@ -672,6 +706,54 @@ namespace DATN_2026
 		RawResponse,
 		///<summary>CreatedAt</summary>
 		CreatedAt,
+		///<summary>TransactionType</summary>
+		TransactionType,
+		///<summary>ReferenceId</summary>
+		ReferenceId,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesWalletLedger.</summary>
+	public enum salesWalletLedgerFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>ShopId</summary>
+		ShopId,
+		///<summary>TransactionId</summary>
+		TransactionId,
+		///<summary>Amount</summary>
+		Amount,
+		///<summary>BalanceBefore</summary>
+		BalanceBefore,
+		///<summary>BalanceAfter</summary>
+		BalanceAfter,
+		///<summary>Description</summary>
+		Description,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
+		/// <summary></summary>
+		AmountOfFields
+	}
+	/// <summary>Index enum to fast-access Typed View EntityFields in the IEntityFields collection for the typed view : salesWithdrawRequest.</summary>
+	public enum salesWithdrawRequestFieldIndex
+	{
+		///<summary>Id</summary>
+		Id,
+		///<summary>ShopId</summary>
+		ShopId,
+		///<summary>Amount</summary>
+		Amount,
+		///<summary>Status</summary>
+		Status,
+		///<summary>BankInfo</summary>
+		BankInfo,
+		///<summary>Note</summary>
+		Note,
+		///<summary>CreatedAt</summary>
+		CreatedAt,
+		///<summary>UpdatedAt</summary>
+		UpdatedAt,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -740,10 +822,16 @@ namespace DATN_2026
 		OrderItemEntity,
 		///<summary>Payment</summary>
 		PaymentEntity,
+		///<summary>Shipment</summary>
+		ShipmentEntity,
 		///<summary>ShippingTracking</summary>
 		ShippingTrackingEntity,
 		///<summary>Transaction</summary>
-		TransactionEntity
+		TransactionEntity,
+		///<summary>WalletLedger</summary>
+		WalletLedgerEntity,
+		///<summary>WithdrawRequest</summary>
+		WithdrawRequestEntity
 	}
 
 	/// <summary>Enum definition for all the typed view types defined in this namespace. Used by the entityfields factory.</summary>
@@ -809,10 +897,16 @@ namespace DATN_2026
 		salesOrderItemTypedView,
 		///<summary>salesPayment</summary>
 		salesPaymentTypedView,
+		///<summary>salesShipment</summary>
+		salesShipmentTypedView,
 		///<summary>salesShippingTracking</summary>
 		salesShippingTrackingTypedView,
 		///<summary>salesTransaction</summary>
-		salesTransactionTypedView
+		salesTransactionTypedView,
+		///<summary>salesWalletLedger</summary>
+		salesWalletLedgerTypedView,
+		///<summary>salesWithdrawRequest</summary>
+		salesWithdrawRequestTypedView
 	}
 
 

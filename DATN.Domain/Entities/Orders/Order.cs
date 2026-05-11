@@ -31,8 +31,10 @@ public class Order
     /// </summary>
     public string? OrderStatus { get; set; }
 
+    public Guid? ShopId { get; set; }
     public decimal? ShippingFee { get; set; }
     public decimal TotalAmount { get; set; }
+    public decimal CommissionFee { get; set; } = 0;
 
     public string? CustomerNote { get; set; }
     public DateTime? CreatedAt { get; set; }

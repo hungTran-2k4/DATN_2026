@@ -37,8 +37,12 @@ namespace DATN_2026.TypedViewClasses
 		public System.String Provider { get; set; }
 		/// <summary>Gets or sets the RawResponse field.</summary>
 		public System.String RawResponse { get; set; }
+		/// <summary>Gets or sets the ReferenceId field.</summary>
+		public System.String ReferenceId { get; set; }
 		/// <summary>Gets or sets the Status field.</summary>
 		public System.String Status { get; set; }
+		/// <summary>Gets or sets the TransactionType field.</summary>
+		public System.String TransactionType { get; set; }
 	}
 }
 

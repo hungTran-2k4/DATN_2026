@@ -25,6 +25,8 @@ namespace DATN_2026.TypedViewClasses
 
 		/// <summary>Gets or sets the BuyerId field.</summary>
 		public Nullable<System.Guid> BuyerId { get; set; }
+		/// <summary>Gets or sets the CommissionFee field.</summary>
+		public Nullable<System.Decimal> CommissionFee { get; set; }
 		/// <summary>Gets or sets the CreatedAt field.</summary>
 		public Nullable<System.DateTime> CreatedAt { get; set; }
 		/// <summary>Gets or sets the CustomerNote field.</summary>

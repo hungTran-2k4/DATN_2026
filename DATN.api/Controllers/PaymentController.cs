@@ -15,17 +15,20 @@ public class PaymentController : ControllerBase
     private readonly IPaymentProviderFactory _providerFactory;
     private readonly IOrderRepository _orderRepo;
     private readonly IPaymentRepository _paymentRepo;
+    private readonly ITransactionRepository _transactionRepo;
     private readonly ILogger<PaymentController> _logger;
 
     public PaymentController(
         IPaymentProviderFactory providerFactory,
         IOrderRepository orderRepo,
         IPaymentRepository paymentRepo,
+        ITransactionRepository transactionRepo,
         ILogger<PaymentController> logger)
     {
         _providerFactory = providerFactory;
         _orderRepo = orderRepo;
         _paymentRepo = paymentRepo;
+        _transactionRepo = transactionRepo;
         _logger = logger;
     }
 
@@ -83,6 +86,18 @@ public class PaymentController : ControllerBase
             CreatedAt = DateTime.UtcNow
         };
         await _paymentRepo.CreateAsync(payment);
+
+        // 7.1 Tạo bản ghi Transaction (PENDING) — Accounting GMV
+        await _transactionRepo.CreateAsync(new Transaction
+        {
+            Id = Guid.NewGuid(),
+            OrderId = order.Id,
+            Amount = order.TotalAmount,
+            Provider = provider.ProviderName,
+            Status = "Pending",
+            TransactionType = "PAYMENT_IN",
+            CreatedAt = DateTime.UtcNow
+        });
 
         // 8. Cập nhật trạng thái thanh toán Order → PROCESSING
         await _orderRepo.UpdatePaymentStatusAsync(order.Id, PaymentStatus.Processing);
@@ -234,6 +249,23 @@ public class PaymentController : ControllerBase
             _logger.LogInformation(
                 "[IPN] ✅ Order updated. OrderId={OrderId}, PaymentStatus={Status}, TransactionId={TransactionId}",
                 result.OrderId, newPaymentStatus, result.TransactionId);
+
+            // ─── NEW: Save to Transaction table if success ───
+            if (result.IsSuccess)
+            {
+                await _transactionRepo.CreateAsync(new Transaction
+                {
+                    Id = Guid.NewGuid(),
+                    OrderId = result.OrderId,
+                    ExternalTransactionNo = result.TransactionId,
+                    Amount = result.Amount,
+                    Provider = PaymentMethod.VnPay,
+                    Status = "Success",
+                    TransactionType = "PAYMENT_IN",
+                    RawResponse = result.RawResponse,
+                    CreatedAt = DateTime.UtcNow
+                });
+            }
         }
         catch (Exception ex)
         {
@@ -297,6 +329,19 @@ public class PaymentController : ControllerBase
                 // Cập nhật Order Status
                 var updateResult = await _orderRepo.UpdatePaymentStatusAsync(result.OrderId, PaymentStatus.Paid);
                 _logger.LogInformation("═══ VnPayReturn ═══ Order PaymentStatus update result: {Result}", updateResult);
+
+                // ─── NEW: Save to Transaction table in fallback ───
+                await _transactionRepo.CreateAsync(new Transaction
+                {
+                    Id = Guid.NewGuid(),
+                    OrderId = result.OrderId,
+                    ExternalTransactionNo = result.TransactionId,
+                    Amount = result.Amount,
+                    Provider = PaymentMethod.VnPay,
+                    Status = "Success",
+                    TransactionType = "PAYMENT_IN",
+                    CreatedAt = DateTime.UtcNow
+                });
                 
                 // Refresh order data after update
                 order = await _orderRepo.GetByIdAsync(result.OrderId);

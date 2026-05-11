@@ -104,10 +104,16 @@ namespace DATN_2026.Linq
 					return this.OrderItem;
 				case DATN_2026.EntityType.PaymentEntity:
 					return this.Payment;
+				case DATN_2026.EntityType.ShipmentEntity:
+					return this.Shipment;
 				case DATN_2026.EntityType.ShippingTrackingEntity:
 					return this.ShippingTracking;
 				case DATN_2026.EntityType.TransactionEntity:
 					return this.Transaction;
+				case DATN_2026.EntityType.WalletLedgerEntity:
+					return this.WalletLedger;
+				case DATN_2026.EntityType.WithdrawRequestEntity:
+					return this.WithdrawRequest;
 				default:
 					return null;
 			}
@@ -224,11 +230,20 @@ namespace DATN_2026.Linq
 		/// <summary>returns the datasource to use in a Linq query when targeting PaymentEntity instances in the database.</summary>
 		public DataSource2<PaymentEntity> Payment {	get { return new DataSource2<PaymentEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
+		/// <summary>returns the datasource to use in a Linq query when targeting ShipmentEntity instances in the database.</summary>
+		public DataSource2<ShipmentEntity> Shipment {	get { return new DataSource2<ShipmentEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
 		/// <summary>returns the datasource to use in a Linq query when targeting ShippingTrackingEntity instances in the database.</summary>
 		public DataSource2<ShippingTrackingEntity> ShippingTracking {	get { return new DataSource2<ShippingTrackingEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
 		/// <summary>returns the datasource to use in a Linq query when targeting TransactionEntity instances in the database.</summary>
 		public DataSource2<TransactionEntity> Transaction {	get { return new DataSource2<TransactionEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
+		/// <summary>returns the datasource to use in a Linq query when targeting WalletLedgerEntity instances in the database.</summary>
+		public DataSource2<WalletLedgerEntity> WalletLedger {	get { return new DataSource2<WalletLedgerEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
+		
+		/// <summary>returns the datasource to use in a Linq query when targeting WithdrawRequestEntity instances in the database.</summary>
+		public DataSource2<WithdrawRequestEntity> WithdrawRequest {	get { return new DataSource2<WithdrawRequestEntity>(this.AdapterToUse, new ElementCreator(), this.CustomFunctionMappings, this.ContextToUse); } }
 		
 
 

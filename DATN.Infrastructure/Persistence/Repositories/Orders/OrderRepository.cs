@@ -102,6 +102,7 @@ public class OrderRepository : IOrderRepository
         var idQuery = qf.Create()
             .From(orderJoin)
             .Select(OrderFields.Id)
+            .Where(filter)
             .Distinct()
             .OrderBy(OrderFields.CreatedAt.Descending())
             .Page(page, pageSize);
@@ -117,6 +118,7 @@ public class OrderRepository : IOrderRepository
         var countIdsQuery = qf.Create()
             .From(orderJoin)
             .Select(OrderFields.Id)
+            .Where(filter)
             .Distinct();
         var allIdRows = await _adapter.FetchQueryAsync(countIdsQuery, cancellationToken);
         var totalCount = allIdRows.Count;
@@ -153,6 +155,38 @@ public class OrderRepository : IOrderRepository
         return (ordered, totalCount);
     }
 
+    public async Task<(IEnumerable<Order> Items, int Total)> GetAllAsync(
+        string? status = null, int page = 1, int pageSize = 20,
+        CancellationToken cancellationToken = default)
+    {
+        var col = new EntityCollection<OrderEntity>();
+
+        IPredicateExpression filter = new PredicateExpression();
+        if (!string.IsNullOrEmpty(status))
+            filter.AddWithAnd(OrderFields.OrderStatus == status);
+
+        var qf = new QueryFactory();
+        var countQuery = qf.Create().Select(OrderFields.Id.Count()).Where(filter);
+        var totalCount = await _adapter.FetchScalarAsync<int>(countQuery, cancellationToken);
+
+        var sortClause = new SortExpression(OrderFields.CreatedAt.Descending());
+        var prefetch = new PrefetchPath2((int)DATN_2026.EntityType.OrderEntity);
+        var itemPath = prefetch.Add(OrderEntity.PrefetchPathOrderItems);
+        itemPath.SubPath.Add(OrderItemEntity.PrefetchPathProductVariant);
+
+        await _adapter.FetchEntityCollectionAsync(new QueryParameters
+        {
+            CollectionToFetch = col,
+            FilterToUse = filter,
+            SorterToUse = sortClause,
+            PrefetchPathToUse = prefetch,
+            RowsToSkip = (page - 1) * pageSize,
+            RowsToTake = pageSize
+        }, cancellationToken);
+
+        return (col.Select(MapToOrder).ToList(), totalCount);
+    }
+
     public async Task<IEnumerable<Order>> CreateBulkAsync(IEnumerable<Order> orders, CancellationToken cancellationToken = default)
     {
         var result = new List<Order>();
@@ -172,9 +206,10 @@ public class OrderRepository : IOrderRepository
                 OrderStatus = order.OrderStatus,
                 ShippingFee = order.ShippingFee,
                 TotalAmount = order.TotalAmount,
+                CommissionFee = order.CommissionFee,
+                ShopId = order.ShopId,
                 CustomerNote = order.CustomerNote,
                 CreatedAt = order.CreatedAt ?? DateTime.UtcNow,
-                // OrderEntity does not have UpdatedAt
                 IsNew = true
             };
             await _adapter.SaveEntityAsync(orderEntity, cancellationToken: cancellationToken);
@@ -263,6 +298,8 @@ public class OrderRepository : IOrderRepository
         OrderStatus = e.OrderStatus,
         ShippingFee = e.ShippingFee ?? 0m,
         TotalAmount = e.TotalAmount,
+        CommissionFee = e.CommissionFee ?? 0m,
+        ShopId = e.ShopId,
         CustomerNote = e.CustomerNote,
         CreatedAt = e.CreatedAt,
         // UpdateAt does not exist on OrderEntity

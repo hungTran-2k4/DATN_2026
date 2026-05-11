@@ -1,6 +1,7 @@
 using DATN.Application.Common.Models;
 using DATN.Application.DTOs.Orders;
 using DATN.Application.Features.Orders.Commands;
+using DATN.Application.Interfaces.Services;
 using DATN.Domain.Entities.Orders;
 using DATN.Domain.Interfaces;
 using MediatR;
@@ -23,17 +24,23 @@ public class CheckoutHandler : IRequestHandler<CheckoutCommand, ApiResponse<IEnu
     private readonly IProductVariantRepository _variantRepo;
     private readonly IUserAddressRepository _addressRepo;
     private readonly IOrderRepository _orderRepo;
+    private readonly IShippingProvider _shippingProvider;
+    private readonly IShopRepository _shopRepo;
 
     public CheckoutHandler(
         ICartRepository cartRepo,
         IProductVariantRepository variantRepo,
         IUserAddressRepository addressRepo,
-        IOrderRepository orderRepo)
+        IOrderRepository orderRepo,
+        IShippingProvider shippingProvider,
+        IShopRepository shopRepo)
     {
         _cartRepo = cartRepo;
         _variantRepo = variantRepo;
         _addressRepo = addressRepo;
         _orderRepo = orderRepo;
+        _shippingProvider = shippingProvider;
+        _shopRepo = shopRepo;
     }
 
     public async Task<ApiResponse<IEnumerable<OrderSummaryDto>>> Handle(CheckoutCommand request, CancellationToken cancellationToken)
@@ -92,13 +99,36 @@ public class CheckoutHandler : IRequestHandler<CheckoutCommand, ApiResponse<IEnu
             .GroupBy(i => i.ShopId ?? Guid.Empty)
             .ToList();
 
-        const decimal StandardShippingFee = 30_000m;
         var ordersToCreate = new List<Order>();
 
         foreach (var shopGroup in shopGroups)
         {
             var items = shopGroup.ToList();
             var productTotal = items.Sum(i => i.UnitPrice * i.Quantity);
+
+            // ── Tính phí ship động từ GHN API ──
+            decimal shippingFee = 30_000m; // Fallback
+            try
+            {
+                var shop = await _shopRepo.GetByIdAsync(shopGroup.Key, cancellationToken);
+                if (shop != null && shop.DistrictId.HasValue)
+                {
+                    var totalWeight = items.Sum(i => i.Quantity) * 500; // Mặc định 500g/item
+                    var feeResult = await _shippingProvider.CalculateFeeAsync(new ShippingFeeRequest
+                    {
+                        FromDistrictId = shop.DistrictId.Value,
+                        FromWardCode = shop.WardId?.ToString() ?? "",
+                        ToDistrictId = address.DistrictId ?? 0,
+                        ToWardCode = address.WardId?.ToString() ?? "",
+                        Weight = totalWeight > 0 ? totalWeight : 500,
+                        InsuranceValue = Math.Min((int)productTotal, 5000000)
+                    });
+
+                    if (feeResult.Success)
+                        shippingFee = feeResult.TotalFee;
+                }
+            }
+            catch { /* Fallback to 30k if GHN API fails */ }
 
             var orderItems = items.Select(i => new OrderItem
             {
@@ -109,16 +139,19 @@ public class CheckoutHandler : IRequestHandler<CheckoutCommand, ApiResponse<IEnu
                 Quantity = i.Quantity
             }).ToList();
 
+            var commissionRate = 0.05m; // 5% phí sàn
             var order = new Order
             {
                 Id = Guid.NewGuid(),
                 BuyerId = request.BuyerId,
+                ShopId = shopGroup.Key,
                 ShippingAddress = addressSnapshot,
                 PaymentMethod = request.PaymentMethod,
                 PaymentStatus = "UNPAID",
                 OrderStatus = Domain.Entities.Orders.OrderStatus.Pending,
-                ShippingFee = StandardShippingFee,
-                TotalAmount = productTotal + StandardShippingFee,
+                ShippingFee = shippingFee,
+                TotalAmount = productTotal + shippingFee,
+                CommissionFee = productTotal * commissionRate,
                 CustomerNote = request.CustomerNote,
                 CreatedAt = DateTime.UtcNow,
                 Items = orderItems
@@ -192,7 +225,13 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, ApiRespons
 public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand, ApiResponse<bool>>
 {
     private readonly IOrderRepository _orderRepo;
-    public UpdateOrderStatusHandler(IOrderRepository orderRepo) => _orderRepo = orderRepo;
+    private readonly IWalletRepository _walletRepo;
+
+    public UpdateOrderStatusHandler(IOrderRepository orderRepo, IWalletRepository walletRepo)
+    {
+        _orderRepo = orderRepo;
+        _walletRepo = walletRepo;
+    }
 
     public async Task<ApiResponse<bool>> Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
     {
@@ -223,6 +262,39 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
             && (request.NewStatus == Domain.Entities.Orders.OrderStatus.Cancelled || request.NewStatus == Domain.Entities.Orders.OrderStatus.Returned))
         {
             await _orderRepo.UpdatePaymentStatusAsync(request.OrderId, Domain.Entities.Orders.PaymentStatus.Refunded, cancellationToken);
+        }
+
+        // ── NEW: If DELIVERED -> Update Shop Wallet ──
+        if (request.NewStatus == Domain.Entities.Orders.OrderStatus.Delivered && order.ShopId.HasValue)
+        {
+            if (order.PaymentMethod == Domain.Entities.Orders.PaymentMethod.VnPay)
+            {
+                // VNPay: Sàn đang giữ tiền -> Trả cho Seller (đã trừ phí) -> Đưa vào LOCKED (Chờ 7 ngày)
+                var netAmount = order.TotalAmount - order.CommissionFee;
+                var description = $"Cộng tiền đơn hàng {order.OrderCode} (Thanh toán online, đã trừ phí sàn {order.CommissionFee:N0} VNĐ - Ký quỹ 7 ngày)";
+                
+                await _walletRepo.UpdateBalanceAsync(
+                    order.ShopId.Value, 
+                    netAmount, 
+                    "LOCKED", 
+                    description, 
+                    null, 
+                    cancellationToken);
+            }
+            else if (order.PaymentMethod == Domain.Entities.Orders.PaymentMethod.Cod)
+            {
+                // COD: Seller đã nhận tiền mặt từ khách -> Sàn thu phí hoa hồng bằng cách trừ ví AVAILABLE
+                var feeAmount = -order.CommissionFee; // Giá trị âm để trừ tiền
+                var description = $"Trừ phí sàn đơn hàng {order.OrderCode} (Thanh toán COD)";
+                
+                await _walletRepo.UpdateBalanceAsync(
+                    order.ShopId.Value, 
+                    feeAmount, 
+                    "AVAILABLE", 
+                    description, 
+                    null, 
+                    cancellationToken);
+            }
         }
 
         return ApiResponse<bool>.Succeed(true, $"Đã cập nhật trạng thái đơn hàng thành '{request.NewStatus}'.");

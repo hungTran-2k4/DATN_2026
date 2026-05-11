@@ -109,6 +109,19 @@ public class OrdersController : ControllerBase
         var result = await _mediator.Send(new GetShopOrdersQuery(shopId, status, page, pageSize));
         return Ok(result);
     }
+
+    /// <summary>Toàn bộ đơn hàng trên hệ thống (Admin view)</summary>
+    [HttpGet("all")]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(typeof(PagedResponse<IEnumerable<OrderSummaryDto>>), 200)]
+    public async Task<IActionResult> GetAllOrders(
+        [FromQuery] string? status,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var result = await _mediator.Send(new GetAllOrdersQuery(status, page, pageSize));
+        return Ok(result);
+    }
 }
 
 public class CancelOrderRequest { public string? Reason { get; set; } }

@@ -364,6 +364,16 @@ namespace DATN_2026.FactoryClasses
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new PaymentEntity(fields); }
 	}
 
+	/// <summary>Factory to create new, empty ShipmentEntity objects.</summary>
+	[Serializable]
+	public partial class ShipmentEntityFactory : EntityFactoryBase2<ShipmentEntity> 
+	{
+		/// <summary>CTor</summary>
+		public ShipmentEntityFactory() : base("ShipmentEntity", DATN_2026.EntityType.ShipmentEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new ShipmentEntity(fields); }
+	}
+
 	/// <summary>Factory to create new, empty ShippingTrackingEntity objects.</summary>
 	[Serializable]
 	public partial class ShippingTrackingEntityFactory : EntityFactoryBase2<ShippingTrackingEntity> 
@@ -382,6 +392,26 @@ namespace DATN_2026.FactoryClasses
 		public TransactionEntityFactory() : base("TransactionEntity", DATN_2026.EntityType.TransactionEntity, false) { }
 		/// <inheritdoc/>
 		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new TransactionEntity(fields); }
+	}
+
+	/// <summary>Factory to create new, empty WalletLedgerEntity objects.</summary>
+	[Serializable]
+	public partial class WalletLedgerEntityFactory : EntityFactoryBase2<WalletLedgerEntity> 
+	{
+		/// <summary>CTor</summary>
+		public WalletLedgerEntityFactory() : base("WalletLedgerEntity", DATN_2026.EntityType.WalletLedgerEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new WalletLedgerEntity(fields); }
+	}
+
+	/// <summary>Factory to create new, empty WithdrawRequestEntity objects.</summary>
+	[Serializable]
+	public partial class WithdrawRequestEntityFactory : EntityFactoryBase2<WithdrawRequestEntity> 
+	{
+		/// <summary>CTor</summary>
+		public WithdrawRequestEntityFactory() : base("WithdrawRequestEntity", DATN_2026.EntityType.WithdrawRequestEntity, false) { }
+		/// <inheritdoc/>
+		protected override IEntity2 CreateImpl(IEntityFields2 fields) { return new WithdrawRequestEntity(fields); }
 	}
 
 	/// <summary>Factory to create new, empty Entity objects based on the entity type specified. Uses  entity specific factory objects</summary>
@@ -491,10 +521,16 @@ namespace DATN_2026.FactoryClasses
 					return new OrderItemEntityFactory();
 				case DATN_2026.EntityType.PaymentEntity:
 					return new PaymentEntityFactory();
+				case DATN_2026.EntityType.ShipmentEntity:
+					return new ShipmentEntityFactory();
 				case DATN_2026.EntityType.ShippingTrackingEntity:
 					return new ShippingTrackingEntityFactory();
 				case DATN_2026.EntityType.TransactionEntity:
 					return new TransactionEntityFactory();
+				case DATN_2026.EntityType.WalletLedgerEntity:
+					return new WalletLedgerEntityFactory();
+				case DATN_2026.EntityType.WithdrawRequestEntity:
+					return new WithdrawRequestEntityFactory();
 				default:
 					return null;
 			}

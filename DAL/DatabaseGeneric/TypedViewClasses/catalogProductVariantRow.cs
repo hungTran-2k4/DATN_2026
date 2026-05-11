@@ -39,6 +39,8 @@ namespace DATN_2026.TypedViewClasses
 		public System.String Sku { get; set; }
 		/// <summary>Gets or sets the VariantAttributes field.</summary>
 		public System.String VariantAttributes { get; set; }
+		/// <summary>Gets or sets the Weight field.</summary>
+		public Nullable<System.Int32> Weight { get; set; }
 	}
 }
 

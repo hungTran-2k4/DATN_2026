@@ -32,6 +32,7 @@ namespace DATN_2026.EntityClasses
 		private EntityCollection<ShippingTrackingEntity> _shippingTrackings;
 		private EntityCollection<TransactionEntity> _transactions;
 		private UserEntity _user;
+		private ShopEntity _shop;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
@@ -43,6 +44,8 @@ namespace DATN_2026.EntityClasses
 		{
 			/// <summary>Member name User</summary>
 			public static readonly string User = "User";
+			/// <summary>Member name Shop</summary>
+			public static readonly string Shop = "Shop";
 			/// <summary>Member name Reviews</summary>
 			public static readonly string Reviews = "Reviews";
 			/// <summary>Member name OrderItems</summary>
@@ -67,6 +70,7 @@ namespace DATN_2026.EntityClasses
 				AddNavigatorMetaData<OrderEntity, EntityCollection<ShippingTrackingEntity>>("ShippingTrackings", a => a._shippingTrackings, (a, b) => a._shippingTrackings = b, a => a.ShippingTrackings, () => new OrderRelations().ShippingTrackingEntityUsingOrderId, typeof(ShippingTrackingEntity), (int)DATN_2026.EntityType.ShippingTrackingEntity);
 				AddNavigatorMetaData<OrderEntity, EntityCollection<TransactionEntity>>("Transactions", a => a._transactions, (a, b) => a._transactions = b, a => a.Transactions, () => new OrderRelations().TransactionEntityUsingOrderId, typeof(TransactionEntity), (int)DATN_2026.EntityType.TransactionEntity);
 				AddNavigatorMetaData<OrderEntity, UserEntity>("User", "Orders", (a, b) => a._user = b, a => a._user, (a, b) => a.User = b, DATN_2026.RelationClasses.StaticOrderRelations.UserEntityUsingBuyerIdStatic, ()=>new OrderRelations().UserEntityUsingBuyerId, null, new int[] { (int)OrderFieldIndex.BuyerId }, null, true, (int)DATN_2026.EntityType.UserEntity);
+				AddNavigatorMetaData<OrderEntity, ShopEntity>("Shop", "Orders", (a, b) => a._shop = b, a => a._shop, (a, b) => a.Shop = b, DATN_2026.RelationClasses.StaticOrderRelations.ShopEntityUsingShopIdStatic, ()=>new OrderRelations().ShopEntityUsingShopId, null, new int[] { (int)OrderFieldIndex.ShopId }, null, true, (int)DATN_2026.EntityType.ShopEntity);
 			}
 		}
 
@@ -151,6 +155,10 @@ namespace DATN_2026.EntityClasses
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'User' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoUser() { return CreateRelationInfoForNavigator("User"); }
+
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Shop' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoShop() { return CreateRelationInfoForNavigator("Shop"); }
 		
 		/// <inheritdoc/>
 		protected override EntityStaticMetaDataBase GetEntityStaticMetaData() {	return _staticMetaData; }
@@ -206,12 +214,24 @@ namespace DATN_2026.EntityClasses
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathUser { get { return _staticMetaData.GetPrefetchPathElement("User", CommonEntityBase.CreateEntityCollection<UserEntity>()); } }
 
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Shop' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathShop { get { return _staticMetaData.GetPrefetchPathElement("Shop", CommonEntityBase.CreateEntityCollection<ShopEntity>()); } }
+
 		/// <summary>The BuyerId property of the Entity Order<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "orders"."buyer_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
 		public virtual Nullable<System.Guid> BuyerId
 		{
 			get { return (Nullable<System.Guid>)GetValue((int)OrderFieldIndex.BuyerId, false); }
 			set { SetValue((int)OrderFieldIndex.BuyerId, value); }
+		}
+
+		/// <summary>The CommissionFee property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."commission_fee".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Decimal> CommissionFee
+		{
+			get { return (Nullable<System.Decimal>)GetValue((int)OrderFieldIndex.CommissionFee, false); }
+			set { SetValue((int)OrderFieldIndex.CommissionFee, value); }
 		}
 
 		/// <summary>The CreatedAt property of the Entity Order<br/><br/></summary>
@@ -286,6 +306,14 @@ namespace DATN_2026.EntityClasses
 			set { SetValue((int)OrderFieldIndex.ShippingFee, value); }
 		}
 
+		/// <summary>The ShopId property of the Entity Order<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "orders"."shop_id".<br/>Table field type characteristics (type, precision, scale, length): Uuid, 0, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Guid> ShopId
+		{
+			get { return (Nullable<System.Guid>)GetValue((int)OrderFieldIndex.ShopId, false); }
+			set { SetValue((int)OrderFieldIndex.ShopId, value); }
+		}
+
 		/// <summary>The TotalAmount property of the Entity Order<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "orders"."total_amount".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 18, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): false, false, false</remarks>
 		public virtual System.Decimal TotalAmount
@@ -322,6 +350,14 @@ namespace DATN_2026.EntityClasses
 			set { SetSingleRelatedEntityNavigator(value, "User"); }
 		}
 
+		/// <summary>Gets / sets related entity of type 'ShopEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
+		[Browsable(false)]
+		public virtual ShopEntity Shop
+		{
+			get { return _shop; }
+			set { SetSingleRelatedEntityNavigator(value, "Shop"); }
+		}
+
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
 
@@ -334,6 +370,8 @@ namespace DATN_2026
 	{
 		///<summary>BuyerId. </summary>
 		BuyerId,
+		///<summary>CommissionFee. </summary>
+		CommissionFee,
 		///<summary>CreatedAt. </summary>
 		CreatedAt,
 		///<summary>CustomerNote. </summary>
@@ -352,6 +390,8 @@ namespace DATN_2026
 		ShippingAddress,
 		///<summary>ShippingFee. </summary>
 		ShippingFee,
+		///<summary>ShopId. </summary>
+		ShopId,
 		///<summary>TotalAmount. </summary>
 		TotalAmount,
 		/// <summary></summary>
@@ -400,6 +440,12 @@ namespace DATN_2026.RelationClasses
 			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "User", false, new[] { UserFields.Id, OrderFields.BuyerId }); }
 		}
 
+		/// <summary>Returns a new IEntityRelation object, between OrderEntity and ShopEntity over the m:1 relation they have, using the relation between the fields: Order.ShopId - Shop.Id</summary>
+		public virtual IEntityRelation ShopEntityUsingShopId
+		{
+			get	{ return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.ManyToOne, "Shop", false, new[] { ShopFields.Id, OrderFields.ShopId }); }
+		}
+
 	}
 	
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
@@ -411,6 +457,7 @@ namespace DATN_2026.RelationClasses
 		internal static readonly IEntityRelation ShippingTrackingEntityUsingOrderIdStatic = new OrderRelations().ShippingTrackingEntityUsingOrderId;
 		internal static readonly IEntityRelation TransactionEntityUsingOrderIdStatic = new OrderRelations().TransactionEntityUsingOrderId;
 		internal static readonly IEntityRelation UserEntityUsingBuyerIdStatic = new OrderRelations().UserEntityUsingBuyerId;
+		internal static readonly IEntityRelation ShopEntityUsingShopIdStatic = new OrderRelations().ShopEntityUsingShopId;
 
 		/// <summary>CTor</summary>
 		static StaticOrderRelations() { }

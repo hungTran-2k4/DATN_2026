@@ -19,6 +19,8 @@ public class Shop
     public string? PickupAddress { get; set; }
     public decimal? Rating { get; set; }
     public bool? IsActive { get; set; }
+    public decimal AvailableBalance { get; set; } = 0;
+    public decimal LockedBalance { get; set; } = 0;
     public DateTime? CreatedAt { get; set; }
     public DATN.Domain.Enums.ShopApprovalStatus ApprovalStatus { get; set; } = DATN.Domain.Enums.ShopApprovalStatus.Pending;
 }

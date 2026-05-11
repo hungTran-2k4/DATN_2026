@@ -26,6 +26,7 @@ namespace DATN_2026.EntityClasses
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
 		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
+		private EntityCollection<WalletLedgerEntity> _walletLedgers;
 		private OrderEntity _order;
 
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
@@ -38,6 +39,8 @@ namespace DATN_2026.EntityClasses
 		{
 			/// <summary>Member name Order</summary>
 			public static readonly string Order = "Order";
+			/// <summary>Member name WalletLedgers</summary>
+			public static readonly string WalletLedgers = "WalletLedgers";
 		}
 
 		/// <summary>Static meta-data storage for navigator related information</summary>
@@ -46,6 +49,7 @@ namespace DATN_2026.EntityClasses
 			public TransactionEntityStaticMetaData()
 			{
 				SetEntityCoreInfo("TransactionEntity", InheritanceHierarchyType.None, false, (int)DATN_2026.EntityType.TransactionEntity, typeof(TransactionEntity), typeof(TransactionEntityFactory), false);
+				AddNavigatorMetaData<TransactionEntity, EntityCollection<WalletLedgerEntity>>("WalletLedgers", a => a._walletLedgers, (a, b) => a._walletLedgers = b, a => a.WalletLedgers, () => new TransactionRelations().WalletLedgerEntityUsingTransactionId, typeof(WalletLedgerEntity), (int)DATN_2026.EntityType.WalletLedgerEntity);
 				AddNavigatorMetaData<TransactionEntity, OrderEntity>("Order", "Transactions", (a, b) => a._order = b, a => a._order, (a, b) => a.Order = b, DATN_2026.RelationClasses.StaticTransactionRelations.OrderEntityUsingOrderIdStatic, ()=>new TransactionRelations().OrderEntityUsingOrderId, null, new int[] { (int)TransactionFieldIndex.OrderId }, null, true, (int)DATN_2026.EntityType.OrderEntity);
 			}
 		}
@@ -99,6 +103,10 @@ namespace DATN_2026.EntityClasses
 			// __LLBLGENPRO_USER_CODE_REGION_END
 		}
 
+		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entities of type 'WalletLedger' to this entity.</summary>
+		/// <returns></returns>
+		public virtual IRelationPredicateBucket GetRelationInfoWalletLedgers() { return CreateRelationInfoForNavigator("WalletLedgers"); }
+
 		/// <summary>Creates a new IRelationPredicateBucket object which contains the predicate expression and relation collection to fetch the related entity of type 'Order' to this entity.</summary>
 		/// <returns></returns>
 		public virtual IRelationPredicateBucket GetRelationInfoOrder() { return CreateRelationInfoForNavigator("Order"); }
@@ -132,6 +140,10 @@ namespace DATN_2026.EntityClasses
 
 		/// <summary>The relations object holding all relations of this entity with other entity classes.</summary>
 		public static TransactionRelations Relations { get { return _relationsFactory; } }
+
+		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'WalletLedger' for this entity.</summary>
+		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
+		public static IPrefetchPathElement2 PrefetchPathWalletLedgers { get { return _staticMetaData.GetPrefetchPathElement("WalletLedgers", CommonEntityBase.CreateEntityCollection<WalletLedgerEntity>()); } }
 
 		/// <summary>Creates a new PrefetchPathElement2 object which contains all the information to prefetch the related entities of type 'Order' for this entity.</summary>
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
@@ -193,6 +205,14 @@ namespace DATN_2026.EntityClasses
 			set { SetValue((int)TransactionFieldIndex.RawResponse, value); }
 		}
 
+		/// <summary>The ReferenceId property of the Entity Transaction<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "transactions"."reference_id".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 100.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual System.String ReferenceId
+		{
+			get { return (System.String)GetValue((int)TransactionFieldIndex.ReferenceId, true); }
+			set { SetValue((int)TransactionFieldIndex.ReferenceId, value); }
+		}
+
 		/// <summary>The Status property of the Entity Transaction<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "transactions"."status".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 20.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
 		public virtual System.String Status
@@ -200,6 +220,18 @@ namespace DATN_2026.EntityClasses
 			get { return (System.String)GetValue((int)TransactionFieldIndex.Status, true); }
 			set { SetValue((int)TransactionFieldIndex.Status, value); }
 		}
+
+		/// <summary>The TransactionType property of the Entity Transaction<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "transactions"."transaction_type".<br/>Table field type characteristics (type, precision, scale, length): Varchar, 0, 0, 50.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual System.String TransactionType
+		{
+			get { return (System.String)GetValue((int)TransactionFieldIndex.TransactionType, true); }
+			set { SetValue((int)TransactionFieldIndex.TransactionType, value); }
+		}
+
+		/// <summary>Gets the EntityCollection with the related entities of type 'WalletLedgerEntity' which are related to this entity via a relation of type '1:n'. If the EntityCollection hasn't been fetched yet, the collection returned will be empty.<br/><br/></summary>
+		[TypeContainedAttribute(typeof(WalletLedgerEntity))]
+		public virtual EntityCollection<WalletLedgerEntity> WalletLedgers { get { return GetOrCreateEntityCollection<WalletLedgerEntity, WalletLedgerEntityFactory>("Transaction", true, false, ref _walletLedgers); } }
 
 		/// <summary>Gets / sets related entity of type 'OrderEntity' which has to be set using a fetch action earlier. If no related entity is set for this property, null is returned..<br/><br/></summary>
 		[Browsable(false)]
@@ -233,8 +265,12 @@ namespace DATN_2026
 		Provider,
 		///<summary>RawResponse. </summary>
 		RawResponse,
+		///<summary>ReferenceId. </summary>
+		ReferenceId,
 		///<summary>Status. </summary>
 		Status,
+		///<summary>TransactionType. </summary>
+		TransactionType,
 		/// <summary></summary>
 		AmountOfFields
 	}
@@ -245,6 +281,11 @@ namespace DATN_2026.RelationClasses
 	/// <summary>Implements the relations factory for the entity: Transaction. </summary>
 	public partial class TransactionRelations: RelationFactory
 	{
+		/// <summary>Returns a new IEntityRelation object, between TransactionEntity and WalletLedgerEntity over the 1:n relation they have, using the relation between the fields: Transaction.Id - WalletLedger.TransactionId</summary>
+		public virtual IEntityRelation WalletLedgerEntityUsingTransactionId
+		{
+			get { return ModelInfoProviderSingleton.GetInstance().CreateRelation(RelationType.OneToMany, "WalletLedgers", true, new[] { TransactionFields.Id, WalletLedgerFields.TransactionId }); }
+		}
 
 		/// <summary>Returns a new IEntityRelation object, between TransactionEntity and OrderEntity over the m:1 relation they have, using the relation between the fields: Transaction.OrderId - Order.Id</summary>
 		public virtual IEntityRelation OrderEntityUsingOrderId
@@ -257,6 +298,7 @@ namespace DATN_2026.RelationClasses
 	/// <summary>Static class which is used for providing relationship instances which are re-used internally for syncing</summary>
 	internal static class StaticTransactionRelations
 	{
+		internal static readonly IEntityRelation WalletLedgerEntityUsingTransactionIdStatic = new TransactionRelations().WalletLedgerEntityUsingTransactionId;
 		internal static readonly IEntityRelation OrderEntityUsingOrderIdStatic = new TransactionRelations().OrderEntityUsingOrderId;
 
 		/// <summary>CTor</summary>

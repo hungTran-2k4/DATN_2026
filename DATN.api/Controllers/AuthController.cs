@@ -192,11 +192,12 @@ public class AuthController : ControllerBase
 
     private void SetTokenCookies(string accessToken, string refreshToken)
     {
+        var isLocal = Request.Host.Host == "localhost";
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true, // Set to true in Production
-            SameSite = SameSiteMode.None, // Required for cross-site cookie usage
+            Secure = !isLocal, // Disable secure on localhost http
+            SameSite = isLocal ? SameSiteMode.Lax : SameSiteMode.None,
             Expires = DateTime.UtcNow.AddMinutes(30)
         };
 
@@ -205,8 +206,8 @@ public class AuthController : ControllerBase
         var refreshCookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.None,
+            Secure = !isLocal,
+            SameSite = isLocal ? SameSiteMode.Lax : SameSiteMode.None,
             Expires = DateTime.UtcNow.AddDays(7)
         };
 
@@ -299,7 +300,13 @@ public class AuthController : ControllerBase
         }
 
         // Xoá cookies
-        var cookieOptions = new CookieOptions { Secure = true, SameSite = SameSiteMode.None };
+        var isLocal = Request.Host.Host == "localhost";
+        var cookieOptions = new CookieOptions 
+        { 
+            HttpOnly = true,
+            Secure = !isLocal, 
+            SameSite = isLocal ? SameSiteMode.Lax : SameSiteMode.None 
+        };
         Response.Cookies.Delete("access_token", cookieOptions);
         Response.Cookies.Delete("refresh_token", cookieOptions);
 
