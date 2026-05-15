@@ -81,78 +81,33 @@ public class OrderRepository : IOrderRepository
         Guid shopId, string? status = null, int page = 1, int pageSize = 20,
         CancellationToken cancellationToken = default)
     {
-        // Order table doesn't have ShopId directly.
-        // Determine shop's orders through join:
-        // Order -> OrderItem (variant_id) -> ProductVariant -> Product (shop_id)
+        var col = new EntityCollection<OrderEntity>();
+
+        IPredicateExpression filter = new PredicateExpression(OrderFields.ShopId == shopId);
+        if (!string.IsNullOrWhiteSpace(status))
+            filter.AddWithAnd(OrderFields.OrderStatus == status);
 
         var qf = new QueryFactory();
+        var countQuery = qf.Create().Select(OrderFields.Id.Count()).Where(filter);
+        var totalCount = await _adapter.FetchScalarAsync<int>(countQuery, cancellationToken);
 
-        IPredicateExpression filter = new PredicateExpression(ProductFields.ShopId == shopId);
-        if (!string.IsNullOrWhiteSpace(status))
-        {
-            filter.AddWithAnd(OrderFields.OrderStatus == status);
-        }
-
-        var orderJoin = qf.Order
-            .InnerJoin(qf.OrderItem).On(OrderFields.Id == OrderItemFields.OrderId)
-            .InnerJoin(qf.ProductVariant).On(OrderItemFields.VariantId == ProductVariantFields.Id)
-            .InnerJoin(qf.Product).On(ProductVariantFields.ProductId == ProductFields.Id);
-
-        // 1) Get distinct OrderIds for this shop (for paging + count)
-        var idQuery = qf.Create()
-            .From(orderJoin)
-            .Select(OrderFields.Id)
-            .Where(filter)
-            .Distinct()
-            .OrderBy(OrderFields.CreatedAt.Descending())
-            .Page(page, pageSize);
-
-        var idRows = await _adapter.FetchQueryAsync(idQuery, cancellationToken);
-        var ids = idRows
-            .Cast<object[]>()
-            .Select(r => (Guid)r[0])
-            .ToList();
-
-        // Count (MVP): fetch all distinct ids and count them.
-        // For large scale, switch to COUNT(DISTINCT ...) at DB-level.
-        var countIdsQuery = qf.Create()
-            .From(orderJoin)
-            .Select(OrderFields.Id)
-            .Where(filter)
-            .Distinct();
-        var allIdRows = await _adapter.FetchQueryAsync(countIdsQuery, cancellationToken);
-        var totalCount = allIdRows.Count;
-
-        if (!ids.Any())
-        {
-            return (Enumerable.Empty<Order>(), totalCount);
-        }
-
-        // 2) Fetch orders + items by ids
-        var col = new EntityCollection<OrderEntity>();
+        var sortClause = new SortExpression(OrderFields.CreatedAt.Descending());
         var prefetch = new PrefetchPath2((int)DATN_2026.EntityType.OrderEntity);
+        prefetch.Add(OrderEntity.PrefetchPathShop);
         var itemPath = prefetch.Add(OrderEntity.PrefetchPathOrderItems);
         itemPath.SubPath.Add(OrderItemEntity.PrefetchPathProductVariant);
-
-        // Build OR predicate for ids
-        IPredicateExpression filter2 = new PredicateExpression();
-        foreach (var id in ids)
-        {
-            filter2.AddWithOr(OrderFields.Id == id);
-        }
 
         await _adapter.FetchEntityCollectionAsync(new QueryParameters
         {
             CollectionToFetch = col,
-            FilterToUse = filter2,
-            PrefetchPathToUse = prefetch
+            FilterToUse = filter,
+            SorterToUse = sortClause,
+            PrefetchPathToUse = prefetch,
+            RowsToSkip = (page - 1) * pageSize,
+            RowsToTake = pageSize
         }, cancellationToken);
 
-        // Preserve paging order (CreatedAt desc)
-        var mapped = col.Select(MapToOrder).ToDictionary(o => o.Id, o => o);
-        var ordered = ids.Where(mapped.ContainsKey).Select(id => mapped[id]).ToList();
-
-        return (ordered, totalCount);
+        return (col.Select(MapToOrder).ToList(), totalCount);
     }
 
     public async Task<(IEnumerable<Order> Items, int Total)> GetAllAsync(
@@ -171,6 +126,7 @@ public class OrderRepository : IOrderRepository
 
         var sortClause = new SortExpression(OrderFields.CreatedAt.Descending());
         var prefetch = new PrefetchPath2((int)DATN_2026.EntityType.OrderEntity);
+        prefetch.Add(OrderEntity.PrefetchPathShop); // Thêm prefetch Shop
         var itemPath = prefetch.Add(OrderEntity.PrefetchPathOrderItems);
         itemPath.SubPath.Add(OrderItemEntity.PrefetchPathProductVariant);
 
@@ -300,6 +256,7 @@ public class OrderRepository : IOrderRepository
         TotalAmount = e.TotalAmount,
         CommissionFee = e.CommissionFee ?? 0m,
         ShopId = e.ShopId,
+        ShopName = e.Shop?.Name,
         CustomerNote = e.CustomerNote,
         CreatedAt = e.CreatedAt,
         // UpdateAt does not exist on OrderEntity

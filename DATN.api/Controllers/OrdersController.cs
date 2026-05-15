@@ -53,7 +53,8 @@ public class OrdersController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse<OrderDto>), 404)]
     public async Task<IActionResult> GetOrderById(Guid id)
     {
-        var result = await _mediator.Send(new GetOrderDetailQuery(id, GetCurrentUserId()));
+        bool isAdmin = User.IsInRole("Admin");
+        var result = await _mediator.Send(new GetOrderDetailQuery(id, GetCurrentUserId(), isAdmin));
         if (!result.Success)
             return result.StatusCode == 404 ? NotFound(result) : StatusCode(result.StatusCode, result);
         return Ok(result);
@@ -110,7 +111,6 @@ public class OrdersController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>Toàn bộ đơn hàng trên hệ thống (Admin view)</summary>
     [HttpGet("all")]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(PagedResponse<IEnumerable<OrderSummaryDto>>), 200)]
@@ -120,6 +120,24 @@ public class OrdersController : ControllerBase
         [FromQuery] int pageSize = 20)
     {
         var result = await _mediator.Send(new GetAllOrdersQuery(status, page, pageSize));
+        return Ok(result);
+    }
+
+    /// <summary>Buyer xác nhận đã nhận hàng (status chuyển sang COMPLETED)</summary>
+    [HttpPost("{id:guid}/confirm-received")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), 200)]
+    [ProducesResponseType(typeof(ApiResponse<bool>), 400)]
+    [ProducesResponseType(typeof(ApiResponse<bool>), 403)]
+    public async Task<IActionResult> ConfirmReceived(Guid id)
+    {
+        var result = await _mediator.Send(new ConfirmOrderReceivedCommand(id, GetCurrentUserId()));
+        if (!result.Success)
+            return result.StatusCode switch
+            {
+                403 => StatusCode(403, result),
+                404 => NotFound(result),
+                _ => BadRequest(result)
+            };
         return Ok(result);
     }
 }

@@ -38,6 +38,8 @@ public class OrderSummaryDto
     public decimal TotalAmount { get; set; }
     public int TotalItems { get; set; }
     public string? FirstItemName { get; set; }
+    public Guid? ShopId { get; set; }
+    public string? ShopName { get; set; }
     public DateTime? CreatedAt { get; set; }
 }
 
@@ -49,5 +51,6 @@ public class ShippingAddressSnapshot
     public string DetailedAddress { get; set; } = string.Empty;
     public int? ProvinceId { get; set; }
     public int? DistrictId { get; set; }
-    public int? WardId { get; set; }
+    [System.Text.Json.Serialization.JsonConverter(typeof(DATN.Application.Common.JsonConverters.NumberToStringConverter))]
+    public string? WardId { get; set; }
 }

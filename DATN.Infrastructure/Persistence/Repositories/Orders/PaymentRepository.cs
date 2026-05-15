@@ -104,6 +104,20 @@ public class PaymentRepository : IPaymentRepository
         return await _adapter.SaveEntityAsync(entity, cancellationToken: ct);
     }
 
+    public async Task<IEnumerable<Payment>> GetByGroupKeyAsync(string groupKey, CancellationToken ct = default)
+    {
+        var col = new EntityCollection<PaymentEntity>();
+        
+        // Tìm tất cả payment records có RawResponse chứa groupKey (ví dụ: "grouped_with:{primaryOrderId}")
+        await _adapter.FetchEntityCollectionAsync(new QueryParameters
+        {
+            CollectionToFetch = col,
+            FilterToUse = PaymentFields.RawResponse % $"%{groupKey}%"
+        }, ct);
+
+        return col.Select(MapToDomain).ToList();
+    }
+
     private static Payment MapToDomain(PaymentEntity e) => new()
     {
         Id = e.Id,

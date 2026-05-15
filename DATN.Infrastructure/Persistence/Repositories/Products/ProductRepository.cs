@@ -2,6 +2,7 @@ using AutoMapper;
 using DATN.Domain.Entities.Products;
 using DATN.Domain.Interfaces;
 using DATN.Domain.Common.Models;
+using DATN.Domain.Enums;
 using DATN.Infrastructure.Extensions;
 using DATN_2026.EntityClasses;
 using DATN_2026.FactoryClasses;
@@ -28,13 +29,16 @@ public class ProductRepository : IProductRepository
         _mapper = mapper;
     }
 
-    public async Task<(IEnumerable<Product> Items, int Total)> GetPagedAsync(Guid? shopId = null, string? search = null, FilterDescriptor? filter = null, int page = 1, int pageSize = 20, CancellationToken cancellationToken = default)
+    public async Task<(IEnumerable<Product> Items, int Total)> GetPagedAsync(Guid? shopId = null, string? search = null, FilterDescriptor? filter = null, ProductStatus? status = null, int page = 1, int pageSize = 20, CancellationToken cancellationToken = default)
     {
         var qf = new QueryFactory();
         IPredicateExpression predicate = filter.ToPredicateExpression(new ProductEntity().Fields);
 
         if (shopId.HasValue)
             predicate.AddWithAnd(ProductFields.ShopId == shopId.Value);
+
+        if (status.HasValue)
+            predicate.AddWithAnd(ProductFields.Status == status.Value.ToStatusString());
 
         if (!string.IsNullOrWhiteSpace(search))
         {

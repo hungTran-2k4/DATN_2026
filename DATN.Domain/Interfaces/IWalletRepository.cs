@@ -21,4 +21,7 @@ public interface IWalletRepository
     
     /// <summary>Xử lý giải phóng các khoản ký quỹ đã quá hạn (7 ngày)</summary>
     Task ProcessEscrowReleaseAsync(CancellationToken ct = default);
+
+    /// <summary>Hoàn trả tiền đang tạm giữ (khi hủy đơn)</summary>
+    Task<bool> RefundLockedFundsAsync(Guid shopId, decimal amount, string description, CancellationToken ct = default);
 }

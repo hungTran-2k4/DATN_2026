@@ -45,6 +45,17 @@ public class ShippingController : ControllerBase
     public async Task<ActionResult<ApiResponse<ShippingFeeResult>>> CalculateFee(
         [FromBody] ShippingFeeRequest request)
     {
+        // Tự động lấy địa chỉ Shop từ hệ thống nếu FE chưa truyền lên
+        if (request.ShopId.HasValue && request.FromDistrictId <= 0)
+        {
+            var shop = await _shopRepo.GetByIdAsync(request.ShopId.Value);
+            if (shop != null && shop.DistrictId.HasValue)
+            {
+                request.FromDistrictId = shop.DistrictId.Value;
+                request.FromWardCode = shop.WardId?.ToString() ?? "";
+            }
+        }
+
         var result = await _shippingProvider.CalculateFeeAsync(request);
 
         if (!result.Success)
@@ -60,7 +71,7 @@ public class ShippingController : ControllerBase
     /// </summary>
     [Authorize]
     [HttpPost("create-shipment/{orderId}")]
-    public async Task<ActionResult<ApiResponse<CreateShipmentResult>>> CreateShipment(Guid orderId)
+    public async Task<ActionResult<ApiResponse<CreateShipmentResult>>> CreateShipment(Guid orderId, [FromBody] CreateShipmentPayload? payload)
     {
         // 1. Lấy thông tin đơn hàng
         var order = await _orderRepo.GetByIdAsync(orderId);
@@ -80,13 +91,15 @@ public class ShippingController : ControllerBase
         // 3. Lấy thông tin Shop (người gửi)
         var shop = order.ShopId.HasValue ? await _shopRepo.GetByIdAsync(order.ShopId.Value) : null;
         if (shop == null)
-            return BadRequest(ApiResponse<CreateShipmentResult>.Fail("Không tìm thấy thông tin Shop.", 400));
+            return BadRequest(ApiResponse<CreateShipmentResult>.Fail($"Không tìm thấy thông tin Shop. ShopId = {order.ShopId}", 400));
 
         // 4. Parse địa chỉ người nhận
-        ShippingAddressInfo? buyerAddress = null;
+        DATN.Application.DTOs.Orders.ShippingAddressSnapshot? buyerAddress = null;
         try
         {
-            buyerAddress = JsonSerializer.Deserialize<ShippingAddressInfo>(order.ShippingAddress);
+            buyerAddress = JsonSerializer.Deserialize<DATN.Application.DTOs.Orders.ShippingAddressSnapshot>(
+                order.ShippingAddress, 
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
         catch { }
 
@@ -96,33 +109,48 @@ public class ShippingController : ControllerBase
         // 5. Tính COD amount (chỉ thu hộ nếu là COD)
         var codAmount = order.PaymentMethod == PaymentMethod.Cod ? order.TotalAmount : 0;
 
+        // Hàm Helper đảm bảo SDT hợp lệ cho GHN (Demo)
+        string GetValidPhone(string? p) => 
+            !string.IsNullOrWhiteSpace(p) && p.Length >= 10 && p.StartsWith("0") ? p : "0901234567";
+
         // 6. Tạo request gửi GHN
         var createRequest = new CreateShipmentRequest
         {
             ClientOrderCode = order.OrderCode,
             FromName = shop.Name,
-            FromPhone = shop.OwnerEmail ?? "", // Dùng tạm, nên có phone trong shop
+            FromPhone = GetValidPhone(shop.OwnerEmail), // Tạm dùng email, fallback về 0901234567
             FromAddress = shop.PickupAddress ?? "",
             FromDistrictId = shop.DistrictId ?? 0,
             FromWardCode = shop.WardId?.ToString() ?? "",
             ToName = buyerAddress.FullName,
-            ToPhone = buyerAddress.PhoneNumber,
+            ToPhone = GetValidPhone(buyerAddress.PhoneNumber),
             ToAddress = buyerAddress.DetailedAddress,
             ToDistrictId = buyerAddress.DistrictId ?? 0,
             ToWardCode = buyerAddress.WardId?.ToString() ?? "",
             CodAmount = codAmount,
-            Weight = 500, // Mặc định, có thể cải thiện sau
+            Weight = payload?.Weight ?? 500,
             InsuranceValue = (int)order.TotalAmount,
-            Note = order.CustomerNote,
+            Note = payload?.Note ?? order.CustomerNote,
             Items = order.Items.Select(i => new ShipmentItem
             {
                 Name = i.ProductNameSnapshot ?? "Sản phẩm",
                 Quantity = i.Quantity,
-                Weight = 500
+                Weight = (payload?.Weight ?? 500) / (order.Items.Count > 0 ? order.Items.Count : 1)
             }).ToList()
         };
 
-        // 7. Gọi GHN API
+        // 7. LOG chi tiết payload trước khi gọi GHN
+        _logger.LogWarning("[CreateShipment] Payload → FromDistrictId={FromDistrictId}, FromWardCode='{FromWardCode}', ToDistrictId={ToDistrictId}, ToWardCode='{ToWardCode}', CodAmount={CodAmount}, Weight={Weight}",
+            createRequest.FromDistrictId, createRequest.FromWardCode,
+            createRequest.ToDistrictId, createRequest.ToWardCode,
+            createRequest.CodAmount, createRequest.Weight);
+        _logger.LogWarning("[CreateShipment] Buyer address snapshot → FullName='{FullName}', Phone='{Phone}', Address='{Address}', ProvinceId={ProvinceId}, DistrictId={DistrictId}, WardId='{WardId}'",
+            buyerAddress.FullName, buyerAddress.PhoneNumber, buyerAddress.DetailedAddress,
+            buyerAddress.ProvinceId, buyerAddress.DistrictId, buyerAddress.WardId);
+        _logger.LogWarning("[CreateShipment] Shop → Name='{ShopName}', DistrictId={DistrictId}, WardId={WardId}, PickupAddress='{PickupAddress}'",
+            shop.Name, shop.DistrictId, shop.WardId, shop.PickupAddress);
+
+        // 8. Gọi GHN API
         var result = await _shippingProvider.CreateShipmentAsync(createRequest);
 
         if (!result.Success)
@@ -303,26 +331,13 @@ public class ShippingController : ControllerBase
 
 // ─── Helper Models ──────────────────────────────────────
 
-internal class ShippingAddressInfo
+public class CreateShipmentPayload
 {
-    [JsonPropertyName("fullName")]
-    public string FullName { get; set; } = "";
-
-    [JsonPropertyName("phoneNumber")]
-    public string PhoneNumber { get; set; } = "";
-
-    [JsonPropertyName("detailedAddress")]
-    public string DetailedAddress { get; set; } = "";
-
-    [JsonPropertyName("provinceId")]
-    public int? ProvinceId { get; set; }
-
-    [JsonPropertyName("districtId")]
-    public int? DistrictId { get; set; }
-
-    [JsonPropertyName("wardId")]
-    public int? WardId { get; set; }
+    public string? Note { get; set; }
+    public int? Weight { get; set; }
 }
+
+// ShippingAddressInfo has been replaced by DATN.Application.DTOs.Orders.ShippingAddressSnapshot
 
 internal class GhnWebhookPayload
 {

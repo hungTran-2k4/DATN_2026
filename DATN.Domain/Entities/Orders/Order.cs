@@ -32,6 +32,7 @@ public class Order
     public string? OrderStatus { get; set; }
 
     public Guid? ShopId { get; set; }
+    public string? ShopName { get; set; }
     public decimal? ShippingFee { get; set; }
     public decimal TotalAmount { get; set; }
     public decimal CommissionFee { get; set; } = 0;
@@ -51,6 +52,7 @@ public static class OrderStatus
     public const string Processing = "PROCESSING";
     public const string Shipped = "SHIPPED";
     public const string Delivered = "DELIVERED";
+    public const string Completed = "COMPLETED";
     public const string Returned = "RETURNED";
     public const string Cancelled = "CANCELLED";
 
@@ -64,7 +66,9 @@ public static class OrderStatus
             (Processing, Shipped) => true,
             (Processing, Cancelled) => true,
             (Shipped, Delivered) => true,
+            (Delivered, Completed) => true,
             (Delivered, Returned) => true,
+            (Completed, Returned) => true, // Cho phép trả hàng sau khi hoàn thành (trong 3-7 ngày)
             _ => false
         };
     }

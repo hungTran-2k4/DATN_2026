@@ -107,4 +107,34 @@ public class TransactionRepository : ITransactionRepository
         TransactionType = e.TransactionType,
         ReferenceId = e.ReferenceId
     };
+
+    public async Task<(IEnumerable<Transaction> Items, int TotalCount)> GetPagedAsync(string? keyword, int pageNumber, int pageSize, CancellationToken ct = default)
+    {
+        var col = new EntityCollection<TransactionEntity>();
+        
+        IPredicateExpression filter = new PredicateExpression(TransactionFields.Status == "Success");
+
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            var searchFilter = new PredicateExpression(TransactionFields.ExternalTransactionNo.Like($"%{keyword}%"))
+                .Or(TransactionFields.Provider.Like($"%{keyword}%"))
+                .Or(TransactionFields.TransactionType.Like($"%{keyword}%"));
+            filter.AddWithAnd(searchFilter);
+        }
+
+        var qf = new QueryFactory();
+        var countQuery = qf.Transaction.Select(TransactionFields.Id.Count()).Where(filter);
+        int totalCount = await _adapter.FetchScalarAsync<int>(countQuery, ct);
+
+        await _adapter.FetchEntityCollectionAsync(new QueryParameters
+        {
+            CollectionToFetch = col,
+            FilterToUse = filter,
+            RowsToTake = pageSize,
+            RowsToSkip = (pageNumber - 1) * pageSize,
+            SorterToUse = new SortExpression(TransactionFields.CreatedAt | SortOperator.Descending)
+        }, ct);
+
+        return (col.Select(MapToDomain), totalCount);
+    }
 }

@@ -17,12 +17,16 @@ public interface IShippingProvider
 
     /// <summary>Tạo vận đơn (khi Seller gửi hàng)</summary>
     Task<CreateShipmentResult> CreateShipmentAsync(CreateShipmentRequest request);
+
+    /// <summary>Hủy vận đơn đã tạo</summary>
+    Task<bool> CancelShipmentAsync(string ghnOrderCode);
 }
 
 // ─── DTOs ──────────────────────────────────────────
 
 public class ShippingFeeRequest
 {
+    public Guid? ShopId { get; set; }
     public int FromDistrictId { get; set; }
     public string FromWardCode { get; set; } = "";
     public int ToDistrictId { get; set; }

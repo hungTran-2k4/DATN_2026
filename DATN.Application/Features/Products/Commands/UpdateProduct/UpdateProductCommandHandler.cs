@@ -43,7 +43,23 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         product.Slug = request.Slug;
         product.Description = request.Description ?? string.Empty;
         product.Summary = request.Summary ?? string.Empty;
-        product.Status = (request.Status ?? "Draft").ToProductStatus();
+        // Chỉ cập nhật trạng thái nếu được cung cấp rõ ràng (dành cho Admin hoặc luồng cụ thể)
+        // Seller thông thường sẽ không gửi Status qua form này nữa
+        if (!string.IsNullOrEmpty(request.Status))
+        {
+            var newStatus = request.Status.ToProductStatus();
+            
+            // Bảo mật: Nếu sản phẩm đang Active hoặc Inactive, không cho phép hạ cấp về Draft qua luồng update thường
+            // Hoặc đơn giản là ngăn chặn việc nâng cấp lên Active nếu không phải qua endpoint Review
+            if (newStatus == ProductStatus.Active && product.Status != ProductStatus.Active)
+            {
+                // Giữ nguyên trạng thái cũ nếu cố tình set Active ở đây
+            }
+            else
+            {
+                product.Status = newStatus;
+            }
+        }
         product.BrandId = request.BrandId;
         product.CategoryId = request.CategoryId;
         product.ShopId = request.ShopId;

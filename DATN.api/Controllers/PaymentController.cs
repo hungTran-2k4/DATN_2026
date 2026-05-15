@@ -15,6 +15,7 @@ public class PaymentController : ControllerBase
     private readonly IPaymentProviderFactory _providerFactory;
     private readonly IOrderRepository _orderRepo;
     private readonly IPaymentRepository _paymentRepo;
+    private readonly IWalletRepository _walletRepo;
     private readonly ITransactionRepository _transactionRepo;
     private readonly ILogger<PaymentController> _logger;
 
@@ -22,12 +23,14 @@ public class PaymentController : ControllerBase
         IPaymentProviderFactory providerFactory,
         IOrderRepository orderRepo,
         IPaymentRepository paymentRepo,
+        IWalletRepository walletRepo,
         ITransactionRepository transactionRepo,
         ILogger<PaymentController> logger)
     {
         _providerFactory = providerFactory;
         _orderRepo = orderRepo;
         _paymentRepo = paymentRepo;
+        _walletRepo = walletRepo;
         _transactionRepo = transactionRepo;
         _logger = logger;
     }
@@ -48,63 +51,80 @@ public class PaymentController : ControllerBase
     [ProducesResponseType(400)]
     public async Task<IActionResult> CreatePaymentUrl([FromBody] CreatePaymentUrlRequest request)
     {
-        // 1. Tìm đơn hàng
-        var order = await _orderRepo.GetByIdAsync(request.OrderId);
-        if (order == null)
-            return NotFound(new { success = false, message = "Không tìm thấy đơn hàng." });
+        // Support both single OrderId (legacy) and multiple OrderIds
+        var orderIds = request.OrderIds?.Count > 0 
+            ? request.OrderIds 
+            : new List<Guid> { request.OrderId };
 
-        // 2. Kiểm tra quyền sở hữu
         var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        if (order.BuyerId != currentUserId)
-            return StatusCode(403, new { success = false, message = "Không có quyền thao tác đơn hàng này." });
 
-        // 3. Kiểm tra trạng thái — chỉ cho phép khi UNPAID hoặc FAILED (retry)
-        if (order.PaymentStatus == PaymentStatus.Paid)
-            return BadRequest(new { success = false, message = "Đơn hàng này đã được thanh toán." });
+        // 1. Load tất cả đơn hàng
+        var orders = new List<Domain.Entities.Orders.Order>();
+        foreach (var orderId in orderIds)
+        {
+            var order = await _orderRepo.GetByIdAsync(orderId);
+            if (order == null)
+                return NotFound(new { success = false, message = $"Không tìm thấy đơn hàng {orderId}." });
+            if (order.BuyerId != currentUserId)
+                return StatusCode(403, new { success = false, message = "Không có quyền thao tác đơn hàng này." });
+            if (order.PaymentStatus == PaymentStatus.Paid)
+                continue; // skip already paid
+            orders.Add(order);
+        }
 
-        // 4. Resolve gateway provider
-        var provider = _providerFactory.GetProvider(order.PaymentMethod!);
+        if (orders.Count == 0)
+            return BadRequest(new { success = false, message = "Tất cả đơn hàng đã được thanh toán." });
+
+        // 2. Tính tổng tiền
+        var totalAmount = orders.Sum(o => o.TotalAmount);
+
+        // 3. Tạo TxnRef gộp: dùng order đầu tiên làm ID chính, lưu danh sách trong bảng Payment
+        var primaryOrderId = orders[0].Id;
+        var provider = _providerFactory.GetProvider(orders[0].PaymentMethod!);
         if (provider == null)
-            return BadRequest(new { success = false, message = $"Phương thức thanh toán '{order.PaymentMethod}' không hỗ trợ online payment." });
+            return BadRequest(new { success = false, message = $"Phương thức thanh toán không hỗ trợ online payment." });
 
-        // 5. Lấy IP client
+        // 4. Lấy IP client
         var ipAddress = HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "127.0.0.1";
-        var orderInfo = $"Thanh toan don hang {order.OrderCode}";
+        var orderCodes = string.Join(", ", orders.Select(o => o.OrderCode));
+        var orderInfo = $"Thanh toan don hang {orderCodes}";
 
-        // 6. Tạo URL
-        var paymentUrl = provider.CreatePaymentUrl(order.Id, order.TotalAmount, orderInfo, ipAddress);
+        // 5. Tạo URL — dùng primary order ID làm TxnRef
+        var paymentUrl = provider.CreatePaymentUrl(primaryOrderId, totalAmount, orderInfo, ipAddress);
 
-        // 7. Tạo bản ghi Payment (PENDING) — audit trail
-        var payment = new Domain.Entities.Orders.Payment
+        // 6. Tạo Payment record cho mỗi order
+        foreach (var order in orders)
         {
-            Id = Guid.NewGuid(),
-            OrderId = order.Id,
-            Provider = provider.ProviderName,
-            Amount = order.TotalAmount,
-            Status = PaymentRecordStatus.Pending,
-            Currency = "VND",
-            CreatedAt = DateTime.UtcNow
-        };
-        await _paymentRepo.CreateAsync(payment);
+            await _paymentRepo.CreateAsync(new Domain.Entities.Orders.Payment
+            {
+                Id = Guid.NewGuid(),
+                OrderId = order.Id,
+                Provider = provider.ProviderName,
+                Amount = order.TotalAmount,
+                Status = PaymentRecordStatus.Pending,
+                Currency = "VND",
+                // Lưu primary order ID để nhóm các đơn cùng 1 giao dịch
+                RawResponse = $"grouped_with:{primaryOrderId}",
+                CreatedAt = DateTime.UtcNow
+            });
 
-        // 7.1 Tạo bản ghi Transaction (PENDING) — Accounting GMV
-        await _transactionRepo.CreateAsync(new Transaction
-        {
-            Id = Guid.NewGuid(),
-            OrderId = order.Id,
-            Amount = order.TotalAmount,
-            Provider = provider.ProviderName,
-            Status = "Pending",
-            TransactionType = "PAYMENT_IN",
-            CreatedAt = DateTime.UtcNow
-        });
+            await _transactionRepo.CreateAsync(new Transaction
+            {
+                Id = Guid.NewGuid(),
+                OrderId = order.Id,
+                Amount = order.TotalAmount,
+                Provider = provider.ProviderName,
+                Status = "Pending",
+                TransactionType = "PAYMENT_IN",
+                CreatedAt = DateTime.UtcNow
+            });
 
-        // 8. Cập nhật trạng thái thanh toán Order → PROCESSING
-        await _orderRepo.UpdatePaymentStatusAsync(order.Id, PaymentStatus.Processing);
+            await _orderRepo.UpdatePaymentStatusAsync(order.Id, PaymentStatus.Processing);
+        }
 
         _logger.LogInformation(
-            "[Payment] Created payment URL. OrderId={OrderId}, Provider={Provider}, Amount={Amount}",
-            order.Id, provider.ProviderName, order.TotalAmount);
+            "[Payment] Created GROUPED payment URL. PrimaryOrderId={PrimaryOrderId}, OrderCount={Count}, TotalAmount={Amount}",
+            primaryOrderId, orders.Count, totalAmount);
 
         return Ok(new CreatePaymentUrlResponse
         {
@@ -206,65 +226,52 @@ public class PaymentController : ControllerBase
         // ─── 6. Cập nhật DB — trong transaction ───
         try
         {
-            // Cập nhật Payment record
-            var paymentRecord = await _paymentRepo.GetByOrderIdAsync(result.OrderId);
-            if (paymentRecord != null)
+            // Tìm tất cả order cùng nhóm thanh toán (grouped_with:primaryOrderId)
+            var relatedOrderIds = await GetGroupedOrderIds(result.OrderId);
+
+            foreach (var relatedOrderId in relatedOrderIds)
             {
-                paymentRecord.TransactionId = result.TransactionId;
-                paymentRecord.Status = result.IsSuccess ? PaymentRecordStatus.Success : PaymentRecordStatus.Failed;
-                paymentRecord.ResponseCode = result.ResponseCode;
-                paymentRecord.BankCode = result.BankCode;
-                paymentRecord.CardType = result.CardType;
-                paymentRecord.PayDate = result.PayDate;
-                paymentRecord.RawResponse = result.RawResponse;
-                paymentRecord.Signature = result.Signature;
-                await _paymentRepo.UpdateAsync(paymentRecord);
-            }
-            else
-            {
-                // Fallback: tạo mới nếu chưa có (edge case)
-                await _paymentRepo.CreateAsync(new Domain.Entities.Orders.Payment
+                var relatedOrder = await _orderRepo.GetByIdAsync(relatedOrderId);
+                if (relatedOrder == null || relatedOrder.PaymentStatus == PaymentStatus.Paid) continue;
+
+                // Cập nhật Payment record
+                var paymentRecord = await _paymentRepo.GetByOrderIdAsync(relatedOrderId);
+                if (paymentRecord != null)
                 {
-                    Id = Guid.NewGuid(),
-                    OrderId = result.OrderId,
-                    Provider = PaymentMethod.VnPay,
-                    TransactionId = result.TransactionId,
-                    Amount = result.Amount,
-                    Status = result.IsSuccess ? PaymentRecordStatus.Success : PaymentRecordStatus.Failed,
-                    ResponseCode = result.ResponseCode,
-                    BankCode = result.BankCode,
-                    CardType = result.CardType,
-                    PayDate = result.PayDate,
-                    RawResponse = result.RawResponse,
-                    Signature = result.Signature,
-                    Currency = "VND",
-                    CreatedAt = DateTime.UtcNow
-                });
-            }
+                    paymentRecord.TransactionId = result.TransactionId;
+                    paymentRecord.Status = result.IsSuccess ? PaymentRecordStatus.Success : PaymentRecordStatus.Failed;
+                    paymentRecord.ResponseCode = result.ResponseCode;
+                    paymentRecord.BankCode = result.BankCode;
+                    paymentRecord.CardType = result.CardType;
+                    paymentRecord.PayDate = result.PayDate;
+                    paymentRecord.RawResponse = result.RawResponse;
+                    paymentRecord.Signature = result.Signature;
+                    await _paymentRepo.UpdateAsync(paymentRecord);
+                }
 
-            // Cập nhật Order.PaymentStatus
-            var newPaymentStatus = result.IsSuccess ? PaymentStatus.Paid : PaymentStatus.Failed;
-            await _orderRepo.UpdatePaymentStatusAsync(result.OrderId, newPaymentStatus);
+                // Cập nhật Order.PaymentStatus
+                var newPaymentStatus = result.IsSuccess ? PaymentStatus.Paid : PaymentStatus.Failed;
+                await _orderRepo.UpdatePaymentStatusAsync(relatedOrderId, newPaymentStatus);
 
-            _logger.LogInformation(
-                "[IPN] ✅ Order updated. OrderId={OrderId}, PaymentStatus={Status}, TransactionId={TransactionId}",
-                result.OrderId, newPaymentStatus, result.TransactionId);
+                _logger.LogInformation(
+                    "[IPN] ✅ Order updated. OrderId={OrderId}, PaymentStatus={Status}, TransactionId={TransactionId}",
+                    relatedOrderId, newPaymentStatus, result.TransactionId);
 
-            // ─── NEW: Save to Transaction table if success ───
-            if (result.IsSuccess)
-            {
-                await _transactionRepo.CreateAsync(new Transaction
+                if (result.IsSuccess)
                 {
-                    Id = Guid.NewGuid(),
-                    OrderId = result.OrderId,
-                    ExternalTransactionNo = result.TransactionId,
-                    Amount = result.Amount,
-                    Provider = PaymentMethod.VnPay,
-                    Status = "Success",
-                    TransactionType = "PAYMENT_IN",
-                    RawResponse = result.RawResponse,
-                    CreatedAt = DateTime.UtcNow
-                });
+                    await _transactionRepo.CreateAsync(new Transaction
+                    {
+                        Id = Guid.NewGuid(),
+                        OrderId = relatedOrderId,
+                        ExternalTransactionNo = result.TransactionId,
+                        Amount = relatedOrder.TotalAmount,
+                        Provider = PaymentMethod.VnPay,
+                        Status = "Success",
+                        TransactionType = "PAYMENT_IN",
+                        RawResponse = result.RawResponse,
+                        CreatedAt = DateTime.UtcNow
+                    });
+                }
             }
         }
         catch (Exception ex)
@@ -303,59 +310,62 @@ public class PaymentController : ControllerBase
             result.OrderId, result.IsSuccess, result.ResponseCode);
 
         var order = await _orderRepo.GetByIdAsync(result.OrderId);
-        _logger.LogInformation("═══ VnPayReturn ═══ Order found: {Found}, Current PaymentStatus={PaymentStatus}",
-            order != null, order?.PaymentStatus);
+        var orderCodes = new List<string>();
+        if (order != null) orderCodes.Add(order.OrderCode!);
 
         // ─── LOCAL FALLBACK ───
-        // Nếu thành công và DB chưa cập nhật (do IPN không gọi được localhost), ta cập nhật tại đây
-        if (result.IsSuccess && result.ResponseCode == "00" && order?.PaymentStatus != PaymentStatus.Paid)
+        if (result.IsSuccess && result.ResponseCode == "00")
         {
-            _logger.LogInformation("═══ VnPayReturn ═══ Entering FALLBACK update for OrderId={OrderId}", result.OrderId);
+            _logger.LogInformation("═══ VnPayReturn ═══ Entering FALLBACK/SYNC update for OrderId={OrderId}", result.OrderId);
             try
             {
-                // Cập nhật Payment record
-                var paymentRecord = await _paymentRepo.GetByOrderIdAsync(result.OrderId);
-                _logger.LogInformation("═══ VnPayReturn ═══ Payment record found: {Found}", paymentRecord != null);
-                if (paymentRecord != null)
+                var relatedOrderIds = await GetGroupedOrderIds(result.OrderId);
+                orderCodes.Clear(); // Clear and refill with all related codes
+
+                foreach (var relatedOrderId in relatedOrderIds)
                 {
-                    paymentRecord.TransactionId = result.TransactionId;
-                    paymentRecord.Status = PaymentRecordStatus.Success;
-                    paymentRecord.ResponseCode = result.ResponseCode;
-                    paymentRecord.PayDate = result.PayDate;
-                    await _paymentRepo.UpdateAsync(paymentRecord);
-                    _logger.LogInformation("═══ VnPayReturn ═══ Payment record updated OK");
+                    var relatedOrder = await _orderRepo.GetByIdAsync(relatedOrderId);
+                    if (relatedOrder == null) continue;
+                    
+                    orderCodes.Add(relatedOrder.OrderCode!);
+
+                    if (relatedOrder.PaymentStatus != PaymentStatus.Paid)
+                    {
+                        var paymentRecord = await _paymentRepo.GetByOrderIdAsync(relatedOrderId);
+                        if (paymentRecord != null)
+                        {
+                            paymentRecord.TransactionId = result.TransactionId;
+                            paymentRecord.Status = PaymentRecordStatus.Success;
+                            paymentRecord.ResponseCode = result.ResponseCode;
+                            paymentRecord.PayDate = result.PayDate;
+                            await _paymentRepo.UpdateAsync(paymentRecord);
+                        }
+
+                        await _orderRepo.UpdatePaymentStatusAsync(relatedOrderId, PaymentStatus.Paid);
+
+                        await _transactionRepo.CreateAsync(new Transaction
+                        {
+                            Id = Guid.NewGuid(),
+                            OrderId = relatedOrderId,
+                            ExternalTransactionNo = result.TransactionId,
+                            Amount = relatedOrder.TotalAmount,
+                            Provider = PaymentMethod.VnPay,
+                            Status = "Success",
+                            TransactionType = "PAYMENT_IN",
+                            CreatedAt = DateTime.UtcNow
+                        });
+                        
+                        _logger.LogInformation("═══ VnPayReturn ═══ Fallback updated OrderId={OrderId}", relatedOrderId);
+                    }
                 }
 
-                // Cập nhật Order Status
-                var updateResult = await _orderRepo.UpdatePaymentStatusAsync(result.OrderId, PaymentStatus.Paid);
-                _logger.LogInformation("═══ VnPayReturn ═══ Order PaymentStatus update result: {Result}", updateResult);
-
-                // ─── NEW: Save to Transaction table in fallback ───
-                await _transactionRepo.CreateAsync(new Transaction
-                {
-                    Id = Guid.NewGuid(),
-                    OrderId = result.OrderId,
-                    ExternalTransactionNo = result.TransactionId,
-                    Amount = result.Amount,
-                    Provider = PaymentMethod.VnPay,
-                    Status = "Success",
-                    TransactionType = "PAYMENT_IN",
-                    CreatedAt = DateTime.UtcNow
-                });
-                
-                // Refresh order data after update
+                // Refresh primary order data
                 order = await _orderRepo.GetByIdAsync(result.OrderId);
-                _logger.LogInformation("═══ VnPayReturn ═══ After refresh, PaymentStatus={PaymentStatus}", order?.PaymentStatus);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to update order status in ReturnURL fallback for OrderId={OrderId}", result.OrderId);
             }
-        }
-        else
-        {
-            _logger.LogInformation("═══ VnPayReturn ═══ SKIPPED fallback. IsSuccess={IsSuccess}, ResponseCode={ResponseCode}, PaymentStatus={PaymentStatus}",
-                result.IsSuccess, result.ResponseCode, order?.PaymentStatus);
         }
 
         return Ok(new PaymentReturnResponse
@@ -363,14 +373,33 @@ public class PaymentController : ControllerBase
             IsSuccess = result.IsSuccess && result.ResponseCode == "00",
             OrderId = result.OrderId.ToString(),
             OrderCode = order?.OrderCode,
+            OrderCodes = orderCodes, // Trả về danh sách mã đơn
             Amount = result.Amount,
             TransactionId = result.TransactionId,
             BankCode = result.BankCode,
             PayDate = result.PayDate,
-            // Trạng thái lấy từ DB (source of truth), không tin vào query param
             PaymentStatus = order?.PaymentStatus,
             Message = result.IsSuccess ? "Giao dịch thành công" : "Giao dịch không thành công"
         });
+    }
+
+    /// <summary>
+    /// Tìm tất cả OrderIds thuộc cùng 1 nhóm thanh toán gộp.
+    /// Nhóm được xác định bằng RawResponse chứa "grouped_with:{primaryOrderId}".
+    /// Nếu không tìm thấy nhóm, trả về chính orderId đó.
+    /// </summary>
+    private async Task<List<Guid>> GetGroupedOrderIds(Guid primaryOrderId)
+    {
+        var groupKey = $"grouped_with:{primaryOrderId}";
+        var groupedPayments = await _paymentRepo.GetByGroupKeyAsync(groupKey);
+        
+        if (groupedPayments != null && groupedPayments.Any())
+        {
+            return groupedPayments.Select(p => p.OrderId).Distinct().ToList();
+        }
+        
+        // Fallback: chỉ trả về chính orderId (single-order payment hoặc legacy)
+        return new List<Guid> { primaryOrderId };
     }
 }
 
@@ -379,6 +408,8 @@ public class PaymentController : ControllerBase
 public class CreatePaymentUrlRequest
 {
     public Guid OrderId { get; set; }
+    /// <summary>Danh sách OrderIds cho thanh toán gộp (multi-shop checkout)</summary>
+    public List<Guid>? OrderIds { get; set; }
 }
 
 public class CreatePaymentUrlResponse
@@ -395,6 +426,7 @@ public class PaymentReturnResponse
     public bool IsSuccess { get; set; }
     public string? OrderId { get; set; }
     public string? OrderCode { get; set; }
+    public List<string>? OrderCodes { get; set; } // Danh sách mã các đơn hàng trong nhóm
     public decimal Amount { get; set; }
     public string? TransactionId { get; set; }
     public string? BankCode { get; set; }

@@ -10,6 +10,6 @@ public record GetMyOrdersQuery(Guid BuyerId, string? Status = null, int Page = 1
 public record GetShopOrdersQuery(Guid ShopId, string? Status = null, int Page = 1, int PageSize = 20)
     : IRequest<PagedResponse<IEnumerable<OrderSummaryDto>>>;
 
-public record GetOrderDetailQuery(Guid OrderId, Guid ActorId)
+public record GetOrderDetailQuery(Guid OrderId, Guid ActorId, bool IsAdmin = false)
     : IRequest<ApiResponse<OrderDto>>;
 

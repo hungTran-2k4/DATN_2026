@@ -126,7 +126,13 @@ public class GHNProvider : IShippingProvider
                 items = items
             };
 
+            var payloadJson = JsonSerializer.Serialize(payload);
+            _logger.LogWarning("[GHN CreateShipment] Request payload: {Payload}", payloadJson);
+
             var response = await SendRequestAsync<GhnCreateOrderResponse>(url, payload);
+
+            _logger.LogWarning("[GHN CreateShipment] Response: Code={Code}, Message='{Message}'", 
+                response?.Code, response?.Message);
 
             if (response?.Code == 200 && response.Data != null)
             {
@@ -154,6 +160,23 @@ public class GHNProvider : IShippingProvider
                 Success = false,
                 Message = $"Lỗi kết nối GHN: {ex.Message}"
             };
+        }
+    }
+
+    public async Task<bool> CancelShipmentAsync(string ghnOrderCode)
+    {
+        try
+        {
+            var url = $"{_settings.BaseUrl}/shiip/public-api/v2/switch-status/cancel";
+            var payload = new { order_codes = new[] { ghnOrderCode } };
+
+            var response = await SendRequestAsync<GhnBaseResponse<object>>(url, payload);
+            return response?.Code == 200;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "GHN CancelShipment error for code: {Code}", ghnOrderCode);
+            return false;
         }
     }
 

@@ -35,3 +35,6 @@ public class UpdateOrderStatusCommand : IRequest<ApiResponse<bool>>
     public string NewStatus { get; set; } = string.Empty;
     public string? Note { get; set; }
 }
+
+/// <summary>Buyer xác nhận đã nhận hàng (status chuyển từ DELIVERED sang COMPLETED)</summary>
+public record ConfirmOrderReceivedCommand(Guid OrderId, Guid BuyerId) : IRequest<ApiResponse<bool>>;

@@ -50,7 +50,7 @@ public class UpdateShopCommandHandler : IRequestHandler<UpdateShopCommand, ApiRe
         shop.CoverUrl = request.CoverUrl;
         shop.ProvinceId = request.ProvinceId;
         shop.DistrictId = request.DistrictId;
-        shop.WardId = request.WardId;
+        shop.WardId = int.Parse(request.WardId);
         shop.PickupAddress = request.PickupAddress;
         
         if (request.IsActive.HasValue) 

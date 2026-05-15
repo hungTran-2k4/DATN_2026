@@ -91,7 +91,7 @@ public class CheckoutHandler : IRequestHandler<CheckoutCommand, ApiResponse<IEnu
             DetailedAddress = address.DetailedAddress,
             ProvinceId = address.ProvinceId,
             DistrictId = address.DistrictId,
-            WardId = address.WardId
+            WardId = address.WardId.ToString()
         });
 
         // ─── 5. Group items theo ShopId → tạo Order riêng mỗi Shop ───
@@ -194,7 +194,12 @@ public class CheckoutHandler : IRequestHandler<CheckoutCommand, ApiResponse<IEnu
 public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, ApiResponse<bool>>
 {
     private readonly IOrderRepository _orderRepo;
-    public CancelOrderHandler(IOrderRepository orderRepo) => _orderRepo = orderRepo;
+    private readonly IWalletRepository _walletRepo;
+    public CancelOrderHandler(IOrderRepository orderRepo, IWalletRepository walletRepo)
+    {
+        _orderRepo = orderRepo;
+        _walletRepo = walletRepo;
+    }
 
     public async Task<ApiResponse<bool>> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
     {
@@ -212,8 +217,8 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, ApiRespons
 
         await _orderRepo.UpdateStatusAsync(request.OrderId, Domain.Entities.Orders.OrderStatus.Cancelled, cancellationToken);
         
-        // ── If it was already paid, mark as refunded ──
-        if (order.PaymentStatus == Domain.Entities.Orders.PaymentStatus.Paid)
+        // ── If it was already paid via VNPay, mark as refunded ──
+        if (order.PaymentStatus == Domain.Entities.Orders.PaymentStatus.Paid && order.PaymentMethod == Domain.Entities.Orders.PaymentMethod.VnPay)
         {
             await _orderRepo.UpdatePaymentStatusAsync(request.OrderId, Domain.Entities.Orders.PaymentStatus.Refunded, cancellationToken);
         }
@@ -226,11 +231,19 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
 {
     private readonly IOrderRepository _orderRepo;
     private readonly IWalletRepository _walletRepo;
+    private readonly IShipmentRepository _shipmentRepo;
+    private readonly IShippingProvider _shippingProvider;
 
-    public UpdateOrderStatusHandler(IOrderRepository orderRepo, IWalletRepository walletRepo)
+    public UpdateOrderStatusHandler(
+        IOrderRepository orderRepo, 
+        IWalletRepository walletRepo,
+        IShipmentRepository shipmentRepo,
+        IShippingProvider shippingProvider)
     {
         _orderRepo = orderRepo;
         _walletRepo = walletRepo;
+        _shipmentRepo = shipmentRepo;
+        _shippingProvider = shippingProvider;
     }
 
     public async Task<ApiResponse<bool>> Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
@@ -257,6 +270,17 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
 
         await _orderRepo.UpdateStatusAsync(request.OrderId, request.NewStatus, cancellationToken);
 
+        // ── NEW: If moving to CANCELLED and has Shipment -> Cancel at GHN ──
+        if (request.NewStatus == Domain.Entities.Orders.OrderStatus.Cancelled)
+        {
+            var shipment = await _shipmentRepo.GetByOrderIdAsync(request.OrderId, cancellationToken);
+            if (shipment != null && !string.IsNullOrEmpty(shipment.GhnOrderCode))
+            {
+                await _shippingProvider.CancelShipmentAsync(shipment.GhnOrderCode);
+                await _shipmentRepo.UpdateStatusAsync(shipment.Id, "CANCELLED", cancellationToken);
+            }
+        }
+
         // ── If PAID and moving to CANCELLED or RETURNED -> Mark as REFUNDED ──
         if (order.PaymentStatus == Domain.Entities.Orders.PaymentStatus.Paid 
             && (request.NewStatus == Domain.Entities.Orders.OrderStatus.Cancelled || request.NewStatus == Domain.Entities.Orders.OrderStatus.Returned))
@@ -269,9 +293,9 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
         {
             if (order.PaymentMethod == Domain.Entities.Orders.PaymentMethod.VnPay)
             {
-                // VNPay: Sàn đang giữ tiền -> Trả cho Seller (đã trừ phí) -> Đưa vào LOCKED (Chờ 7 ngày)
-                var netAmount = order.TotalAmount - order.CommissionFee;
-                var description = $"Cộng tiền đơn hàng {order.OrderCode} (Thanh toán online, đã trừ phí sàn {order.CommissionFee:N0} VNĐ - Ký quỹ 7 ngày)";
+                // VNPay: Sàn giữ tiền -> Trả cho Seller = Tổng - Phí Ship - Phí Sàn -> LOCKED
+                var netAmount = order.TotalAmount - (order.ShippingFee ?? 0m) - order.CommissionFee;
+                var description = $"Cộng tiền đơn hàng {order.OrderCode} (Thanh toán online, đã trừ phí sàn {order.CommissionFee:N0} và phí ship {order.ShippingFee:N0} - Chờ xác nhận 7 ngày)";
                 
                 await _walletRepo.UpdateBalanceAsync(
                     order.ShopId.Value, 
@@ -283,14 +307,15 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
             }
             else if (order.PaymentMethod == Domain.Entities.Orders.PaymentMethod.Cod)
             {
-                // COD: Seller đã nhận tiền mặt từ khách -> Sàn thu phí hoa hồng bằng cách trừ ví AVAILABLE
-                var feeAmount = -order.CommissionFee; // Giá trị âm để trừ tiền
-                var description = $"Trừ phí sàn đơn hàng {order.OrderCode} (Thanh toán COD)";
+                // COD: Shipper thu hộ -> Sàn giữ -> Cộng vào LOCKED cho Seller
+                // Net Amount = Tổng - Phí Ship - Phí Sàn
+                var netAmount = order.TotalAmount - (order.ShippingFee ?? 0m) - order.CommissionFee;
+                var description = $"Cộng tiền đơn hàng {order.OrderCode} (Thanh toán COD - Chờ người mua xác nhận hoặc quá hạn 7 ngày)";
                 
                 await _walletRepo.UpdateBalanceAsync(
                     order.ShopId.Value, 
-                    feeAmount, 
-                    "AVAILABLE", 
+                    netAmount, 
+                    "LOCKED", 
                     description, 
                     null, 
                     cancellationToken);
@@ -298,5 +323,47 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
         }
 
         return ApiResponse<bool>.Succeed(true, $"Đã cập nhật trạng thái đơn hàng thành '{request.NewStatus}'.");
+    }
+}
+
+public class ConfirmOrderReceivedHandler : IRequestHandler<ConfirmOrderReceivedCommand, ApiResponse<bool>>
+{
+    private readonly IOrderRepository _orderRepo;
+    private readonly IWalletRepository _walletRepo;
+
+    public ConfirmOrderReceivedHandler(IOrderRepository orderRepo, IWalletRepository walletRepo)
+    {
+        _orderRepo = orderRepo;
+        _walletRepo = walletRepo;
+    }
+
+    public async Task<ApiResponse<bool>> Handle(ConfirmOrderReceivedCommand request, CancellationToken cancellationToken)
+    {
+        var order = await _orderRepo.GetByIdAsync(request.OrderId, cancellationToken);
+        if (order == null)
+            return ApiResponse<bool>.Fail("Không tìm thấy đơn hàng.", 404, "ORDER_NOT_FOUND");
+
+        if (order.BuyerId != request.BuyerId)
+            return ApiResponse<bool>.Fail("Không có quyền thao tác đơn hàng này.", 403, "ORDER_FORBIDDEN");
+
+        if (order.OrderStatus != Domain.Entities.Orders.OrderStatus.Delivered)
+            return ApiResponse<bool>.Fail(
+                "Chỉ có thể xác nhận khi đơn hàng ở trạng thái 'Đã giao hàng'.",
+                400, "INVALID_STATUS_FOR_CONFIRMATION");
+
+        // 1. Cập nhật trạng thái đơn hàng sang COMPLETED
+        var ok = await _orderRepo.UpdateStatusAsync(request.OrderId, Domain.Entities.Orders.OrderStatus.Completed, cancellationToken);
+        if (!ok) return ApiResponse<bool>.Fail("Lỗi cập nhật trạng thái đơn hàng.", 500);
+
+        // 2. Giải phóng tiền ký quỹ cho Shop (nếu có)
+        // Chỉ giải phóng nếu là VNPay (vì COD Shop đã nhận tiền mặt từ shipper/khách)
+        if (order.PaymentMethod == Domain.Entities.Orders.PaymentMethod.VnPay && order.ShopId.HasValue)
+        {
+            var netAmount = order.TotalAmount - (order.ShippingFee ?? 0m) - order.CommissionFee;
+            var description = $"Giải phóng tiền đơn hàng {order.OrderCode} (Người mua đã xác nhận sớm)";
+            await _walletRepo.ReleaseLockedFundsAsync(order.ShopId.Value, netAmount, description, cancellationToken);
+        }
+
+        return ApiResponse<bool>.Succeed(true, "Xác nhận đã nhận hàng thành công. Tiền đã được chuyển vào ví của người bán.");
     }
 }

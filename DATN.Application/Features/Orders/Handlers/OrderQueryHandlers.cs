@@ -31,6 +31,8 @@ public class GetMyOrdersHandler : IRequestHandler<GetMyOrdersQuery, PagedRespons
             TotalAmount = o.TotalAmount,
             TotalItems = o.Items?.Count ?? 0,
             FirstItemName = o.Items?.FirstOrDefault()?.ProductNameSnapshot,
+            ShopId = o.ShopId,
+            ShopName = o.ShopName,
             CreatedAt = o.CreatedAt
         });
 
@@ -63,6 +65,8 @@ public class GetShopOrdersHandler : IRequestHandler<GetShopOrdersQuery, PagedRes
             TotalAmount = o.TotalAmount,
             TotalItems = o.Items?.Count ?? 0,
             FirstItemName = o.Items?.FirstOrDefault()?.ProductNameSnapshot,
+            ShopId = o.ShopId,
+            ShopName = o.ShopName,
             CreatedAt = o.CreatedAt
         });
 
@@ -94,6 +98,8 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrdersQuery, PagedRespo
             TotalAmount = o.TotalAmount,
             TotalItems = o.Items?.Count ?? 0,
             FirstItemName = o.Items?.FirstOrDefault()?.ProductNameSnapshot,
+            ShopId = o.ShopId,
+            ShopName = o.ShopName,
             CreatedAt = o.CreatedAt
         });
 
@@ -104,8 +110,13 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrdersQuery, PagedRespo
 public class GetOrderDetailHandler : IRequestHandler<GetOrderDetailQuery, ApiResponse<OrderDto>>
 {
     private readonly IOrderRepository _orderRepo;
+    private readonly IShopRepository _shopRepo;
 
-    public GetOrderDetailHandler(IOrderRepository orderRepo) => _orderRepo = orderRepo;
+    public GetOrderDetailHandler(IOrderRepository orderRepo, IShopRepository shopRepo)
+    {
+        _orderRepo = orderRepo;
+        _shopRepo = shopRepo;
+    }
 
     public async Task<ApiResponse<OrderDto>> Handle(GetOrderDetailQuery request, CancellationToken cancellationToken)
     {
@@ -113,8 +124,16 @@ public class GetOrderDetailHandler : IRequestHandler<GetOrderDetailQuery, ApiRes
         if (order == null)
             return ApiResponse<OrderDto>.Fail("Không tìm thấy đơn hàng.", 404, "ORDER_NOT_FOUND");
 
-        // MVP: cho phép buyer xem đơn của mình. Seller view sẽ bổ sung khi có GetShopOrders + check ownership theo shop.
-        if (order.BuyerId != request.ActorId)
+        bool isBuyer = order.BuyerId == request.ActorId;
+        bool isSeller = false;
+
+        if (order.ShopId.HasValue)
+        {
+            var shop = await _shopRepo.GetByIdAsync(order.ShopId.Value, cancellationToken);
+            isSeller = shop != null && shop.OwnerId == request.ActorId;
+        }
+
+        if (!request.IsAdmin && !isBuyer && !isSeller)
             return ApiResponse<OrderDto>.Fail("Không có quyền truy cập đơn hàng này.", 403, "ORDER_FORBIDDEN");
 
         return ApiResponse<OrderDto>.Succeed(new OrderDto

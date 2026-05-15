@@ -64,7 +64,7 @@ public class WalletRepository : IWalletRepository
                 shop.AvailableBalance = newBalance;
 
             shop.IsNew = false;
-            await _adapter.SaveEntityAsync(shop, false, ct);
+            await _adapter.SaveEntityAsync(shop, true, ct);
 
             // Ghi Ledger
             var ledger = new WalletLedgerEntity
@@ -79,7 +79,7 @@ public class WalletRepository : IWalletRepository
                 CreatedAt = DateTime.UtcNow,
                 IsNew = true
             };
-            await _adapter.SaveEntityAsync(ledger, false, ct);
+            await _adapter.SaveEntityAsync(ledger, true, ct);
 
             _adapter.Commit();
             return true;
@@ -115,7 +115,7 @@ public class WalletRepository : IWalletRepository
             shop.LockedBalance = currentLocked - amount;
             shop.AvailableBalance = currentAvailable + amount;
             shop.IsNew = false;
-            await _adapter.SaveEntityAsync(shop, false, ct);
+            await _adapter.SaveEntityAsync(shop, true, ct);
 
             // Ghi Ledger cho phần tăng Available
             var ledger = new WalletLedgerEntity
@@ -129,7 +129,7 @@ public class WalletRepository : IWalletRepository
                 CreatedAt = DateTime.UtcNow,
                 IsNew = true
             };
-            await _adapter.SaveEntityAsync(ledger, false, ct);
+            await _adapter.SaveEntityAsync(ledger, true, ct);
 
             _adapter.Commit();
             return true;
@@ -221,7 +221,7 @@ public class WalletRepository : IWalletRepository
                 shop.AvailableBalance = availableBefore + amount;
                 shop.LockedBalance = lockedBefore - amount;
                 shop.IsNew = false;
-                await _adapter.SaveEntityAsync(shop, false, ct);
+                await _adapter.SaveEntityAsync(shop, true, ct);
 
                 // Ghi sổ cái
                 var ledger = new WalletLedgerEntity
@@ -236,10 +236,55 @@ public class WalletRepository : IWalletRepository
                     CreatedAt = DateTime.UtcNow,
                     IsNew = true
                 };
-                await _adapter.SaveEntityAsync(ledger, false, ct);
+                await _adapter.SaveEntityAsync(ledger, true, ct);
             }
 
             await _adapter.CommitAsync(ct);
+        }
+        catch
+        {
+            if (_adapter.IsTransactionInProgress) _adapter.Rollback();
+            throw;
+        }
+    }
+    public async Task<bool> RefundLockedFundsAsync(Guid shopId, decimal amount, string description, CancellationToken ct = default)
+    {
+        try
+        {
+            _adapter.StartTransaction(System.Data.IsolationLevel.ReadCommitted, "RefundLockedFunds");
+            
+            var qf = new QueryFactory();
+            var query = qf.Shop.Where(ShopFields.Id == shopId);
+            var shop = await _adapter.FetchFirstAsync(query, ct);
+
+            if (shop == null)
+            {
+                _adapter.Rollback();
+                return false;
+            }
+
+            decimal currentLocked = shop.LockedBalance ?? 0;
+            if (currentLocked < amount) amount = currentLocked;
+
+            shop.LockedBalance = currentLocked - amount;
+            shop.IsNew = false;
+            await _adapter.SaveEntityAsync(shop, true, ct);
+
+            var ledger = new WalletLedgerEntity
+            {
+                Id = Guid.NewGuid(),
+                ShopId = shopId,
+                Amount = 0, // Không đổi Available
+                BalanceBefore = shop.AvailableBalance ?? 0,
+                BalanceAfter = shop.AvailableBalance ?? 0,
+                Description = "REFUND_LOCKED: " + description,
+                CreatedAt = DateTime.UtcNow,
+                IsNew = true
+            };
+            await _adapter.SaveEntityAsync(ledger, true, ct);
+
+            _adapter.Commit();
+            return true;
         }
         catch
         {

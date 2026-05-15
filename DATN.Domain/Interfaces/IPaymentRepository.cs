@@ -19,4 +19,7 @@ public interface IPaymentRepository
 
     /// <summary>Cập nhật trạng thái + response data sau khi nhận IPN</summary>
     Task<bool> UpdateAsync(Payment payment, CancellationToken ct = default);
+
+    /// <summary>Tìm tất cả Payment records cùng nhóm thanh toán gộp (dựa trên RawResponse chứa groupKey)</summary>
+    Task<IEnumerable<Payment>> GetByGroupKeyAsync(string groupKey, CancellationToken ct = default);
 }

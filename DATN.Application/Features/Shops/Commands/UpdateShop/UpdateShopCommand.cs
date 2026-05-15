@@ -15,7 +15,7 @@ public class UpdateShopCommand : IRequest<ApiResponse<bool>>
     public Guid? OwnerId { get; set; } // Required to verify ownership
     public int? ProvinceId { get; set; }
     public int? DistrictId { get; set; }
-    public int? WardId { get; set; }
+    public string? WardId { get; set; }
     public string? PickupAddress { get; set; }
     public bool? IsActive { get; set; }
 }

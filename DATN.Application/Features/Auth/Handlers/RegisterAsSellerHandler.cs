@@ -97,7 +97,8 @@ public class RegisterAsSellerHandler : IRequestHandler<RegisterAsSellerCommand, 
             };
 
             await _shopRepo.AddAsync(shop, cancellationToken);
-            await _userRepo.AssignRoleAsync(request.UserId, sellerRole.Id, cancellationToken);
+            // BỎ: Không gán role Seller ở đây, chỉ gán khi Admin Duyệt (Approve)
+            // await _userRepo.AssignRoleAsync(request.UserId, sellerRole.Id, cancellationToken);
 
             tx.Commit();
         }
