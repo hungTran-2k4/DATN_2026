@@ -20,17 +20,15 @@ namespace DATN_2026.EntityClasses
 {
 	// __LLBLGENPRO_USER_CODE_REGION_START AdditionalNamespaces
 	// __LLBLGENPRO_USER_CODE_REGION_END
-
 	/// <summary>Entity class which represents the entity 'Shipment'.<br/><br/></summary>
 	[Serializable]
 	public partial class ShipmentEntity : CommonEntityBase
 		// __LLBLGENPRO_USER_CODE_REGION_START AdditionalInterfaces
-		// __LLBLGENPRO_USER_CODE_REGION_END
-	
+		// __LLBLGENPRO_USER_CODE_REGION_END	
 	{
+
 		// __LLBLGENPRO_USER_CODE_REGION_START PrivateMembers
 		// __LLBLGENPRO_USER_CODE_REGION_END
-
 		private static ShipmentEntityStaticMetaData _staticMetaData = new ShipmentEntityStaticMetaData();
 		private static ShipmentRelations _relationsFactory = new ShipmentRelations();
 
@@ -106,7 +104,6 @@ namespace DATN_2026.EntityClasses
 			PerformDependencyInjection();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassMembers
 			// __LLBLGENPRO_USER_CODE_REGION_END
-
 			OnInitClassMembersComplete();
 		}
 
@@ -121,7 +118,6 @@ namespace DATN_2026.EntityClasses
 			InitClassMembers();
 			// __LLBLGENPRO_USER_CODE_REGION_START InitClassEmpty
 			// __LLBLGENPRO_USER_CODE_REGION_END
-
 
 			OnInitialized();
 		}
@@ -208,9 +204,9 @@ namespace DATN_2026.EntityClasses
 			get { return (Nullable<System.DateTime>)GetValue((int)ShipmentFieldIndex.UpdatedAt, false); }
 			set { SetValue((int)ShipmentFieldIndex.UpdatedAt, value); }
 		}
+
 		// __LLBLGENPRO_USER_CODE_REGION_START CustomEntityCode
 		// __LLBLGENPRO_USER_CODE_REGION_END
-
 
 	}
 }

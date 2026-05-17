@@ -206,6 +206,14 @@ namespace DATN_2026.EntityClasses
 		/// <returns>Ready to use IPrefetchPathElement2 implementation.</returns>
 		public static IPrefetchPathElement2 PrefetchPathShop { get { return _staticMetaData.GetPrefetchPathElement("Shop", CommonEntityBase.CreateEntityCollection<ShopEntity>()); } }
 
+		/// <summary>The AverageRating property of the Entity Product<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "products"."average_rating".<br/>Table field type characteristics (type, precision, scale, length): Numeric, 3, 2, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Decimal> AverageRating
+		{
+			get { return (Nullable<System.Decimal>)GetValue((int)ProductFieldIndex.AverageRating, false); }
+			set { SetValue((int)ProductFieldIndex.AverageRating, value); }
+		}
+
 		/// <summary>The BaseAttributes property of the Entity Product<br/><br/></summary>
 		/// <remarks>Mapped on  table field: "products"."base_attributes".<br/>Table field type characteristics (type, precision, scale, length): Jsonb, 0, 0, 2147483647.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
 		public virtual System.String BaseAttributes
@@ -260,6 +268,14 @@ namespace DATN_2026.EntityClasses
 		{
 			get { return (System.String)GetValue((int)ProductFieldIndex.Name, true); }
 			set { SetValue((int)ProductFieldIndex.Name, value); }
+		}
+
+		/// <summary>The ReviewCount property of the Entity Product<br/><br/></summary>
+		/// <remarks>Mapped on  table field: "products"."review_count".<br/>Table field type characteristics (type, precision, scale, length): Integer, 10, 0, 0.<br/>Table field behavior characteristics (is nullable, is PK, is identity): true, false, false</remarks>
+		public virtual Nullable<System.Int32> ReviewCount
+		{
+			get { return (Nullable<System.Int32>)GetValue((int)ProductFieldIndex.ReviewCount, false); }
+			set { SetValue((int)ProductFieldIndex.ReviewCount, value); }
 		}
 
 		/// <summary>The ShopId property of the Entity Product<br/><br/></summary>
@@ -364,6 +380,8 @@ namespace DATN_2026
 {
 	public enum ProductFieldIndex
 	{
+		///<summary>AverageRating. </summary>
+		AverageRating,
 		///<summary>BaseAttributes. </summary>
 		BaseAttributes,
 		///<summary>BrandId. </summary>
@@ -378,6 +396,8 @@ namespace DATN_2026
 		Id,
 		///<summary>Name. </summary>
 		Name,
+		///<summary>ReviewCount. </summary>
+		ReviewCount,
 		///<summary>ShopId. </summary>
 		ShopId,
 		///<summary>Sku. </summary>

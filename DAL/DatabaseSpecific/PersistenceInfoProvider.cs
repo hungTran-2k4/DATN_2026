@@ -273,21 +273,23 @@ namespace DATN_2026.DatabaseSpecific
 		/// <summary>Inits ProductEntity's mappings</summary>
 		private void InitProductEntityMappings()
 		{
-			this.AddElementMapping("ProductEntity", @"postgres", @"catalog", "products", 14, 0);
-			this.AddElementFieldMapping("ProductEntity", "BaseAttributes", "base_attributes", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 0);
-			this.AddElementFieldMapping("ProductEntity", "BrandId", "brand_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 1);
-			this.AddElementFieldMapping("ProductEntity", "CategoryId", "category_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
-			this.AddElementFieldMapping("ProductEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 3);
-			this.AddElementFieldMapping("ProductEntity", "Description", "description", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 4);
-			this.AddElementFieldMapping("ProductEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 5);
-			this.AddElementFieldMapping("ProductEntity", "Name", "name", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 6);
-			this.AddElementFieldMapping("ProductEntity", "ShopId", "shop_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 7);
-			this.AddElementFieldMapping("ProductEntity", "Sku", "sku", false, "Varchar", 100, 0, 0, false, "", null, typeof(System.String), 8);
-			this.AddElementFieldMapping("ProductEntity", "Slug", "slug", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 9);
-			this.AddElementFieldMapping("ProductEntity", "Status", "status", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 10);
-			this.AddElementFieldMapping("ProductEntity", "Summary", "summary", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 11);
-			this.AddElementFieldMapping("ProductEntity", "UpdatedAt", "updated_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 12);
-			this.AddElementFieldMapping("ProductEntity", "ViewCount", "view_count", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 13);
+			this.AddElementMapping("ProductEntity", @"postgres", @"catalog", "products", 16, 0);
+			this.AddElementFieldMapping("ProductEntity", "AverageRating", "average_rating", true, "Numeric", 0, 3, 2, false, "", null, typeof(System.Decimal), 0);
+			this.AddElementFieldMapping("ProductEntity", "BaseAttributes", "base_attributes", true, "Jsonb", 2147483647, 0, 0, false, "", null, typeof(System.String), 1);
+			this.AddElementFieldMapping("ProductEntity", "BrandId", "brand_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 2);
+			this.AddElementFieldMapping("ProductEntity", "CategoryId", "category_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 3);
+			this.AddElementFieldMapping("ProductEntity", "CreatedAt", "created_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 4);
+			this.AddElementFieldMapping("ProductEntity", "Description", "description", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 5);
+			this.AddElementFieldMapping("ProductEntity", "Id", "id", false, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 6);
+			this.AddElementFieldMapping("ProductEntity", "Name", "name", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 7);
+			this.AddElementFieldMapping("ProductEntity", "ReviewCount", "review_count", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 8);
+			this.AddElementFieldMapping("ProductEntity", "ShopId", "shop_id", true, "Uuid", 0, 0, 0, false, "", null, typeof(System.Guid), 9);
+			this.AddElementFieldMapping("ProductEntity", "Sku", "sku", false, "Varchar", 100, 0, 0, false, "", null, typeof(System.String), 10);
+			this.AddElementFieldMapping("ProductEntity", "Slug", "slug", false, "Varchar", 255, 0, 0, false, "", null, typeof(System.String), 11);
+			this.AddElementFieldMapping("ProductEntity", "Status", "status", true, "Varchar", 20, 0, 0, false, "", null, typeof(System.String), 12);
+			this.AddElementFieldMapping("ProductEntity", "Summary", "summary", true, "Text", 1073741824, 0, 0, false, "", null, typeof(System.String), 13);
+			this.AddElementFieldMapping("ProductEntity", "UpdatedAt", "updated_at", true, "TimestampTz", 0, 0, 0, false, "", null, typeof(System.DateTime), 14);
+			this.AddElementFieldMapping("ProductEntity", "ViewCount", "view_count", true, "Integer", 0, 10, 0, false, "", null, typeof(System.Int32), 15);
 		}
 
 		/// <summary>Inits ProductImageEntity's mappings</summary>
@@ -754,7 +756,7 @@ namespace DATN_2026.DatabaseSpecific
 		/// <summary>Inits catalogProductView's mappings</summary>
 		private void InitcatalogProductTypedViewMappings()
 		{
-			this.AddElementMapping("catalogProductTypedView", @"postgres", @"catalog", "products", 14);
+			this.AddElementMapping("catalogProductTypedView", @"postgres", @"catalog", "products", 16);
 			this.AddElementFieldMapping("catalogProductTypedView", "Id", "id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 0);
 			this.AddElementFieldMapping("catalogProductTypedView", "CategoryId", "category_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 1);
 			this.AddElementFieldMapping("catalogProductTypedView", "BrandId", "brand_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 2);
@@ -769,6 +771,8 @@ namespace DATN_2026.DatabaseSpecific
 			this.AddElementFieldMapping("catalogProductTypedView", "UpdatedAt", "updated_at", false, "TimestampTz", 0, 0, 0, false, string.Empty, null, typeof(System.DateTime), 11);
 			this.AddElementFieldMapping("catalogProductTypedView", "Sku", "sku", false, "Varchar", 100, 0, 0, false, string.Empty, null, typeof(System.String), 12);
 			this.AddElementFieldMapping("catalogProductTypedView", "ShopId", "shop_id", false, "Uuid", 0, 0, 0, false, string.Empty, null, typeof(System.Guid), 13);
+			this.AddElementFieldMapping("catalogProductTypedView", "AverageRating", "average_rating", false, "Numeric", 0, 3, 2, false, string.Empty, null, typeof(System.Decimal), 14);
+			this.AddElementFieldMapping("catalogProductTypedView", "ReviewCount", "review_count", false, "Integer", 0, 10, 0, false, string.Empty, null, typeof(System.Int32), 15);
 		}
 
 		/// <summary>Inits catalogProductImageView's mappings</summary>

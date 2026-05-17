@@ -11,6 +11,7 @@ public class OrderItemDto
     public decimal UnitPrice { get; set; }
     public int Quantity { get; set; }
     public decimal SubTotal => UnitPrice * Quantity;
+    public bool IsReviewed { get; set; }
 }
 
 public class OrderDto

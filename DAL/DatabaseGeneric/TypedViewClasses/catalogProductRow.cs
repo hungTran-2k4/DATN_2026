@@ -23,6 +23,8 @@ namespace DATN_2026.TypedViewClasses
 			OnCreated();
 		}
 
+		/// <summary>Gets or sets the AverageRating field.</summary>
+		public Nullable<System.Decimal> AverageRating { get; set; }
 		/// <summary>Gets or sets the BaseAttributes field.</summary>
 		public System.String BaseAttributes { get; set; }
 		/// <summary>Gets or sets the BrandId field.</summary>
@@ -37,6 +39,8 @@ namespace DATN_2026.TypedViewClasses
 		public System.Guid Id { get; set; }
 		/// <summary>Gets or sets the Name field.</summary>
 		public System.String Name { get; set; }
+		/// <summary>Gets or sets the ReviewCount field.</summary>
+		public Nullable<System.Int32> ReviewCount { get; set; }
 		/// <summary>Gets or sets the ShopId field.</summary>
 		public Nullable<System.Guid> ShopId { get; set; }
 		/// <summary>Gets or sets the Sku field.</summary>

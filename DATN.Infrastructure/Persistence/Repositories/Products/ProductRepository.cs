@@ -57,7 +57,7 @@ public class ProductRepository : IProductRepository
         var dataQuery = qf.Product.Where(predicate)
                       .OrderBy(ProductFields.CreatedAt.Descending())
                       .WithPath(ProductEntity.PrefetchPathProductImages)
-                      .WithPath(ProductEntity.PrefetchPathProductVariants)
+                      .WithPath(ProductEntity.PrefetchPathProductVariants.WithSubPath(ProductVariantEntity.PrefetchPathStock))
                       .Page(page, pageSize);
 
         var entities = await _adapter.FetchQueryAsync(dataQuery, cancellationToken);

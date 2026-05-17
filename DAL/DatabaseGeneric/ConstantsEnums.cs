@@ -286,6 +286,10 @@ namespace DATN_2026
 		Sku,
 		///<summary>ShopId</summary>
 		ShopId,
+		///<summary>AverageRating</summary>
+		AverageRating,
+		///<summary>ReviewCount</summary>
+		ReviewCount,
 		/// <summary></summary>
 		AmountOfFields
 	}

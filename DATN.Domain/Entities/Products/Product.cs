@@ -21,6 +21,13 @@ public class Product
     public Guid? CategoryId { get; set; }
     public Guid? ShopId { get; set; }
     public string? BaseAttributes { get; set; }
+
+    /// <summary>Điểm đánh giá trung bình (0.0 - 5.0)</summary>
+    public decimal AverageRating { get; set; } = 0;
+
+    /// <summary>Tổng số lượt đánh giá</summary>
+    public int ReviewCount { get; set; } = 0;
+
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();

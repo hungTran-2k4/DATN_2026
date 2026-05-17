@@ -246,6 +246,8 @@ namespace DATN_2026.HelperClasses
 	/// <summary>Field Creation Class for entity ProductEntity</summary>
 	public partial class ProductFields
 	{
+		/// <summary>Creates a new ProductEntity.AverageRating field instance</summary>
+		public static EntityField2 AverageRating { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.AverageRating); }}
 		/// <summary>Creates a new ProductEntity.BaseAttributes field instance</summary>
 		public static EntityField2 BaseAttributes { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.BaseAttributes); }}
 		/// <summary>Creates a new ProductEntity.BrandId field instance</summary>
@@ -260,6 +262,8 @@ namespace DATN_2026.HelperClasses
 		public static EntityField2 Id { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.Id); }}
 		/// <summary>Creates a new ProductEntity.Name field instance</summary>
 		public static EntityField2 Name { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.Name); }}
+		/// <summary>Creates a new ProductEntity.ReviewCount field instance</summary>
+		public static EntityField2 ReviewCount { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.ReviewCount); }}
 		/// <summary>Creates a new ProductEntity.ShopId field instance</summary>
 		public static EntityField2 ShopId { get { return ModelInfoProviderSingleton.GetInstance().CreateField2(ProductFieldIndex.ShopId); }}
 		/// <summary>Creates a new ProductEntity.Sku field instance</summary>
@@ -990,6 +994,10 @@ namespace DATN_2026.HelperClasses
 		public static EntityField2 Sku	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.Sku); } }
 		/// <summary>Creates a new catalogProductTypedView.ShopId field instance</summary>
 		public static EntityField2 ShopId	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.ShopId); } }
+		/// <summary>Creates a new catalogProductTypedView.AverageRating field instance</summary>
+		public static EntityField2 AverageRating	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.AverageRating); } }
+		/// <summary>Creates a new catalogProductTypedView.ReviewCount field instance</summary>
+		public static EntityField2 ReviewCount	{ get { return ModelInfoProviderSingleton.GetInstance().CreateField2(catalogProductFieldIndex.ReviewCount); } }
 	}
 
 	/// <summary>Field Creation Class for typedview catalogProductImageTypedView</summary>

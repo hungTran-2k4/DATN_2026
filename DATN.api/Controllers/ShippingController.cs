@@ -2,6 +2,7 @@ using DATN.Application.Common.Models;
 using DATN.Application.Interfaces.Services;
 using DATN.Domain.Entities.Orders;
 using DATN.Domain.Interfaces;
+using DATN.Infrastructure.Services.Shipping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -65,6 +66,26 @@ public class ShippingController : ControllerBase
         return Ok(ApiResponse<ShippingFeeResult>.Succeed(result, "Tính phí vận chuyển thành công."));
     }
 
+    // ─── 1b. LẤY DANH SÁCH CA LẤY HÀNG GHN ─────────────────
+    /// <summary>
+    /// Seller lấy danh sách ca lấy hàng khả dụng từ GHN.
+    /// </summary>
+    [Authorize]
+    [HttpGet("pick-shifts")]
+    public async Task<ActionResult<ApiResponse<List<GhnPickShift>>>> GetPickShifts()
+    {
+        try
+        {
+            var shifts = await (_shippingProvider as GHNProvider)!.GetPickShiftsAsync();
+            return Ok(ApiResponse<List<GhnPickShift>>.Succeed(shifts, "Lấy danh sách ca lấy hàng thành công."));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "GetPickShifts error");
+            return Ok(ApiResponse<List<GhnPickShift>>.Fail("Không thể lấy danh sách ca lấy hàng.", 500));
+        }
+    }
+
     // ─── 2. TẠO VẬN ĐƠN GHN (Seller gửi hàng) ─────────────
     /// <summary>
     /// Seller nhấn "Gửi hàng" → Backend tạo vận đơn GHN + lưu vào bảng shipments.
@@ -78,9 +99,9 @@ public class ShippingController : ControllerBase
         if (order == null)
             return NotFound(ApiResponse<CreateShipmentResult>.Fail("Không tìm thấy đơn hàng.", 404));
 
-        if (order.OrderStatus != OrderStatus.Processing)
+        if (order.OrderStatus != OrderStatus.Pending)
             return BadRequest(ApiResponse<CreateShipmentResult>.Fail(
-                "Chỉ có thể tạo vận đơn khi đơn hàng ở trạng thái 'Đang xử lý'.", 400));
+                "Chỉ có thể tạo vận đơn khi đơn hàng ở trạng thái 'Chờ xác nhận'.", 400));
 
         // 2. Kiểm tra đã tạo shipment chưa
         var existingShipment = await _shipmentRepo.GetByOrderIdAsync(orderId);
@@ -131,6 +152,7 @@ public class ShippingController : ControllerBase
             Weight = payload?.Weight ?? 500,
             InsuranceValue = (int)order.TotalAmount,
             Note = payload?.Note ?? order.CustomerNote,
+            PickShift = payload?.PickShift,
             Items = order.Items.Select(i => new ShipmentItem
             {
                 Name = i.ProductNameSnapshot ?? "Sản phẩm",
@@ -167,12 +189,12 @@ public class ShippingController : ControllerBase
             GhnOrderCode = result.GhnOrderCode,
             ShippingFee = result.TotalFee,
             ExpectedDeliveryDate = result.ExpectedDeliveryDate,
-            Status = "PICKED_UP",
+            Status = "READY_TO_PICK",
             CreatedAt = DateTime.UtcNow
         });
 
-        // 9. Cập nhật trạng thái đơn hàng → SHIPPED
-        await _orderRepo.UpdateStatusAsync(orderId, OrderStatus.Shipped);
+        // 9. Cập nhật trạng thái đơn hàng → PROCESSING (Chờ lấy hàng / chuẩn bị hàng)
+        await _orderRepo.UpdateStatusAsync(orderId, OrderStatus.Processing);
 
         return Ok(ApiResponse<CreateShipmentResult>.Succeed(result, "Tạo vận đơn GHN thành công."));
     }
@@ -335,6 +357,8 @@ public class CreateShipmentPayload
 {
     public string? Note { get; set; }
     public int? Weight { get; set; }
+    /// <summary>ID ca lấy hàng GHN (optional). Nếu không chọn, GHN tự sắp xếp ca gần nhất.</summary>
+    public List<int>? PickShift { get; set; }
 }
 
 // ShippingAddressInfo has been replaced by DATN.Application.DTOs.Orders.ShippingAddressSnapshot

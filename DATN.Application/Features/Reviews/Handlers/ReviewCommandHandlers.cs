@@ -12,11 +12,19 @@ public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, ApiRespo
 {
     private readonly IReviewRepository _reviewRepo;
     private readonly IOrderRepository _orderRepo;
+    private readonly IProductVariantRepository _variantRepo;
+    private readonly IProductRepository _productRepo;
 
-    public CreateReviewHandler(IReviewRepository reviewRepo, IOrderRepository orderRepo)
+    public CreateReviewHandler(
+        IReviewRepository reviewRepo, 
+        IOrderRepository orderRepo,
+        IProductVariantRepository variantRepo,
+        IProductRepository productRepo)
     {
         _reviewRepo = reviewRepo;
         _orderRepo = orderRepo;
+        _variantRepo = variantRepo;
+        _productRepo = productRepo;
     }
 
     public async Task<ApiResponse<ReviewDto>> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
@@ -55,6 +63,24 @@ public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, ApiRespo
         };
 
         var created = await _reviewRepo.CreateAsync(review, cancellationToken);
+
+        // ─── Trigger Recalculate Product Rating ───
+        try
+        {
+            var variant = await _variantRepo.GetByIdAsync(request.VariantId, cancellationToken);
+            if (variant != null && variant.ProductId.HasValue)
+            {
+                var ratingInfo = await _reviewRepo.GetProductRatingAsync(variant.ProductId.Value, cancellationToken);
+                var product = await _productRepo.GetByIdAsync(variant.ProductId.Value, null, cancellationToken);
+                if (product != null)
+                {
+                    product.AverageRating = (decimal)ratingInfo.AverageRating;
+                    product.ReviewCount = ratingInfo.TotalReviews;
+                    await _productRepo.UpdateAsync(product, cancellationToken);
+                }
+            }
+        }
+        catch { /* Bỏ qua nếu lỗi tính rating để không chặn flow lưu review */ }
 
         var dto = new ReviewDto
         {

@@ -17,6 +17,7 @@ public class ProductApplicationMappingProfile : Profile
             .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToProductStatus()));
 
         CreateMap<ProductVariant, ProductVariantDto>()
+            .ForMember(d => d.StockQty, o => o.MapFrom(s => s.StockQty))
             .ForMember(d => d.VariantAttributes, o => o.MapFrom(s =>
                 s.VariantAttributes != null
                     ? System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(s.VariantAttributes, (System.Text.Json.JsonSerializerOptions?)null)

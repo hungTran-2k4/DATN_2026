@@ -280,6 +280,7 @@ namespace DATN_2026.HelperClasses
 		private void InitProductEntityInfo()
 		{
 			this.AddFieldIndexEnumForElementName(typeof(ProductFieldIndex), "ProductEntity");
+			this.AddElementFieldInfo("ProductEntity", "AverageRating", typeof(Nullable<System.Decimal>), false, false, false, true,  (int)ProductFieldIndex.AverageRating, 0, 2, 3);
 			this.AddElementFieldInfo("ProductEntity", "BaseAttributes", typeof(System.String), false, false, false, true,  (int)ProductFieldIndex.BaseAttributes, 2147483647, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "BrandId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ProductFieldIndex.BrandId, 0, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "CategoryId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ProductFieldIndex.CategoryId, 0, 0, 0);
@@ -287,6 +288,7 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("ProductEntity", "Description", typeof(System.String), false, false, false, true,  (int)ProductFieldIndex.Description, 1073741824, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Id", typeof(System.Guid), true, false, false, false,  (int)ProductFieldIndex.Id, 0, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Name", typeof(System.String), false, false, false, false,  (int)ProductFieldIndex.Name, 255, 0, 0);
+			this.AddElementFieldInfo("ProductEntity", "ReviewCount", typeof(Nullable<System.Int32>), false, false, false, true,  (int)ProductFieldIndex.ReviewCount, 0, 0, 10);
 			this.AddElementFieldInfo("ProductEntity", "ShopId", typeof(Nullable<System.Guid>), false, true, false, true,  (int)ProductFieldIndex.ShopId, 0, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Sku", typeof(System.String), false, false, false, false,  (int)ProductFieldIndex.Sku, 100, 0, 0);
 			this.AddElementFieldInfo("ProductEntity", "Slug", typeof(System.String), false, false, false, false,  (int)ProductFieldIndex.Slug, 255, 0, 0);
@@ -774,6 +776,8 @@ namespace DATN_2026.HelperClasses
 			this.AddElementFieldInfo("catalogProductTypedView", "UpdatedAt", typeof(Nullable<System.DateTime>), false, false, true, false, (int)catalogProductFieldIndex.UpdatedAt, 0, 0, 0);
 			this.AddElementFieldInfo("catalogProductTypedView", "Sku", typeof(System.String), false, false, true, false, (int)catalogProductFieldIndex.Sku, 100, 0, 0);
 			this.AddElementFieldInfo("catalogProductTypedView", "ShopId", typeof(Nullable<System.Guid>), false, false, true, false, (int)catalogProductFieldIndex.ShopId, 0, 0, 0);
+			this.AddElementFieldInfo("catalogProductTypedView", "AverageRating", typeof(Nullable<System.Decimal>), false, false, true, false, (int)catalogProductFieldIndex.AverageRating, 0, 2, 3);
+			this.AddElementFieldInfo("catalogProductTypedView", "ReviewCount", typeof(Nullable<System.Int32>), false, false, true, false, (int)catalogProductFieldIndex.ReviewCount, 0, 0, 10);
 		}
 
 		/// <summary>Inits catalogProductImageView's info objects</summary>

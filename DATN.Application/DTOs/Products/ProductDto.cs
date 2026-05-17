@@ -19,6 +19,12 @@ public class ProductDto
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
+    /// <summary>Điểm đánh giá trung bình (0-5)</summary>
+    public decimal AverageRating { get; set; }
+
+    /// <summary>Tổng số lượt đánh giá</summary>
+    public int ReviewCount { get; set; }
+
     public IEnumerable<ProductImageDto> Images { get; set; } = new List<ProductImageDto>();
     public IEnumerable<ProductVariantDto> Variants { get; set; } = new List<ProductVariantDto>();
 }

@@ -70,6 +70,9 @@ public class CreateShipmentRequest
 
     // Danh sách sản phẩm
     public List<ShipmentItem> Items { get; set; } = new();
+
+    /// <summary>Ca lấy hàng GHN (optional). Ví dụ: [2] = Ca chiều.</summary>
+    public List<int>? PickShift { get; set; }
 }
 
 public class ShipmentItem

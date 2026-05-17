@@ -216,12 +216,6 @@ public class CancelOrderHandler : IRequestHandler<CancelOrderCommand, ApiRespons
                 400, "CANNOT_CANCEL");
 
         await _orderRepo.UpdateStatusAsync(request.OrderId, Domain.Entities.Orders.OrderStatus.Cancelled, cancellationToken);
-        
-        // ── If it was already paid via VNPay, mark as refunded ──
-        if (order.PaymentStatus == Domain.Entities.Orders.PaymentStatus.Paid && order.PaymentMethod == Domain.Entities.Orders.PaymentMethod.VnPay)
-        {
-            await _orderRepo.UpdatePaymentStatusAsync(request.OrderId, Domain.Entities.Orders.PaymentStatus.Refunded, cancellationToken);
-        }
 
         return ApiResponse<bool>.Succeed(true, "Đơn hàng đã được hủy thành công.");
     }
@@ -281,12 +275,7 @@ public class UpdateOrderStatusHandler : IRequestHandler<UpdateOrderStatusCommand
             }
         }
 
-        // ── If PAID and moving to CANCELLED or RETURNED -> Mark as REFUNDED ──
-        if (order.PaymentStatus == Domain.Entities.Orders.PaymentStatus.Paid 
-            && (request.NewStatus == Domain.Entities.Orders.OrderStatus.Cancelled || request.NewStatus == Domain.Entities.Orders.OrderStatus.Returned))
-        {
-            await _orderRepo.UpdatePaymentStatusAsync(request.OrderId, Domain.Entities.Orders.PaymentStatus.Refunded, cancellationToken);
-        }
+
 
         // ── NEW: If DELIVERED -> Update Shop Wallet ──
         if (request.NewStatus == Domain.Entities.Orders.OrderStatus.Delivered && order.ShopId.HasValue)

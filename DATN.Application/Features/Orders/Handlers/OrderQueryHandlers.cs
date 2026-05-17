@@ -111,11 +111,13 @@ public class GetOrderDetailHandler : IRequestHandler<GetOrderDetailQuery, ApiRes
 {
     private readonly IOrderRepository _orderRepo;
     private readonly IShopRepository _shopRepo;
+    private readonly IReviewRepository _reviewRepo;
 
-    public GetOrderDetailHandler(IOrderRepository orderRepo, IShopRepository shopRepo)
+    public GetOrderDetailHandler(IOrderRepository orderRepo, IShopRepository shopRepo, IReviewRepository reviewRepo)
     {
         _orderRepo = orderRepo;
         _shopRepo = shopRepo;
+        _reviewRepo = reviewRepo;
     }
 
     public async Task<ApiResponse<OrderDto>> Handle(GetOrderDetailQuery request, CancellationToken cancellationToken)
@@ -136,6 +138,24 @@ public class GetOrderDetailHandler : IRequestHandler<GetOrderDetailQuery, ApiRes
         if (!request.IsAdmin && !isBuyer && !isSeller)
             return ApiResponse<OrderDto>.Fail("Không có quyền truy cập đơn hàng này.", 403, "ORDER_FORBIDDEN");
 
+        var itemDtos = new List<OrderItemDto>();
+        foreach (var i in order.Items)
+        {
+            var isReviewed = i.VariantId.HasValue && await _reviewRepo.HasUserReviewedAsync(order.BuyerId ?? Guid.Empty, i.VariantId.Value, order.Id, cancellationToken);
+            itemDtos.Add(new OrderItemDto
+            {
+                Id = i.Id,
+                VariantId = i.VariantId,
+                ProductNameSnapshot = i.ProductNameSnapshot,
+                VariantName = i.VariantName,
+                VariantImageUrl = i.VariantImageUrl,
+                VariantAttributes = i.VariantAttributes,
+                UnitPrice = i.UnitPrice,
+                Quantity = i.Quantity,
+                IsReviewed = isReviewed
+            });
+        }
+
         return ApiResponse<OrderDto>.Succeed(new OrderDto
         {
             Id = order.Id,
@@ -148,17 +168,7 @@ public class GetOrderDetailHandler : IRequestHandler<GetOrderDetailQuery, ApiRes
             CustomerNote = order.CustomerNote,
             ShippingAddress = order.ShippingAddress,
             CreatedAt = order.CreatedAt,
-            Items = order.Items.Select(i => new OrderItemDto
-            {
-                Id = i.Id,
-                VariantId = i.VariantId,
-                ProductNameSnapshot = i.ProductNameSnapshot,
-                VariantName = i.VariantName,
-                VariantImageUrl = i.VariantImageUrl,
-                VariantAttributes = i.VariantAttributes,
-                UnitPrice = i.UnitPrice,
-                Quantity = i.Quantity
-            }).ToList()
+            Items = itemDtos
         });
     }
 }

@@ -103,28 +103,32 @@ public class GHNProvider : IShippingProvider
                 });
             }
 
-            var payload = new
+            var payload = new Dictionary<string, object?>
             {
-                payment_type_id = 1,
-                required_note = "KHONGCHOXEMHANG",
-                client_order_code = request.ClientOrderCode,
-                from_name = request.FromName,
-                from_phone = request.FromPhone,
-                from_address = request.FromAddress,
-                from_district_id = request.FromDistrictId,
-                from_ward_code = request.FromWardCode,
-                to_name = request.ToName,
-                to_phone = request.ToPhone,
-                to_address = request.ToAddress,
-                to_district_id = request.ToDistrictId,
-                to_ward_code = request.ToWardCode,
-                cod_amount = (int)request.CodAmount,
-                weight = request.Weight,
-                insurance_value = request.InsuranceValue,
-                service_type_id = 2,
-                note = request.Note ?? "",
-                items = items
+                ["payment_type_id"] = 1,
+                ["required_note"] = "KHONGCHOXEMHANG",
+                ["client_order_code"] = request.ClientOrderCode,
+                ["from_name"] = request.FromName,
+                ["from_phone"] = request.FromPhone,
+                ["from_address"] = request.FromAddress,
+                ["from_district_id"] = request.FromDistrictId,
+                ["from_ward_code"] = request.FromWardCode,
+                ["to_name"] = request.ToName,
+                ["to_phone"] = request.ToPhone,
+                ["to_address"] = request.ToAddress,
+                ["to_district_id"] = request.ToDistrictId,
+                ["to_ward_code"] = request.ToWardCode,
+                ["cod_amount"] = (int)request.CodAmount,
+                ["weight"] = request.Weight,
+                ["insurance_value"] = request.InsuranceValue,
+                ["service_type_id"] = 2,
+                ["note"] = request.Note ?? "",
+                ["items"] = items
             };
+
+            // Thêm ca lấy hàng nếu Seller có chọn
+            if (request.PickShift != null && request.PickShift.Count > 0)
+                payload["pick_shift"] = request.PickShift;
 
             var payloadJson = JsonSerializer.Serialize(payload);
             _logger.LogWarning("[GHN CreateShipment] Request payload: {Payload}", payloadJson);
@@ -227,6 +231,23 @@ public class GHNProvider : IShippingProvider
         {
             _logger.LogError(ex, "GHN GetWards error");
             return new List<GhnWard>();
+        }
+    }
+
+    // ─── Lấy danh sách ca lấy hàng ────────────────────────
+
+    public async Task<List<GhnPickShift>> GetPickShiftsAsync()
+    {
+        try
+        {
+            var url = $"{_settings.BaseUrl}/shiip/public-api/v2/shift/date";
+            var response = await SendRequestAsync<GhnBaseResponse<List<GhnPickShift>>>(url, new { });
+            return response?.Data ?? new List<GhnPickShift>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "GHN GetPickShifts error");
+            return new List<GhnPickShift>();
         }
     }
 
@@ -345,4 +366,20 @@ public class GhnWard
 
     [JsonPropertyName("DistrictID")]
     public int DistrictId { get; set; }
+}
+
+/// <summary>Ca lấy hàng GHN</summary>
+public class GhnPickShift
+{
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("title")]
+    public string? Title { get; set; }
+
+    [JsonPropertyName("from_time")]
+    public int FromTime { get; set; }
+
+    [JsonPropertyName("to_time")]
+    public int ToTime { get; set; }
 }
