@@ -4,4 +4,4 @@ using MediatR;
 
 namespace DATN.Application.Features.Orders.Queries;
 
-public record GetAllOrdersQuery(string? Status, int Page, int PageSize) : IRequest<PagedResponse<IEnumerable<OrderSummaryDto>>>;
+public record GetAllOrdersQuery(string? Status, string? Search, int Page, int PageSize) : IRequest<PagedResponse<IEnumerable<OrderSummaryDto>>>;

@@ -51,7 +51,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             
             // Bảo mật: Nếu sản phẩm đang Active hoặc Inactive, không cho phép hạ cấp về Draft qua luồng update thường
             // Hoặc đơn giản là ngăn chặn việc nâng cấp lên Active nếu không phải qua endpoint Review
-            if (newStatus == ProductStatus.Active && product.Status != ProductStatus.Active)
+            if (newStatus == ProductStatus.Active && product.Status != ProductStatus.Active && !request.BypassStatusCheck)
             {
                 // Giữ nguyên trạng thái cũ nếu cố tình set Active ở đây
             }

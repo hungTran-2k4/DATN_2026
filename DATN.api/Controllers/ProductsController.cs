@@ -97,6 +97,11 @@ public class ProductsController : ControllerBase
             command.ShopId = shopId.Value;
         }
 
+        if (User.IsInRole("Admin"))
+        {
+            command.BypassStatusCheck = true;
+        }
+
         var result = await _mediator.Send(command);
         if (!result.Success)
         {
@@ -172,6 +177,7 @@ public class ProductsController : ControllerBase
             CategoryId = product.Data.CategoryId,
             ShopId = product.Data.ShopId,
             BaseAttributes = product.Data.BaseAttributes,
+            BypassStatusCheck = true,
         };
         var result = await _mediator.Send(command);
         if (!result.Success) return BadRequest(result);

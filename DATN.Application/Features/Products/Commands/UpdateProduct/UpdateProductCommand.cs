@@ -17,4 +17,5 @@ public class UpdateProductCommand : IRequest<ApiResponse<bool>>
     public Guid? CategoryId { get; set; }
     public Guid? ShopId { get; set; }
     public string? BaseAttributes { get; set; }
+    public bool BypassStatusCheck { get; set; } = false;
 }

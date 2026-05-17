@@ -104,10 +104,11 @@ public class OrdersController : ControllerBase
     public async Task<IActionResult> GetShopOrders(
         Guid shopId,
         [FromQuery] string? status,
+        [FromQuery] string? search,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20)
     {
-        var result = await _mediator.Send(new GetShopOrdersQuery(shopId, status, page, pageSize));
+        var result = await _mediator.Send(new GetShopOrdersQuery(shopId, status, search, page, pageSize));
         return Ok(result);
     }
 
@@ -116,10 +117,11 @@ public class OrdersController : ControllerBase
     [ProducesResponseType(typeof(PagedResponse<IEnumerable<OrderSummaryDto>>), 200)]
     public async Task<IActionResult> GetAllOrders(
         [FromQuery] string? status,
+        [FromQuery] string? search,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20)
     {
-        var result = await _mediator.Send(new GetAllOrdersQuery(status, page, pageSize));
+        var result = await _mediator.Send(new GetAllOrdersQuery(status, search, page, pageSize));
         return Ok(result);
     }
 

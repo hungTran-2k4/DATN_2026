@@ -19,6 +19,7 @@ public interface IOrderRepository
     Task<(IEnumerable<Order> Items, int Total)> GetByShopIdAsync(
         Guid shopId,
         string? status = null,
+        string? search = null,
         int page = 1,
         int pageSize = 20,
         CancellationToken cancellationToken = default);
@@ -26,6 +27,7 @@ public interface IOrderRepository
     /// <summary>Toàn bộ đơn hàng trên hệ thống (Admin view) — có phân trang</summary>
     Task<(IEnumerable<Order> Items, int Total)> GetAllAsync(
         string? status = null,
+        string? search = null,
         int page = 1,
         int pageSize = 20,
         CancellationToken cancellationToken = default);

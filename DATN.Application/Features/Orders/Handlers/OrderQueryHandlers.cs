@@ -51,6 +51,7 @@ public class GetShopOrdersHandler : IRequestHandler<GetShopOrdersQuery, PagedRes
         var (items, total) = await _orderRepo.GetByShopIdAsync(
             request.ShopId,
             request.Status,
+            request.Search,
             request.Page,
             request.PageSize,
             cancellationToken);
@@ -84,6 +85,7 @@ public class GetAllOrdersHandler : IRequestHandler<GetAllOrdersQuery, PagedRespo
     {
         var (items, total) = await _orderRepo.GetAllAsync(
             request.Status,
+            request.Search,
             request.Page,
             request.PageSize,
             cancellationToken);

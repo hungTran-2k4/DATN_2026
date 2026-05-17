@@ -78,7 +78,7 @@ public class OrderRepository : IOrderRepository
     }
 
     public async Task<(IEnumerable<Order> Items, int Total)> GetByShopIdAsync(
-        Guid shopId, string? status = null, int page = 1, int pageSize = 20,
+        Guid shopId, string? status = null, string? search = null, int page = 1, int pageSize = 20,
         CancellationToken cancellationToken = default)
     {
         var col = new EntityCollection<OrderEntity>();
@@ -86,6 +86,9 @@ public class OrderRepository : IOrderRepository
         IPredicateExpression filter = new PredicateExpression(OrderFields.ShopId == shopId);
         if (!string.IsNullOrWhiteSpace(status))
             filter.AddWithAnd(OrderFields.OrderStatus == status);
+
+        if (!string.IsNullOrEmpty(search))
+            filter.AddWithAnd(OrderFields.OrderCode.Like($"%{search}%"));
 
         var qf = new QueryFactory();
         var countQuery = qf.Create().Select(OrderFields.Id.Count()).Where(filter);
@@ -111,7 +114,7 @@ public class OrderRepository : IOrderRepository
     }
 
     public async Task<(IEnumerable<Order> Items, int Total)> GetAllAsync(
-        string? status = null, int page = 1, int pageSize = 20,
+        string? status = null, string? search = null, int page = 1, int pageSize = 20,
         CancellationToken cancellationToken = default)
     {
         var col = new EntityCollection<OrderEntity>();
@@ -119,6 +122,9 @@ public class OrderRepository : IOrderRepository
         IPredicateExpression filter = new PredicateExpression();
         if (!string.IsNullOrEmpty(status))
             filter.AddWithAnd(OrderFields.OrderStatus == status);
+
+        if (!string.IsNullOrEmpty(search))
+            filter.AddWithAnd(OrderFields.OrderCode.Like($"%{search}%"));
 
         var qf = new QueryFactory();
         var countQuery = qf.Create().Select(OrderFields.Id.Count()).Where(filter);
